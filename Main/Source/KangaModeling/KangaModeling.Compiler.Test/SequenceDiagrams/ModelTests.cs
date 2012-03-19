@@ -37,6 +37,24 @@ namespace KangaModeling.Compiler.Test
 			Assert.AreEqual("Player", sd.Participants[0].Name, "participant has wrong name");
 		}
 		
+		[Test, ExpectedException(typeof(ArgumentNullException))]
+		public void t11_CheckNameOfParticipantMustBeNonNull() 
+		{
+			// Setup
+			SequenceDiagram sd = new SequenceDiagram();
+			// Exercise && Check
+			sd.Participants.Add(new Participant(null));
+		}
+		
+		[Test, ExpectedException(typeof(ArgumentException))]
+		public void t12_CheckNameOfParticipantMustBeNotEmpty() 
+		{
+			// Setup
+			SequenceDiagram sd = new SequenceDiagram();
+			// Exercise && Check
+			sd.Participants.Add(new Participant(String.Empty));
+		}
+		
 		[Test]
 		public void t11_CheckRemoveParticipant() 
 		{

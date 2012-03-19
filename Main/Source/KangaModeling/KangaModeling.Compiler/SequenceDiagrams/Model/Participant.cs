@@ -8,11 +8,19 @@ namespace KangaModeling.Compiler.Model
 	/// </summary>
 	public class Participant
 	{
+		/// <summary>
+		/// Initialize a new Participant instance and sets its fields.
+		/// </summary>
+		/// <param name="name">The name of the participant. Must be non-empty.</param>
 		public Participant (String name)
 		{
 		}
 		
+		/// <summary>
+		/// The name of this participant.
+		/// </summary>
 		public String Name { get; private set; }
+		
 	}
 	
 }
