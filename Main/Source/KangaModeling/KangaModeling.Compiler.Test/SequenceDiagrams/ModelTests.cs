@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using KangaModeling.Compiler.Model;
 
 namespace KangaModeling.Compiler.Test
 {
@@ -28,13 +29,12 @@ namespace KangaModeling.Compiler.Test
 			// Setup
 			SequenceDiagram sd = new SequenceDiagram();
 			// Exercise
-			Participant p = sd.Participants.Add("Player");
+			sd.Participants.Add(new Participant("Player"));
 			// Check
 			Assert.AreEqual(1, sd.Participants.Count, "wrong count of participants");
 			
 			// TODO separate check for these?
 			Assert.AreEqual("Player", sd.Participants[0].Name, "participant has wrong name");
-			Assert.AreSame(p, sd.Participants[0], "participants are not ref equal");
 		}
 		
 		[Test]
@@ -42,9 +42,10 @@ namespace KangaModeling.Compiler.Test
 		{
 			// Setup
 			SequenceDiagram sd = new SequenceDiagram();
-			sd.Participants.Add("Player");
+			Participant p = new Participant("Player");
+			sd.Participants.Add(p);
 			// Exercise
-			sd.Participants.Remove("Player"); // TODO remove by Participant object?
+			sd.Participants.Remove(p); // TODO remove by Participant object?
 			// Check
 			Assert.AreEqual(0, sd.Participants.Count, "after deleting the only participants, there must be none left");
 		}
@@ -58,7 +59,7 @@ namespace KangaModeling.Compiler.Test
 			Assert.IsNotNull(sd.Content, "after creating a diagram, the Content must be non-null");
 			// TODO this is no real test, because the Content element has static type "CombinedFragment", and is non-null...
 			Assert.IsInstanceOf(typeof(CombinedFragment), sd.Content, "The Content element has the wrong type");
-			Assert.AreEqual(CombinedFragmentType.Root, sd.Content.Type, "The default combined fragment must have root type.");
+			Assert.AreEqual(CombinedFragment.CFType.Root, sd.Content.Type, "The default combined fragment must have root type.");
 			// TODO the root CombinedFragment must not have an attached msg! or semantics?
 		}
 		

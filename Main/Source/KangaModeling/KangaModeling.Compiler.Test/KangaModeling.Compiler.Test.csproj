@@ -67,4 +67,10 @@
   <ItemGroup>
     <Folder Include="SequenceDiagrams\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KangaModeling.Compiler\KangaModeling.Compiler.csproj">
+      <Project>{397211EE-513B-428C-81DE-B9739B113170}</Project>
+      <Name>KangaModeling.Compiler</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
