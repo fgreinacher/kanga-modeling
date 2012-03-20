@@ -38,6 +38,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,7 +49,15 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="IEngineFactory.cs" />
+    <Compile Include="IMeasurementEngine.cs" />
+    <Compile Include="Core\Point.cs" />
+    <Compile Include="Core\RenderableObject.cs" />
+    <Compile Include="Core\RenderableText.cs" />
+    <Compile Include="Core\Size.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IRenderingEngine.cs" />
+    <Compile Include="Theming\ITheme.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
