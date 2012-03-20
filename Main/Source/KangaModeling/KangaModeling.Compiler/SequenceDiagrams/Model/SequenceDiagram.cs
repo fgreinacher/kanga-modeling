@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace KangaModeling.Compiler.Model
+namespace KangaModeling.Compiler.SequenceDiagrams.Model
 {
 	/// <summary>
 	/// Main model class for sequence diagrams.

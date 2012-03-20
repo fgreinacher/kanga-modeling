@@ -1,6 +1,6 @@
 using System;
+using KangaModeling.Compiler.SequenceDiagrams.Model;
 using NUnit.Framework;
-using KangaModeling.Compiler.Model;
 
 namespace KangaModeling.Compiler.Test
 {

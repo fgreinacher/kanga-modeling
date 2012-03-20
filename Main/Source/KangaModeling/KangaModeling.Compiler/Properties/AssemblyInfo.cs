@@ -15,3 +15,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("f21eece3-db06-4a80-a955-dfde0caab794")]
+[assembly: InternalsVisibleTo("KangaModeling.Compiler.Test")]

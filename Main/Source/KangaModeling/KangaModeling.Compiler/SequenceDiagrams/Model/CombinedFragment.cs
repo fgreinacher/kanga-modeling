@@ -1,5 +1,4 @@
-using System;
-namespace KangaModeling.Compiler.Model
+namespace KangaModeling.Compiler.SequenceDiagrams.Model
 {
 	
 	/// <summary>
