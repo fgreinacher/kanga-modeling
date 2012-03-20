@@ -1,6 +1,5 @@
 ﻿using System;
-using KangaModeling.Compiler.SequenceDiagrams._Ast;
-using KangaModeling.Compiler.SequenceDiagrams._Parsing;
+using KangaModeling.Compiler.SequenceDiagrams;
 using NUnit.Framework;
 using KangaModeling.Compiler.Test.SequenceDiagrams.Helper;
 using System.Linq;

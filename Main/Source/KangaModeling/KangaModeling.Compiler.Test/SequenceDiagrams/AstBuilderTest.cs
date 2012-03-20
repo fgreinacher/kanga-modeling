@@ -1,5 +1,4 @@
 ﻿using KangaModeling.Compiler.SequenceDiagrams;
-using KangaModeling.Compiler.SequenceDiagrams._Ast;
 using NUnit.Framework;
 
 namespace KangaModeling.Compiler.Test.SequenceDiagrams

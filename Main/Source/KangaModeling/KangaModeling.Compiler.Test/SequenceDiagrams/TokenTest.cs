@@ -1,4 +1,4 @@
-﻿using KangaModeling.Compiler.SequenceDiagrams._Scanner;
+﻿using KangaModeling.Compiler.SequenceDiagrams;
 using NUnit.Framework;
 using System;
 

@@ -44,25 +44,25 @@
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SequenceDiagrams\_Ast\AstBuilder.cs" />
-    <Compile Include="SequenceDiagrams\_Ast\IEnumerableExtensions.cs" />
-    <Compile Include="SequenceDiagrams\_Ast\ParticipantStatement.cs" />
-    <Compile Include="SequenceDiagrams\_Ast\SimpleParticipantStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\AstBuilder.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\IEnumerableExtensions.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\ParticipantStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\SimpleParticipantStatement.cs" />
     <Compile Include="SequenceDiagrams\Model\SequenceDiagram.cs" />
     <Compile Include="SequenceDiagrams\Model\Participant.cs" />
     <Compile Include="SequenceDiagrams\Model\CombinedFragment.cs" />
-    <Compile Include="SequenceDiagrams\_Ast\ExtendedParticipantStatement.cs" />
-    <Compile Include="SequenceDiagrams\_Parsing\Parser.cs" />
-    <Compile Include="SequenceDiagrams\_Parsing\ParticipantStatementParser.cs" />
-    <Compile Include="SequenceDiagrams\_Parsing\StatementParser.cs" />
-    <Compile Include="SequenceDiagrams\_Parsing\TitleStatementParser.cs" />
-    <Compile Include="SequenceDiagrams\_Parsing\UnknownStatementParser.cs" />
-    <Compile Include="SequenceDiagrams\_Scanner\Scanner.cs" />
-    <Compile Include="SequenceDiagrams\_Parsing\StatementParserFactory.cs" />
-    <Compile Include="SequenceDiagrams\_Ast\Statement.cs" />
-    <Compile Include="SequenceDiagrams\_Ast\TitleStatement.cs" />
-    <Compile Include="SequenceDiagrams\_Ast\UnknownStatement.cs" />
-    <Compile Include="SequenceDiagrams\_Scanner\Token.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\ExtendedParticipantStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\Parser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\ParticipantStatementParser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\StatementParser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\TitleStatementParser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\UnknownStatementParser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\Scanner.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\StatementParserFactory.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\Statement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\TitleStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\UnknownStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\Token.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -72,5 +72,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SequenceDiagrams\_Ast\" />
+    <Folder Include="SequenceDiagrams\_Parsing\" />
+    <Folder Include="SequenceDiagrams\_Scanner\" />
+  </ItemGroup>
 </Project>

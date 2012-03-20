@@ -1,6 +1,4 @@
-﻿using KangaModeling.Compiler.SequenceDiagrams._Ast;
-using KangaModeling.Compiler.SequenceDiagrams._Parsing;
-using KangaModeling.Compiler.SequenceDiagrams._Scanner;
+﻿using KangaModeling.Compiler.SequenceDiagrams;
 
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.Helper
 {
