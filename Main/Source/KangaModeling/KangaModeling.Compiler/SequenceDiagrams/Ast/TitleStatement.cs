@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using KangaModeling.Compiler.SequenceDiagrams.Reading;
+using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.Ast
 {
     internal class TitleStatement : Statement
     {
-        private readonly Token m_Keyword;
         private readonly Token m_Argument;
 
-        public TitleStatement(Token keyword, Token argument)
+        public TitleStatement(Token keyword, Token argument) 
+            : base(keyword)
         {
-            m_Keyword = keyword;
             m_Argument = argument;
         }
 
@@ -22,8 +22,9 @@ namespace KangaModeling.Compiler.SequenceDiagrams.Ast
 
         public override IEnumerable<Token> Tokens()
         {
-            yield return m_Keyword;
-            yield return m_Argument;
+            return 
+                base.Tokens()
+                .Append(m_Argument);
         }
     }
 }

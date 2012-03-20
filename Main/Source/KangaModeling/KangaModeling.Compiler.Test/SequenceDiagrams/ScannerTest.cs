@@ -80,6 +80,19 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             Assert.AreEqual(expectedColumn, target.Column);
         }
 
+        [TestCase("a", "a", "")]
+        [TestCase("abcd AS", "AS", "abcd")]
+        [TestCase("abcd AS rest", "AS", "abcd")]
+        [TestCase("abcd     AS     rest", "AS", "abcd")]
+        [TestCase("abcd Hello ", "AS", "abcd Hello ")]
+        public void ReadTo(string input, string keyWord, string expectedValue)
+        {
+            Scanner target = new Scanner(input);
+            target.MoveNext();
+            Token actual = target.ReadTo(keyWord);
+            Assert.AreEqual(expectedValue, actual.Value);
+        }
+
         [TestCase("")]
         [TestCase("a")]
         [TestCase("a\r\nb")]

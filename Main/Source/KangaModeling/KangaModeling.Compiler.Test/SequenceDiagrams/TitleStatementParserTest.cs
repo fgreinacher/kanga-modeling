@@ -22,12 +22,12 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase("title", "")]
         [TestCase("title abc", "abc")]
         [TestCase("title  ", "")]
-        public void EnsureTokens_In_Valid_Statement(string input, string argumentValue)
+        public void EnsureTokens(string input, string argumentValue)
         {
             TitleStatementParser target = new TitleStatementParser();
             var actual = target.Parse(input);
             var tokenValues = actual.Tokens().Select(token => token.Value);
-            var expected = new[] {"title", argumentValue};
+            var expected = new[] {TitleStatementParser.Keyword, argumentValue};
             CollectionAssert.AreEquivalent(expected, tokenValues);        
         }
     }

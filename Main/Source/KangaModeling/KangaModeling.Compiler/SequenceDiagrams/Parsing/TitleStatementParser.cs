@@ -5,15 +5,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams.Parsing
 {
     internal class TitleStatementParser : StatementParser
     {
-        public static string Keyword
-        {
-            get { return "title"; }
-        }
+        public const string Keyword = "title";
 
         public override Statement Parse(Scanner scanner)
         {
             Token keyword = scanner.ReadWord();
-            scanner.SkipWhile(char.IsWhiteSpace);
+            scanner.SkipWhiteSpaces();
             Token argument = scanner.ReadToEnd();
             return new TitleStatement(keyword, argument);
         }

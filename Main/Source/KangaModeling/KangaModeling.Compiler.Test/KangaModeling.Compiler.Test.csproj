@@ -53,6 +53,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SequenceDiagrams\ParserTest.cs" />
+    <Compile Include="SequenceDiagrams\ParticipantStatementParserTest.cs" />
     <Compile Include="SequenceDiagrams\ScannerTest.cs" />
     <Compile Include="SequenceDiagrams\StatementFactoryTest.cs" />
     <Compile Include="SequenceDiagrams\TitleStatementParserTest.cs" />

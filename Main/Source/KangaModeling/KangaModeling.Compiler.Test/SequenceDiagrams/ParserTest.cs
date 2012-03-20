@@ -16,11 +16,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase("statement", 13)]
         public void Parse_N_Statements(string statement, int expectedCount )
         {
-            List<string> lines = new List<string>(expectedCount);
-            for (int i = 0; i < expectedCount; i++)
-            {
-                lines.Add(statement);
-            }
+            var lines = Enumerable.Repeat(statement, expectedCount);
             Scanner scanner = new Scanner(lines);
 
             var statementMock = new Mock<Statement>();
@@ -28,7 +24,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             var statementParserMock = new Mock<StatementParser>(MockBehavior.Strict);
             statementParserMock.Setup(statementParser => statementParser.Parse(scanner)).Returns(statementMock.Object);
 
-            var factoryMock = new Mock<StatementFactory>();
+            var factoryMock = new Mock<StatementParserFactory>();
             factoryMock.Setup(factory => factory.GetStatementParser(statement)).Returns(statementParserMock.Object);
 
             Parser target = new Parser(scanner, factoryMock.Object);

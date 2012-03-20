@@ -6,21 +6,14 @@ namespace KangaModeling.Compiler.SequenceDiagrams.Ast
 {
     internal class UnknownStatement : Statement
     {
-        private readonly Token m_InvalidToken;
-
-        public UnknownStatement(Token invalidToken)
+        public UnknownStatement(Token invalidToken) 
+            : base(invalidToken)
         {
-            m_InvalidToken = invalidToken;
         }
 
         public override void Build(AstBuilder builder)
         {
-            builder.AddError(m_InvalidToken, "Unrecognized statement.");
-        }
-
-        public override IEnumerable<Token> Tokens()
-        {
-            yield return m_InvalidToken;
+            builder.AddError(Keyword, "Unrecognized statement.");
         }
     }
 }

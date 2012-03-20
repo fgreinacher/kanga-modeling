@@ -7,12 +7,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams.Parsing
     internal class Parser
     {
         private readonly Scanner m_Scanner;
-        private readonly StatementFactory m_StatementFactory;
+        private readonly StatementParserFactory m_StatementParserFactory;
 
-        public Parser(Scanner scanner, StatementFactory statementFactory)
+        public Parser(Scanner scanner, StatementParserFactory statementParserFactory)
         {
             m_Scanner = scanner;
-            m_StatementFactory = statementFactory;
+            m_StatementParserFactory = statementParserFactory;
         }
 
         public IEnumerable<StatementParser> Parse()
@@ -20,7 +20,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.Parsing
             while (m_Scanner.MoveNext())
             {
                 string keyWordCandidate = m_Scanner.GetKeyWord();
-                StatementParser statementParser = m_StatementFactory.GetStatementParser(keyWordCandidate);
+                StatementParser statementParser = m_StatementParserFactory.GetStatementParser(keyWordCandidate);
                 statementParser.Parse(m_Scanner);
                 yield return statementParser;
             }

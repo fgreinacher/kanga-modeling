@@ -45,15 +45,20 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\Ast\AstBuilder.cs" />
+    <Compile Include="SequenceDiagrams\Ast\IEnumerableExtensions.cs" />
+    <Compile Include="SequenceDiagrams\Ast\ParticipantStatement.cs" />
+    <Compile Include="SequenceDiagrams\Ast\SimpleParticipantStatement.cs" />
     <Compile Include="SequenceDiagrams\Model\SequenceDiagram.cs" />
     <Compile Include="SequenceDiagrams\Model\Participant.cs" />
     <Compile Include="SequenceDiagrams\Model\CombinedFragment.cs" />
+    <Compile Include="SequenceDiagrams\Ast\ExtendedParticipantStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\Parser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\ParticipantStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\StatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\TitleStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\UnknownStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Reading\Scanner.cs" />
-    <Compile Include="SequenceDiagrams\Ast\StatementFactory.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\StatementParserFactory.cs" />
     <Compile Include="SequenceDiagrams\Ast\Statement.cs" />
     <Compile Include="SequenceDiagrams\Ast\TitleStatement.cs" />
     <Compile Include="SequenceDiagrams\Ast\UnknownStatement.cs" />

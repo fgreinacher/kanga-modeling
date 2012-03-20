@@ -14,7 +14,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase("title", typeof(TitleStatementParser))]
         public void GetStatementParserTest(string keyword, Type expectedType)
         {
-            var target = new StatementFactory();
+            var target = new StatementParserFactory();
             var actual = target.GetStatementParser(keyword);
             Assert.AreEqual(expectedType, actual.GetType());
         }

@@ -34,23 +34,38 @@ namespace KangaModeling.Compiler.SequenceDiagrams.Reading
             return result;
         }
 
+        public void SkipWhiteSpaces()
+        {
+            SkipWhile(char.IsWhiteSpace);
+        }
+
         public Token ReadToEnd()
         {
-            return ReadWhile(ch => true);
+            return ReadWhile(() => true);
+        }
+
+        public Token ReadTo(string text)
+        {
+            return ReadWhile(() => !GetKeyWord().Equals(text));
         }
 
         public Token ReadWord()
         {
-            SkipWhile(char.IsWhiteSpace);
+            SkipWhiteSpaces();
             return ReadWhile(char.IsLetterOrDigit);
         }
 
         public Token ReadWhile(Func<char, bool> condition)
         {
+            return ReadWhile(() => condition(LineText[Column]));
+        }
+
+        private Token ReadWhile(Func<bool> condition)
+        {
             StringBuilder buffer = new StringBuilder();
-            while (!Eol && condition(CurrentChar))
+            while (!Eol && condition())
             {
-                buffer.Append(LineText[Column]);
+                buffer.Append(CurrentChar);
                 Column++;
             }
             return new Token(Column, buffer.ToString());
