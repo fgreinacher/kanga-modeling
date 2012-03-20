@@ -4,7 +4,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.Ast
 {
     internal class StatementFactory
     {
-        internal StatementParser GetStatementParser(string keyword)
+        internal virtual StatementParser GetStatementParser(string keyword)
         {
             switch (keyword)
             {

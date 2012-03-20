@@ -2,7 +2,7 @@ using System;
 using KangaModeling.Compiler.SequenceDiagrams.Model;
 using NUnit.Framework;
 
-namespace KangaModeling.Compiler.Test
+namespace KangaModeling.Compiler.Test.SequenceDiagrams
 {
 	
 	/// <summary>

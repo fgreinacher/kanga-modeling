@@ -52,12 +52,20 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\AstBuilderTest.cs" />
+    <Compile Include="SequenceDiagrams\Helper\ParserExtensions.cs" />
     <Compile Include="SequenceDiagrams\ModelTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SequenceDiagrams\ParserTest.cs" />
+    <Compile Include="SequenceDiagrams\ScannerTest.cs" />
+    <Compile Include="SequenceDiagrams\StatementFactoryTest.cs" />
+    <Compile Include="SequenceDiagrams\TitleStatementParserTest.cs" />
+    <Compile Include="SequenceDiagrams\TitleStatementTest.cs" />
     <Compile Include="SequenceDiagrams\TokenTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SequenceDiagrams\UnknownStatementParserTest.cs" />
+    <Compile Include="SequenceDiagrams\UnknownStatementTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -48,7 +48,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.Reading
         public Token ReadWhile(Func<char, bool> condition)
         {
             StringBuilder buffer = new StringBuilder();
-            while (Eol || condition(CurrentChar))
+            while (!Eol && condition(CurrentChar))
             {
                 buffer.Append(LineText[Column]);
                 Column++;
@@ -63,13 +63,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams.Reading
 
         public void SkipWhile(Func<char, bool> condition)
         {
-            while (Eol || condition(CurrentChar))
+            while (!Eol && condition(CurrentChar))
             {
                 Column++;
             }
         }
 
-        protected string LineText
+        private string LineText
         {
             get
             {
@@ -77,7 +77,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.Reading
             }
         }
 
-        protected bool Eol
+        public bool Eol
         {
             get { return Current==null ? true : Column == Current.Length; }
         }
@@ -98,6 +98,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams.Reading
         {
             Line = 0;
             Column = 0;
+            m_PositionStack.Clear();
+            m_Lines.Reset();
         }
 
         public string Current
