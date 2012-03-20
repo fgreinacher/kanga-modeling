@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.Reading
+namespace KangaModeling.Compiler.SequenceDiagrams._Scanner
 {
     internal class Scanner : IEnumerator<string>
     {

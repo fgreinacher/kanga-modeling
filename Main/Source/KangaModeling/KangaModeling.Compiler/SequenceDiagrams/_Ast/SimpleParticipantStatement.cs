@@ -1,6 +1,6 @@
-﻿using KangaModeling.Compiler.SequenceDiagrams.Reading;
+﻿using KangaModeling.Compiler.SequenceDiagrams._Scanner;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.Ast
+namespace KangaModeling.Compiler.SequenceDiagrams._Ast
 {
     internal class SimpleParticipantStatement : ParticipantStatement
     {

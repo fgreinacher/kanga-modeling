@@ -1,6 +1,6 @@
 using System;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.Model
+namespace KangaModeling.Compiler.SequenceDiagrams
 {
 	/// <summary>
 	/// A Participant participates in a sequence diagram.

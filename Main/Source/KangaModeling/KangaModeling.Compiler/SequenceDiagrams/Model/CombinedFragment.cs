@@ -1,4 +1,4 @@
-namespace KangaModeling.Compiler.SequenceDiagrams.Model
+namespace KangaModeling.Compiler.SequenceDiagrams
 {
 	
 	/// <summary>

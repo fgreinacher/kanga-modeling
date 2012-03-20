@@ -1,6 +1,4 @@
-﻿using KangaModeling.Compiler.SequenceDiagrams.Parsing;
-
-namespace KangaModeling.Compiler.SequenceDiagrams.Ast
+﻿namespace KangaModeling.Compiler.SequenceDiagrams._Parsing
 {
     internal class StatementParserFactory
     {

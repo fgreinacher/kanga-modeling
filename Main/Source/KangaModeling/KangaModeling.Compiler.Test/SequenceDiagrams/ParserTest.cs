@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using KangaModeling.Compiler.SequenceDiagrams.Parsing;
+using KangaModeling.Compiler.SequenceDiagrams._Ast;
+using KangaModeling.Compiler.SequenceDiagrams._Parsing;
+using KangaModeling.Compiler.SequenceDiagrams._Scanner;
 using Moq;
 using NUnit.Framework;
-using KangaModeling.Compiler.SequenceDiagrams.Reading;
-using KangaModeling.Compiler.SequenceDiagrams.Ast;
 using System.Collections.Generic;
 
 namespace KangaModeling.Compiler.Test.SequenceDiagrams

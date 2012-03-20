@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.Ast
+namespace KangaModeling.Compiler.SequenceDiagrams._Ast
 {
     internal static class IEnumerableExtensions
     {

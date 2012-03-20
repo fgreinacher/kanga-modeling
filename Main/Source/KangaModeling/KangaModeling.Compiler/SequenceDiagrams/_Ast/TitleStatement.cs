@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using KangaModeling.Compiler.SequenceDiagrams.Reading;
-using System.Linq;
+﻿using System.Collections.Generic;
+using KangaModeling.Compiler.SequenceDiagrams._Scanner;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.Ast
+namespace KangaModeling.Compiler.SequenceDiagrams._Ast
 {
     internal class TitleStatement : Statement
     {

@@ -1,7 +1,7 @@
-﻿using KangaModeling.Compiler.SequenceDiagrams.Ast;
-using KangaModeling.Compiler.SequenceDiagrams.Reading;
+﻿using KangaModeling.Compiler.SequenceDiagrams._Ast;
+using KangaModeling.Compiler.SequenceDiagrams._Scanner;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.Parsing
+namespace KangaModeling.Compiler.SequenceDiagrams._Parsing
 {
     internal class UnknownStatementParser : StatementParser
     {
