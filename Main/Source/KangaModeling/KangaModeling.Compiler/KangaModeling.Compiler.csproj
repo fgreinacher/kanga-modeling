@@ -72,9 +72,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="SequenceDiagrams\_Ast\" />
-    <Folder Include="SequenceDiagrams\_Parsing\" />
-    <Folder Include="SequenceDiagrams\_Scanner\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
