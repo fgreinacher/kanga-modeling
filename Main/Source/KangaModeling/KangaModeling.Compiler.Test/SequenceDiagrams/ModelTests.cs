@@ -77,7 +77,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
 			Assert.IsNotNull(sd.Content, "after creating a diagram, the Content must be non-null");
 			// TODO this is no real test, because the Content element has static type "CombinedFragment", and is non-null...
 			Assert.IsInstanceOf(typeof(CombinedFragment), sd.Content, "The Content element has the wrong type");
-			Assert.AreEqual(CombinedFragment.CFType.Root, sd.Content.Type, "The default combined fragment must have root type.");
+			Assert.AreEqual(InteractionOperator.Root, sd.Content.Type, "The default combined fragment must have root type.");
 			// TODO the root CombinedFragment must not have an attached msg! or semantics?
 		}
 		

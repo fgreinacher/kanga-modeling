@@ -41,7 +41,10 @@ namespace KangaModeling.Layouter.SequenceDiagrams
 				var renderableText = new RenderableText(title, new Point(0, 0), new Size(100, 100));
 				renderableObjects.Add(renderableText);
 			}
-
+			
+			// TODO dummy usage of m_MeasurementEngine
+			m_MeasurementEngine.MeasureText("dummy");
+			
 			return renderableObjects;
 		}
 	}

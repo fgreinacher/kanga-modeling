@@ -1,35 +1,111 @@
+using System;
+using System.Collections.Generic;
+using System.Collections;
+
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
 	
 	/// <summary>
+	/// The interaction operator of a combined fragment.
+	/// Think of this as the "type" of the combined fragment.
+	/// </summary>
+	public enum InteractionOperator {
+		/// <summary>
+		/// The root combined fragment type. 
+		/// Only used for the invisible first combined fragment.
+		/// </summary>
+		Root,
+		/// <summary>Alternative Combined Fragment</summary>
+		Alternative,
+		/// <summary>Loop Combined Fragment</summary>
+		Loop,
+		/// <summary>Parallel Combined Fragment</summary>
+		Parallel,
+	}
+	
+	/// <summary>
 	/// A combined fragment encapsulates multiple calls between the participants inside a boundary.
 	/// This can be used to model optional workflows, alternatives, loops, etc.
-	/// 
-	/// TODO combined fragments may be nested.
 	/// </summary>
-	public class CombinedFragment
+	public sealed class CombinedFragment : DiagramElement, IEnumerable<InteractionOperand>
 	{
-		public enum CFType {
-			
-			/// <summary>
-			/// The root combined fragment type. 
-			/// Only used for the invisible first combined fragment.
-			/// </summary>
-			Root,
-			
-			/// <summary>
-			/// Indicates the alternative combined fragment.
-			/// </summary>
-			Alternative,
-			
+		
+		/// <summary>
+		/// Initializes a new AlternativeCombinedFragment and sets its fields.
+		/// </summary>
+		public CombinedFragment(InteractionOperator op) {
+			_compartments = new List<InteractionOperand>(2);
+			Type = op;
+		}
+		
+		/// <summary>
+		/// Add a compartment to the combined fragment.
+		/// </summary>
+		/// <param name="guardExpression">The guard expression for this case. Must not be null.</param>
+		/// <returns>The new compartment, where other DiagramElements can be added to. Never null.</returns>
+		public InteractionOperand CreateInteractionOperand(String guardExpression) {
+			if(String.IsNullOrEmpty(guardExpression)) throw new ArgumentException("guardExpression");
+			InteractionOperand c = new InteractionOperand(guardExpression);
+			_compartments.Add(c);
+			return c;
+		}
+		
+		IEnumerator<InteractionOperand> IEnumerable<InteractionOperand>.GetEnumerator() {
+			foreach(InteractionOperand de in _compartments)
+				yield return de;
+		}
+		
+		IEnumerator IEnumerable.GetEnumerator() {
+			foreach(InteractionOperand de in _compartments)
+				yield return de;
 		}
 
+		
+		/// <summary>
+		/// The interaction operands.
+		/// </summary>
+		private List<InteractionOperand> _compartments;
+		
 		/// <summary>
 		/// The type of this combined fragment.
 		/// </summary>
-		public CFType Type { get; private set; }
+		public InteractionOperator Type { get; private set; }
 		
 	}
-	
-}
 
+	/// <summary>
+	/// A InteractionOperand is one box inside a combined fragment.
+	/// 
+	/// It consists of the guard expression, determining when the elements are to be
+	/// carried out.
+	/// </summary>
+	public sealed class InteractionOperand : IEnumerable<DiagramElement> {
+		
+		public InteractionOperand(String guardExpression) {
+			// TODO check string
+			_compartmentElements = new List<DiagramElement>();
+			_guardExpression = guardExpression;
+		}
+		
+		public void AddElement(DiagramElement de) {
+			if(de == null) throw new ArgumentNullException("de");
+			_compartmentElements.Add(de);
+		}
+		
+		IEnumerator<DiagramElement> IEnumerable<DiagramElement>.GetEnumerator() {
+			foreach(DiagramElement de in _compartmentElements)
+				yield return de;
+		}
+		
+		IEnumerator IEnumerable.GetEnumerator() {
+			foreach(DiagramElement de in _compartmentElements)
+				yield return de;
+		}
+		
+		public String GuardExpression { get { return _guardExpression; } } 
+		
+		private readonly List<DiagramElement> _compartmentElements;
+		private readonly String _guardExpression;
+	}
+
+}

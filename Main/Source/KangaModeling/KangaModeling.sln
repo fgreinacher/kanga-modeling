@@ -80,7 +80,18 @@ Global
 		{2703BE64-A136-410D-AC3D-F319BCB1CA53} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = KangaModeling.Compiler\KangaModeling.Compiler.csproj
+		StartupItem = KangaModeling.Compiler.Test\KangaModeling.Compiler.Test.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
+		$0.TextStylePolicy = $2
+		$2.inheritsSet = null
+		$2.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $3
+		$3.inheritsSet = Mono
+		$3.inheritsScope = text/x-csharp
+		$3.scope = text/x-csharp
 	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 7
