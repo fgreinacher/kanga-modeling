@@ -5,8 +5,10 @@ using System.Text;
 using NUnit.Framework;
 using KangaModeling.Renderer;
 using Moq;
-using KangaModeling.Renderer.Core;
 using KangaModeling.Layouter.SequenceDiagrams;
+using KangaModeling.Compiler.SequenceDiagrams;
+using KangaModeling.Graphics;
+using KangaModeling.Graphics.Renderables;
 
 namespace KangaModeling.Layouter.Test.SequenceDiagrams
 {
@@ -24,8 +26,8 @@ namespace KangaModeling.Layouter.Test.SequenceDiagrams
 		public void Performing_layout_without_sequence_diagram_throws_an_ArgumentNullException()
 		{
 			// Arrange
-			var measurementEngine = new Mock<IMeasurementEngine>();
-			var layoutEngine = new LayoutEngine(measurementEngine.Object);
+			var measurer = new Mock<IMeasurer>();
+			var layoutEngine = new LayoutEngine(measurer.Object);
 
 			// Act, Assert
 			Assert.Catch<ArgumentNullException>(() => layoutEngine.PerformLayout(null));
@@ -35,15 +37,16 @@ namespace KangaModeling.Layouter.Test.SequenceDiagrams
 		public void Rendering_an_empty_sequence_diagram_creates_and_empty_renderable_sequence()
 		{
 			// Arrange
-			var measurementEngine = new Mock<IMeasurementEngine>();
+			var measurer = new Mock<IMeasurer>();
 
 			var sequenceDiagram = new Mock<ISequenceDiagram>();
-			sequenceDiagram.Setup(sd => sd.HasTitle).Returns(false);
+			sequenceDiagram.Setup(sd => sd.Title).Returns((string)null);
 
-			var layoutEngine = new LayoutEngine(measurementEngine.Object);
+			var layoutEngine = new LayoutEngine(measurer.Object);
 
 			// Act
-			var renderableObjects = layoutEngine.PerformLayout(sequenceDiagram.Object);
+			var layoutResult = layoutEngine.PerformLayout(sequenceDiagram.Object);
+			var renderableObjects = layoutResult.Renderables;
 
 			// Assert
 			Assert.That(renderableObjects, Is.Empty);
@@ -53,16 +56,16 @@ namespace KangaModeling.Layouter.Test.SequenceDiagrams
 		public void Rendering_a_sequence_diagram_that_contains_only_a_title_creates_a_sequence_containing_one_renderable_text()
 		{
 			// Arrange
-			var measurementEngine = new Mock<IMeasurementEngine>();
+			var measurer = new Mock<IMeasurer>();
 
 			var sequenceDiagram = new Mock<ISequenceDiagram>();
-			sequenceDiagram.Setup(sd => sd.HasTitle).Returns(true);
 			sequenceDiagram.Setup(sd => sd.Title).Returns("My title");
 
-			var layoutEngine = new LayoutEngine(measurementEngine.Object);
+			var layoutEngine = new LayoutEngine(measurer.Object);
 
 			// Act			
-			var renderableObjects = layoutEngine.PerformLayout(sequenceDiagram.Object);
+			var layoutResult = layoutEngine.PerformLayout(sequenceDiagram.Object);
+			var renderableObjects = layoutResult.Renderables;
 
 			// Assert
 			Assert.That(renderableObjects.Count(), Is.EqualTo(1));

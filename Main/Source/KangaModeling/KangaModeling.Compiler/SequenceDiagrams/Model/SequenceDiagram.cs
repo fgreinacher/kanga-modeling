@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
+	public interface ISequenceDiagram
+	{
+		string Title { get; }
+	}
+
 	/// <summary>
 	/// Main model class for sequence diagrams.
 	/// 
@@ -12,7 +17,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 	///  * There is no eventing support right now. The model is just built, and just traversed to create the graphics.
 	///  * There is no command infrastructure, because there is no UI and no undo.
 	/// </summary>
-	public sealed class SequenceDiagram
+	internal sealed class SequenceDiagram : ISequenceDiagram
 	{
 		/// <summary>
 		/// Initialize a new SequenceDiagram instance and set its fields.

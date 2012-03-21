@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}</ProjectGuid>
+    <ProjectGuid>{83298B5F-99D8-47B8-8C6E-C260509A77AA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KangaModeling.Layouter</RootNamespace>
-    <AssemblyName>KangaModeling.Layouter</AssemblyName>
+    <RootNamespace>KangaModeling.Graphics.GdiPlus</RootNamespace>
+    <AssemblyName>KangaModeling.Graphics.GdiPlus</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -25,7 +25,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,21 +37,18 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.Common.cs">
-      <Link>Properties\AssemblyInfo.Common.cs</Link>
-    </Compile>
+    <Compile Include="GdiPlusMeasurer.cs" />
+    <Compile Include="GdiPlusMeasurerFactory.cs" />
+    <Compile Include="GdiPlusRenderer.cs" />
+    <Compile Include="GdiPlusRendererFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SequenceDiagrams\LayoutEngine.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\KangaModeling.Compiler\KangaModeling.Compiler.csproj">
-      <Project>{397211EE-513B-428C-81DE-B9739B113170}</Project>
-      <Name>KangaModeling.Compiler</Name>
-    </ProjectReference>
     <ProjectReference Include="..\KangaModeling.Renderer\KangaModeling.Graphics.csproj">
       <Project>{3F1A9174-8957-4963-8476-DE00B0F25238}</Project>
       <Name>KangaModeling.Graphics</Name>

@@ -9,3 +9,8 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+[assembly: InternalsVisibleTo("KangaModeling.Compiler")]
+[assembly: InternalsVisibleTo("KangaModeling.GuiRunner")]
+[assembly: InternalsVisibleTo("KangaModeling.Layouter")]
+[assembly: InternalsVisibleTo("KangaModeling.Renderer")]

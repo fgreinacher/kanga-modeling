@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using KangaModeling.Renderer;
-using KangaModeling.Renderer.Core;
+using KangaModeling.Renderer.Primitives;
+using KangaModeling.Compiler.SequenceDiagrams;
+using KangaModeling.Graphics;
+using KangaModeling.Graphics.Renderables;
 
 namespace KangaModeling.Layouter.SequenceDiagrams
 {
-	public interface ISequenceDiagram
+	public class LayoutResult
 	{
-		bool HasTitle { get; }
-		string Title { get; }
+		public IEnumerable<Renderable> Renderables { get; set; }
+		public Size Size { get; set; }
 	}
 
 	/// <summary>
@@ -20,32 +23,37 @@ namespace KangaModeling.Layouter.SequenceDiagrams
 	/// </summary>
 	public sealed class LayoutEngine
 	{
-		private readonly IMeasurementEngine m_MeasurementEngine;
+		private readonly IMeasurer m_Measurer;
 
-		public LayoutEngine(IMeasurementEngine measurementEngine)
+		public LayoutEngine(IMeasurer measurer)
 		{
-			if (measurementEngine == null) throw new ArgumentNullException("measurementEngine");
+			if (measurer == null) throw new ArgumentNullException("measurer");
 
-			m_MeasurementEngine = measurementEngine;
+			m_Measurer = measurer;
 		}
 
-		public IEnumerable<RenderableObject> PerformLayout(ISequenceDiagram sequenceDiagram)
+		public LayoutResult PerformLayout(ISequenceDiagram sequenceDiagram)
 		{
 			if (sequenceDiagram == null) throw new ArgumentNullException("sequenceDiagram");
 
-			var renderableObjects = new List<RenderableObject>();
+			var renderables = new List<Renderable>();
+			Size size = new Size(0, 0);
 
-			if (sequenceDiagram.HasTitle)
+			var title = sequenceDiagram.Title;
+			if (title != null)
 			{
-				var title = sequenceDiagram.Title; 
-				var renderableText = new RenderableText(title, new Point(0, 0), new Size(100, 100));
-				renderableObjects.Add(renderableText);
+				var titleSize = m_Measurer.MeasureText(title);
+				var renderableText = new RenderableText(title, new Point(0, 0), titleSize);
+				renderables.Add(renderableText);
+
+				size = titleSize;
 			}
-			
-			// TODO dummy usage of m_MeasurementEngine
-			m_MeasurementEngine.MeasureText("dummy");
-			
-			return renderableObjects;
+
+			return new LayoutResult
+			{
+				Renderables = renderables,
+				Size = size,
+			};
 		}
 	}
 }
