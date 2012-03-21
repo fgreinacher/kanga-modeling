@@ -11,6 +11,11 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase("", typeof(UnknownStatementParser))]
         [TestCase("abd", typeof(UnknownStatementParser))]
         [TestCase("title", typeof(TitleStatementParser))]
+        [TestCase("participant", typeof(ParticipantStatementParser))]
+        [TestCase("->", typeof(SignalStatementParser))]
+        [TestCase("-->", typeof(SignalStatementParser))]
+        [TestCase("<-", typeof(SignalStatementParser))]
+        [TestCase("<-", typeof(SignalStatementParser))]
         public void GetStatementParserTest(string keyword, Type expectedType)
         {
             var target = new StatementParserFactory();

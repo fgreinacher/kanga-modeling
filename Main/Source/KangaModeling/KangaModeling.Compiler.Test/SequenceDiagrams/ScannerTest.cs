@@ -80,6 +80,37 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             Assert.AreEqual(expectedColumn, target.Column);
         }
 
+        [TestCase("a", "", 1)]
+
+        [TestCase("->", "->", 2)]
+        [TestCase("-->", "-->", 3)]
+        [TestCase("<-", "<-", 2)]
+        [TestCase("<--", "<--", 3)]
+
+        [TestCase("->   ", "->", 2)]
+        [TestCase("-->  ", "-->", 3)]
+        [TestCase("<-  ", "<-", 2)]
+        [TestCase("<--  ", "<--", 3)]
+
+        [TestCase("->XXX","->",2)]
+        [TestCase("-->XX","-->",3)]
+        [TestCase("<-XX","<-",2)]
+        [TestCase("<--XX","<--",3)]
+
+        [TestCase("YYY->XXX", "->", 5)]
+        [TestCase("YYY-->XX", "-->", 6)]
+        [TestCase("YYY<-XX", "<-", 5)]
+        [TestCase("YYY<--XX", "<--", 6)]
+        public void ReadSignalTest(string input, string expectedValue, int expectedColumn)
+        {
+            Scanner target = new Scanner(input);
+            target.MoveNext();
+            Token actual = target.ReadSignal();
+            Assert.AreEqual(expectedValue, actual.Value);
+            Assert.AreEqual(expectedColumn, target.Column);
+        }
+
+
         [TestCase("a", "a", "")]
         [TestCase("abcd AS", "AS", "abcd")]
         [TestCase("abcd AS rest", "AS", "abcd")]
@@ -89,7 +120,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         {
             Scanner target = new Scanner(input);
             target.MoveNext();
-            Token actual = target.ReadTo(keyWord);
+            Token actual = target.ReadToWord(keyWord);
             Assert.AreEqual(expectedValue, actual.Value);
         }
 

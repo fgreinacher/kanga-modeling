@@ -18,9 +18,10 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             Scanner scanner = new Scanner(lines);
 
             var statementMock = new Mock<Statement>();
+            IEnumerable<Statement> statements = new Statement[] {statementMock.Object};
 
             var statementParserMock = new Mock<StatementParser>(MockBehavior.Strict);
-            statementParserMock.Setup(statementParser => statementParser.Parse(scanner)).Returns(statementMock.Object);
+            statementParserMock.Setup(statementParser => statementParser.Parse(scanner)).Returns(statements);
 
             var factoryMock = new Mock<StatementParserFactory>();
             factoryMock.Setup(factory => factory.GetStatementParser(statement)).Returns(statementParserMock.Object);

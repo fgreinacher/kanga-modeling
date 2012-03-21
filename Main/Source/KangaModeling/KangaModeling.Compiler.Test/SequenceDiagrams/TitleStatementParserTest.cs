@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using KangaModeling.Compiler.SequenceDiagrams;
 using NUnit.Framework;
 using KangaModeling.Compiler.Test.SequenceDiagrams.Helper;
@@ -14,7 +15,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         public void ParseTest(string input, Type expectedStatementType)
         {
             TitleStatementParser target = new TitleStatementParser();
-            var actual = target.Parse(input);
+            var actual = target.Parse(input).First();
             Assert.IsInstanceOf(expectedStatementType, actual);
         }
 
@@ -24,8 +25,8 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         public void EnsureTokens(string input, string argumentValue)
         {
             TitleStatementParser target = new TitleStatementParser();
-            var actual = target.Parse(input);
-            var tokenValues = actual.Tokens().Select(token => token.Value);
+            IEnumerable<Statement> actual = target.Parse(input);
+            var tokenValues = actual.First().Tokens().Select(token => token.Value);
             var expected = new[] {TitleStatementParser.Keyword, argumentValue};
             CollectionAssert.AreEquivalent(expected, tokenValues);        
         }

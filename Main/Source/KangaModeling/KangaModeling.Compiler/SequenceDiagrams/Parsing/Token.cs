@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
+    [DebuggerDisplay("'{Value}' at Col {Start}")]
     internal struct Token
     {
         private readonly int m_Start;
@@ -34,6 +36,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         public int Length
         {
             get { return m_Value.Length; }
+        }
+
+        public bool IsEmpty()
+        {
+            return Length == 0;
         }
     }
 }

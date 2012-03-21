@@ -28,10 +28,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public string GetKeyWord()
         {
-            m_PositionStack.Push(Column);
-            string result = ReadWord().Value;
-            Column = m_PositionStack.Peek();
-            return result;
+            string signal = GetSignal();
+            return string.IsNullOrEmpty(signal) ? GetWord() : signal;
         }
 
         public void SkipWhiteSpaces()
@@ -46,13 +44,70 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public Token ReadTo(string text)
         {
-            return ReadWhile(() => !GetKeyWord().Equals(text));
+            return ReadWhile(() => !GetToEnd().TrimStart().StartsWith(text));
+        }
+
+        public Token ReadToWord(string text)
+        {
+            return ReadWhile(() => !GetWord().Equals(text));
         }
 
         public Token ReadWord()
         {
-            SkipWhiteSpaces();
-            return ReadWhile(char.IsLetterOrDigit);
+            SkipWhile(ch => !IsWordChar(ch));
+            return ReadWhile(IsWordChar);
+        }
+
+        public Token ReadSignal()
+        {
+            SkipWhile(ch => !IsSignalChar(ch));
+            return ReadWhile(IsSignalChar);
+        }
+
+        private string GetToEnd()
+        {
+            return GetWithoutMove(ReadToEnd);
+        }
+
+        private string GetWord()
+        {
+            return GetWithoutMove(ReadWord);
+        }
+
+        private string GetSignal()
+        {
+            return GetWithoutMove(ReadSignal);
+        }
+
+        private string GetWithoutMove(Func<Token> readerFunction)
+        {
+            m_PositionStack.Push(Column);
+            Token result = readerFunction();
+            Column = m_PositionStack.Peek();
+            return result.Value;
+        }
+
+        private static bool IsWordChar(char ch)
+        {
+            return 
+                (char.IsLetterOrDigit(ch) || 
+                 char.IsPunctuation(ch)) 
+                    && !IsSignalChar(ch);
+        }
+
+        private static bool IsSignalChar(char ch)
+        {
+            switch (ch)
+            {
+                case '-':
+                    return true;
+                case '<':
+                    return true;
+                case '>':
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         public Token ReadWhile(Func<char, bool> condition)

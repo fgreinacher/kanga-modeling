@@ -1,7 +1,9 @@
-﻿namespace KangaModeling.Compiler.SequenceDiagrams
+﻿using System.Collections.Generic;
+
+namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal abstract class StatementParser
     {
-        public abstract Statement Parse(Scanner scanner);
+        public abstract IEnumerable<Statement> Parse(Scanner scanner);
     }
 }

@@ -1,15 +1,17 @@
-﻿namespace KangaModeling.Compiler.SequenceDiagrams
+﻿using System.Collections.Generic;
+
+namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class TitleStatementParser : StatementParser
     {
         public const string Keyword = "title";
 
-        public override Statement Parse(Scanner scanner)
+        public override IEnumerable<Statement> Parse(Scanner scanner)
         {
             Token keyword = scanner.ReadWord();
             scanner.SkipWhiteSpaces();
             Token argument = scanner.ReadToEnd();
-            return new TitleStatement(keyword, argument);
+            yield return new TitleStatement(keyword, argument);
         }
     }
 }

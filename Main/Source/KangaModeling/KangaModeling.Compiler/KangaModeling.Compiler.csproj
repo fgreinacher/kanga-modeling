@@ -45,8 +45,14 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\Parsing\AstBuilder.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\CallSignalStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\FindOrCreateParticipantStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\IEnumerableExtensions.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\MissingArgumentStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\ParticipantStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\ReturnSignalStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\SignalStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\SignalStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\SimpleParticipantStatement.cs" />
     <Compile Include="SequenceDiagrams\Model\SequenceDiagram.cs" />
     <Compile Include="SequenceDiagrams\Model\Participant.cs" />

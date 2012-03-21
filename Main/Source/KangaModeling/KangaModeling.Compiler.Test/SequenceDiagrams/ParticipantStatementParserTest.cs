@@ -16,7 +16,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         public void ParseTest(string input, Type expectedStatementType)
         {
             var target = new ParticipantStatementParser();
-            var actual = target.Parse(input);
+            var actual = target.Parse(input).First();
             Assert.IsInstanceOf(expectedStatementType, actual);
         }
 
@@ -26,7 +26,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         {
             ParticipantStatementParser target = new ParticipantStatementParser();
             var actual = target.Parse(input);
-            var tokenValues = actual.Tokens().Select(token => token.Value);
+            var tokenValues = actual.First().Tokens().Select(token => token.Value);
             var expected = new[] { "participant", nameValue };
             CollectionAssert.AreEquivalent(expected, tokenValues);
         }
@@ -37,7 +37,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         {
             ParticipantStatementParser target = new ParticipantStatementParser();
             var actual = target.Parse(input);
-            var tokenValues = actual.Tokens().Select(token => token.Value);
+            var tokenValues = actual.First().Tokens().Select(token => token.Value);
             var expected = new[] { ParticipantStatementParser.Keyword, nameValue, descriptionValue };
             CollectionAssert.AreEquivalent(expected, tokenValues);
         }
