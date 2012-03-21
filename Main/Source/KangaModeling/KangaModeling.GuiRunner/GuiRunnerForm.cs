@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Layouter.SequenceDiagrams;
-using KangaModeling.Renderer;
 using KangaModeling.Graphics.Theming;
 using KangaModeling.Graphics.Renderables;
 using KangaModeling.Graphics.GdiPlus;
@@ -26,9 +20,24 @@ namespace KangaModeling.GuiRunner
 		{
 			var text = inputTextBox.Text;
 
-			var sequenceDiagram = new SequenceDiagram();
-			sequenceDiagram.Title = "Hello world! This is my first diagram.";
+            var sequenceDiagram = new SequenceDiagram();
+            var astBuilder = new AstBuilder(sequenceDiagram);
 
+		    var scanner = new Scanner(text);
+		    var parser = new Parser(scanner, new StatementParserFactory());
+
+		    foreach (var statement in parser.Parse())
+		    {
+                try
+                {
+                    statement.Build(astBuilder);
+                } 
+                catch(NotImplementedException)
+                {
+                        
+                }
+		    } 
+           
 			var theme = new SimpleTheme();
 
 			using (var measureBitmap = new Bitmap(1, 1))

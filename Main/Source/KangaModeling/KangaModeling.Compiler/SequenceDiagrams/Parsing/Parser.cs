@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
@@ -13,15 +14,19 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             m_StatementParserFactory = statementParserFactory;
         }
 
-        public IEnumerable<StatementParser> Parse()
+        public IEnumerable<StatementParser> Parsers()
         {
             while (m_Scanner.MoveNext())
             {
                 string keyWordCandidate = m_Scanner.GetKeyWord();
                 StatementParser statementParser = m_StatementParserFactory.GetStatementParser(keyWordCandidate);
-                statementParser.Parse(m_Scanner);
                 yield return statementParser;
             }
+        }
+
+        public IEnumerable<Statement> Parse()
+        {
+            return Parsers().SelectMany(statementParser => statementParser.Parse(m_Scanner));
         }
     }
 }

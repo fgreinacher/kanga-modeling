@@ -27,7 +27,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             factoryMock.Setup(factory => factory.GetStatementParser(statement)).Returns(statementParserMock.Object);
 
             Parser target = new Parser(scanner, factoryMock.Object);
-            var result = target.Parse();
+            var result = target.Parsers();
             Assert.AreEqual(expectedCount, result.Count());
             CollectionAssert.AllItemsAreNotNull(result);
 
@@ -41,7 +41,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         {
             Scanner scanner = new Scanner(string.Empty);
             Parser target = new Parser(scanner, null);
-            var result = target.Parse();
+            var result = target.Parsers();
             Assert.AreEqual(0, result.Count());
         }
 
