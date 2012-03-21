@@ -1,21 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Compiler", "KangaModeling.Compiler\KangaModeling.Compiler.csproj", "{397211EE-513B-428C-81DE-B9739B113170}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Layouter", "KangaModeling.Layouter\KangaModeling.Layouter.csproj", "{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Renderer", "KangaModeling.Renderer\KangaModeling.Renderer.csproj", "{3F1A9174-8957-4963-8476-DE00B0F25238}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Compiler", "Compiler", "{A7D2EFF2-9234-4529-BFF5-6C01A6893A1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Compiler", "KangaModeling.Compiler\KangaModeling.Compiler.csproj", "{397211EE-513B-428C-81DE-B9739B113170}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Compiler.Test", "KangaModeling.Compiler.Test\KangaModeling.Compiler.Test.csproj", "{6D912773-33FC-4E1F-AAD3-803B4C054865}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Layouter", "Layouter", "{5ED6C0DB-954F-4544-9451-BB8AB6376003}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Renderer", "Renderer", "{BBF5AB3C-A94B-410F-B68C-8C4CCB5159BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Layouter", "KangaModeling.Layouter\KangaModeling.Layouter.csproj", "{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Layouter.Test", "KangaModeling.Layouter.Test\KangaModeling.Layouter.Test.csproj", "{3EB1587F-8971-4190-9292-43F7C102AFFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Renderer", "Renderer", "{BBF5AB3C-A94B-410F-B68C-8C4CCB5159BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Renderer", "KangaModeling.Renderer\KangaModeling.Renderer.csproj", "{3F1A9174-8957-4963-8476-DE00B0F25238}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Renderer.Test", "KangaModeling.Renderer.Test\KangaModeling.Renderer.Test.csproj", "{DE37FF43-3B7E-47DC-9A41-5147B29CD42D}"
 EndProject
@@ -24,7 +24,64 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		AssemblyInfo.Common.cs = AssemblyInfo.Common.cs
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runner", "Runner", "{3517360B-7BE8-465D-AE4D-1B95A45E934E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineRunner", "CommandLineRunner\CommandLineRunner.csproj", "{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuiRunner", "GuiRunner\GuiRunner.csproj", "{2703BE64-A136-410D-AC3D-F319BCB1CA53}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2703BE64-A136-410D-AC3D-F319BCB1CA53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2703BE64-A136-410D-AC3D-F319BCB1CA53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2703BE64-A136-410D-AC3D-F319BCB1CA53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2703BE64-A136-410D-AC3D-F319BCB1CA53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{397211EE-513B-428C-81DE-B9739B113170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{397211EE-513B-428C-81DE-B9739B113170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{397211EE-513B-428C-81DE-B9739B113170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{397211EE-513B-428C-81DE-B9739B113170}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F1A9174-8957-4963-8476-DE00B0F25238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F1A9174-8957-4963-8476-DE00B0F25238}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F1A9174-8957-4963-8476-DE00B0F25238}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F1A9174-8957-4963-8476-DE00B0F25238}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D912773-33FC-4E1F-AAD3-803B4C054865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D912773-33FC-4E1F-AAD3-803B4C054865}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D912773-33FC-4E1F-AAD3-803B4C054865}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D912773-33FC-4E1F-AAD3-803B4C054865}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE37FF43-3B7E-47DC-9A41-5147B29CD42D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE37FF43-3B7E-47DC-9A41-5147B29CD42D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE37FF43-3B7E-47DC-9A41-5147B29CD42D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE37FF43-3B7E-47DC-9A41-5147B29CD42D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{397211EE-513B-428C-81DE-B9739B113170} = {A7D2EFF2-9234-4529-BFF5-6C01A6893A1A}
+		{6D912773-33FC-4E1F-AAD3-803B4C054865} = {A7D2EFF2-9234-4529-BFF5-6C01A6893A1A}
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD} = {5ED6C0DB-954F-4544-9451-BB8AB6376003}
+		{3EB1587F-8971-4190-9292-43F7C102AFFA} = {5ED6C0DB-954F-4544-9451-BB8AB6376003}
+		{3F1A9174-8957-4963-8476-DE00B0F25238} = {BBF5AB3C-A94B-410F-B68C-8C4CCB5159BA}
+		{DE37FF43-3B7E-47DC-9A41-5147B29CD42D} = {BBF5AB3C-A94B-410F-B68C-8C4CCB5159BA}
+		{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
+		{2703BE64-A136-410D-AC3D-F319BCB1CA53} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = KangaModeling.Compiler\KangaModeling.Compiler.csproj
+	EndGlobalSection
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 7
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
@@ -55,45 +112,7 @@ Global
 		SccProjectName6 = KangaModeling.Renderer.Test
 		SccLocalPath6 = KangaModeling.Renderer.Test
 	EndGlobalSection
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{397211EE-513B-428C-81DE-B9739B113170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{397211EE-513B-428C-81DE-B9739B113170}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{397211EE-513B-428C-81DE-B9739B113170}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{397211EE-513B-428C-81DE-B9739B113170}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F1A9174-8957-4963-8476-DE00B0F25238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F1A9174-8957-4963-8476-DE00B0F25238}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F1A9174-8957-4963-8476-DE00B0F25238}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F1A9174-8957-4963-8476-DE00B0F25238}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D912773-33FC-4E1F-AAD3-803B4C054865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D912773-33FC-4E1F-AAD3-803B4C054865}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D912773-33FC-4E1F-AAD3-803B4C054865}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D912773-33FC-4E1F-AAD3-803B4C054865}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE37FF43-3B7E-47DC-9A41-5147B29CD42D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE37FF43-3B7E-47DC-9A41-5147B29CD42D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE37FF43-3B7E-47DC-9A41-5147B29CD42D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE37FF43-3B7E-47DC-9A41-5147B29CD42D}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{397211EE-513B-428C-81DE-B9739B113170} = {A7D2EFF2-9234-4529-BFF5-6C01A6893A1A}
-		{6D912773-33FC-4E1F-AAD3-803B4C054865} = {A7D2EFF2-9234-4529-BFF5-6C01A6893A1A}
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD} = {5ED6C0DB-954F-4544-9451-BB8AB6376003}
-		{3EB1587F-8971-4190-9292-43F7C102AFFA} = {5ED6C0DB-954F-4544-9451-BB8AB6376003}
-		{3F1A9174-8957-4963-8476-DE00B0F25238} = {BBF5AB3C-A94B-410F-B68C-8C4CCB5159BA}
-		{DE37FF43-3B7E-47DC-9A41-5147B29CD42D} = {BBF5AB3C-A94B-410F-B68C-8C4CCB5159BA}
 	EndGlobalSection
 EndGlobal
