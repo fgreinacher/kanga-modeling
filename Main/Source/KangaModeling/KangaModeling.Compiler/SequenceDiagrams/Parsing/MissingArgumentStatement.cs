@@ -13,7 +13,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public override void Build(AstBuilder builder)
         {
-            throw new NotImplementedException();
+            builder.AddError(m_Source, "Argument expected.");
         }
     }
 }

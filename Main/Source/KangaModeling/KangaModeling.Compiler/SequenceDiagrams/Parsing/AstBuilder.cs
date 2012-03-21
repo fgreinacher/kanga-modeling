@@ -1,4 +1,6 @@
-﻿namespace KangaModeling.Compiler.SequenceDiagrams
+﻿using System;
+
+namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class AstBuilder
     {
@@ -19,9 +21,10 @@
             m_Diagram.Title = title;
         }
 
-        public void AddError(Token invalidToken, string text)
+        public void AddError(Token invalidToken, string message)
         {
-
+            //TODO Modify to write errors somwhere else
+            Console.Error.WriteLine("Error: {0} at {1}", message, invalidToken.Start);
         }
     }
 }
