@@ -16,6 +16,8 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase("-->", typeof(SignalStatementParser))]
         [TestCase("<-", typeof(SignalStatementParser))]
         [TestCase("<-", typeof(SignalStatementParser))]
+        [TestCase("activate", typeof(ActivateStatementParser))]
+        [TestCase("deactivate", typeof(DeactivateStatementParser))]
         public void GetStatementParserTest(string keyword, Type expectedType)
         {
             var target = new StatementParserFactory();

@@ -18,6 +18,12 @@
                 case SignalStatementParser.BackReturnKeyword:
                     return new SignalStatementParser(keyword);
 
+                case ActivateStatementParser.ActivateKeyword:
+                    return new ActivateStatementParser();
+
+                case DeactivateStatementParser.DeactivateKeyword:
+                    return new DeactivateStatementParser();
+
                 default:
                     return new UnknownStatementParser();
             }

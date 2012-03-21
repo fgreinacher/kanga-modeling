@@ -46,8 +46,12 @@
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\ActivateStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\ActivateStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\AstBuilder.cs" />
     <Compile Include="SequenceDiagrams\Parsing\CallSignalStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\DeactivateStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\DeactivateStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\FindOrCreateParticipantStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\IEnumerableExtensions.cs" />
     <Compile Include="SequenceDiagrams\Parsing\MissingArgumentStatement.cs" />
@@ -63,6 +67,7 @@
     <Compile Include="SequenceDiagrams\Parsing\Parser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\ParticipantStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\StatementParser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\StateStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\TitleStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\UnknownStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\Scanner.cs" />

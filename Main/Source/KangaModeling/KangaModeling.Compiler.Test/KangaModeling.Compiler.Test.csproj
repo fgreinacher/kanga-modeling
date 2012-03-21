@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\AstBuilderTest.cs" />
+    <Compile Include="SequenceDiagrams\ActivateStatementParserTest.cs" />
+    <Compile Include="SequenceDiagrams\DeactivateStatementParserTest.cs" />
     <Compile Include="SequenceDiagrams\SignalStatementParserTest.cs" />
     <Compile Include="SequenceDiagrams\Helper\ParserExtensions.cs" />
     <Compile Include="SequenceDiagrams\ModelTests.cs">
