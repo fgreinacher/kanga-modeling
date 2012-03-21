@@ -53,7 +53,7 @@
       <Project>{397211EE-513B-428C-81DE-B9739B113170}</Project>
       <Name>KangaModeling.Compiler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KangaModeling.Renderer\KangaModeling.Graphics.csproj">
+    <ProjectReference Include="..\KangaModeling.Graphics\KangaModeling.Graphics.csproj">
       <Project>{3F1A9174-8957-4963-8476-DE00B0F25238}</Project>
       <Name>KangaModeling.Graphics</Name>
     </ProjectReference>
