@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
@@ -27,6 +28,37 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         public IEnumerable<Statement> Parse()
         {
             return Parsers().SelectMany(statementParser => statementParser.Parse(m_Scanner));
+        }
+
+        /// <summary>
+        /// Conveniently parse a string to a sequence diagram.
+        /// </summary>
+        /// <param name="text">The text to parse.</param>
+        /// <returns>A sequence diagram parsed from the text. Never null.</returns>
+        public static SequenceDiagram ParseString(string text)
+        {
+            var sequenceDiagram = new SequenceDiagram();
+            if (String.IsNullOrEmpty(text))
+                return sequenceDiagram;
+
+            var astBuilder = new AstBuilder(sequenceDiagram);
+
+            var scanner = new Scanner(text);
+            var parser = new Parser(scanner, new StatementParserFactory());
+
+            foreach (var statement in parser.Parse())
+            {
+                try
+                {
+                    statement.Build(astBuilder);
+                }
+                catch (NotImplementedException)
+                {
+
+                }
+            }
+
+            return sequenceDiagram;
         }
     }
 }

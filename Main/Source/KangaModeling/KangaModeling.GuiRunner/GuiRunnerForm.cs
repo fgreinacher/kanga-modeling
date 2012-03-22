@@ -20,24 +20,8 @@ namespace KangaModeling.GuiRunner
 		{
 			var text = inputTextBox.Text;
 
-            var sequenceDiagram = new SequenceDiagram();
-            var astBuilder = new AstBuilder(sequenceDiagram);
+            var sequenceDiagram = Parser.ParseString(text);
 
-		    var scanner = new Scanner(text);
-		    var parser = new Parser(scanner, new StatementParserFactory());
-
-		    foreach (var statement in parser.Parse())
-		    {
-                try
-                {
-                    statement.Build(astBuilder);
-                } 
-                catch(NotImplementedException)
-                {
-                        
-                }
-		    } 
-           
 			var theme = new SimpleTheme();
 
 			using (var measureBitmap = new Bitmap(1, 1))
