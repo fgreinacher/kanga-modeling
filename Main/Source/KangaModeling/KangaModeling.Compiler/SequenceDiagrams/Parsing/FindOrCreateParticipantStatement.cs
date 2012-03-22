@@ -9,10 +9,10 @@
 
         public override void Build(AstBuilder builder)
         {
-            bool found = false;
-            if (!found)
+            Participant p = builder.FindParticipant(Keyword.Value);
+            if (p == null)
             {
-                base.Build(builder);
+                builder.CreateParticipant(Keyword.Value);
             }
         }
     }

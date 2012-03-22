@@ -27,13 +27,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 	/// A combined fragment encapsulates multiple calls between the participants inside a boundary.
 	/// This can be used to model optional workflows, alternatives, loops, etc.
 	/// </summary>
-	public sealed class CombinedFragment : DiagramElement, IEnumerable<InteractionOperand>
+	public abstract class CombinedFragment : DiagramElement, IEnumerable<InteractionOperand>
 	{
 		
 		/// <summary>
 		/// Initializes a new AlternativeCombinedFragment and sets its fields.
 		/// </summary>
-		public CombinedFragment(InteractionOperator op) {
+		protected CombinedFragment(InteractionOperator op) {
 			_compartments = new List<InteractionOperand>(2);
 			Type = op;
 		}
@@ -43,7 +43,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// </summary>
 		/// <param name="guardExpression">The guard expression for this case. Must not be null.</param>
 		/// <returns>The new compartment, where other DiagramElements can be added to. Never null.</returns>
-		public InteractionOperand CreateInteractionOperand(String guardExpression) {
+		protected InteractionOperand CreateInteractionOperand(String guardExpression) {
 			if(String.IsNullOrEmpty(guardExpression)) throw new ArgumentException("guardExpression");
 			InteractionOperand c = new InteractionOperand(guardExpression);
 			_compartments.Add(c);
@@ -60,6 +60,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 				yield return de;
 		}
 
+        public InteractionOperand this[int index]
+        {
+            get
+            {
+                return _compartments[index];
+            }
+        }
 		
 		/// <summary>
 		/// The interaction operands.
@@ -72,6 +79,23 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		public InteractionOperator Type { get; private set; }
 		
 	}
+
+    /// <summary>
+    /// The root combined fragment is the root of all content inside a sequence diagram.
+    /// </summary>
+    public sealed class RootCombinedFragment : CombinedFragment
+    {
+        /// <summary>
+        /// The root has no guard expression per se, use a default one.
+        /// </summary>
+        public static readonly String DefaultGuardExpression = "Root";
+
+        public RootCombinedFragment() : base(InteractionOperator.Root)
+        {
+            CreateInteractionOperand(DefaultGuardExpression);
+        }
+
+    }
 
 	/// <summary>
 	/// A InteractionOperand is one box inside a combined fragment.

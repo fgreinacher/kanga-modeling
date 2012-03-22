@@ -20,7 +20,21 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public override void Build(AstBuilder builder)
         {
-            throw new NotImplementedException();
+            Participant sourceParticipant = builder.FindParticipant(m_Source.Value);
+            if (sourceParticipant == null)
+            {
+                builder.AddError(m_Source, "no such participant");
+                return;
+            }
+            Participant targetParticipant = builder.FindParticipant(m_Target.Value);
+            if (targetParticipant == null)
+            {
+                builder.AddError(m_Target, "no such participant");
+                return;
+            }
+
+            builder.AddSignal(new SignalElement(sourceParticipant, targetParticipant, SignalElement.Type.Signal));
+
         }
 
         public override IEnumerable<Token> Tokens()

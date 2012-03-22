@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
@@ -6,7 +7,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 	/// A Participant participates in a sequence diagram.
 	/// It defines its own lifeline, can call other participants, and can receive calls.
 	/// </summary>
-	public class Participant
+    [DebuggerDisplay("{Name}")]
+	public sealed class Participant
 	{
 		/// <summary>
 		/// Initialize a new Participant instance and sets its fields.
@@ -14,6 +16,9 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// <param name="name">The name of the participant. Must be non-empty.</param>
 		public Participant (String name)
 		{
+            // TODO rules for good names?
+            // TODO rules for case sensitiveness should be here!
+            Name = name;
 		}
 		
 		/// <summary>

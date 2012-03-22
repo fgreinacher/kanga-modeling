@@ -25,6 +25,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		public SequenceDiagram ()
 		{
 			Participants = new List<Participant>();
+            Content = new RootCombinedFragment();
 		}
 
 		/// <summary>

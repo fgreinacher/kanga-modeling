@@ -48,7 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\Parsing\ActivateStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\ActivateStatementParser.cs" />
-    <Compile Include="SequenceDiagrams\Parsing\AstBuilder.cs" />
+    <Compile Include="SequenceDiagrams\Model\ModelBuilder.cs" />
     <Compile Include="SequenceDiagrams\Parsing\CallSignalStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\DeactivateStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\DeactivateStatementParser.cs" />
