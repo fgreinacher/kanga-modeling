@@ -3,24 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using KangaModeling.Compiler.SequenceDiagrams;
+using CommandLine;
+using System.Drawing.Imaging;
  
 
 namespace CommandLineRunner
 {
+
+    /// <summary>
+    /// Main class for running KangaModeling from cmd line.
+    /// </summary>
     public sealed class CommandLineRunner
     {
 
         public static void Main(String[] args)
         {
-            new CommandLineRunner().run(args);
+            Options opts = new Options();
+            if (!new CommandLineParser().ParseArguments(args, opts))
+            {
+                System.Console.Error.WriteLine(opts.GetHelp());
+                return;
+            }
+            new CommandLineRunner().run(opts);
         }
 
-        public void run(String[] args)
+        internal void run(Options opts)
         {
-            if (args.Length == 0)
-                return;
-            // TODO -f means "file argument"
-            SequenceDiagram sd = Parser.ParseString(args[0]);
+            SequenceDiagram sd = Parser.ParseString(opts.Model);
 
             // TODO make an image and put somewhere?!
         }
