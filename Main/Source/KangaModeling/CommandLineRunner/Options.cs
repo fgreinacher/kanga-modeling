@@ -26,7 +26,10 @@ namespace CommandLineRunner
         public string GetHelp()
         {
             var help = new StringBuilder();
-            // TODO
+            help.AppendLine("kanga - models from text");
+            help.AppendLine("-o filename - output file");
+            help.AppendLine("-f format - output file format (png,bmp,jpeg)");
+            help.AppendLine("-m model - the model definition");
             return help.ToString();
         }
 
