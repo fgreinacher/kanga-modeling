@@ -12,5 +12,6 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("KangaModeling.Compiler")]
 [assembly: InternalsVisibleTo("KangaModeling.GuiRunner")]
+[assembly: InternalsVisibleTo("KangaModeling.CommandLineRunner")]
 [assembly: InternalsVisibleTo("KangaModeling.Layouter")]
 [assembly: InternalsVisibleTo("KangaModeling.Renderer")]

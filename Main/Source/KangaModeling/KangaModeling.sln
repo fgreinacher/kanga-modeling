@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runner", "Runner", "{3517360B-7BE8-465D-AE4D-1B95A45E934E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineRunner", "CommandLineRunner\CommandLineRunner.csproj", "{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.CommandLineRunner", "CommandLineRunner\KangaModeling.CommandLineRunner.csproj", "{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.GuiRunner", "KangaModeling.GuiRunner\KangaModeling.GuiRunner.csproj", "{77312AEB-91AB-4209-8113-AD115CB1A866}"
 EndProject
@@ -32,7 +32,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Graphics", "K
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 8
+		SccNumberOfProjects = 9
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs19
 		SccLocalPath0 = .
@@ -64,6 +64,10 @@ Global
 		SccProjectTopLevelParentUniqueName7 = KangaModeling.sln
 		SccProjectName7 = KangaModeling.Graphics
 		SccLocalPath7 = KangaModeling.Graphics
+		SccProjectUniqueName8 = CommandLineRunner\\KangaModeling.CommandLineRunner.csproj
+		SccProjectTopLevelParentUniqueName8 = KangaModeling.sln
+		SccProjectName8 = CommandLineRunner
+		SccLocalPath8 = CommandLineRunner
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
