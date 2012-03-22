@@ -95,6 +95,17 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             CreateInteractionOperand(DefaultGuardExpression);
         }
 
+        /// <summary>
+        /// Gets the single InteractionOperand of the root combined fragment.
+        /// </summary>
+        public InteractionOperand InteractionOperand
+        {
+            get
+            {
+                return this[0];
+            }
+        }
+
     }
 
 	/// <summary>

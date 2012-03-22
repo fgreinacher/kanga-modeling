@@ -41,7 +41,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         internal void AddSignal(SignalElement se)
         {
             // TODO null check
-            m_Diagram.Content[0].AddElement(se);
+            m_Diagram.Content.InteractionOperand.AddElement(se);
         }
 
 

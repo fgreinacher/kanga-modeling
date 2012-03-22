@@ -45,7 +45,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// Also, participants can call themselves more than one time. These need to be stored inside a container, too.
 		/// So just use a "root" combined fragment that really just aggregates the calls on the "first level".
 		/// </summary>
-		public CombinedFragment Content { get; private set; }
+		public RootCombinedFragment Content { get; private set; }
 		
 	}
 }
