@@ -7,15 +7,22 @@ namespace KangaModeling.Compiler.SequenceDiagrams
     internal struct Token
     {
         private readonly int m_Start;
+        private readonly int m_Line;
         private readonly string m_Value;
 
-        public Token(int end, string value)
+        public Token(int line, int end, string value)
         {
             if (value == null) {throw new ArgumentNullException("value");}
             if (value.Length>end) {throw new ArgumentOutOfRangeException("end", end, "End is less then length.");}
 
             m_Start = end - value.Length;
+            m_Line = line;
             m_Value = value;
+        }
+
+        public int Line
+        {
+            get { return m_Line; }
         }
 
         public string Value
@@ -41,6 +48,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         public bool IsEmpty()
         {
             return Length == 0;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("[Ln {0} Col {1}] '{2}' ", Line, Start, Value);
         }
     }
 }

@@ -11,7 +11,10 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             Token keyword = scanner.ReadWord();
             scanner.SkipWhiteSpaces();
             Token argument = scanner.ReadToEnd();
-            yield return new TitleStatement(keyword, argument);
+            yield return
+                argument.Length != 0
+                    ? (Statement) new TitleStatement(keyword, argument)
+                    : new MissingArgumentStatement(keyword, argument);
         }
     }
 }

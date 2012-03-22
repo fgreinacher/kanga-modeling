@@ -14,7 +14,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             Token argument = scanner.ReadToEnd();
             yield return
                 argument.Length == 0
-                    ? (Statement)new MissingArgumentStatement(argument)
+                    ? (Statement)new MissingArgumentStatement(keyword, argument)
                     : (Statement)new ActivateStatement(keyword, argument);
         }
     }

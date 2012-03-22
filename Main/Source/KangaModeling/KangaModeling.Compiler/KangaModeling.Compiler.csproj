@@ -52,6 +52,7 @@
     <Compile Include="SequenceDiagrams\Parsing\CallSignalStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\DeactivateStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\DeactivateStatementParser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\AstError.cs" />
     <Compile Include="SequenceDiagrams\Parsing\FindOrCreateParticipantStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\IEnumerableExtensions.cs" />
     <Compile Include="SequenceDiagrams\Parsing\MissingArgumentStatement.cs" />

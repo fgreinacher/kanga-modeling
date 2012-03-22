@@ -10,7 +10,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
     [TestFixture]
     public class TitleStatementParserTest
     {
-        [TestCase("title", typeof(TitleStatement))]
+        [TestCase("title", typeof(MissingArgumentStatement))]
         [TestCase("title abc", typeof(TitleStatement))]
         public void ParseTest(string input, Type expectedStatementType)
         {

@@ -12,7 +12,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase(0, "")]
         public void TokenConstructorTest(int expectedEnd, string expectedValue)
         {
-            Token target = new Token(expectedEnd, expectedValue);
+            Token target = new Token(0, expectedEnd, expectedValue);
             Assert.AreEqual(expectedEnd, target.End);
         }
 
@@ -21,7 +21,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase(5, "abcd")]
         public void EndTest(int end, string value)
         {
-            Token target = new Token(end, value);
+            Token target = new Token(0, end, value);
             Assert.AreEqual(end, target.End);
         }
 
@@ -30,7 +30,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase(5, "abcd", 4)]
         public void LengthTest(int end, string value, int expectedLength)
         {
-            Token target = new Token(end, value);
+            Token target = new Token(0, end, value);
             Assert.AreEqual(expectedLength, target.Length);
         }
 
@@ -39,7 +39,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase(5, "abcd", 1)]
         public void StartTest(int end, string value, int expectedStart)
         {
-            Token target = new Token(end, value);
+            Token target = new Token(0, end, value);
             Assert.AreEqual(expectedStart, target.Start);
         }
 
@@ -48,7 +48,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase(5, "abcd")]
         public void ValueTest(int end, string value)
         {
-            Token target = new Token(end, value);
+            Token target = new Token(0, end, value);
             Assert.AreEqual(value, target.Value);
         }
     }

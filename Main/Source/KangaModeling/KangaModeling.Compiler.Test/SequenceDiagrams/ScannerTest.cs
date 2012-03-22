@@ -17,7 +17,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         public void Scanner_as_Enumerator(string input)
         {
             List<string> actual = new List<string>();
-            string[] expected = input.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+            string[] expected = input.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
             using (Scanner scanner = new Scanner(input))
             while (scanner.MoveNext())
             {
@@ -143,10 +143,20 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         }
 
         [TestCase("")]
+        public void EolTest_Empty(string input)
+        {
+            using (Scanner target = new Scanner(input))
+            {
+                target.MoveNext();
+                Assert.IsTrue(target.Eol);
+                target.ReadToEnd();
+                Assert.IsTrue(target.Eol);
+            }
+        }
+
         [TestCase("a")]
         [TestCase("a\r\nb")]
         [TestCase("a\r\nb\r\nc")]
-        [TestCase("a\r\n\r\nc")]
         public void EolTest(string input)
         {
             using(Scanner target = new Scanner(input))

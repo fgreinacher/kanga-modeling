@@ -13,16 +13,21 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
             Token keywordToken = scanner.ReadWord();
             scanner.SkipWhiteSpaces();
-            Token descriptionToken = scanner.ReadToWord(AsKeyword);
+            Token nameOrdescription = scanner.ReadToWord(AsKeyword);
+            if (nameOrdescription.Length==0)
+            {
+                yield return new MissingArgumentStatement(keywordToken, nameOrdescription);
+                yield break;
+            }
             if (scanner.Eol)
             {
-                yield return new SimpleParticipantStatement(keywordToken, descriptionToken);
+                yield return new SimpleParticipantStatement(keywordToken, nameOrdescription);
             }
 
             scanner.ReadWord();
             scanner.SkipWhiteSpaces();
             Token nameToken = scanner.ReadToEnd();
-            yield return new ExtendedParticipantStatement(keywordToken, nameToken, descriptionToken);
+            yield return new ExtendedParticipantStatement(keywordToken, nameToken, nameOrdescription);
         }
     }
 }

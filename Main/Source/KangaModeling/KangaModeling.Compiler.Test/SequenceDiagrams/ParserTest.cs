@@ -15,22 +15,21 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         public void Parse_N_Statements(string statement, int expectedCount )
         {
             var lines = Enumerable.Repeat(statement, expectedCount);
-            Scanner scanner = new Scanner(lines);
-
             var statementMock = new Mock<Statement>();
-            IEnumerable<Statement> statements = new Statement[] {statementMock.Object};
-
             var statementParserMock = new Mock<StatementParser>(MockBehavior.Strict);
-            statementParserMock.Setup(statementParser => statementParser.Parse(scanner)).Returns(statements);
-
             var factoryMock = new Mock<StatementParserFactory>();
-            factoryMock.Setup(factory => factory.GetStatementParser(statement)).Returns(statementParserMock.Object);
 
-            Parser target = new Parser(scanner, factoryMock.Object);
-            var result = target.Parsers();
-            Assert.AreEqual(expectedCount, result.Count());
-            CollectionAssert.AllItemsAreNotNull(result);
+            using (Scanner scanner = new Scanner(lines))
+            {
+                IEnumerable<Statement> statements = new [] {statementMock.Object};
+                statementParserMock.Setup(statementParser => statementParser.Parse(scanner)).Returns(statements);
+                factoryMock.Setup(factory => factory.GetStatementParser(statement)).Returns(statementParserMock.Object);
 
+                Parser target = new Parser(scanner, factoryMock.Object);
+                var result = target.Parse();
+                Assert.AreEqual(expectedCount, result.Count());
+                CollectionAssert.AllItemsAreNotNull(result);
+            }
             statementParserMock.VerifyAll();
             factoryMock.VerifyAll();
         }

@@ -15,7 +15,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
 
         public Scanner(string text) :
-            this(text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
+            this(text.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
         {
             
         }
@@ -123,7 +123,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
                 buffer.Append(CurrentChar);
                 Column++;
             }
-            return new Token(Column, buffer.ToString());
+            return new Token(Line, Column, buffer.ToString());
         }
 
         private char CurrentChar

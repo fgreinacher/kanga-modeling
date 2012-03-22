@@ -6,14 +6,15 @@ namespace KangaModeling.Compiler.SequenceDiagrams
     {
         private readonly Token m_Source;
 
-        public MissingArgumentStatement(Token source)
+        public MissingArgumentStatement(Token keyword, Token source)
+            : base(keyword)
         {
             m_Source = source;
         }
 
         public override void Build(AstBuilder builder)
         {
-            builder.AddError(m_Source, "Argument expected.");
+            builder.AddError(m_Source, string.Format("Argument expected in statement '{0}'", Keyword.Value));
         }
     }
 }

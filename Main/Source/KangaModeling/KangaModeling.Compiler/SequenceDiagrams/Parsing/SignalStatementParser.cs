@@ -29,19 +29,18 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         public override IEnumerable<Statement> Parse(Scanner scanner)
         {
             Token source = scanner.ReadTo(GetSignalKeyword(scanner));
+            Token signalKeyword = scanner.ReadSignal();
 
             yield return
                 !source.IsEmpty()
                     ? (Statement)new FindOrCreateParticipantStatement(source)
-                    : (Statement)new MissingArgumentStatement(source);
-
-            Token signalKeyword = scanner.ReadSignal();
+                    : (Statement)new MissingArgumentStatement(signalKeyword, source);
 
             Token target = scanner.ReadTo(ColonKeyowrd);
             yield return
                 !target.IsEmpty()
                     ? (Statement)new FindOrCreateParticipantStatement(target)
-                    : (Statement)new MissingArgumentStatement(target);
+                    : (Statement)new MissingArgumentStatement(signalKeyword, target);
 
             scanner.SkipWhile(ch=>!char.IsLetterOrDigit(ch));
             Token signalName = scanner.ReadToEnd();

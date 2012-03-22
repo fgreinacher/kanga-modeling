@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
@@ -6,15 +7,22 @@ namespace KangaModeling.Compiler.SequenceDiagrams
     internal class AstBuilder
     {
         private readonly SequenceDiagram m_Diagram;
+        private readonly Queue<AstError> m_Errors;
+
+        public AstBuilder(SequenceDiagram diagram)
+        {
+            m_Diagram = diagram;
+            m_Errors = new Queue<AstError>();
+        }
 
         public SequenceDiagram Diagram
         {
             get { return m_Diagram; }
         }
 
-        public AstBuilder(SequenceDiagram diagram)
+        public IEnumerable<AstError> Errors
         {
-            m_Diagram = diagram;
+            get { return m_Errors; }
         }
 
         internal Participant FindParticipant(String name)
@@ -44,8 +52,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public void AddError(Token invalidToken, string message)
         {
-            //TODO Modify to write errors somwhere else
-            Console.Error.WriteLine("Error: {0} at {1}", message, invalidToken.Start);
+            AstError error = new AstError(invalidToken, message);
+            m_Errors.Enqueue(error);
         }
 
     }
