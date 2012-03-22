@@ -36,7 +36,15 @@ namespace KangaModeling.Graphics.GdiPlus
 
 		public void RenderRectangle(RenderableRectangle renderableRectangle)
 		{
-			throw new NotImplementedException();
+			var rectangle = new System.Drawing.RectangleF
+			{
+				X = renderableRectangle.Location.X,
+				Y = renderableRectangle.Location.Y,
+				Width = renderableRectangle.Size.Width,
+				Height = renderableRectangle.Size.Height,
+			};
+
+			m_Graphics.FillRectangle(System.Drawing.Brushes.LightBlue, rectangle);
 		}
 	}
 }

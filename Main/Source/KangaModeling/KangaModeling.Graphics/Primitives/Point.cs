@@ -8,7 +8,7 @@ namespace KangaModeling.Renderer.Primitives
 	/// <summary>
 	/// Represents an x- and y-coordinate pair in two-dimensional space.
 	/// </summary>
-	public sealed class Point
+	public sealed class Point : IEquatable<Point>
 	{
 		private readonly float m_X;
 		private readonly float m_Y;
@@ -38,6 +38,24 @@ namespace KangaModeling.Renderer.Primitives
 		public float Y
 		{
 			get { return m_Y; }
-		} 
+		}
+
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as Point);
+		}
+
+		public override int GetHashCode()
+		{
+			return m_X.GetHashCode() ^ m_Y.GetHashCode();
+		}
+
+		public bool Equals(Point other)
+		{
+			return 
+				other != null &&
+				other.m_X == m_X &&
+				other.m_Y == m_Y;
+		}
 	}
 }

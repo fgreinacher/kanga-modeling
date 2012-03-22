@@ -8,7 +8,7 @@ namespace KangaModeling.Renderer.Primitives
 	/// <summary>
 	/// Represents a width and height in two-dimensional space.
 	/// </summary>
-	public sealed class Size
+	public sealed class Size : IEquatable<Size>
 	{
 		private readonly float m_Width;
 		private readonly float m_Height;
@@ -38,6 +38,24 @@ namespace KangaModeling.Renderer.Primitives
 		public float Height
 		{
 			get { return m_Height; }
+		}
+
+		public override bool Equals(object obj)
+		{
+			return base.Equals(obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return m_Width.GetHashCode() ^ m_Height.GetHashCode();
+		}
+
+		public bool Equals(Size other)
+		{
+			return
+				other != null &&
+				other.m_Width == m_Width &&
+				other.m_Height == m_Height;
 		}
 	}
 }

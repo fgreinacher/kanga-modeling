@@ -59,7 +59,7 @@
       <Project>{3F1A9174-8957-4963-8476-DE00B0F25238}</Project>
       <Name>KangaModeling.Graphics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KangaModeling.Layouter\KangaModeling.Layouter.csproj">
+    <ProjectReference Include="..\KangaModeling.RenderableFactory\KangaModeling.RenderableFactory.csproj">
       <Project>{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}</Project>
       <Name>KangaModeling.Layouter</Name>
     </ProjectReference>

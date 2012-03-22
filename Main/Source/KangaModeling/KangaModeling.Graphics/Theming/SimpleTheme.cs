@@ -12,7 +12,12 @@ namespace KangaModeling.Graphics.Theming
 			get { return "Arial"; }
 		}
 
-		public int FontSize
+		public float FontSize
+		{
+			get { return 10; }
+		}
+
+		public float Padding
 		{
 			get { return 10; }
 		}

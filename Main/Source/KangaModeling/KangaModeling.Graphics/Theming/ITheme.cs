@@ -9,6 +9,8 @@ namespace KangaModeling.Graphics.Theming
 	{
 		string Font { get; }
 
-		int FontSize { get; }
+		float FontSize { get; }
+
+		float Padding { get; }
 	}
 }

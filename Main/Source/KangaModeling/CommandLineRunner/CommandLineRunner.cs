@@ -67,12 +67,13 @@ namespace CommandLineRunner
                 var measurerFactory = new GdiPlusMeasurerFactory(measureGraphics);
                 var measurer = measurerFactory.CreateMeasurer(theme);
 
-                var layoutEngine = new LayoutEngine(measurer);
-                var layoutResult = layoutEngine.PerformLayout(sd);
+                var renderableFactory = new RenderableFactory(measurer, theme);
+                var renderables = renderableFactory.CreateRenderables(sd);
+				var size = renderableFactory.CalculateSize(renderables);
 
                 var renderBitmap = new Bitmap(
-                    (int)Math.Ceiling(layoutResult.Size.Width + 1),
-                    (int)Math.Ceiling(layoutResult.Size.Height + 1));
+					(int)Math.Ceiling(size.Width + 1),
+					(int)Math.Ceiling(size.Height + 1));
 
                 using (var renderGraphics = System.Drawing.Graphics.FromImage(renderBitmap))
                 {
@@ -81,7 +82,7 @@ namespace CommandLineRunner
                     var rendererFactory = new GdiPlusRendererFactory(renderGraphics);
                     var renderer = rendererFactory.CreateRenderer(theme);
 
-                    foreach (var renderable in layoutResult.Renderables)
+                    foreach (var renderable in renderables)
                     {
                         var renderableText = renderable as RenderableText;
                         if (renderableText != null)

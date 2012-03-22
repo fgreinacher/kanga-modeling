@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
 	public interface ISequenceDiagram
 	{
 		string Title { get; }
+
+		IEnumerable<IParticipant> Participants { get; }
 	}
 
 	/// <summary>
@@ -22,22 +25,22 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// <summary>
 		/// Initialize a new SequenceDiagram instance and set its fields.
 		/// </summary>
-		public SequenceDiagram ()
+		public SequenceDiagram()
 		{
 			Participants = new List<Participant>();
-            Content = new RootCombinedFragment();
+			Content = new RootCombinedFragment();
 		}
 
 		/// <summary>
 		/// The title of the sequence diagram.
 		/// </summary>
 		public String Title { get; set; }
-		
+
 		/// <summary>
 		/// The participants that call each other in the sequence diagram.
 		/// </summary>
 		public List<Participant> Participants { get; private set; }
-		
+
 		/// <summary>
 		/// The root content combined fragment. The idea is as follows: 
 		/// 
@@ -46,6 +49,16 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// So just use a "root" combined fragment that really just aggregates the calls on the "first level".
 		/// </summary>
 		public RootCombinedFragment Content { get; private set; }
+
+		string ISequenceDiagram.Title
+		{
+			get { return Title; }
+		}
+
+		IEnumerable<IParticipant> ISequenceDiagram.Participants
+		{
+			get { return Participants; }
+		}
 		
 	}
 }

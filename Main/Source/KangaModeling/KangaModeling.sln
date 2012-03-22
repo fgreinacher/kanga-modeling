@@ -7,11 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Compiler", "K
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Compiler.Test", "KangaModeling.Compiler.Test\KangaModeling.Compiler.Test.csproj", "{6D912773-33FC-4E1F-AAD3-803B4C054865}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Layouter", "Layouter", "{5ED6C0DB-954F-4544-9451-BB8AB6376003}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Layouter", "KangaModeling.Layouter\KangaModeling.Layouter.csproj", "{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Layouter.Test", "KangaModeling.Layouter.Test\KangaModeling.Layouter.Test.csproj", "{3EB1587F-8971-4190-9292-43F7C102AFFA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RenderableFactory", "RenderableFactory", "{5ED6C0DB-954F-4544-9451-BB8AB6376003}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Graphics", "Graphics", "{BBF5AB3C-A94B-410F-B68C-8C4CCB5159BA}"
 EndProject
@@ -30,6 +26,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Graphics.GdiP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Graphics", "KangaModeling.Graphics\KangaModeling.Graphics.csproj", "{3F1A9174-8957-4963-8476-DE00B0F25238}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.RenderableFactory", "KangaModeling.RenderableFactory\KangaModeling.RenderableFactory.csproj", "{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.RenderableFactory.Test", "KangaModeling.RenderableFactory.Test\KangaModeling.RenderableFactory.Test.csproj", "{3EB1587F-8971-4190-9292-43F7C102AFFA}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 9
@@ -40,34 +40,34 @@ Global
 		SccProjectTopLevelParentUniqueName1 = KangaModeling.sln
 		SccProjectName1 = KangaModeling.Compiler
 		SccLocalPath1 = KangaModeling.Compiler
-		SccProjectUniqueName2 = KangaModeling.Layouter\\KangaModeling.Layouter.csproj
+		SccProjectUniqueName2 = KangaModeling.Compiler.Test\\KangaModeling.Compiler.Test.csproj
 		SccProjectTopLevelParentUniqueName2 = KangaModeling.sln
-		SccProjectName2 = KangaModeling.Layouter
-		SccLocalPath2 = KangaModeling.Layouter
-		SccProjectUniqueName3 = KangaModeling.Compiler.Test\\KangaModeling.Compiler.Test.csproj
+		SccProjectName2 = KangaModeling.Compiler.Test
+		SccLocalPath2 = KangaModeling.Compiler.Test
+		SccProjectUniqueName3 = KangaModeling.GuiRunner\\KangaModeling.GuiRunner.csproj
 		SccProjectTopLevelParentUniqueName3 = KangaModeling.sln
-		SccProjectName3 = KangaModeling.Compiler.Test
-		SccLocalPath3 = KangaModeling.Compiler.Test
-		SccProjectUniqueName4 = KangaModeling.Layouter.Test\\KangaModeling.Layouter.Test.csproj
+		SccProjectName3 = KangaModeling.GuiRunner
+		SccLocalPath3 = KangaModeling.GuiRunner
+		SccProjectUniqueName4 = KangaModeling.Graphics.GdiPlus\\KangaModeling.Graphics.GdiPlus.csproj
 		SccProjectTopLevelParentUniqueName4 = KangaModeling.sln
-		SccProjectName4 = KangaModeling.Layouter.Test
-		SccLocalPath4 = KangaModeling.Layouter.Test
-		SccProjectUniqueName5 = KangaModeling.GuiRunner\\KangaModeling.GuiRunner.csproj
+		SccProjectName4 = KangaModeling.Graphics.GdiPlus
+		SccLocalPath4 = KangaModeling.Graphics.GdiPlus
+		SccProjectUniqueName5 = KangaModeling.Graphics\\KangaModeling.Graphics.csproj
 		SccProjectTopLevelParentUniqueName5 = KangaModeling.sln
-		SccProjectName5 = KangaModeling.GuiRunner
-		SccLocalPath5 = KangaModeling.GuiRunner
-		SccProjectUniqueName6 = KangaModeling.Graphics.GdiPlus\\KangaModeling.Graphics.GdiPlus.csproj
+		SccProjectName5 = KangaModeling.Graphics
+		SccLocalPath5 = KangaModeling.Graphics
+		SccProjectUniqueName6 = CommandLineRunner\\KangaModeling.CommandLineRunner.csproj
 		SccProjectTopLevelParentUniqueName6 = KangaModeling.sln
-		SccProjectName6 = KangaModeling.Graphics.GdiPlus
-		SccLocalPath6 = KangaModeling.Graphics.GdiPlus
-		SccProjectUniqueName7 = KangaModeling.Graphics\\KangaModeling.Graphics.csproj
+		SccProjectName6 = CommandLineRunner
+		SccLocalPath6 = CommandLineRunner
+		SccProjectUniqueName7 = KangaModeling.RenderableFactory\\KangaModeling.RenderableFactory.csproj
 		SccProjectTopLevelParentUniqueName7 = KangaModeling.sln
-		SccProjectName7 = KangaModeling.Graphics
-		SccLocalPath7 = KangaModeling.Graphics
-		SccProjectUniqueName8 = CommandLineRunner\\KangaModeling.CommandLineRunner.csproj
+		SccProjectName7 = KangaModeling.RenderableFactory
+		SccLocalPath7 = KangaModeling.RenderableFactory
+		SccProjectUniqueName8 = KangaModeling.RenderableFactory.Test\\KangaModeling.RenderableFactory.Test.csproj
 		SccProjectTopLevelParentUniqueName8 = KangaModeling.sln
-		SccProjectName8 = CommandLineRunner
-		SccLocalPath8 = CommandLineRunner
+		SccProjectName8 = KangaModeling.RenderableFactory.Test
+		SccLocalPath8 = KangaModeling.RenderableFactory.Test
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -98,26 +98,6 @@ Global
 		{6D912773-33FC-4E1F-AAD3-803B4C054865}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6D912773-33FC-4E1F-AAD3-803B4C054865}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6D912773-33FC-4E1F-AAD3-803B4C054865}.Release|x86.ActiveCfg = Release|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|x86.ActiveCfg = Release|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|x86.ActiveCfg = Release|Any CPU
 		{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -159,6 +139,26 @@ Global
 		{3F1A9174-8957-4963-8476-DE00B0F25238}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3F1A9174-8957-4963-8476-DE00B0F25238}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3F1A9174-8957-4963-8476-DE00B0F25238}.Release|x86.ActiveCfg = Release|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7DD993DE-3455-4EF6-9C0F-B94321CBC6AD}.Release|x86.ActiveCfg = Release|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3EB1587F-8971-4190-9292-43F7C102AFFA}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
