@@ -27,7 +27,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             scanner.ReadWord();
             scanner.SkipWhiteSpaces();
             Token nameToken = scanner.ReadToEnd();
-            yield return new ExtendedParticipantStatement(keywordToken, nameToken, nameOrdescription);
+            yield return new ParticipantStatement(keywordToken, nameToken, nameOrdescription);
         }
     }
 }

@@ -31,11 +31,17 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             return m_Diagram.Participants.Find(p => p.Name == name);
         }
 
-        internal void CreateParticipant(string participantName)
+        internal void CreateParticipant(Token name, Token description)
         {
             // TODO check for correct name
-            // TODO check if there is already a participant with that name.
-            m_Diagram.Participants.Add(new Participant(participantName));
+            if (FindParticipant(name.Value) != null)
+            {
+                AddError(name, "Participant with this name already exists.");
+            }
+            else
+            {
+                m_Diagram.Participants.Add(new Participant(name.Value));                
+            }
         }
 
         internal void AddSignal(SignalElement se)

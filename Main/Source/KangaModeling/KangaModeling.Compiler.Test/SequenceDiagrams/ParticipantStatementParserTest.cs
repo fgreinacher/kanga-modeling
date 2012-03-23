@@ -11,8 +11,8 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
     {
         [TestCase("participant A", typeof(SimpleParticipantStatement))]
         [TestCase("participant", typeof(MissingArgumentStatement))]
-        [TestCase("participant Description as A", typeof(ExtendedParticipantStatement))]
-        [TestCase("participant Description as", typeof(ExtendedParticipantStatement))]
+        [TestCase("participant Description as A", typeof(ParticipantStatement))]
+        [TestCase("participant Description as", typeof(ParticipantStatement))]
         public void ParseTest(string input, Type expectedStatementType)
         {
             var target = new ParticipantStatementParser();
@@ -20,7 +20,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             Assert.IsInstanceOf(expectedStatementType, actual);
         }
 
-        [TestCase("participant A", new[] {"A"})]
+        [TestCase("participant A", new[] {"A", "A"})]
         [TestCase("participant", new string[0])]
         public void EnsureTokensSimple(string input, string[] nameValues)
         {

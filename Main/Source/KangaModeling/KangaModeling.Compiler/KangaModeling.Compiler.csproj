@@ -64,7 +64,6 @@
     <Compile Include="SequenceDiagrams\Model\SequenceDiagram.cs" />
     <Compile Include="SequenceDiagrams\Model\Participant.cs" />
     <Compile Include="SequenceDiagrams\Model\CombinedFragment.cs" />
-    <Compile Include="SequenceDiagrams\Parsing\ExtendedParticipantStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\Parser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\ParticipantStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\StatementParser.cs" />

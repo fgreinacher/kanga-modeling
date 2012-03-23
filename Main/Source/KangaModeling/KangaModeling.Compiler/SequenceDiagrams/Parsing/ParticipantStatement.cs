@@ -2,25 +2,38 @@
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
-    internal abstract class ParticipantStatement : Statement
+    internal class ParticipantStatement : Statement
     {
         private readonly Token m_Name;
+        private readonly Token m_Description;
 
-        protected ParticipantStatement(Token keyword, Token name) 
+        public Token Name
+        {
+            get { return m_Name; }
+        }
+
+        public Token Description
+        {
+            get { return m_Description; }
+        }
+
+        public ParticipantStatement(Token keyword, Token name, Token description) 
             : base(keyword)
         {
             m_Name = name;
+            m_Description = description;
         }
 
         public override void Build(AstBuilder builder)
         {
-            throw new System.NotImplementedException();
+            builder.CreateParticipant(Name, Description);
         }
 
         public override IEnumerable<Token> Tokens()
         {
             return base.Tokens()
-                .Append(m_Name);
+                .Append(Name)
+                .Append(Description);
         }
     }
 }
