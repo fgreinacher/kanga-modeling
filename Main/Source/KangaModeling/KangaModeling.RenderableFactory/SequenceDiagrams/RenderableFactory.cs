@@ -6,15 +6,13 @@ using KangaModeling.Renderer;
 using KangaModeling.Renderer.Primitives;
 using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics;
-using KangaModeling.Graphics.Renderables;
 using KangaModeling.Graphics.Theming;
 
 namespace KangaModeling.Layouter.SequenceDiagrams
 {
 	/// <summary>
 	/// The layout engine is responsible for creating the appropriate renderable objects 
-	/// from a specified sequence diagram. It has a dependency on <see cref="IMeasurementEngine"/>
-	/// because it might need to measure the dimensions of renderable text.
+	/// from a specified sequence diagram.
 	/// </summary>
 	public sealed class RenderableFactory
 	{

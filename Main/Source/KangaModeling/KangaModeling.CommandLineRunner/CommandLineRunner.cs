@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using KangaModeling.Compiler.SequenceDiagrams;
 using CommandLine;
 using System.Drawing.Imaging;
 using System.Drawing;
 using KangaModeling.Graphics.GdiPlus;
 using KangaModeling.Graphics.Theming;
-using KangaModeling.Layouter.SequenceDiagrams;
-using KangaModeling.Graphics.Renderables;
- 
+using KangaModeling.Visuals.SequenceDiagrams;
 
 namespace CommandLineRunner
 {
@@ -41,9 +36,15 @@ namespace CommandLineRunner
             ImageFormat format = ImageFormat.Png;
             switch (opts.Format.ToLowerInvariant())
             {
-                case "png": format = ImageFormat.Png; break;
-                case "bmp": format = ImageFormat.Bmp; break;
-                case "jpeg": format = ImageFormat.Jpeg; break;
+                case "png":
+                    format = ImageFormat.Png;
+                    break;
+                case "bmp":
+                    format = ImageFormat.Bmp;
+                    break;
+                case "jpeg":
+                    format = ImageFormat.Jpeg;
+                    break;
                 default:
                     throw new ArgumentException("unknown format: " + opts.Format);
             }
@@ -60,41 +61,33 @@ namespace CommandLineRunner
         private Bitmap genBitmap(SequenceDiagram sd)
         {
             ITheme theme = new SimpleTheme();
+            var sequenceDiagramVisual = new SequenceDiagramVisual(sd);
 
-            using(var measureBitmap = new Bitmap(1, 1))
-            using (var measureGraphics = System.Drawing.Graphics.FromImage(measureBitmap))
+            using (var measureBitmap = new Bitmap(1, 1))
+            using (var measureGraphics = Graphics.FromImage(measureBitmap))
             {
-                var measurerFactory = new GdiPlusMeasurerFactory(measureGraphics);
-                var measurer = measurerFactory.CreateMeasurer(theme);
+                var graphicContextFactory = new GdiPlusGraphicContextFactory(measureGraphics);
+                var graphicContext = graphicContextFactory.CreateGraphicContext(theme);
 
-                var renderableFactory = new RenderableFactory(measurer, theme);
-                var renderables = renderableFactory.CreateRenderables(sd);
-				var size = renderableFactory.CalculateSize(renderables);
+                sequenceDiagramVisual.Layout(graphicContext);
 
                 var renderBitmap = new Bitmap(
-					(int)Math.Ceiling(size.Width + 1),
-					(int)Math.Ceiling(size.Height + 1));
+                    (int)Math.Ceiling(sequenceDiagramVisual.Width + 1),
+                    (int)Math.Ceiling(sequenceDiagramVisual.Height + 1));
 
-                using (var renderGraphics = System.Drawing.Graphics.FromImage(renderBitmap))
+                using (var renderGraphics = Graphics.FromImage(renderBitmap))
                 {
                     renderGraphics.Clear(Color.White);
 
-                    var rendererFactory = new GdiPlusRendererFactory(renderGraphics);
-                    var renderer = rendererFactory.CreateRenderer(theme);
+                    graphicContextFactory = new GdiPlusGraphicContextFactory(renderGraphics);
+                    graphicContext = graphicContextFactory.CreateGraphicContext(theme);
 
-                    foreach (var renderable in renderables)
-                    {
-                        var renderableText = renderable as RenderableText;
-                        if (renderableText != null)
-                        {
-                            renderer.RenderText(renderableText);
-                        }
-                    }
+                    sequenceDiagramVisual.Draw(graphicContext);
+
                 }
 
                 return renderBitmap;
             }
         }
-
     }
 }

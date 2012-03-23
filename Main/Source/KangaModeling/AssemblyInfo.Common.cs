@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("KangaModeling community")]
@@ -13,5 +12,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("KangaModeling.Compiler")]
 [assembly: InternalsVisibleTo("KangaModeling.GuiRunner")]
 [assembly: InternalsVisibleTo("KangaModeling.CommandLineRunner")]
-[assembly: InternalsVisibleTo("KangaModeling.Layouter")]
-[assembly: InternalsVisibleTo("KangaModeling.Renderer")]
+[assembly: InternalsVisibleTo("KangaModeling.Visuals")]
