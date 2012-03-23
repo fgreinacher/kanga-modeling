@@ -22,6 +22,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             if (scanner.Eol)
             {
                 yield return new SimpleParticipantStatement(keywordToken, nameOrdescription);
+                yield break;
             }
 
             scanner.ReadWord();
