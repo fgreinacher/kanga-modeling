@@ -19,15 +19,15 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             Assert.IsInstanceOf(expectedStatementType, actual);
         }
 
-        [TestCase("title", "")]
-        [TestCase("title abc", "abc")]
-        [TestCase("title  ", "")]
-        public void EnsureTokens(string input, string argumentValue)
+        [TestCase("title", new string[0])]
+        [TestCase("title abc", new[] {"abc"})]
+        [TestCase("title  ", new string[0])]
+        public void EnsureTokens(string input, string[] argumentValues)
         {
             TitleStatementParser target = new TitleStatementParser();
             IEnumerable<Statement> actual = target.Parse(input);
             var tokenValues = actual.First().Tokens().Select(token => token.Value);
-            var expected = new[] {TitleStatementParser.Keyword, argumentValue};
+            var expected = new[] {TitleStatementParser.Keyword}.Concat(argumentValues);
             CollectionAssert.AreEquivalent(expected, tokenValues);        
         }
     }

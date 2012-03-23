@@ -9,6 +9,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
     {
         private readonly IEnumerator<string> m_Lines;
         private readonly Stack<int> m_PositionStack;
+        public const char EscapeCharacter='"';
 
         public int Line { get; private set; }
         public int Column { get; private set; }
@@ -117,10 +118,19 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         private Token ReadWhile(Func<bool> condition)
         {
+            bool isInEscapeMode = false;
+
             StringBuilder buffer = new StringBuilder();
-            while (!Eol && condition())
-            {
-                buffer.Append(CurrentChar);
+            while (!Eol && (isInEscapeMode || condition()))
+            {   
+                if(CurrentChar == EscapeCharacter)
+                {
+                    isInEscapeMode = !isInEscapeMode;
+                }
+                else
+                {
+                    buffer.Append(CurrentChar);
+                }
                 Column++;
             }
             return new Token(Line, Column, buffer.ToString());

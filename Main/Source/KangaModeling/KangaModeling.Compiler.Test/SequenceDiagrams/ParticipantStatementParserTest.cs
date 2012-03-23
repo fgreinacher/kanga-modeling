@@ -10,7 +10,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
     public class ParticipantStatementParserTest
     {
         [TestCase("participant A", typeof(SimpleParticipantStatement))]
-        [TestCase("participant", typeof(SimpleParticipantStatement))]
+        [TestCase("participant", typeof(MissingArgumentStatement))]
         [TestCase("participant Description as A", typeof(ExtendedParticipantStatement))]
         [TestCase("participant Description as", typeof(ExtendedParticipantStatement))]
         public void ParseTest(string input, Type expectedStatementType)
@@ -20,14 +20,14 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             Assert.IsInstanceOf(expectedStatementType, actual);
         }
 
-        [TestCase("participant A", "A")]
-        [TestCase("participant", "")]
-        public void EnsureTokensSimple(string input, string nameValue)
+        [TestCase("participant A", new[] {"A"})]
+        [TestCase("participant", new string[0])]
+        public void EnsureTokensSimple(string input, string[] nameValues)
         {
             ParticipantStatementParser target = new ParticipantStatementParser();
             var actual = target.Parse(input);
             var tokenValues = actual.First().Tokens().Select(token => token.Value);
-            var expected = new[] { "participant", nameValue };
+            var expected = new[] {"participant"}.Concat(nameValues);
             CollectionAssert.AreEquivalent(expected, tokenValues);
         }
 

@@ -71,6 +71,8 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase(" a", "a", 2)]
         [TestCase(" a ", "a", 2)]
         [TestCase("       Hello ", "Hello", 12)]
+        [TestCase("    \"Hello World!\"   ", "Hello World!", 18)]
+        [TestCase("    \"\"   ", "", 6)]
         public void ReadWordTest(string input, string expectedValue, int expectedColumn)
         {
             Scanner target = new Scanner(input);
