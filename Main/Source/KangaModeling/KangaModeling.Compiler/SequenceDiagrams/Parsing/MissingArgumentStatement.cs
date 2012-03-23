@@ -4,17 +4,19 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class MissingArgumentStatement : Statement
     {
-        private readonly Token m_Source;
-
         public MissingArgumentStatement(Token keyword, Token source)
-            : base(keyword)
+            : base(keyword, source)
         {
-            m_Source = source;
+        }
+
+        public Token Source
+        {
+            get { return Arguments[0]; }
         }
 
         public override void Build(AstBuilder builder)
         {
-            builder.AddError(m_Source, string.Format("Argument expected in statement '{0}'", Keyword.Value));
+            builder.AddError(Source, string.Format("Argument expected in statement '{0}'", Keyword.Value));
         }
-    }
+   } 
 }

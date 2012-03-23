@@ -21,7 +21,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         }
 
         [TestCase("participant A", new[] {"A", "A"})]
-        [TestCase("participant", new string[0])]
+        [TestCase("participant", new [] {""})]
         public void EnsureTokensSimple(string input, string[] nameValues)
         {
             ParticipantStatementParser target = new ParticipantStatementParser();

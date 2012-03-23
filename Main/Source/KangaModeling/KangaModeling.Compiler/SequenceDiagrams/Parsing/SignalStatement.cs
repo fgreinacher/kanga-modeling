@@ -1,52 +1,38 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal abstract class SignalStatement : Statement
     {
-        private readonly Token m_Source;
-        private readonly Token m_Target;
-        private readonly Token m_Name;
+        public Token Source {get { return Arguments[0]; }}
+        public Token Target { get { return Arguments[1]; } }
+        public Token Name { get { return Arguments[2]; } }
 
         protected SignalStatement(Token keyword, Token source, Token target, Token name)
-            : base(keyword)
+            : base(keyword, source, target, name)
         {
-            m_Source = source;
-            m_Target = target;
-            m_Name = name;
         }
 
         public override void Build(AstBuilder builder)
         {
-            Participant sourceParticipant = builder.FindParticipant(m_Source.Value);
+            Participant sourceParticipant = builder.FindParticipant(Source.Value);
             if (sourceParticipant == null)
             {
-                builder.AddError(m_Source, "no such participant");
+                builder.AddError(Source, "No such participant");
                 return;
             }
-            Participant targetParticipant = builder.FindParticipant(m_Target.Value);
+            Participant targetParticipant = builder.FindParticipant(Target.Value);
             if (targetParticipant == null)
             {
-                builder.AddError(m_Target, "no such participant");
+                builder.AddError(Target, "No such participant");
+                return;
+            }
+
+            if (sourceParticipant.Equals(targetParticipant))
+            {
+                builder.AddError(Target, "Self signal is not supported currently.");
                 return;
             }
 
             builder.AddSignal(new SignalElement(sourceParticipant, targetParticipant, SignalElement.Type.Signal));
-
-        }
-
-        public override IEnumerable<Token> Tokens()
-        {
-            return base.Tokens().Concat(SignalTokens());
-        }
-
-        private IEnumerable<Token> SignalTokens()
-        {
-            yield return m_Name;
-            yield return m_Source;
-            yield return m_Target;
         }
     }
 }

@@ -42,6 +42,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams
                     ? (Statement)new FindOrCreateParticipantStatement(target)
                     : (Statement)new MissingArgumentStatement(signalKeyword, target);
 
+
+            if (source.IsEmpty() || target.IsEmpty())
+            {
+                yield break;
+            }
+
             scanner.SkipWhile(ch=>!char.IsLetterOrDigit(ch));
             Token signalName = scanner.ReadToEnd();
 

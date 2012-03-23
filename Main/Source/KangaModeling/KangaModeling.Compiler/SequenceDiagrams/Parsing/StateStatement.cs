@@ -5,22 +5,26 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal abstract class StateStatement : Statement
     {
-        private readonly Token m_Argument;
-
-        protected StateStatement(Token keyword, Token argument) 
-            : base(keyword)
+        public Token Target
         {
-            m_Argument = argument;
+            get { return Arguments[0]; }
+        }
+
+        protected StateStatement(Token keyword, Token target)
+            : base(keyword, target)
+        {
+           
         }
 
         public override void Build(AstBuilder builder)
         {
-            throw new NotImplementedException();
-        }
-
-        public override IEnumerable<Token> Tokens()
-        {
-            return base.Tokens().Append(m_Argument);
+            Participant targetParticipant = builder.FindParticipant(Target.Value);
+            if (targetParticipant==null)
+            {
+                builder.AddError(Target, "Unknown participant. Missing 'participant' declaration or use in signal statement.");
+                return;
+            }
+            //TOD Implement state change
         }
     }
 }

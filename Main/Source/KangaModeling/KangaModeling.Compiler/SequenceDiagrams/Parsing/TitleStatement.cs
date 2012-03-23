@@ -4,24 +4,19 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class TitleStatement : Statement
     {
-        private readonly Token m_Argument;
-
-        public TitleStatement(Token keyword, Token argument) 
-            : base(keyword)
+        public Token Title
         {
-            m_Argument = argument;
+            get { return Arguments[0]; }
+        }
+
+        public TitleStatement(Token keyword, Token titleText) 
+            : base(keyword, titleText)
+        {
         }
 
         public override void Build(AstBuilder builder)
         {
-            builder.SetTitle(m_Argument.Value);
-        }
-
-        public override IEnumerable<Token> Tokens()
-        {
-            return 
-                base.Tokens()
-                .Append(m_Argument);
+            builder.SetTitle(Title.Value);
         }
     }
 }

@@ -19,9 +19,9 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             Assert.IsInstanceOf(expectedStatementType, actual);
         }
 
-        [TestCase("title", new string[0])]
+        [TestCase("title", new [] {""})]
         [TestCase("title abc", new[] {"abc"})]
-        [TestCase("title  ", new string[0])]
+        [TestCase("title  ", new [] {""})]
         public void EnsureTokens(string input, string[] argumentValues)
         {
             TitleStatementParser target = new TitleStatementParser();
