@@ -4,14 +4,7 @@ using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
-	public interface ISequenceDiagram
-	{
-		string Title { get; }
-
-		IEnumerable<IParticipant> Participants { get; }
-	}
-
-	/// <summary>
+    /// <summary>
 	/// Main model class for sequence diagrams.
 	/// 
 	/// A sequence diagram has a global title, that identifies the main purpose of the diagram.

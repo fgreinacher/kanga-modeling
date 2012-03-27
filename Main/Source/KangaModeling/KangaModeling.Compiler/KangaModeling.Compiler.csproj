@@ -46,6 +46,9 @@
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SequenceDiagrams\Model\InteractionOperator.cs" />
+    <Compile Include="SequenceDiagrams\Model\IParticipant.cs" />
+    <Compile Include="SequenceDiagrams\Model\ISequenceDiagram.cs" />
     <Compile Include="SequenceDiagrams\Parsing\ActivateStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\ActivateStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Model\ModelBuilder.cs" />

@@ -3,13 +3,7 @@ using System.Diagnostics;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
-	public interface IParticipant
-	{
-		string Name { get; }
-	    string Description { get; }
-	}
-
-	/// <summary>
+    /// <summary>
 	/// A Participant participates in a sequence diagram.
 	/// It defines its own lifeline, can call other participants, and can receive calls.
 	/// </summary>
