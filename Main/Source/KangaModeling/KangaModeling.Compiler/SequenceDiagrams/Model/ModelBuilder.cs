@@ -50,9 +50,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         }
 
 
-        public void SetTitle(string title)
+        public void SetTitle(Token title)
         {
-            m_Diagram.Title = title;
+            if (m_Diagram.Title!=null)
+            {
+                AddError(title, "Title is already set. Title can be set only once.");
+            }
+            m_Diagram.Title = title.Value;
         }
 
         public void AddError(Token invalidToken, string message)

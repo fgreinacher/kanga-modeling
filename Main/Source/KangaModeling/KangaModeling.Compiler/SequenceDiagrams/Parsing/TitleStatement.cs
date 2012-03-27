@@ -16,7 +16,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public override void Build(ModelBuilder builder)
         {
-            builder.SetTitle(Title.Value);
+            builder.SetTitle(Title);
         }
     }
 }
