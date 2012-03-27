@@ -65,11 +65,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             return ReadWhile(IsSignalChar);
         }
 
-        private string GetToEnd()
-        {
-            return GetWithoutMove(ReadToEnd);
-        }
-
         private string GetWord()
         {
             return GetWithoutMove(ReadWord);
