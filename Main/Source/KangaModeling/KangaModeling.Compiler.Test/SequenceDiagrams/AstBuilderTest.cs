@@ -10,7 +10,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         public void AstBuilderConstructorTest()
         {
             var diagram = new SequenceDiagram();
-            AstBuilder target = new AstBuilder(diagram);
+            ModelBuilder target = new ModelBuilder(diagram);
             Assert.AreEqual(diagram, target.Diagram);
         }
 
@@ -26,7 +26,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         public void SetTitleTest(string expectedTitle)
         {
             var diagram = new SequenceDiagram();
-            AstBuilder target = new AstBuilder(diagram);
+            ModelBuilder target = new ModelBuilder(diagram);
             target.SetTitle(expectedTitle);
             Assert.AreEqual(expectedTitle, diagram.Title);
         }

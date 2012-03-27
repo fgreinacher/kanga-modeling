@@ -23,7 +23,7 @@ namespace KangaModeling.GuiRunner
 			//@Stefan had problems with returning errors and passing Lines -> reverted to old implementation. Need to find solution.
 			var scanner = new Scanner(inputTextBox.Lines);
 			var sequenceDiagram = new SequenceDiagram();
-			var astBuilder = new AstBuilder(sequenceDiagram);
+			var astBuilder = new ModelBuilder(sequenceDiagram);
 
 			var parser = new Parser(scanner, new StatementParserFactory());
 			foreach (var statement in parser.Parse())

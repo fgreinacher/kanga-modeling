@@ -14,7 +14,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             get { return Arguments[0]; }
         }
 
-        public override void Build(AstBuilder builder)
+        public override void Build(ModelBuilder builder)
         {
             builder.AddError(Source, string.Format("Argument expected in statement '{0}'", Keyword.Value));
         }

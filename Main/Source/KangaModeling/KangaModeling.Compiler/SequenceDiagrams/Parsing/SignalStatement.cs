@@ -11,7 +11,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
         }
 
-        public override void Build(AstBuilder builder)
+        public override void Build(ModelBuilder builder)
         {
             Participant sourceParticipant = builder.FindParticipant(Source.Value);
             if (sourceParticipant == null)

@@ -43,7 +43,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             if (String.IsNullOrEmpty(text))
                 return sequenceDiagram;
 
-            var astBuilder = new AstBuilder(sequenceDiagram);
+            var astBuilder = new ModelBuilder(sequenceDiagram);
 
             var scanner = new Scanner(text);
             var parser = new Parser(scanner, new StatementParserFactory());

@@ -19,7 +19,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
         }
 
-        public override void Build(AstBuilder builder)
+        public override void Build(ModelBuilder builder)
         {
             builder.CreateParticipant(Name, Description);
         }

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
-    // TODO [Hanke} rename when resharper is installed.
-    internal class AstBuilder
+    internal class ModelBuilder
     {
         private readonly SequenceDiagram m_Diagram;
         private readonly Queue<AstError> m_Errors;
 
-        public AstBuilder(SequenceDiagram diagram)
+        public ModelBuilder(SequenceDiagram diagram)
         {
             m_Diagram = diagram;
             m_Errors = new Queue<AstError>();
