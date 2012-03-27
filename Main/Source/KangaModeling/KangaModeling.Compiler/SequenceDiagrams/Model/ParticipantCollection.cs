@@ -22,6 +22,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public bool TryGetValue(string key, out Participant participant)
         {
+            if (Count == 0)
+            {
+                participant = null;
+                return false;
+            }
             return this.Dictionary.TryGetValue(key,out participant);
         }
     }
