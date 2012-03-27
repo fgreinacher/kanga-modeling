@@ -25,7 +25,14 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// <param name="guardExpression">The guard expression for this case. Must not be null.</param>
 		/// <returns>The new compartment, where other DiagramElements can be added to. Never null.</returns>
 		protected InteractionOperand CreateInteractionOperand(String guardExpression) {
-			if(String.IsNullOrEmpty(guardExpression)) throw new ArgumentException("guardExpression");
+		    if (guardExpression == null)
+		    {
+		        throw new ArgumentNullException("guardExpression");
+		    }
+		    if(guardExpression.Length==0)
+			{
+			    throw new ArgumentException("Argument can not be empty.", "guardExpression");
+			}
 			InteractionOperand c = new InteractionOperand(guardExpression);
 			_compartments.Add(c);
 			return c;
@@ -59,68 +66,5 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// </summary>
 		public InteractionOperator Type { get; private set; }
 		
-	}
-
-    /// <summary>
-    /// The root combined fragment is the root of all content inside a sequence diagram.
-    /// </summary>
-    public sealed class RootCombinedFragment : CombinedFragment
-    {
-        /// <summary>
-        /// The root has no guard expression per se, use a default one.
-        /// </summary>
-        public static readonly String DefaultGuardExpression = "Root";
-
-        public RootCombinedFragment() : base(InteractionOperator.Root)
-        {
-            CreateInteractionOperand(DefaultGuardExpression);
-        }
-
-        /// <summary>
-        /// Gets the single InteractionOperand of the root combined fragment.
-        /// </summary>
-        public InteractionOperand InteractionOperand
-        {
-            get
-            {
-                return this[0];
-            }
-        }
-
-    }
-
-	/// <summary>
-	/// A InteractionOperand is one box inside a combined fragment.
-	/// 
-	/// It consists of the guard expression, determining when the elements are to be
-	/// carried out.
-	/// </summary>
-	public sealed class InteractionOperand : IEnumerable<DiagramElement> {
-		
-		public InteractionOperand(String guardExpression) {
-			// TODO check string
-			_compartmentElements = new List<DiagramElement>();
-			_guardExpression = guardExpression;
-		}
-		
-		public void AddElement(DiagramElement de) {
-			if(de == null) throw new ArgumentNullException("de");
-			_compartmentElements.Add(de);
-		}
-		
-		IEnumerator<DiagramElement> IEnumerable<DiagramElement>.GetEnumerator() {
-			foreach(DiagramElement de in _compartmentElements)
-				yield return de;
-		}
-		
-		IEnumerator IEnumerable.GetEnumerator() {
-			foreach(DiagramElement de in _compartmentElements)
-				yield return de;
-		}
-		
-		public String GuardExpression { get { return _guardExpression; } } 
-		
-		private readonly List<DiagramElement> _compartmentElements;
-		private readonly String _guardExpression;
 	}
 }
