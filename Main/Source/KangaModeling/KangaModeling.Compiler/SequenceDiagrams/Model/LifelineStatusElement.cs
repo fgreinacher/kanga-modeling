@@ -22,12 +22,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// <summary>
 		/// Initializes a new LifelineStatusElement and sets its fields.
 		/// </summary>
-		/// <param name="p">The target whose activation status is changed.</param>
-		/// <param name="s">The new Status.</param>
-		public LifelineStatusElement(Participant p, Status s) {
-			if(p == null) throw new ArgumentNullException("p");
-			TargetParticipant = p;
-			ActivationStatus = s;
+		/// <param name="participant">The target whose activation status is changed.</param>
+		/// <param name="status">The new Status.</param>
+		public LifelineStatusElement(Participant participant, Status status) {
+			if(participant == null) throw new ArgumentNullException("participant");
+			TargetParticipant = participant;
+			ActivationStatus = status;
 		}
 		
 		/// <summary>
