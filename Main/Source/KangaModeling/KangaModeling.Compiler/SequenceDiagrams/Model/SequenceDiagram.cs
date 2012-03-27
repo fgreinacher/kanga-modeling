@@ -20,7 +20,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// </summary>
 		public SequenceDiagram()
 		{
-			Participants = new List<Participant>();
+            Participants = new ParticipantCollection(StringComparer.InvariantCultureIgnoreCase);
 			Content = new RootCombinedFragment();
 		}
 
@@ -32,7 +32,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// <summary>
 		/// The participants that call each other in the sequence diagram.
 		/// </summary>
-		public List<Participant> Participants { get; private set; }
+        public ParticipantCollection Participants { get; private set; }
 
 		/// <summary>
 		/// The root content combined fragment. The idea is as follows: 
@@ -52,6 +52,5 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		{
 			get { return Participants; }
 		}
-		
 	}
 }

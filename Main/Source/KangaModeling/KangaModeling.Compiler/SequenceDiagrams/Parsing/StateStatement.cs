@@ -18,8 +18,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public override void Build(ModelBuilder builder)
         {
-            Participant targetParticipant = builder.FindParticipant(Target.Value);
-            if (targetParticipant==null)
+            Participant targetParticipant;
+            if (!builder.TryGetParticipantByName(Target.Value, out targetParticipant))
             {
                 builder.AddError(Target, "Unknown participant. Missing 'participant' declaration or use in signal statement.");
                 return;

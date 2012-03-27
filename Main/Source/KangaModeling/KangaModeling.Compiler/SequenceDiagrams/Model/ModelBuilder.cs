@@ -24,16 +24,15 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             get { return m_Errors; }
         }
 
-        internal Participant FindParticipant(String name)
+        internal bool TryGetParticipantByName(string name, out Participant participant)
         {
-            // TODO case sensitivenes?
-            return m_Diagram.Participants.Find(p => p.Name == name);
+            return m_Diagram.Participants.TryGetValue(name, out participant);
         }
 
         internal void CreateParticipant(Token name, Token description)
         {
-            // TODO check for correct name
-            if (FindParticipant(name.Value) != null)
+            Participant participant;
+            if (TryGetParticipantByName(name.Value, out participant))
             {
                 AddError(name, "Participant with this name already exists.");
             }

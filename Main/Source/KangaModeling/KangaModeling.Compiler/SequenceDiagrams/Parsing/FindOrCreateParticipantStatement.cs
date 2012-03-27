@@ -9,8 +9,8 @@
 
         public override void Build(ModelBuilder builder)
         {
-            Participant existingParticipant = builder.FindParticipant(Name.Value);
-            if (existingParticipant == null)
+            Participant existingParticipant;
+            if (!builder.TryGetParticipantByName(Name.Value, out existingParticipant))
             {
                 base.Build(builder);
             }
