@@ -10,28 +10,14 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 	/// </summary>
 	public sealed class SignalElement : DiagramElement
 	{
-		
-		/// <summary>
-		/// The type of signal.
-		/// Allows the user to distinguish between different interactions between participants.
-		/// </summary>
-		public enum Type {
-			/// <summary>A asynchronous signal</summary>
-			Signal,
-			/// <summary>A synchronous call</summary>
-			Call,
-			/// <summary>A return from a synchronous call</summary>
-			CallReturn,
-		}
-		
-		/// <summary>
+	    /// <summary>
 		/// Initializes a new SignalElement and sets its fields.
 		/// Attention: recursive signals are not allowed ATM.
 		/// </summary>
 		/// <param name="source">The source participant. Must not be null.</param>
 		/// <param name="target">The target participant. Must not be null.</param>
-		/// <param name="signalType">The type of signal.</param>
-		public SignalElement(Participant source, Participant target, Type signalType) {
+		/// <param name="signalSignalType">The type of signal.</param>
+		public SignalElement(Participant source, Participant target, SignalType signalSignalType) {
 			if(source == null) throw new ArgumentNullException("source");
 			if(target == null) throw new ArgumentNullException("target");
 			
@@ -39,7 +25,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 			
 			SourceParticipant = source;
 			TargetParticipant = target;
-			SignalType = signalType;
+			SignalType = signalSignalType;
 		}
 		
 		/// <summary>
@@ -55,8 +41,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// <summary>
 		/// The type of the signal.
 		/// </summary>
-		public Type SignalType { get; private set; }
+		public SignalType SignalType { get; private set; }
 	}
-	
 }
 

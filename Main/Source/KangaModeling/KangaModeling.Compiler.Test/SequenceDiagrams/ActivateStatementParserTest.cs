@@ -4,6 +4,7 @@ using KangaModeling.Compiler.SequenceDiagrams;
 using NUnit.Framework;
 using KangaModeling.Compiler.Test.SequenceDiagrams.Helper;
 using System.Linq;
+using Type = System.Type;
 
 namespace KangaModeling.Compiler.Test.SequenceDiagrams
 {

@@ -51,6 +51,7 @@
     <Compile Include="SequenceDiagrams\Model\IParticipant.cs" />
     <Compile Include="SequenceDiagrams\Model\ISequenceDiagram.cs" />
     <Compile Include="SequenceDiagrams\Model\RootCombinedFragment.cs" />
+    <Compile Include="SequenceDiagrams\Model\SignalType.cs" />
     <Compile Include="SequenceDiagrams\Parsing\ActivateStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\ActivateStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Model\ModelBuilder.cs" />
