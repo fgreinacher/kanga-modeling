@@ -30,7 +30,7 @@ namespace CommandLineRunner
 
         internal void run(Options opts)
         {
-            SequenceDiagram sd = Parser.ParseString(opts.Model);
+            SequenceDiagram sd = DiagramCreator.CreateFrom(opts.Model);
             Bitmap bm = genBitmap(sd);
 
             ImageFormat format = ImageFormat.Png;
