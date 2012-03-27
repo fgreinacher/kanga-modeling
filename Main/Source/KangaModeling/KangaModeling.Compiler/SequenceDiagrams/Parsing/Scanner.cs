@@ -45,12 +45,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public Token ReadTo(string text)
         {
-            return ReadWhile(() => !GetToEnd().TrimStart().StartsWith(text));
-        }
-
-        public Token ReadToWord(string text)
-        {
-            return ReadWhile(() => !GetWord().Equals(text));
+            int index = Current.IndexOf(text, Column, StringComparison.InvariantCulture);
+            while(index>0 &&  char.IsWhiteSpace(Current[index-1]))
+            {
+                index--;
+            }
+            return ReadWhile(() => index!=Column);
         }
 
         public Token ReadWord()

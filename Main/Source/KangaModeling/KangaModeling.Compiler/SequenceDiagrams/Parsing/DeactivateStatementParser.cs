@@ -12,7 +12,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             scanner.SkipWhiteSpaces();
             Token argument = scanner.ReadToEnd();
             yield return
-                argument.Length == 0
+                argument.IsEmpty()
                     ? (Statement) new MissingArgumentStatement(keyword, argument)
                     : (Statement) new DeactivateStatement(keyword, argument);
         }

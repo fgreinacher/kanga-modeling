@@ -29,7 +29,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
 			// Setup
 			SequenceDiagram sd = new SequenceDiagram();
 			// Exercise
-			sd.Participants.Add(new Participant("Player"));
+			sd.Participants.Add(new Participant("Player", "Player"));
 			// Check
 			Assert.AreEqual(1, sd.Participants.Count, "wrong count of participants");
 			
@@ -38,23 +38,21 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
 		}
 		
 		[Test, ExpectedException(typeof(ArgumentNullException))]
-        [Ignore("TODO Must be fixed - currently failing.")]
 		public void t11_CheckNameOfParticipantMustBeNonNull() 
 		{
 			// Setup
 			SequenceDiagram sd = new SequenceDiagram();
 			// Exercise && Check
-			sd.Participants.Add(new Participant(null));
+			sd.Participants.Add(new Participant(null, null));
 		}
 		
 		[Test, ExpectedException(typeof(ArgumentException))]
-        [Ignore("TODO Must be fixed - currently failing.")]
 		public void t12_CheckNameOfParticipantMustBeNotEmpty() 
 		{
 			// Setup
 			SequenceDiagram sd = new SequenceDiagram();
 			// Exercise && Check
-			sd.Participants.Add(new Participant(String.Empty));
+			sd.Participants.Add(new Participant(String.Empty, "Description"));
 		}
 		
 		[Test]
@@ -62,7 +60,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
 		{
 			// Setup
 			SequenceDiagram sd = new SequenceDiagram();
-			Participant p = new Participant("Player");
+			Participant p = new Participant("Player", "Player");
 			sd.Participants.Add(p);
 			// Exercise
 			sd.Participants.Remove(p); // TODO remove by Participant object?

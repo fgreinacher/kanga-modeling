@@ -40,7 +40,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             }
             else
             {
-                m_Diagram.Participants.Add(new Participant(name.Value));                
+                m_Diagram.Participants.Add(new Participant(name.Value, description.Value));                
             }
         }
 

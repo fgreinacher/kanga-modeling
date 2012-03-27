@@ -13,8 +13,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
             Token keywordToken = scanner.ReadWord();
             scanner.SkipWhiteSpaces();
-            Token nameOrdescription = scanner.ReadToWord(AsKeyword);
-            if (nameOrdescription.Length==0)
+            Token nameOrdescription = scanner.ReadTo(AsKeyword);
+            if (nameOrdescription.IsEmpty())
             {
                 yield return new MissingArgumentStatement(keywordToken, nameOrdescription);
                 yield break;

@@ -138,7 +138,7 @@ namespace KangaModeling.GuiRunner
                 + numberOfNewLineChars
                 + token.Start;
 
-            inputTextBox.Select(startIndex, token.Length == 0 ? 1 : token.Length);
+            inputTextBox.Select(startIndex, token.IsEmpty() ? 1 : token.Length);
         }
 
         private void compileButton_Click(object sender, EventArgs e)

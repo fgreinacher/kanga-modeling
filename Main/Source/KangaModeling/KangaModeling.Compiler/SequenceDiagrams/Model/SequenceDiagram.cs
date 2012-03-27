@@ -62,4 +62,3 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		
 	}
 }
-

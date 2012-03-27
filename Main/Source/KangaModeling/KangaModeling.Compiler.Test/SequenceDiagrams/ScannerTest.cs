@@ -122,7 +122,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         {
             Scanner target = new Scanner(input);
             target.MoveNext();
-            Token actual = target.ReadToWord(keyWord);
+            Token actual = target.ReadTo(keyWord);
             Assert.AreEqual(expectedValue, actual.Value);
         }
 

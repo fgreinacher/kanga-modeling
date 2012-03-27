@@ -142,5 +142,4 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		private readonly List<DiagramElement> _compartmentElements;
 		private readonly String _guardExpression;
 	}
-
 }
