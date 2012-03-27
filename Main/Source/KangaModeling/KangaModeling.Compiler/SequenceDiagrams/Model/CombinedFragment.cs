@@ -16,7 +16,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// </summary>
 		protected CombinedFragment(InteractionOperator op) {
 			_compartments = new List<InteractionOperand>(2);
-			Type = op;
+			Operator = op;
 		}
 		
 		/// <summary>
@@ -64,7 +64,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// <summary>
 		/// The type of this combined fragment.
 		/// </summary>
-		public InteractionOperator Type { get; private set; }
+		public InteractionOperator Operator { get; private set; }
 		
 	}
 }
