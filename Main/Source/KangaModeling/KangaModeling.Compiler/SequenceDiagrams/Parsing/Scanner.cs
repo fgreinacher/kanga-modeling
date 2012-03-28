@@ -16,7 +16,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
 
         public Scanner(string text) :
-            this(text.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
+            this(text.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.None))
         {
             
         }

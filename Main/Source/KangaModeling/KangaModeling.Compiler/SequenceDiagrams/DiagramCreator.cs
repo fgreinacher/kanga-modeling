@@ -24,7 +24,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
         public static ISequenceDiagram CreateFrom(string text, out IEnumerable<AstError> errors)
         {
-            text = text.Replace("\n", Environment.NewLine);
             var sequenceDiagram = new SequenceDiagram();
             var astBuilder = new ModelBuilder(sequenceDiagram);
 
