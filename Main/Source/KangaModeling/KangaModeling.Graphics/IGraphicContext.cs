@@ -2,15 +2,7 @@
 using System;
 
 namespace KangaModeling.Graphics
-{
-	[Flags]
-	public enum LineOptions
-	{
-		None = 0,
-		Dashed = 1 << 1,
-		ArrowEnd = 1 << 2,
-	}
-	
+{	
     public interface IGraphicContext
     {
         void DrawRectangle(Point location, Size size);

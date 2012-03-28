@@ -45,7 +45,7 @@ namespace KangaModeling.Graphics.GdiPlus.Utilities
                 case VerticalAlignment.Bottom:
                     return StringAlignment.Far;
 
-                case VerticalAlignment.Center:
+                case VerticalAlignment.Middle:
                     return StringAlignment.Center;
 
                 default:

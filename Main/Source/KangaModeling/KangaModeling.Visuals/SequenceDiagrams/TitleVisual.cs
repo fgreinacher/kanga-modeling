@@ -31,7 +31,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            graphicContext.DrawText(m_Title, HorizontalAlignment.Left, VerticalAlignment.Center, new Point(0, 0), Size);
+            graphicContext.DrawText(m_Title, HorizontalAlignment.Left, VerticalAlignment.Middle, new Point(0, 0), Size);
         }
 
         #endregion

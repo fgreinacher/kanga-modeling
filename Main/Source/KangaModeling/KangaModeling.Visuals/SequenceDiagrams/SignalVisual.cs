@@ -70,11 +70,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 			{
 				case Direction.LeftToRight:
 					from = new Point(0, Height - 2);
-					to = from.Plus(Width, 0);
+					to = from.Offset(Width, 0);
 					break;
 				case Direction.RightToLeft:
 					from = new Point(Width, Height - 2);
-					to = from.Plus(-Width, 0);
+					to = from.Offset(-Width, 0);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -82,7 +82,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 			graphicContext.DrawLine(from, to, 5, LineOptions.ArrowEnd);
 
-			graphicContext.DrawText(m_Message, HorizontalAlignment.Center, VerticalAlignment.Center,
+			graphicContext.DrawText(m_Message, HorizontalAlignment.Center, VerticalAlignment.Middle,
 				new Point(0, 0), Size);
 		}
 	}

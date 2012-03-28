@@ -62,7 +62,13 @@ namespace KangaModeling.Graphics.Primitives
 
         #region Public Methods
 
-        public Point Plus(float x, float y)
+		/// <summary>
+		/// Returns a new point with the specified horizontal and vertical offsets applied.
+		/// </summary>
+		/// <param name="x">The horizontal offset to apply.</param>
+		/// <param name="y">The vertical offset to apply.</param>
+		/// <returns>A new point with the specified x- and y-offset applied.</returns>
+        public Point Offset(float x, float y)
         {
             return new Point(m_X + x, m_Y + y);
         }
