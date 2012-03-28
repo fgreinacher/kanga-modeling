@@ -4,14 +4,50 @@
     <title>Kanga Modelling Demo</title>
 </head>
 <body>
-    <form method="get" action="SequenceDiagram.aspx">
-        <textarea rows="10" cols="30" name="code">
+    <table>
+        <tr>
+            <th>
+                Press button to compile
+            </th>
+            <th>
+            </th>
+            <th>
+                Compile as you type
+            </th>
+        </tr>
+        <tr>
+            <td valign="top">
+                <form method="get" action="SequenceDiagram.aspx">
+                <textarea rows="10" cols="30" name="code">
 title Hello World
 participant A
 B->A
         </textarea>
-        <br />
-        <button type="submit">Submit</button>
-    </form>
+                <br />
+                <button type="submit">
+                    Get Image</button>
+                </form>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td valign="top">
+                <script type="text/jscript" language="javascript">
+                    function Compile() {
+                        var codeText = document.getElementById("SourceCode").value;
+                        var image = document.getElementById("DiagramImage");
+                        image.src = 'SequenceDiagram.aspx?code=' + encodeURI(codeText);
+                    }
+                </script>
+                <textarea rows="10" cols="30" id="SourceCode" onkeyup="Compile()">
+title Hello World
+participant A
+B->A
+        </textarea>
+                <br />
+                <img id="DiagramImage" src="" alt="Sequence Diagram" />
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
