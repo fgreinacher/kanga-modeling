@@ -9,7 +9,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         /// </summary>
         /// <param name="text">The text to parse.</param>
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
-        internal static SequenceDiagram CreateFrom(string text)
+        public static ISequenceDiagram CreateFrom(string text)
         {
             var sequenceDiagram = new SequenceDiagram();
             var astBuilder = new ModelBuilder(sequenceDiagram);

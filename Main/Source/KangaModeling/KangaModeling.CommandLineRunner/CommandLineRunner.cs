@@ -30,7 +30,7 @@ namespace CommandLineRunner
 
         internal void run(Options opts)
         {
-            SequenceDiagram sd = DiagramCreator.CreateFrom(opts.Model);
+            ISequenceDiagram sd = DiagramCreator.CreateFrom(opts.Model);
             Bitmap bm = genBitmap(sd);
 
             ImageFormat format = ImageFormat.Png;
@@ -58,7 +58,7 @@ namespace CommandLineRunner
         /// </summary>
         /// <param name="sd"></param>
         /// <returns></returns>
-        private Bitmap genBitmap(SequenceDiagram sd)
+        private Bitmap genBitmap(ISequenceDiagram sd)
         {
             ITheme theme = new SimpleTheme();
             var sequenceDiagramVisual = new SequenceDiagramVisual(sd);
