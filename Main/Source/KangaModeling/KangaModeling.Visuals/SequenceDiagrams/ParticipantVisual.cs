@@ -8,12 +8,12 @@ namespace KangaModeling.Visuals.SequenceDiagrams
     public sealed class ParticipantVisual : Visual
     {
         #region Fields
-        
+
         private readonly IParticipant m_Participant;
         private readonly ParticipantNameVisual m_TopNameVisual;
         private readonly ParticipantNameVisual m_BottomNameVisual;
         private readonly ParticipantLifelineVisual m_LifelineVisual;
-        
+        private int m_Index;
         #endregion
 
         #region Construction / Destruction / Initialisation
@@ -33,8 +33,21 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             m_BottomNameVisual = new ParticipantNameVisual(m_Participant.Name);
             Children.Add(m_BottomNameVisual);
+
+			AutoSize = true;
         }
 
+        public int Index
+        {
+            get
+            {
+                return m_Index;
+            }
+            set
+            {
+                m_Index = value;
+            }
+        }
         #endregion
 
         #region Overrides / Overrideables
@@ -52,6 +65,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 m_LifelineVisual.Y + m_LifelineVisual.Height);
         }
 
+        protected override void DrawCore(IGraphicContext graphicContext)
+        {
+        }
         #endregion
     }
 }

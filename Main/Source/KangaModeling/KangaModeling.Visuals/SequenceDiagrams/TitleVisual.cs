@@ -16,6 +16,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         public TitleVisual(string title)
         {
             m_Title = title;
+			
+			AutoSize = true;
         }
 
         #endregion

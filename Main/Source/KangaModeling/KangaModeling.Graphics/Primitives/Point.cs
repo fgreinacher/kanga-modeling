@@ -69,6 +69,11 @@ namespace KangaModeling.Graphics.Primitives
 
         #region Overrides / Overrideables
 
+		public override string ToString()
+		{
+			return string.Format("Point {X={0}; Y={1}}", X, Y);
+		}
+
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
         /// </summary>

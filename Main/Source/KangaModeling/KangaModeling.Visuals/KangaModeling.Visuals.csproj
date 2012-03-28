@@ -52,6 +52,7 @@
     <Compile Include="SequenceDiagrams\ParticipantNameVisual.cs" />
     <Compile Include="SequenceDiagrams\ParticipantVisual.cs" />
     <Compile Include="SequenceDiagrams\SequenceDiagramVisual.cs" />
+    <Compile Include="SequenceDiagrams\SignalVisual.cs" />
     <Compile Include="SequenceDiagrams\TitleVisual.cs" />
     <Compile Include="Visual.cs" />
     <Compile Include="VisualCollection.cs" />

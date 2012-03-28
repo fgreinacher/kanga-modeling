@@ -4,135 +4,142 @@ using KangaModeling.Graphics.Primitives;
 
 namespace KangaModeling.Visuals
 {
-    public abstract class Visual
-    {
-        #region Construction / Destruction / Initialisation
+	public abstract class Visual
+	{
+		#region Construction / Destruction / Initialisation
 
-        protected Visual()
-        {
-            Children = new VisualCollection(this);
-            Location = new Point(0, 0);
-            Size = new Size(0, 0);
-        }
+		protected Visual()
+		{
+			Children = new VisualCollection(this);
+			Location = new Point(0, 0);
+			Size = new Size(0, 0);
+		}
 
-        #endregion
+		#endregion
 
-        #region Properties
+		#region Properties
 
-        public VisualCollection Children
-        {
-            get;
-            private set;
-        }
+		public VisualCollection Children
+		{
+			get;
+			private set;
+		}
 
-        public Point Location
-        {
-            get;
-            set;
-        }
+		public Point Location
+		{
+			get;
+			set;
+		}
 
-        public Size Size
-        {
-            get;
-            set;
-        }
+		public bool AutoSize
+		{
+			get;
+			set;
+		}
 
-        public float Width
-        {
-            get { return Size.Width; }
-        }
+		public Size Size
+		{
+			get;
+			set;
+		}
 
-        public float Height
-        {
-            get { return Size.Height; }
-        }
+		public float Width
+		{
+			get { return Size.Width; }
+		}
 
-        public float X
-        {
-            get { return Location.X; }
-        }
+		public float Height
+		{
+			get { return Size.Height; }
+		}
 
-        public float Y
-        {
-            get { return Location.Y; }
-        }
+		public float X
+		{
+			get { return Location.X; }
+		}
 
-        public float Padding
-        {
-            get;
-            set;
-        }
+		public float Y
+		{
+			get { return Location.Y; }
+		}
 
-        #endregion
+		#endregion
 
-        #region Public Methods
+		#region Public Methods
 
-        public void Layout(IGraphicContext graphicContext)
-        {
-            foreach (var child in Children)
-            {
-                child.Layout(graphicContext);
-            }
+		public void Layout(IGraphicContext graphicContext)
+		{
+			foreach (var child in Children)
+			{
+				child.Layout(graphicContext);
+			}
 
-            Arrange(graphicContext);
-            Size = Measure(graphicContext);
-        }
+			Arrange(graphicContext);
+			Measure(graphicContext);
 
-        public void Draw(IGraphicContext graphicContext)
-        {
-            using (graphicContext.ApplyOffset(Padding, Padding))
-            {
-                DrawCore(graphicContext);
+			if (AutoSize) Size = MeasuredSize;
+		}
 
-                foreach (var child in Children)
-                {
-                    using (graphicContext.ApplyOffset(child.X, child.Y))
-                    {
-                        child.Draw(graphicContext);
-                    }
-                }
-            }
-        }
+		public void Draw(IGraphicContext graphicContext)
+		{
+			DrawCore(graphicContext);
 
-        #endregion
+			foreach (var child in Children)
+			{
+				using (graphicContext.ApplyOffset(child.X, child.Y))
+				{
+					child.Draw(graphicContext);
+				}
+			}
+		}
 
-        #region Overrides / Overrideables
+		#endregion
 
-        protected virtual void ArrangeCore(IGraphicContext graphicContext)
-        {
-        }
+		#region Overrides / Overrideables
 
-        protected virtual Size MeasureCore(IGraphicContext graphicContext)
-        {
-            float maximumX = 0;
-            float maximumY = 0;
+		protected virtual void ArrangeCore(IGraphicContext graphicContext)
+		{
+		}
 
-            foreach (var child in Children)
-            {
-                maximumX = Math.Max(child.X + child.Width, maximumX);
-                maximumY = Math.Max(child.Y + child.Height, maximumY);
-            }
+		protected virtual Size MeasureCore(IGraphicContext graphicContext)
+		{
+			float maximumX = 0;
+			float maximumY = 0;
 
-            return new Size(maximumX, maximumY);
-        }
+			foreach (var child in Children)
+			{
+				maximumX = Math.Max(child.X + child.Width, maximumX);
+				maximumY = Math.Max(child.Y + child.Height, maximumY);
+			}
 
-        protected virtual void DrawCore(IGraphicContext graphicContext)
-        {
-        }
-        #endregion
+			return new Size(maximumX, maximumY);
+		}
 
-        #region Private Methods
+		protected virtual void DrawCore(IGraphicContext graphicContext)
+		{
+		}
+		#endregion
 
-        private void Arrange(IGraphicContext graphicContext)
-        {
-            ArrangeCore(graphicContext);
-        }
+		#region Private Methods
 
-        private Size Measure(IGraphicContext graphicContext)
-        {
-            return MeasureCore(graphicContext).Plus(Padding * 2, Padding * 2);
-        }
+		private void Arrange(IGraphicContext graphicContext)
+		{
+			ArrangeCore(graphicContext);
+		}
 
-        #endregion
-    }
+		private void Measure(IGraphicContext graphicContext)
+		{
+			MeasuredSize = MeasureCore(graphicContext);
+		}
+
+		public Size MeasuredSize
+		{
+			get;
+			private set;
+		}
+
+
+
+		#endregion
+	}
 }

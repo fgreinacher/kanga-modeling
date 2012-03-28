@@ -16,7 +16,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         public ParticipantNameVisual(string name)
         {
             m_Name = name;
-        }
+
+			AutoSize = true;
+		}
 
         #endregion
         

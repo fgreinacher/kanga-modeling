@@ -7,5 +7,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         string Title { get; }
 
         IEnumerable<IParticipant> Participants { get; }
+
+		RootCombinedFragment Content { get; }
     }
 }

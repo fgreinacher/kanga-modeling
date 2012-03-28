@@ -17,16 +17,23 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// <param name="source">The source participant. Must not be null.</param>
 		/// <param name="target">The target participant. Must not be null.</param>
 		/// <param name="signalSignalType">The type of signal.</param>
-		public SignalElement(Participant source, Participant target, SignalType signalSignalType) {
+		public SignalElement(string name, Participant source, Participant target, SignalType signalSignalType) {
+			if(name == null) throw new ArgumentNullException("name");
 			if(source == null) throw new ArgumentNullException("source");
 			if(target == null) throw new ArgumentNullException("target");
 			
 			if(source == target) throw new ArgumentException("recursive signals not supported ATM");
 			
+			Name = name;
 			SourceParticipant = source;
 			TargetParticipant = target;
 			SignalType = signalSignalType;
 		}
+
+		/// <summary>
+		/// The name of the signal. Never null.
+		/// </summary>
+		public string Name { get; private set; }
 		
 		/// <summary>
 		/// The source of the signal. Never null.

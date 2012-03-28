@@ -33,7 +33,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
                 return;
             }
 
-            builder.AddSignal(new SignalElement(sourceParticipant, targetParticipant, SignalType.Signal));
+            builder.AddSignal(new SignalElement(Name.Value, sourceParticipant, targetParticipant, SignalType.Signal));
         }
     }
 }
