@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("KangaModeling community")]
@@ -8,8 +7,3 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: InternalsVisibleTo("KangaModeling.Compiler")]
-[assembly: InternalsVisibleTo("KangaModeling.GuiRunner")]
-[assembly: InternalsVisibleTo("KangaModeling.CommandLineRunner")]
-[assembly: InternalsVisibleTo("KangaModeling.Visuals")]
