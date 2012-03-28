@@ -13,7 +13,6 @@ namespace KangaModelling.WebApplication
         protected void Page_Load(object sender, EventArgs e)
         {
             string codeText = Request["code"] ?? string.Empty;
-            codeText=codeText.Replace("\n", Environment.NewLine);
 
             ISequenceDiagram sd = DiagramCreator.CreateFrom(codeText);
             using(Bitmap bitmap = GenerateBitmap(sd))

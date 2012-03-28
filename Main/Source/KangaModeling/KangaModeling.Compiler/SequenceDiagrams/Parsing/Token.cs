@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
     [DebuggerDisplay("'{Value}' at Col {Start}")]
-    internal struct Token
+    public struct Token
     {
         private readonly int m_Start;
         private readonly int m_Line;

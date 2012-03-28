@@ -1,6 +1,6 @@
 ﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
-    internal class AstError
+    public class AstError
     {
         public Token Token { get; private set; }
         public string Message { get; private set; }
