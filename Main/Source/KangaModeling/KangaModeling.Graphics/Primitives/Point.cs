@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace KangaModeling.Graphics.Primitives
 {
     /// <summary>
     /// Represents an x- and y-coordinate pair in two-dimensional space.
     /// </summary>
-    public sealed class Point : IEquatable<Point>
+    [DebuggerDisplay("Point (X={X} Y={Y})")]
+	public sealed class Point : IEquatable<Point>
     {
         #region Fields
 
@@ -68,11 +70,6 @@ namespace KangaModeling.Graphics.Primitives
         #endregion
 
         #region Overrides / Overrideables
-
-		public override string ToString()
-		{
-			return string.Format("Point {X={0}; Y={1}}", X, Y);
-		}
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.

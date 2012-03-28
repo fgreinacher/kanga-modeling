@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace KangaModeling.Graphics.Primitives
 {
     /// <summary>
     /// Represents a width and height in two-dimensional space.
     /// </summary>
-    public sealed class Size : IEquatable<Size>
+	[DebuggerDisplay("Size (Width={Width} Height={Height})")]
+	public sealed class Size : IEquatable<Size>
     {
         #region Fields
 
@@ -68,11 +70,6 @@ namespace KangaModeling.Graphics.Primitives
         #endregion
 
         #region Overrides / Overrideables
-
-		public override string ToString()
-		{
-			return string.Format("Size {Width={0}; Height={1}}", Width, Height);
-		}
 
         public override bool Equals(object obj)
         {
