@@ -38,7 +38,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
 		}
 		
 		[Test, ExpectedException(typeof(ArgumentNullException))]
-		public void t11_CheckNameOfParticipantMustBeNonNull() 
+		public void t11_CheckIdOfParticipantMustBeNonNull() 
 		{
 			// Setup
 			SequenceDiagram sd = new SequenceDiagram();
@@ -47,12 +47,12 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
 		}
 		
 		[Test, ExpectedException(typeof(ArgumentException))]
-		public void t12_CheckNameOfParticipantMustBeNotEmpty() 
+		public void t12_CheckIdOfParticipantMustBeNotEmpty() 
 		{
 			// Setup
 			SequenceDiagram sd = new SequenceDiagram();
 			// Exercise && Check
-			sd.Participants.Add(new Participant(String.Empty, "Description"));
+			sd.Participants.Add(new Participant(String.Empty, "Name"));
 		}
 		
 		[Test]

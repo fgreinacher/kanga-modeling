@@ -10,7 +10,7 @@
         public override void Build(ModelBuilder builder)
         {
             Participant existingParticipant;
-            if (!builder.TryGetParticipantByName(Name.Value, out existingParticipant))
+            if (!builder.TryGetParticipantByName(Id.Value, out existingParticipant))
             {
                 base.Build(builder);
             }

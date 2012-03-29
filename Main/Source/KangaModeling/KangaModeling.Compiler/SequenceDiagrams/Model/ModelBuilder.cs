@@ -29,16 +29,16 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             return m_Diagram.Participants.TryGetValue(name, out participant);
         }
 
-        internal void CreateParticipant(Token name, Token description)
+        internal void CreateParticipant(Token id, Token name)
         {
             Participant participant;
-            if (TryGetParticipantByName(name.Value, out participant))
+            if (TryGetParticipantByName(id.Value, out participant))
             {
-                AddError(name, "Participant with this name already exists.");
+                AddError(id, "Participant with this id already exists.");
             }
             else
             {
-                m_Diagram.Participants.Add(new Participant(name.Value, description.Value));                
+                m_Diagram.Participants.Add(new Participant(id.Value, name.Value));                
             }
         }
 

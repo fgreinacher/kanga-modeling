@@ -3,6 +3,6 @@
     public interface IParticipant
     {
         string Name { get; }
-        string Description { get; }
+        string Id { get; }
     }
 }

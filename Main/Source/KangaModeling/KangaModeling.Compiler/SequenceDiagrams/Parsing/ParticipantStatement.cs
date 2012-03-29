@@ -1,27 +1,25 @@
-﻿using System.Collections.Generic;
-
-namespace KangaModeling.Compiler.SequenceDiagrams
+﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class ParticipantStatement : Statement
     {
-        public Token Name
+        public Token Id
         {
             get { return Arguments[0]; }
         }
 
-        public Token Description
+        public Token Name
         {
             get { return Arguments[1]; }
         }
 
-        public ParticipantStatement(Token keyword, Token name, Token description) 
-            : base(keyword, name, description)
+        public ParticipantStatement(Token keyword, Token id, Token name) 
+            : base(keyword, id, name)
         {
         }
 
         public override void Build(ModelBuilder builder)
         {
-            builder.CreateParticipant(Name, Description);
+            builder.CreateParticipant(Id, Name);
         }
     }
 }

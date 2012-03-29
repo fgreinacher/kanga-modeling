@@ -17,7 +17,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         protected override string GetKeyForItem(Participant item)
         {
-            return item.Name;
+            return item.Id;
         }
 
         public bool TryGetValue(string key, out Participant participant)
