@@ -5,69 +5,68 @@ using KangaModeling.Graphics.Primitives;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    public sealed class ParticipantVisual : Visual
-    {
-        #region Fields
+	public sealed class ParticipantVisual : Visual
+	{
+		#region Fields
 
-        private readonly IParticipant m_Participant;
-        private readonly ParticipantNameVisual m_TopNameVisual;
-        private readonly ParticipantNameVisual m_BottomNameVisual;
-        private readonly ParticipantLifelineVisual m_LifelineVisual;
-        private int m_Index;
-        #endregion
+		private readonly IParticipant m_Participant;
+		private readonly int m_Index;
 
-        #region Construction / Destruction / Initialisation
+		private Size m_NameSize;
 
-        public ParticipantVisual(IParticipant participant)
-        {
-            if (participant == null)
-                throw new ArgumentNullException("participant");
+		#endregion
 
-            m_Participant = participant;
+		#region Construction / Destruction / Initialisation
 
-            m_TopNameVisual = new ParticipantNameVisual(m_Participant.Name);
-            Children.Add(m_TopNameVisual);
+		public ParticipantVisual(IParticipant participant, int index)
+		{
+			if (participant == null)
+				throw new ArgumentNullException("participant");
 
-            m_LifelineVisual = new ParticipantLifelineVisual();
-            Children.Add(m_LifelineVisual);
+			m_Participant = participant;
+			m_Index = index;
+		}
 
-            m_BottomNameVisual = new ParticipantNameVisual(m_Participant.Name);
-            Children.Add(m_BottomNameVisual);
+		#endregion
 
-			AutoSize = true;
-        }
+		#region Properties
 
-        public int Index
-        {
-            get
-            {
-                return m_Index;
-            }
-            set
-            {
-                m_Index = value;
-            }
-        }
-        #endregion
+		public int Index
+		{
+			get { return m_Index; }
+		}
 
-        #region Overrides / Overrideables
+		public Size NameSize
+		{
+			get { return m_NameSize; }
+		}
 
-        protected override void ArrangeCore(IGraphicContext graphicContext)
-        {
-            m_TopNameVisual.Location = new Point(0, 0);
+		public float HalfWidth
+		{
+			get { return Width / 2; }
+		}
 
-            m_LifelineVisual.Location = new Point(
-                m_TopNameVisual.X + (m_TopNameVisual.Width / 2),
-                m_TopNameVisual.Y + m_TopNameVisual.Height);
+		#endregion
 
-            m_BottomNameVisual.Location = new Point(
-                0,
-                m_LifelineVisual.Y + m_LifelineVisual.Height);
-        }
+		#region Overrides / Overrideables
 
-        protected override void DrawCore(IGraphicContext graphicContext)
-        {
-        }
-        #endregion
-    }
+		protected override Size MeasureCore(IGraphicContext graphicContext)
+		{
+			m_NameSize = graphicContext.MeasureText(m_Participant.Name).Plus(10, 10);
+
+			return m_NameSize.Plus(5, 0);
+		}
+
+		protected override void DrawCore(IGraphicContext graphicContext)
+		{
+			graphicContext.DrawLine(new Point(Width / 2, 0), new Point(Width / 2, Height), 2);
+
+			graphicContext.DrawRectangle(new Point(0, 0), m_NameSize);
+			graphicContext.DrawRectangle(new Point(0, Height - m_NameSize.Height), m_NameSize);
+
+			graphicContext.DrawText(m_Participant.Name, HorizontalAlignment.Center, VerticalAlignment.Middle, new Point(0, 0), m_NameSize);
+			graphicContext.DrawText(m_Participant.Name, HorizontalAlignment.Center, VerticalAlignment.Middle, new Point(0, Height - m_NameSize.Height), m_NameSize);
+		}
+		#endregion
+	}
 }

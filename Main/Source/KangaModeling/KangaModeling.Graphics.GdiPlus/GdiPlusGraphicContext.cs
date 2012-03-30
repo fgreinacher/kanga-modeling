@@ -2,22 +2,28 @@
 using System.Drawing;
 using KangaModeling.Graphics.GdiPlus.Utilities;
 using KangaModeling.Graphics.Primitives;
-using KangaModeling.Graphics.Theming;
 using Point = KangaModeling.Graphics.Primitives.Point;
 using Size = KangaModeling.Graphics.Primitives.Size;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
+using System.IO;
+using System.Runtime.InteropServices;
+using KangaModeling.Graphics.GdiPlus.Resources;
 
 namespace KangaModeling.Graphics.GdiPlus
 {
-	public sealed class GdiPlusGraphicContext : IGraphicContext
+	public sealed class GdiPlusGraphicContext : IGraphicContext, IDisposable
 	{
 		private readonly System.Drawing.Graphics m_Graphics;
-		private readonly ITheme m_Theme;
+		private readonly PrivateFontCollection m_FontCollection = new PrivateFontCollection();
 
-		public GdiPlusGraphicContext(System.Drawing.Graphics graphics, ITheme theme)
+		public GdiPlusGraphicContext(System.Drawing.Graphics graphics)
 		{
+			if (graphics == null) throw new ArgumentNullException("graphics");
+
 			m_Graphics = graphics;
-			m_Theme = theme;
+			
+			FillFontCollection();
 		}
 
 		#region IGraphicContext Members
@@ -31,7 +37,7 @@ namespace KangaModeling.Graphics.GdiPlus
 
 		public void DrawText(string text, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Point location, Size size)
 		{
-			using (var font = new Font(m_Theme.Font, m_Theme.FontSize))
+			using (var font = CreateFont())
 			{
 				var rectangle = new RectangleF(location.ToPointF(), size.ToSizeF());
 
@@ -47,19 +53,20 @@ namespace KangaModeling.Graphics.GdiPlus
 
 		public void DrawLine(Point from, Point to, float width, LineOptions options = LineOptions.None)
 		{
-			using (var pen = new Pen(Brushes.Black, width))
+			using (var pen = new Pen(Brushes.Black, 2))
 			{
 				if (options.HasFlag(LineOptions.ArrowEnd))
 				{
-					pen.EndCap = LineCap.ArrowAnchor;
+					pen.CustomEndCap = new AdjustableArrowCap(7, 4, false);
 				}
+
 				m_Graphics.DrawLine(pen, from.ToPointF(), to.ToPointF());
 			}
 		}
 
 		public Size MeasureText(string text)
 		{
-			using (var font = new Font(m_Theme.Font, m_Theme.FontSize))
+			using (var font = CreateFont())
 			{
 				SizeF size = m_Graphics.MeasureString(text, font);
 				return new Size(size.Width, size.Height);
@@ -75,23 +82,37 @@ namespace KangaModeling.Graphics.GdiPlus
 			return new DoOnDispose(() => m_Graphics.EndContainer(graphicsContainer));
 		}
 
-		private class DoOnDispose : IDisposable
+		#endregion
+
+		#region IDisposable Members
+
+		public void Dispose()
 		{
-			private readonly Action m_Do;
+			m_FontCollection.Dispose();
+		}
 
-			public DoOnDispose(Action @do)
+		#endregion
+
+		#region Private Methods
+
+		private void FillFontCollection()
+		{
+			byte[] fontData = Fonts.BuxtonSketch;
+			IntPtr fontMemory = Marshal.AllocCoTaskMem(fontData.Length);
+			try
 			{
-				m_Do = @do;
+				Marshal.Copy(fontData, 0, fontMemory, fontData.Length);
+				m_FontCollection.AddMemoryFont(fontMemory, fontData.Length);
 			}
-
-			#region IDisposable Members
-
-			public void Dispose()
+			finally
 			{
-				m_Do();
+				Marshal.FreeCoTaskMem(fontMemory);
 			}
+		}
 
-			#endregion
+		private Font CreateFont()
+		{
+			return new Font(m_FontCollection.Families[0], 15);
 		}
 
 		#endregion

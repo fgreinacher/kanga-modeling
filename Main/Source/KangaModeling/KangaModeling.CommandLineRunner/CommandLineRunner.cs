@@ -4,7 +4,6 @@ using CommandLine;
 using System.Drawing.Imaging;
 using System.Drawing;
 using KangaModeling.Graphics.GdiPlus;
-using KangaModeling.Graphics.Theming;
 using KangaModeling.Visuals.SequenceDiagrams;
 
 namespace CommandLineRunner
@@ -60,14 +59,12 @@ namespace CommandLineRunner
         /// <returns></returns>
         private Bitmap genBitmap(ISequenceDiagram sd)
         {
-            ITheme theme = new SimpleTheme();
             var sequenceDiagramVisual = new SequenceDiagramVisual(sd);
 
             using (var measureBitmap = new Bitmap(1, 1))
             using (var measureGraphics = Graphics.FromImage(measureBitmap))
             {
-                var graphicContextFactory = new GdiPlusGraphicContextFactory(measureGraphics);
-                var graphicContext = graphicContextFactory.CreateGraphicContext(theme);
+				var graphicContext = new GdiPlusGraphicContext(measureGraphics);
 
                 sequenceDiagramVisual.Layout(graphicContext);
 
@@ -79,8 +76,7 @@ namespace CommandLineRunner
                 {
                     renderGraphics.Clear(Color.White);
 
-                    graphicContextFactory = new GdiPlusGraphicContextFactory(renderGraphics);
-                    graphicContext = graphicContextFactory.CreateGraphicContext(theme);
+					graphicContext =new GdiPlusGraphicContext(renderGraphics);
 
                     sequenceDiagramVisual.Draw(graphicContext);
 

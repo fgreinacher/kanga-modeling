@@ -1,25 +1,43 @@
 ﻿using System;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace KangaModeling.Visuals
 {
-	public abstract class Visual
+	public class Visual
 	{
+		#region Fields
+
+		private readonly List<Visual> m_Children = new List<Visual>();
+		private Visual m_Parent;
+
+		#endregion
+
 		#region Construction / Destruction / Initialisation
 
-		protected Visual()
+		public Visual()
 		{
-			Children = new VisualCollection(this);
-			Location = new Point(0, 0);
-			Size = new Size(0, 0);
+			Location = Point.Empty;
+			Size = Size.Empty;
 		}
 
 		#endregion
 
 		#region Properties
 
-		public VisualCollection Children
+		public IEnumerable<Visual> Children
+		{
+			get { return m_Children; }
+		}
+
+		public Visual Parent
+		{
+			get { return m_Parent; }
+		}
+
+		public Size MeasuredSize
 		{
 			get;
 			private set;
@@ -46,26 +64,55 @@ namespace KangaModeling.Visuals
 		public float Width
 		{
 			get { return Size.Width; }
+			set { Size = new Size(value, Height); }
 		}
 
 		public float Height
 		{
 			get { return Size.Height; }
+			set { Size = new Size(Width, value); }
 		}
 
 		public float X
 		{
 			get { return Location.X; }
+			set { Location = new Point(value, Y); }
 		}
 
 		public float Y
 		{
 			get { return Location.Y; }
+			set { Location = new Point(X, value); }
+		}
+
+		public float CenterX
+		{
+			get { return X + Width / 2; }
 		}
 
 		#endregion
 
 		#region Public Methods
+
+		public void AddChild(Visual visual)
+		{
+			if (visual == null) throw new ArgumentNullException("visual");
+			if (visual == this) throw new ArgumentException("The new child must not be the same as the.", "visual");
+			if (visual.m_Parent != null) throw new ArgumentException("The new child must not have a parent.", "visual");
+
+			visual.m_Parent = this;
+			m_Children.Add(visual);
+		}
+
+		public void RemoveChild(Visual visual)
+		{
+			if (visual == null) throw new ArgumentNullException("visual");
+			if (visual == this) throw new ArgumentException("The visual to remove must not be the same as the parent.", "visual");
+			if (visual.m_Parent != this) throw new ArgumentException("The parent of the child to remove must be the parent.", "visual");
+
+			visual.m_Parent = null;
+			m_Children.Remove(visual);
+		}
 
 		public void Layout(IGraphicContext graphicContext)
 		{
@@ -131,14 +178,6 @@ namespace KangaModeling.Visuals
 		{
 			MeasuredSize = MeasureCore(graphicContext);
 		}
-
-		public Size MeasuredSize
-		{
-			get;
-			private set;
-		}
-
-
 
 		#endregion
 	}

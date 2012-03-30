@@ -10,9 +10,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Graphics", "Graphics", "{BBF5AB3C-A94B-410F-B68C-8C4CCB5159BA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{34D21C09-9AB2-4265-92B0-C1438061673F}"
-	ProjectSection(SolutionItems) = preProject
-		AssemblyInfo.Common.cs = AssemblyInfo.Common.cs
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runner", "Runner", "{3517360B-7BE8-465D-AE4D-1B95A45E934E}"
 EndProject

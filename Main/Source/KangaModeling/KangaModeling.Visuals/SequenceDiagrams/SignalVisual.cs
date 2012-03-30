@@ -54,12 +54,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 		protected override void ArrangeCore(IGraphicContext graphicContext)
 		{
 			base.ArrangeCore(graphicContext);
-
 		}
 
 		protected override Size MeasureCore(IGraphicContext graphicContext)
 		{
-			return graphicContext.MeasureText(m_Message).Plus(25, 20);
+			return graphicContext.MeasureText(m_Message).Plus(10, 10);
 		}
 
 		protected override void DrawCore(IGraphicContext graphicContext)
@@ -80,7 +79,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 					throw new ArgumentOutOfRangeException();
 			}
 
-			graphicContext.DrawLine(from, to, 5, LineOptions.ArrowEnd);
+			graphicContext.DrawLine(from, to, 2, LineOptions.ArrowEnd);
 
 			graphicContext.DrawText(m_Message, HorizontalAlignment.Center, VerticalAlignment.Middle,
 				new Point(0, 0), Size);

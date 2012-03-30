@@ -3,18 +3,23 @@ using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
 using System.Linq;
+using System;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
 	public sealed class SequenceDiagramVisual : Visual
 	{
+		#region Constants
+
+		private const float c_OuterMargin = 10;
+		private const float c_InnerMargin = 10;
+
+		#endregion
+
 		#region Fields
 
-		private readonly ISequenceDiagram m_SequenceDiagram;
 		private readonly TitleVisual m_TitleVisual;
-		private readonly IDictionary<IParticipant, ParticipantVisual> m_ParticipantVisuals =
-			new Dictionary<IParticipant, ParticipantVisual>();
-
+		private readonly IDictionary<IParticipant, ParticipantVisual> m_ParticipantVisuals = new Dictionary<IParticipant, ParticipantVisual>();
 		private readonly IList<SignalVisual> m_SignalVisuals = new List<SignalVisual>();
 
 		#endregion
@@ -23,31 +28,28 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 		public SequenceDiagramVisual(ISequenceDiagram sequenceDiagram)
 		{
-			m_SequenceDiagram = sequenceDiagram;
-
-			if (m_SequenceDiagram.Title != null)
+			if (sequenceDiagram.Title != null)
 			{
-				m_TitleVisual = new TitleVisual(m_SequenceDiagram.Title);
-				Children.Add(m_TitleVisual);
+				m_TitleVisual = new TitleVisual(sequenceDiagram.Title);
+				AddChild(m_TitleVisual);
 			}
 
 			int participantIndex = 0;
-			foreach (var participant in m_SequenceDiagram.Participants)
+			foreach (var participant in sequenceDiagram.Participants)
 			{
-				var participantVisual = new ParticipantVisual(participant);
-				participantVisual.Index = participantIndex++;
+				var participantVisual = new ParticipantVisual(participant, participantIndex++);
 				m_ParticipantVisuals.Add(participant, participantVisual);
-				Children.Add(participantVisual);
+				AddChild(participantVisual);
 			}
 
-			foreach (var signal in m_SequenceDiagram.Content.SelectMany(c => c).OfType<SignalElement>())
+			foreach (var signal in sequenceDiagram.Content.SelectMany(c => c).OfType<SignalElement>())
 			{
-				var sourceParticipantVisual = m_ParticipantVisuals[signal.SourceParticipant];
-				var targetParticipantVisual = m_ParticipantVisuals[signal.TargetParticipant];
-
-				var signalVisual = new SignalVisual(sourceParticipantVisual, targetParticipantVisual, signal.Name);
+				var signalVisual = new SignalVisual(
+					m_ParticipantVisuals[signal.SourceParticipant],
+					m_ParticipantVisuals[signal.TargetParticipant],
+					signal.Name);
 				m_SignalVisuals.Add(signalVisual);
-				Children.Add(signalVisual);
+				AddChild(signalVisual);
 			}
 
 			AutoSize = true;
@@ -59,41 +61,70 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 		protected override void ArrangeCore(IGraphicContext graphicContext)
 		{
-			float x = 0, y = 0;
+			float x = c_OuterMargin, y = c_OuterMargin;
 
 			if (m_TitleVisual != null)
 			{
-				m_TitleVisual.Location = new Point(0, 0);
+				m_TitleVisual.Location = new Point(x, y);
 				y += m_TitleVisual.Height;
 			}
+
+			float maximumParticipantNameHeight = 0;
 
 			foreach (var participantVisual in m_ParticipantVisuals.Values)
 			{
 				participantVisual.Location = new Point(x, y);
+				participantVisual.Width = participantVisual.NameSize.Width + c_InnerMargin;
+
 				x += participantVisual.Size.Width;
+				
+				maximumParticipantNameHeight = Math.Max(
+					participantVisual.NameSize.Height, 
+					maximumParticipantNameHeight);
 			}
 
-			y += 30;
+			y += maximumParticipantNameHeight;
+			y += c_InnerMargin;
 
 			foreach (var signalVisual in m_SignalVisuals)
 			{
-				x = signalVisual.LeftParticipantVisual.X + signalVisual.LeftParticipantVisual.Width / 2;
+				x = signalVisual.LeftParticipantVisual.CenterX;
 
-				EnsureParticipantIsAtLeastAt(signalVisual.RightParticipantVisual, x + signalVisual.MeasuredSize.Width - (signalVisual.RightParticipantVisual.Width / 2));
+				EnsureParticipantIsAtLeastAt(
+					signalVisual.RightParticipantVisual,
+					x + signalVisual.MeasuredSize.Width - (signalVisual.RightParticipantVisual.HalfWidth));
 			}
+
+			y += c_InnerMargin;
 
 			foreach (var signalVisual in m_SignalVisuals)
 			{
-				x = signalVisual.LeftParticipantVisual.X + signalVisual.LeftParticipantVisual.Width / 2;
+				signalVisual.Location = new Point(
+					signalVisual.LeftParticipantVisual.CenterX,
+					y);
 
-				signalVisual.Location = new Point(x, y);
 				signalVisual.Size = new Size(
-					signalVisual.RightParticipantVisual.X - signalVisual.LeftParticipantVisual.X,
+					signalVisual.RightParticipantVisual.CenterX - signalVisual.LeftParticipantVisual.CenterX,
 					signalVisual.MeasuredSize.Height);
 
 				y += signalVisual.Height;
+				y += c_InnerMargin;
+			}
+
+			foreach (var participantVisual in m_ParticipantVisuals.Values)
+			{
+				participantVisual.Height = participantVisual.NameSize.Height + y - participantVisual.Y;
 			}
 		}
+
+		protected override Size MeasureCore(IGraphicContext graphicContext)
+		{
+			return base.MeasureCore(graphicContext).Plus(c_OuterMargin, c_OuterMargin);
+		}
+
+		#endregion
+
+		#region Private Methods
 
 		private void EnsureParticipantIsAtLeastAt(ParticipantVisual participantVisual, float x)
 		{
@@ -101,11 +132,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 			if (delta > 0)
 			{
-				foreach (ParticipantVisual otherParticipantVisual in m_ParticipantVisuals.Values
+				var rightNeighbors = m_ParticipantVisuals.Values
 					.Where(pv => pv.Index >= participantVisual.Index)
-					.OrderBy(pv => pv.Index))
+					.OrderBy(pv => pv.Index);
+
+				foreach (var rightNeighbor in rightNeighbors)
 				{
-					otherParticipantVisual.Location = new Point(otherParticipantVisual.X + delta, otherParticipantVisual.Y);
+					rightNeighbor.X += delta;
 				}
 			}
 		}

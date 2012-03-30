@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using KangaModeling.Compiler.SequenceDiagrams;
-using KangaModeling.Graphics.Theming;
 using KangaModeling.Graphics.GdiPlus;
 using KangaModeling.Graphics;
 using KangaModeling.Visuals.SequenceDiagrams;
@@ -25,13 +24,11 @@ namespace KangaModeling.GuiRunner
             ShowErrors(errors);
 
             var sequenceDiagramVisual = new SequenceDiagramVisual(sequenceDiagram);
-			var theme = new SimpleTheme();
 
 			using (var measureBitmap = new Bitmap(1, 1))
 			using (var measureGraphics = System.Drawing.Graphics.FromImage(measureBitmap))
 			{
-			    var graphicContextFactory = new GdiPlusGraphicContextFactory(measureGraphics);
-			    var graphicContext = graphicContextFactory.CreateGraphicContext(theme);
+			    var graphicContext = new GdiPlusGraphicContext(measureGraphics);
 
 			    sequenceDiagramVisual.Layout(graphicContext);
                 
@@ -43,8 +40,7 @@ namespace KangaModeling.GuiRunner
                 {
                     renderGraphics.Clear(Color.White);
 
-                    graphicContextFactory = new GdiPlusGraphicContextFactory(renderGraphics);
-                    graphicContext = graphicContextFactory.CreateGraphicContext(theme);
+					graphicContext = new GdiPlusGraphicContext(renderGraphics);
 
                     sequenceDiagramVisual.Draw(graphicContext);
 
