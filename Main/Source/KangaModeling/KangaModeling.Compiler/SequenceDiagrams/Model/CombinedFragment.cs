@@ -38,16 +38,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 			_compartments.Add(c);
 			return c;
 		}
-		
-		IEnumerator<InteractionOperand> IEnumerable<InteractionOperand>.GetEnumerator() {
-			foreach(InteractionOperand de in _compartments)
-				yield return de;
-		}
-		
-		IEnumerator IEnumerable.GetEnumerator() {
-			foreach(InteractionOperand de in _compartments)
-				yield return de;
-		}
+
+
+        public IEnumerator<InteractionOperand> GetEnumerator()
+        {
+            foreach (InteractionOperand de in _compartments)
+                yield return de;
+        }
 
         public InteractionOperand this[int index]
         {
@@ -60,12 +57,16 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 		/// <summary>
 		/// The interaction operands.
 		/// </summary>
-		private List<InteractionOperand> _compartments;
+		private readonly List<InteractionOperand> _compartments;
 		
 		/// <summary>
 		/// The type of this combined fragment.
 		/// </summary>
 		public InteractionOperator Operator { get; private set; }
-		
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 	}
 }
