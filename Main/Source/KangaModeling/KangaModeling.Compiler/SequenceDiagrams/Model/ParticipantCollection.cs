@@ -17,6 +17,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         protected override string GetKeyForItem(Participant item)
         {
+            if (item == null) {throw new ArgumentNullException("item");}
             return item.Id;
         }
 
