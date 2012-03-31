@@ -5,6 +5,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
     /// <summary>
     /// The root combined fragment is the root of all content inside a sequence diagram.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public sealed class RootCombinedFragment : CombinedFragment
     {
         /// <summary>

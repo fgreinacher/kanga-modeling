@@ -10,6 +10,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
     /// It consists of the guard expression, determining when the elements are to be
     /// carried out.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
     public sealed class InteractionOperand : IEnumerable<DiagramElement> {
 		
         public InteractionOperand(String guardExpression) {

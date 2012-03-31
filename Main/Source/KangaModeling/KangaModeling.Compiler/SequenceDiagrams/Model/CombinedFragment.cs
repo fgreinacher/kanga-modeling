@@ -8,7 +8,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 	/// A combined fragment encapsulates multiple calls between the participants inside a boundary.
 	/// This can be used to model optional workflows, alternatives, loops, etc.
 	/// </summary>
-	public abstract class CombinedFragment : DiagramElement, IEnumerable<InteractionOperand>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
+    public abstract class CombinedFragment : DiagramElement, IEnumerable<InteractionOperand>
 	{
 		
 		/// <summary>
