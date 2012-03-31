@@ -54,5 +54,41 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
             return string.Format("[Ln {0} Col {1}] '{2}' ", Line, Start, Value);
         }
+
+        public bool Equals(Token other)
+        {
+            return 
+                other.m_Start == m_Start && 
+                other.m_Line == m_Line && 
+                Equals(other.m_Value, m_Value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (obj.GetType() != typeof (Token)) return false;
+            return Equals((Token) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = m_Start;
+                result = (result*397) ^ m_Line;
+                result = (result*397) ^ (m_Value != null ? m_Value.GetHashCode() : 0);
+                return result;
+            }
+        }
+
+        public static bool operator ==(Token left, Token right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Token left, Token right)
+        {
+            return !left.Equals(right);
+        }
     }
 }
