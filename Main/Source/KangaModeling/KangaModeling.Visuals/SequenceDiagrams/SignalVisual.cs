@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
+using KangaModeling.Compiler.SequenceDiagrams;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
@@ -18,13 +19,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 		private readonly ParticipantVisual m_LeftParticipantVisual;
 		private readonly ParticipantVisual m_RightParticipantVisual;
 		private readonly Direction m_Direction;
+
+		private readonly SignalType m_Type;
 		private readonly string m_Message;
 
 		public SignalVisual(
 			ParticipantVisual sourceParticipantVisual,
 			ParticipantVisual targetParticipantVisual,
+			SignalType type,
 			string message)
 		{
+			m_Type = type;
 			m_Message = message;
 
 			if (sourceParticipantVisual.Index > targetParticipantVisual.Index)
@@ -79,7 +84,14 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 					throw new ArgumentOutOfRangeException();
 			}
 
-			graphicContext.DrawLine(from, to, 2, LineOptions.ArrowEnd);
+			var lineOptions = LineOptions.ArrowEnd;
+
+			if (m_Type == SignalType.CallReturn)
+			{
+				lineOptions = lineOptions | LineOptions.Dashed;
+			}
+
+			graphicContext.DrawLine(from, to, 2, lineOptions);
 
 			graphicContext.DrawText(m_Message, HorizontalAlignment.Center, VerticalAlignment.Middle,
 				new Point(0, 0), Size);

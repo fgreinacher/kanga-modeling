@@ -47,6 +47,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 				var signalVisual = new SignalVisual(
 					m_ParticipantVisuals[signal.SourceParticipant],
 					m_ParticipantVisuals[signal.TargetParticipant],
+					signal.SignalType,
 					signal.Name);
 				m_SignalVisuals.Add(signalVisual);
 				AddChild(signalVisual);
