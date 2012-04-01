@@ -1,0 +1,8 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Debug" />
+  <Config name="Debug" binpathtype="Auto">
+    <assembly path="KangaModeling.Compiler.Test\bin\Debug\KangaModeling.Compiler.Test.dll" />
+    <assembly path="KangaModeling.Visuals.Test\bin\Debug\KangaModeling.Visuals.Test.dll" />
+  </Config>
+  <Config name="Release" binpathtype="Auto" />
+</NUnitProject>
