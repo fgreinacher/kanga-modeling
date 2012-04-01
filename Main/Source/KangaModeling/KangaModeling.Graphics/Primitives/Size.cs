@@ -71,6 +71,11 @@ namespace KangaModeling.Graphics.Primitives
 
         #region Overrides / Overrideables
 
+		public override string ToString()
+		{
+			return string.Format("Size (Width={0} Height={1})", Width, Height);
+		}
+
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
