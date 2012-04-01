@@ -11,9 +11,9 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
         }
 
-		protected override SignalType GetSignalType()
-		{
-			return SignalType.Call;
-		}
+        protected override void AddSignal(ModelBuilder builder, Participant sourceParticipant, Participant targetParticipant)
+        {
+            builder.AddSignal(new SignalElement(Name.Value, sourceParticipant, targetParticipant, SignalType.Call));
+        }
     }
 }

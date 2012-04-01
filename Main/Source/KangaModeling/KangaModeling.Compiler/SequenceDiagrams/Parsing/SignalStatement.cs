@@ -33,9 +33,9 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 				return;
 			}
 
-			builder.AddSignal(new SignalElement(Name.Value, sourceParticipant, targetParticipant, GetSignalType()));
+			AddSignal(builder, sourceParticipant, targetParticipant);
 		}
 
-		protected abstract SignalType GetSignalType();
+	    protected abstract void AddSignal(ModelBuilder builder, Participant sourceParticipant, Participant targetParticipant);
 	}
 }
