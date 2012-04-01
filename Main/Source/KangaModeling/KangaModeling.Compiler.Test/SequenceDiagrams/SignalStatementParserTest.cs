@@ -50,6 +50,20 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             CollectionAssert.AreEquivalent(expectedStatementTypes, actualStatementTypes);
         }
 
+		[TestCase("A->B", "A", "B")]
+		[TestCase("A-->B", "A", "B")]
+		[TestCase("A<-B", "B", "A")]
+		[TestCase("A<--B", "B", "A")]
+		public void VerifySourceAndTarget(string input, string expectedSourceValue, string expectedTargetValue)
+		{
+			var parser = new SignalStatementParser();
+			var statements = parser.Parse(input);
+			var signalStatement = statements.OfType<SignalStatement>().Single();
+
+			Assert.That(signalStatement.Source.Value, Is.EqualTo(expectedSourceValue));
+			Assert.That(signalStatement.Target.Value, Is.EqualTo(expectedTargetValue));
+		}
+
         [Ignore]
         public void EnsureTokensSimple(string input, string[] expectedTokenValues)
         {

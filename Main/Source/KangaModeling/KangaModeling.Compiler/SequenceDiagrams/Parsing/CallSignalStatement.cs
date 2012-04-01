@@ -10,5 +10,10 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             : base(keyword, source, target, name)
         {
         }
+
+		protected override SignalType GetSignalType()
+		{
+			return SignalType.Call;
+		}
     }
 }

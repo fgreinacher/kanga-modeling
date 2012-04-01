@@ -6,5 +6,10 @@
             : base(keyword, source, target, name)
         {
         }
+
+		protected override SignalType GetSignalType()
+		{
+			return SignalType.CallReturn;
+		}
     }
 }
