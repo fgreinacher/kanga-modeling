@@ -22,7 +22,7 @@ namespace KangaModeling.Graphics.GdiPlus
 			if (graphics == null) throw new ArgumentNullException("graphics");
 
 			m_Graphics = graphics;
-			
+
 			FillFontCollection();
 		}
 
@@ -58,6 +58,11 @@ namespace KangaModeling.Graphics.GdiPlus
 				if (options.HasFlag(LineOptions.ArrowEnd))
 				{
 					pen.CustomEndCap = new AdjustableArrowCap(7, 4, false);
+				}
+
+				if (options.HasFlag(LineOptions.Dashed))
+				{
+					pen.DashStyle = DashStyle.Dash;
 				}
 
 				m_Graphics.DrawLine(pen, from.ToPointF(), to.ToPointF());

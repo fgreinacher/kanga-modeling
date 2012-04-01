@@ -20,5 +20,6 @@ namespace KangaModeling.Graphics.Primitives
 		/// An arrow is drawn at the end of the line.
 		/// </summary>
 		ArrowEnd = 1 << 1,
+		Dashed,
 	}
 }
