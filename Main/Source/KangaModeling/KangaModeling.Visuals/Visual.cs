@@ -114,6 +114,26 @@ namespace KangaModeling.Visuals
 			m_Children.Remove(visual);
 		}
 
+		public Point LocalPointToGlobalPoint(Point localPoint)
+		{
+			if (Parent == null)
+			{
+				return localPoint;
+			}
+
+			return Parent.GlobalPointToLocalPoint(localPoint.Offset(Location.X, Location.Y));
+		}
+
+		public Point GlobalPointToLocalPoint(Point globalPoint)
+		{
+			if (Parent == null)
+			{
+				return globalPoint;
+			}
+
+			return Parent.GlobalPointToLocalPoint(globalPoint.Offset(-Location.X, -Location.Y));
+		}
+
 		public void Layout(IGraphicContext graphicContext)
 		{
 			foreach (var child in Children)
