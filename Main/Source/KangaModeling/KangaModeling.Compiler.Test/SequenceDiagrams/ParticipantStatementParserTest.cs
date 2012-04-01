@@ -13,7 +13,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase("participant A", typeof(SimpleParticipantStatement))]
         [TestCase("participant", typeof(MissingArgumentStatement))]
         [TestCase("participant Name as A", typeof(ParticipantStatement))]
-        [TestCase("participant Name as", typeof(ParticipantStatement))]
+        [TestCase("participant Name as", typeof(MissingArgumentStatement))]
         public void ParseTest(string input, Type expectedStatementType)
         {
             var target = new ParticipantStatementParser();
@@ -32,14 +32,14 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             CollectionAssert.AreEquivalent(expected, tokenValues);
         }
 
-        [TestCase("participant Name as A", "A", "Name")]
-        [TestCase("participant Name as", "", "Name")]
-        public void EnsureTokensExtended(string input, string nameValue, string descriptionValue)
+        [TestCase("participant Name as A", new[] {"A", "Name"})]
+        [TestCase("participant Name as", new[] {""})]
+        public void EnsureTokensExtended(string input, string[] tokens)
         {
             ParticipantStatementParser target = new ParticipantStatementParser();
             var actual = target.Parse(input);
             var tokenValues = actual.First().Tokens().Select(token => token.Value);
-            var expected = new[] { ParticipantStatementParser.Keyword, nameValue, descriptionValue };
+            var expected = new[] { ParticipantStatementParser.Keyword} .Concat(tokens) ;
             CollectionAssert.AreEquivalent(expected, tokenValues);
         }
     }
