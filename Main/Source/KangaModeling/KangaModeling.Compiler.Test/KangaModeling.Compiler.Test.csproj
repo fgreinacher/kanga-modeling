@@ -47,25 +47,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SequenceDiagrams\ModelBuilderTest.cs" />
-    <Compile Include="SequenceDiagrams\ActivateStatementParserTest.cs" />
-    <Compile Include="SequenceDiagrams\DeactivateStatementParserTest.cs" />
-    <Compile Include="SequenceDiagrams\SignalStatementParserTest.cs" />
+    <Compile Include="SequenceDiagrams\Statements\EnsureParticipantStatementTest.cs" />
+    <Compile Include="SequenceDiagrams\Statements\SimleParticipantStatementTest.cs" />
+    <Compile Include="SequenceDiagrams\Model\ModelBuilderTest.cs" />
+    <Compile Include="SequenceDiagrams\Parsers\ActivateStatementParserTest.cs" />
+    <Compile Include="SequenceDiagrams\Parsers\DeactivateStatementParserTest.cs" />
+    <Compile Include="SequenceDiagrams\Statements\ParticipantStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsers\SignalStatementParserTest.cs" />
     <Compile Include="SequenceDiagrams\Helper\ParserExtensions.cs" />
-    <Compile Include="SequenceDiagrams\ModelTests.cs">
+    <Compile Include="SequenceDiagrams\Model\ModelTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SequenceDiagrams\ParserTest.cs" />
-    <Compile Include="SequenceDiagrams\ParticipantStatementParserTest.cs" />
+    <Compile Include="SequenceDiagrams\Parsers\ParticipantStatementParserTest.cs" />
     <Compile Include="SequenceDiagrams\ScannerTest.cs" />
     <Compile Include="SequenceDiagrams\StatementFactoryTest.cs" />
-    <Compile Include="SequenceDiagrams\TitleStatementParserTest.cs" />
-    <Compile Include="SequenceDiagrams\TitleStatementTest.cs" />
+    <Compile Include="SequenceDiagrams\Parsers\TitleStatementParserTest.cs" />
+    <Compile Include="SequenceDiagrams\Statements\TitleStatementTest.cs" />
     <Compile Include="SequenceDiagrams\TokenTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SequenceDiagrams\UnknownStatementParserTest.cs" />
-    <Compile Include="SequenceDiagrams\UnknownStatementTest.cs" />
+    <Compile Include="SequenceDiagrams\Parsers\UnknownStatementParserTest.cs" />
+    <Compile Include="SequenceDiagrams\Statements\UnknownStatementTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

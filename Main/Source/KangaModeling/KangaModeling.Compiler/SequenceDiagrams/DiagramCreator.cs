@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using KangaModeling.Compiler.SequenceDiagrams.Model;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
@@ -12,7 +13,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
         public static ISequenceDiagram CreateFrom(string text)
         {
-            IEnumerable<AstError> errors;
+            IEnumerable<ModelError> errors;
             return CreateFrom(text, out errors);
         }
 
@@ -22,10 +23,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         /// <param name="text">The text to parse.</param>
         /// <param name="errors"></param>
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
-        public static ISequenceDiagram CreateFrom(string text, out IEnumerable<AstError> errors)
+        public static ISequenceDiagram CreateFrom(string text, out IEnumerable<ModelError> errors)
         {
+            var elementFactory = new DiagramElementFactory();
             var sequenceDiagram = new SequenceDiagram();
-            var astBuilder = new ModelBuilder(sequenceDiagram);
+            var astBuilder = new ModelBuilder(sequenceDiagram, elementFactory);
 
             using (var scanner = new Scanner(text))
             {

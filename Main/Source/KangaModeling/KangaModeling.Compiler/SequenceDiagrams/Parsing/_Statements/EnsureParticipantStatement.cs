@@ -1,16 +1,15 @@
 ﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
-    internal class FindOrCreateParticipantStatement : SimpleParticipantStatement
+    internal class EnsureParticipantStatement : SimpleParticipantStatement
     {
-        public FindOrCreateParticipantStatement(Token name) 
+        public EnsureParticipantStatement(Token name) 
             : base(name, name)
         {
         }
 
         public override void Build(ModelBuilder builder)
         {
-            Participant existingParticipant;
-            if (!builder.TryGetParticipantByName(Id.Value, out existingParticipant))
+            if (!builder.HasParticipant(Id.Value))
             {
                 base.Build(builder);
             }

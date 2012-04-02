@@ -1,11 +1,11 @@
 ﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
-    public class AstError
+    public class ModelError
     {
         public Token Token { get; private set; }
         public string Message { get; private set; }
 
-        public AstError(Token token, string message)
+        public ModelError(Token token, string message)
         {
             Token = token;
             Message = message;

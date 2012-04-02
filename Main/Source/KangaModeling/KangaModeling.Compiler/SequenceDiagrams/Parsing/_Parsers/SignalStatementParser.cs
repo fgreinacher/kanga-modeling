@@ -33,13 +33,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
             yield return
                 !source.IsEmpty()
-                    ? (Statement)new FindOrCreateParticipantStatement(source)
+                    ? (Statement)new EnsureParticipantStatement(source)
                     : (Statement)new MissingArgumentStatement(signalKeyword, source);
 
             Token target = scanner.ReadTo(ColonKeyowrd);
             yield return
                 !target.IsEmpty()
-                    ? (Statement)new FindOrCreateParticipantStatement(target)
+                    ? (Statement)new EnsureParticipantStatement(target)
                     : (Statement)new MissingArgumentStatement(signalKeyword, target);
 
 

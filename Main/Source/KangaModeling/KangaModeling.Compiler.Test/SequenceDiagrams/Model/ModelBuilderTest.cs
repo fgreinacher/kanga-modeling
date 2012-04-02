@@ -11,7 +11,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         public void AstBuilderConstructorTest()
         {
             var diagram = new SequenceDiagram();
-            ModelBuilder target = new ModelBuilder(diagram);
+            ModelBuilder target = new ModelBuilder(diagram, null);
             Assert.AreEqual(diagram, target.Diagram);
         }
 
@@ -26,7 +26,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         public void SetTitleTest(string expectedTitle)
         {
             var diagram = new SequenceDiagram();
-            ModelBuilder target = new ModelBuilder(diagram);
+            ModelBuilder target = new ModelBuilder(diagram, null);
             target.SetTitle(new Token(20,20, expectedTitle));
             Assert.AreEqual(expectedTitle, diagram.Title);
         }
@@ -35,7 +35,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         public void SetTitleTwiceGeneratesError()
         {
             var diagram = new SequenceDiagram();
-            ModelBuilder target = new ModelBuilder(diagram);
+            ModelBuilder target = new ModelBuilder(diagram, null);
             int initialErrorCount = target.Errors.Count(); 
             target.SetTitle(new Token(20, 20, "SomeText"));
             target.SetTitle(new Token(20, 20, "SomeText"));

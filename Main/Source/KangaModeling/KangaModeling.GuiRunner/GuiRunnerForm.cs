@@ -19,7 +19,7 @@ namespace KangaModeling.GuiRunner
 
         private void Compile()
 		{
-            IEnumerable<AstError> errors;
+            IEnumerable<ModelError> errors;
             var sequenceDiagram = DiagramCreator.CreateFrom(inputTextBox.Text, out errors);
             ShowErrors(errors);
 
@@ -50,13 +50,13 @@ namespace KangaModeling.GuiRunner
 			}
 		}
 
-        private void ShowErrors(IEnumerable<AstError> errors)
+        private void ShowErrors(IEnumerable<ModelError> errors)
         {
             FillErrorList(errors);
             HighlightErrorsInEditor(errors);
         }
 
-        private void HighlightErrorsInEditor(IEnumerable<AstError> errors)
+        private void HighlightErrorsInEditor(IEnumerable<ModelError> errors)
         {
             int rememberStart = inputTextBox.SelectionStart;
             int rememberLength = inputTextBox.SelectionLength;
@@ -65,7 +65,7 @@ namespace KangaModeling.GuiRunner
             inputTextBox.SelectionColor = Color.Navy;
             inputTextBox.SelectionBackColor = Color.White;
 
-            foreach (AstError astError in errors)
+            foreach (ModelError astError in errors)
             {
                 SelectTokenInEditor(astError.Token);
                 inputTextBox.SelectionColor = Color.Red;
@@ -75,10 +75,10 @@ namespace KangaModeling.GuiRunner
             inputTextBox.SelectionColor = Color.Navy;
         }
 
-        private void FillErrorList(IEnumerable<AstError> errors)
+        private void FillErrorList(IEnumerable<ModelError> errors)
         {
             listBoxErrors.Items.Clear();
-            foreach (AstError error in errors)
+            foreach (ModelError error in errors)
             {
                 var listItem =
                     new ListViewItem(
@@ -133,7 +133,7 @@ namespace KangaModeling.GuiRunner
                 return;
             }
 
-            AstError error = listBoxErrors.SelectedItems[0].Tag as AstError;
+            ModelError error = listBoxErrors.SelectedItems[0].Tag as ModelError;
             if (error == null)
             {
                 return;
