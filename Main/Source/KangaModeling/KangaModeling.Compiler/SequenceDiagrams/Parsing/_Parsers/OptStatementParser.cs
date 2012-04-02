@@ -1,12 +1,12 @@
 ﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
-    internal class TitleStatementParser : OneArgumentStatementParser
+    internal class OptStatementParser : OneArgumentStatementParser
     {
-        public const string Keyword = "title";
+        public const string OptKeyword = "opt";
 
         protected override Statement CreateStatement(Token keyword, Token argument)
         {
-            return new TitleStatement(keyword, argument);
+            return new OptStatement(keyword, argument);
         }
     }
 }

@@ -53,9 +53,16 @@
     <Compile Include="SequenceDiagrams\Model\InteractionOperator.cs" />
     <Compile Include="SequenceDiagrams\Model\IParticipant.cs" />
     <Compile Include="SequenceDiagrams\Model\ISequenceDiagram.cs" />
+    <Compile Include="SequenceDiagrams\Model\OptFragment.cs" />
     <Compile Include="SequenceDiagrams\Model\ParticipantCollection.cs" />
     <Compile Include="SequenceDiagrams\Model\RootCombinedFragment.cs" />
     <Compile Include="SequenceDiagrams\Model\SignalType.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\_Statements\EndStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\_Parsers\EndStatementParser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\_Parsers\OneArgumentStatementParser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\_Statements\UnexpectedArgumentStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\_Statements\OptStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\_Parsers\OptStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\ActivateStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\ActivateStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Model\ModelBuilder.cs" />
@@ -76,7 +83,7 @@
     <Compile Include="SequenceDiagrams\Model\CombinedFragment.cs" />
     <Compile Include="SequenceDiagrams\Parsing\Parser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\ParticipantStatementParser.cs" />
-    <Compile Include="SequenceDiagrams\Parsing\StatementParser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\_Parsers\StatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\StateStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\TitleStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\UnknownStatementParser.cs" />

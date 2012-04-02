@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using KangaModeling.Compiler.SequenceDiagrams.Model;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
@@ -8,12 +9,20 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         private readonly SequenceDiagram m_Diagram;
         private readonly DiagramElementFactory m_ElementFactory;
         private readonly Queue<ModelError> m_Errors;
+        private readonly Stack<InteractionOperand> m_OperandStack;
 
         public ModelBuilder(SequenceDiagram diagram, DiagramElementFactory elementFactory)
         {
             m_Diagram = diagram;
             m_ElementFactory = elementFactory;
             m_Errors = new Queue<ModelError>();
+            m_OperandStack = new Stack<InteractionOperand>();
+        //    m_OperandStack.Append(diagram.Content.InteractionOperand);
+        }
+
+        private InteractionOperand CurrentOperand
+        {
+            get { return m_OperandStack.Peek(); }
         }
 
         public SequenceDiagram Diagram
@@ -123,6 +132,16 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         internal void Deactivate(Token target)
         {
             ChangeState(target, ActivationStatus.Deactivate);
+        }
+
+        public void StartOpt(Token guardExpression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void End()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
     public class ParticipantStatementTest
     {
         [TestCase("A", "Some Name")]
-        public void Tets(string id, string name)
+        public void Test(string id, string name)
         {
             var keyWordToken = new Token(0, 100, "participant");
             var idToken = new Token(0, id.Length, id);

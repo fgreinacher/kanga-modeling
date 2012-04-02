@@ -1,5 +1,4 @@
 ﻿using KangaModeling.Compiler.SequenceDiagrams;
-using KangaModeling.Compiler.SequenceDiagrams.Model;
 using Moq;
 using NUnit.Framework;
 
@@ -10,7 +9,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
     {
         [TestCase("A", true)]
         [TestCase("A", false)]
-        public void Tets(string name, bool found)
+        public void Test(string name, bool found)
         {
             var nameToken = new Token(0, name.Length, name);
             ParticipantStatement target = new EnsureParticipantStatement(nameToken);

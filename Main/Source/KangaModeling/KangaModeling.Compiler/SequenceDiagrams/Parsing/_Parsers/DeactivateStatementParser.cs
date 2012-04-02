@@ -1,20 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace KangaModeling.Compiler.SequenceDiagrams
+﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
-    internal class DeactivateStatementParser : StatementParser
+    internal class DeactivateStatementParser : OneArgumentStatementParser
     {
         public const string DeactivateKeyword = "deactivate";
 
-        public override IEnumerable<Statement> Parse(Scanner scanner)
+        protected override Statement CreateStatement(Token keyword, Token argument)
         {
-            Token keyword = scanner.ReadWord();
-            scanner.SkipWhiteSpaces();
-            Token argument = scanner.ReadToEnd();
-            yield return
-                argument.IsEmpty()
-                    ? (Statement) new MissingArgumentStatement(keyword, argument)
-                    : (Statement) new DeactivateStatement(keyword, argument);
+            return new DeactivateStatement(keyword, argument);
         }
     }
 }

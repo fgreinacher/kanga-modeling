@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SequenceDiagrams\Parsers\EndStetementParser.cs" />
+    <Compile Include="SequenceDiagrams\Parsers\OptStetementParser.cs" />
     <Compile Include="SequenceDiagrams\Statements\EnsureParticipantStatementTest.cs" />
     <Compile Include="SequenceDiagrams\Statements\SimleParticipantStatementTest.cs" />
     <Compile Include="SequenceDiagrams\Model\ModelBuilderTest.cs" />

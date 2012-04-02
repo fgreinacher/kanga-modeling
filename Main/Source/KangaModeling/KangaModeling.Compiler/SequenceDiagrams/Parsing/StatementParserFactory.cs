@@ -24,6 +24,12 @@
                 case DeactivateStatementParser.DeactivateKeyword:
                     return new DeactivateStatementParser();
 
+                case OptStatementParser.OptKeyword:
+                    return new OptStatementParser();
+
+                case EndStatementParser.EndKeyword:
+                    return new EndStatementParser();
+
                 default:
                     return new UnknownStatementParser();
             }
