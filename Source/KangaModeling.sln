@@ -29,50 +29,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.CommandLineRu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Visuals.Test", "KangaModeling.Visuals.Test\KangaModeling.Visuals.Test.csproj", "{3E0599A5-94B0-4D13-AB4B-D4A22A07C8D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModelling.WebApplication", "KangaModelling.WebApplication\KangaModelling.WebApplication.csproj", "{A5CB1DE5-BBB1-47BB-967E-06749A382D21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.WebRunner", "KangaModeling.WebRunner\KangaModeling.WebRunner.csproj", "{A5CB1DE5-BBB1-47BB-967E-06749A382D21}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 10
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs19
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = KangaModeling.Compiler\\KangaModeling.Compiler.csproj
-		SccProjectTopLevelParentUniqueName1 = KangaModeling.sln
-		SccProjectName1 = KangaModeling.Compiler
-		SccLocalPath1 = KangaModeling.Compiler
-		SccProjectUniqueName2 = KangaModeling.Compiler.Test\\KangaModeling.Compiler.Test.csproj
-		SccProjectTopLevelParentUniqueName2 = KangaModeling.sln
-		SccProjectName2 = KangaModeling.Compiler.Test
-		SccLocalPath2 = KangaModeling.Compiler.Test
-		SccProjectUniqueName3 = KangaModeling.GuiRunner\\KangaModeling.GuiRunner.csproj
-		SccProjectTopLevelParentUniqueName3 = KangaModeling.sln
-		SccProjectName3 = KangaModeling.GuiRunner
-		SccLocalPath3 = KangaModeling.GuiRunner
-		SccProjectUniqueName4 = KangaModeling.Graphics.GdiPlus\\KangaModeling.Graphics.GdiPlus.csproj
-		SccProjectTopLevelParentUniqueName4 = KangaModeling.sln
-		SccProjectName4 = KangaModeling.Graphics.GdiPlus
-		SccLocalPath4 = KangaModeling.Graphics.GdiPlus
-		SccProjectUniqueName5 = KangaModeling.Graphics\\KangaModeling.Graphics.csproj
-		SccProjectTopLevelParentUniqueName5 = KangaModeling.sln
-		SccProjectName5 = KangaModeling.Graphics
-		SccLocalPath5 = KangaModeling.Graphics
-		SccProjectUniqueName6 = KangaModeling.Visuals\\KangaModeling.Visuals.csproj
-		SccProjectTopLevelParentUniqueName6 = KangaModeling.sln
-		SccProjectName6 = KangaModeling.Visuals
-		SccLocalPath6 = KangaModeling.Visuals
-		SccProjectUniqueName7 = KangaModeling.CommandLineRunner\\KangaModeling.CommandLineRunner.csproj
-		SccProjectTopLevelParentUniqueName7 = KangaModeling.sln
-		SccProjectName7 = KangaModeling.CommandLineRunner
-		SccLocalPath7 = KangaModeling.CommandLineRunner
-		SccProjectUniqueName8 = KangaModeling.Visuals.Test\\KangaModeling.Visuals.Test.csproj
-		SccProjectTopLevelParentUniqueName8 = KangaModeling.sln
-		SccProjectName8 = KangaModeling.Visuals.Test
-		SccLocalPath8 = KangaModeling.Visuals.Test
-		SccProjectUniqueName9 = KangaModelling.WebApplication\\KangaModelling.WebApplication.csproj
-		SccProjectName9 = KangaModelling.WebApplication
-		SccLocalPath9 = KangaModelling.WebApplication
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -186,6 +145,7 @@ Global
 		{3E0599A5-94B0-4D13-AB4B-D4A22A07C8D1} = {BBF5AB3C-A94B-410F-B68C-8C4CCB5159BA}
 		{77312AEB-91AB-4209-8113-AD115CB1A866} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
 		{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
+		{A5CB1DE5-BBB1-47BB-967E-06749A382D21} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = KangaModeling.Compiler.Test\KangaModeling.Compiler.Test.csproj
