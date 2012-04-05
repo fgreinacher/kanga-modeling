@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using KangaModeling.Graphics.GdiPlus;
-using KangaModeling.Visuals.SequenceDiagrams;
-using KangaModeling.Compiler.SequenceDiagrams;
+using KangaModeling.Facade;
 
 namespace KangaModelling.WebApplication
 {
@@ -13,41 +11,12 @@ namespace KangaModelling.WebApplication
 		{
 			string codeText = Request["code"] ?? string.Empty;
 
-			ISequenceDiagram sd = DiagramCreator.CreateFrom(codeText);
-			using (Bitmap bitmap = GenerateBitmap(sd))
+			var arguments = new DiagramArguments(codeText, DiagramType.Sequence, DiagramStyle.Sketchy);
+			var result = DiagramFactory.Create(arguments);
+			using (result)
 			{
-
 				Response.ContentType = "image/jpeg";
-				bitmap.Save(Response.OutputStream, ImageFormat.Jpeg);
-			}
-		}
-
-		private static Bitmap GenerateBitmap(ISequenceDiagram sd)
-		{
-			var sequenceDiagramVisual = new SequenceDiagramVisual(sd);
-
-			using (var measureBitmap = new Bitmap(1, 1))
-			using (var measureGraphics = Graphics.FromImage(measureBitmap))
-			{
-				var graphicContext = new GdiPlusGraphicContext(measureGraphics);
-
-				sequenceDiagramVisual.Layout(graphicContext);
-
-				var renderBitmap = new Bitmap(
-					(int)Math.Ceiling(sequenceDiagramVisual.Width + 1),
-					(int)Math.Ceiling(sequenceDiagramVisual.Height + 1));
-
-				using (var renderGraphics = Graphics.FromImage(renderBitmap))
-				{
-					renderGraphics.Clear(Color.White);
-
-					graphicContext = new GdiPlusGraphicContext(renderGraphics);
-
-					sequenceDiagramVisual.Draw(graphicContext);
-
-				}
-
-				return renderBitmap;
+				result.Image.Save(Response.OutputStream, ImageFormat.Jpeg);
 			}
 		}
 	}

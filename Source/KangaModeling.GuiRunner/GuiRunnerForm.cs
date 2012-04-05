@@ -3,178 +3,152 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using KangaModeling.Compiler.SequenceDiagrams;
-using KangaModeling.Graphics.GdiPlus;
-using KangaModeling.Graphics;
-using KangaModeling.Visuals.SequenceDiagrams;
+using KangaModeling.Facade;
 
 namespace KangaModeling.GuiRunner
 {
-    public partial class GuiRunnerForm : Form
-    {
-        public GuiRunnerForm()
-        {
-            InitializeComponent();
-        }
-
-        private void Compile()
+	public partial class GuiRunnerForm : Form
+	{
+		public GuiRunnerForm()
 		{
-            IEnumerable<ModelError> errors;
-            var sequenceDiagram = DiagramCreator.CreateFrom(inputTextBox.Text, out errors);
-            ShowErrors(errors);
+			InitializeComponent();
+		}
 
-            var sequenceDiagramVisual = new SequenceDiagramVisual(sequenceDiagram);
+		private void Compile()
+		{
+			var diagramArguments = new DiagramArguments(inputTextBox.Text, DiagramType.Sequence, DiagramStyle.Sketchy);
+			var diagramResult = DiagramFactory.Create(diagramArguments);
 
-			using (var measureBitmap = new Bitmap(1, 1))
-			using (var measureGraphics = System.Drawing.Graphics.FromImage(measureBitmap))
+			ProcessResult(diagramResult);
+		}
+
+		private void ProcessResult(DiagramResult diagramResult)
+		{
+			ProcessResultImage(diagramResult.Image);
+			ProcessResultErrors(diagramResult.Errors);
+		}
+
+		private void ProcessResultImage(Image image)
+		{
+			outputPictureBox.Image = image;
+		}
+
+		private void ProcessResultErrors(IEnumerable<DiagramError> errors)
+		{
+			FillErrorList(errors);
+			HighlightErrorsInEditor(errors);
+		}
+
+		private void HighlightErrorsInEditor(IEnumerable<DiagramError> errors)
+		{
+			int rememberStart = inputTextBox.SelectionStart;
+			int rememberLength = inputTextBox.SelectionLength;
+
+			inputTextBox.SelectAll();
+			inputTextBox.SelectionColor = Color.Navy;
+			inputTextBox.SelectionBackColor = Color.White;
+
+			foreach (var error in errors)
 			{
-			    var graphicContext = new GdiPlusGraphicContext(measureGraphics);
+				SelectErrorInEditor(error);
+				inputTextBox.SelectionColor = Color.Red;
+			}
 
-			    sequenceDiagramVisual.Layout(graphicContext);
-                
-				var renderBitmap = new Bitmap(
-                    (int)Math.Ceiling(sequenceDiagramVisual.Width + 1),
-                    (int)Math.Ceiling(sequenceDiagramVisual.Height + 1));
+			inputTextBox.Select(rememberStart, rememberLength);
+			inputTextBox.SelectionColor = Color.Navy;
+		}
 
-                using (var renderGraphics = System.Drawing.Graphics.FromImage(renderBitmap))
-                {
-                    renderGraphics.Clear(Color.White);
-
-					graphicContext = new GdiPlusGraphicContext(renderGraphics);
-
-                    sequenceDiagramVisual.Draw(graphicContext);
-
-                }
-                
-			    outputPictureBox.Image = renderBitmap;
+		private void FillErrorList(IEnumerable<DiagramError> errors)
+		{
+			listBoxErrors.Items.Clear();
+			foreach (var error in errors)
+			{
+				var listItem =
+					new ListViewItem(
+						new string[]
+	                        {
+                                error.Message, 
+                                error.TokenLine.ToString(), 
+                                error.TokenStart.ToString(), 
+                                error.TokenValue},
+						0);
+				listItem.Tag = error;
+				listBoxErrors.Items.Add(listItem);
 			}
 		}
 
-        private void ShowErrors(IEnumerable<ModelError> errors)
-        {
-            FillErrorList(errors);
-            HighlightErrorsInEditor(errors);
-        }
+		private void SelectErrorInEditor(DiagramError error)
+		{
+			int zeroBasedLineNumber = error.TokenLine - 1;
+			int numberOfNewLineChars = zeroBasedLineNumber;
 
-        private void HighlightErrorsInEditor(IEnumerable<ModelError> errors)
-        {
-            int rememberStart = inputTextBox.SelectionStart;
-            int rememberLength = inputTextBox.SelectionLength;
+			int startIndex =
+				inputTextBox
+					.Lines
+					.Select(line => line.Length)
+					.Take(zeroBasedLineNumber)
+					.Sum()
+				+ numberOfNewLineChars
+				+ error.TokenStart;
 
-            inputTextBox.SelectAll();
-            inputTextBox.SelectionColor = Color.Navy;
-            inputTextBox.SelectionBackColor = Color.White;
+			int tokenLength = error.TokenLength;
+			inputTextBox.Select(startIndex, (tokenLength == 0) ? 1 : tokenLength);
+		}
 
-            foreach (ModelError astError in errors)
-            {
-                SelectTokenInEditor(astError.Token);
-                inputTextBox.SelectionColor = Color.Red;
-            }
+		private void compileButton_Click(object sender, EventArgs e)
+		{
+			Compile();
+		}
 
-            inputTextBox.Select(rememberStart, rememberLength);
-            inputTextBox.SelectionColor = Color.Navy;
-        }
+		private void listBoxErrors_SelectedValueChanged(object sender, EventArgs e)
+		{
+			if (listBoxErrors.SelectedItems.Count == 0)
+			{
+				return;
+			}
 
-        private void FillErrorList(IEnumerable<ModelError> errors)
-        {
-            listBoxErrors.Items.Clear();
-            foreach (ModelError error in errors)
-            {
-                var listItem =
-                    new ListViewItem(
-                        new string[]
-	                        {
-                                error.Message, 
-                                error.Token.Line.ToString(), 
-                                error.Token.Start.ToString(), 
-                                error.Token.Value},
-                        0);
-                listItem.Tag = error;
-                listBoxErrors.Items.Add(listItem);
-            }
-        }
+			DiagramError error = listBoxErrors.SelectedItems[0].Tag as DiagramError;
+			if (error == null)
+			{
+				return;
+			}
 
-        private void YellowTokenInEditor(Token token)
-        {
-            inputTextBox.SelectAll();
-            inputTextBox.SelectionBackColor = Color.White;
-            SelectTokenInEditor(token);
-            inputTextBox.SelectionBackColor = Color.Green;
-            inputTextBox.Select(inputTextBox.TextLength, 0);
-        }
-
-        private void SelectTokenInEditor(Token token)
-        {
-
-            int zeroBasedLineNumber = token.Line - 1;
-            int numberOfNewLineChars = zeroBasedLineNumber;
-
-            int startIndex =
-                inputTextBox
-                    .Lines
-                    .Select(line => line.Length)
-                    .Take(zeroBasedLineNumber)
-                    .Sum()
-                + numberOfNewLineChars
-                + token.Start;
-
-            inputTextBox.Select(startIndex, token.IsEmpty() ? 1 : token.Length);
-        }
-
-        private void compileButton_Click(object sender, EventArgs e)
-        {
-            Compile();
-        }
-
-        private void listBoxErrors_SelectedValueChanged(object sender, EventArgs e)
-        {
-            if (listBoxErrors.SelectedItems.Count == 0)
-            {
-                return;
-            }
-
-            ModelError error = listBoxErrors.SelectedItems[0].Tag as ModelError;
-            if (error == null)
-            {
-                return;
-            }
-
-            SelectTokenInEditor(error.Token);
-            Invoke((MethodInvoker)(() => inputTextBox.Focus()));
-        }
+			SelectErrorInEditor(error);
+			Invoke((MethodInvoker)(() => inputTextBox.Focus()));
+		}
 
 
-        private void inputTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (checkBoxImidiateCompile.Checked)
-            {
-                Compile();
-            }
-        }
+		private void inputTextBox_TextChanged(object sender, EventArgs e)
+		{
+			if (checkBoxImidiateCompile.Checked)
+			{
+				Compile();
+			}
+		}
 
-        private void buttonSample1_Click(object sender, EventArgs e)
-        {
-            inputTextBox.AppendText("title Hello world!" + Environment.NewLine);
-        }
+		private void buttonSample1_Click(object sender, EventArgs e)
+		{
+			inputTextBox.AppendText("title Hello world!" + Environment.NewLine);
+		}
 
-        private void buttonSample2_Click(object sender, EventArgs e)
-        {
-            inputTextBox.AppendText("A->B" + Environment.NewLine);
-        }
+		private void buttonSample2_Click(object sender, EventArgs e)
+		{
+			inputTextBox.AppendText("A->B" + Environment.NewLine);
+		}
 
-        private void buttonSample3_Click(object sender, EventArgs e)
-        {
-            inputTextBox.AppendText("B-->A" + Environment.NewLine);
-        }
+		private void buttonSample3_Click(object sender, EventArgs e)
+		{
+			inputTextBox.AppendText("B-->A" + Environment.NewLine);
+		}
 
-        private void buttonSample4_Click(object sender, EventArgs e)
-        {
-            inputTextBox.AppendText("activate A" + Environment.NewLine);
-        }
+		private void buttonSample4_Click(object sender, EventArgs e)
+		{
+			inputTextBox.AppendText("activate A" + Environment.NewLine);
+		}
 
-        private void buttonSample5_Click(object sender, EventArgs e)
-        {
-            inputTextBox.AppendText("deactivate A" + Environment.NewLine);
-        }
-    }
+		private void buttonSample5_Click(object sender, EventArgs e)
+		{
+			inputTextBox.AppendText("deactivate A" + Environment.NewLine);
+		}
+	}
 }

@@ -76,21 +76,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KangaModeling.Compiler\KangaModeling.Compiler.csproj">
-      <Project>{397211EE-513B-428C-81DE-B9739B113170}</Project>
-      <Name>KangaModeling.Compiler</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KangaModeling.Graphics.GdiPlus\KangaModeling.Graphics.GdiPlus.csproj">
-      <Project>{83298B5F-99D8-47B8-8C6E-C260509A77AA}</Project>
-      <Name>KangaModeling.Graphics.GdiPlus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KangaModeling.Graphics\KangaModeling.Graphics.csproj">
-      <Project>{3F1A9174-8957-4963-8476-DE00B0F25238}</Project>
-      <Name>KangaModeling.Graphics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KangaModeling.Visuals\KangaModeling.Visuals.csproj">
-      <Project>{600612BA-558D-4B21-A8FA-6CBD4471C8E1}</Project>
-      <Name>KangaModeling.Visuals</Name>
+    <ProjectReference Include="..\KangaModeling.Facade\KangaModeling.Facade.csproj">
+      <Project>{B8B9203B-7981-4392-A866-06E3CE56F986}</Project>
+      <Name>KangaModeling.Facade</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

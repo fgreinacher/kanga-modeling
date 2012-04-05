@@ -1,21 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Compiler", "Compiler", "{A7D2EFF2-9234-4529-BFF5-6C01A6893A1A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Compiler", "01 Compiler", "{A7D2EFF2-9234-4529-BFF5-6C01A6893A1A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Compiler", "KangaModeling.Compiler\KangaModeling.Compiler.csproj", "{397211EE-513B-428C-81DE-B9739B113170}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Compiler.Test", "KangaModeling.Compiler.Test\KangaModeling.Compiler.Test.csproj", "{6D912773-33FC-4E1F-AAD3-803B4C054865}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Graphics", "Graphics", "{BBF5AB3C-A94B-410F-B68C-8C4CCB5159BA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Graphics", "02 Graphics", "{BBF5AB3C-A94B-410F-B68C-8C4CCB5159BA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{34D21C09-9AB2-4265-92B0-C1438061673F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Items", "00 Solution Items", "{34D21C09-9AB2-4265-92B0-C1438061673F}"
 	ProjectSection(SolutionItems) = preProject
 		AllTests.nunit = AllTests.nunit
 		AssemblyInfo.Common.cs = AssemblyInfo.Common.cs
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runner", "Runner", "{3517360B-7BE8-465D-AE4D-1B95A45E934E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Runner", "04 Runner", "{3517360B-7BE8-465D-AE4D-1B95A45E934E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.GuiRunner", "KangaModeling.GuiRunner\KangaModeling.GuiRunner.csproj", "{77312AEB-91AB-4209-8113-AD115CB1A866}"
 EndProject
@@ -30,6 +30,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Visuals.Test", "KangaModeling.Visuals.Test\KangaModeling.Visuals.Test.csproj", "{3E0599A5-94B0-4D13-AB4B-D4A22A07C8D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.WebRunner", "KangaModeling.WebRunner\KangaModeling.WebRunner.csproj", "{A5CB1DE5-BBB1-47BB-967E-06749A382D21}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Facade", "03 Facade", "{6E758006-184E-4175-9938-16C46CE4830A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Facade", "KangaModeling.Facade\KangaModeling.Facade.csproj", "{B8B9203B-7981-4392-A866-06E3CE56F986}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -132,6 +136,16 @@ Global
 		{A5CB1DE5-BBB1-47BB-967E-06749A382D21}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A5CB1DE5-BBB1-47BB-967E-06749A382D21}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A5CB1DE5-BBB1-47BB-967E-06749A382D21}.Release|x86.ActiveCfg = Release|Any CPU
+		{B8B9203B-7981-4392-A866-06E3CE56F986}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B9203B-7981-4392-A866-06E3CE56F986}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8B9203B-7981-4392-A866-06E3CE56F986}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B8B9203B-7981-4392-A866-06E3CE56F986}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B8B9203B-7981-4392-A866-06E3CE56F986}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B8B9203B-7981-4392-A866-06E3CE56F986}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8B9203B-7981-4392-A866-06E3CE56F986}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8B9203B-7981-4392-A866-06E3CE56F986}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B8B9203B-7981-4392-A866-06E3CE56F986}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B8B9203B-7981-4392-A866-06E3CE56F986}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +160,7 @@ Global
 		{77312AEB-91AB-4209-8113-AD115CB1A866} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
 		{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
 		{A5CB1DE5-BBB1-47BB-967E-06749A382D21} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
+		{B8B9203B-7981-4392-A866-06E3CE56F986} = {6E758006-184E-4175-9938-16C46CE4830A}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = KangaModeling.Compiler.Test\KangaModeling.Compiler.Test.csproj
