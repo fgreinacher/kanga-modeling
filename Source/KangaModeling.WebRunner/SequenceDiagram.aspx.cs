@@ -15,8 +15,9 @@ namespace KangaModelling.WebApplication
 			var result = DiagramFactory.Create(arguments);
 			using (result)
 			{
-				Response.ContentType = "image/jpeg";
-				result.Image.Save(Response.OutputStream, ImageFormat.Jpeg);
+				Response.Cache.SetCacheability(System.Web.HttpCacheability.Public);
+				Response.ContentType = "image/png";
+				result.Image.Save(Response.OutputStream, ImageFormat.Png);
 			}
 		}
 	}
