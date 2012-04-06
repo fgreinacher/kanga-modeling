@@ -48,6 +48,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\DiagramCreator.cs" />
+    <Compile Include="SequenceDiagrams\Extenstions.cs" />
     <Compile Include="SequenceDiagrams\FragmentType.cs" />
     <Compile Include="SequenceDiagrams\IModelBuilder.cs" />
     <Compile Include="SequenceDiagrams\IParticipant.cs" />

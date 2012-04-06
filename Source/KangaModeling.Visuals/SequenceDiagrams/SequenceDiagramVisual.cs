@@ -22,8 +22,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 		private readonly TitleVisual m_TitleVisual;
         private readonly IDictionary<ILifeline, ParticipantVisual> m_ParticipantVisuals = new Dictionary<ILifeline, ParticipantVisual>();
 		private readonly IList<SignalVisual> m_SignalVisuals = new List<SignalVisual>();
+	    private readonly List<ActivityVisual> m_ActivityVisuals = new List<ActivityVisual>();
 
-		#endregion
+	    #endregion
 
 		#region Construction / Destruction / Initialisation
 
@@ -43,7 +44,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 				AddChild(participantVisual);
 			}
 
-			foreach (var signal in sequenceDiagram.Signals)
+			foreach (var signal in sequenceDiagram.Signals())
 			{
 				var signalVisual = new SignalVisual(
 					m_ParticipantVisuals[signal.Start.Lifeline],
@@ -53,6 +54,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 				m_SignalVisuals.Add(signalVisual);
 				AddChild(signalVisual);
 			}
+
+		    foreach (var activity in sequenceDiagram.Activities())
+		    {
+		        var activityVisual = new ActivityVisual(activity);
+		        m_ActivityVisuals.Add(activityVisual);
+                AddChild(activityVisual);
+		    }
 
 			AutoSize = true;
 		}
@@ -117,6 +125,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 			{
 				participantVisual.Height = participantVisual.NameSize.Height + y - participantVisual.Y;
 			}
+
 		}
 
 		protected override Size MeasureCore(IGraphicContext graphicContext)

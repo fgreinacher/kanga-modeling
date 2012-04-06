@@ -1,4 +1,8 @@
-﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
     internal class Lifeline : ILifeline
     {
@@ -18,6 +22,11 @@
         public Pin this[int rowIndex]
         {
             get { return m_Matrix[Index, rowIndex]; }
+        }
+
+        public IEnumerable<IPin> Pins
+        {
+            get { return m_Matrix.Rows.Select(row => row[Index]);}
         }
 
         #region ILifeline Members

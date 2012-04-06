@@ -7,8 +7,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams
     {
         IFragment Root { get; }
         IEnumerable<ILifeline> Lifelines { get; }
-        IEnumerable<IActivity> Activities { get; }
-        IEnumerable<ISignal> Signals { get; }
     }
 
     public interface IFragment

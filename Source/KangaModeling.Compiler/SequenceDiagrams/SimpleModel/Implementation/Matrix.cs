@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
@@ -45,30 +44,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         IEnumerable<ILifeline> ISequenceDiagram.Lifelines
         {
             get { return Lifelines; }
-        }
-
-        public IEnumerable<IActivity> Activities
-        {
-            get
-            {
-                return
-                    Rows
-                        .SelectMany(row => row)
-                        .Where(pin => pin.Activity != null && pin.Activity.Start.Equals(pin))
-                        .Select(pin => pin.Activity);
-            }
-        }
-
-        public IEnumerable<ISignal> Signals
-        {
-            get
-            {
-                return
-                    Rows
-                        .SelectMany(row => row)
-                        .Where(pin => pin.Signal != null && pin.PinType == PinType.Out)
-                        .Select(pin => pin.Signal);
-            }
         }
 
         #endregion

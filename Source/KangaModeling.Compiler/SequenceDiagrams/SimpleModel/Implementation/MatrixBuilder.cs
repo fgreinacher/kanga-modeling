@@ -171,7 +171,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             {
                 foreach (OpenPin openPin in lifeline.State.OpenPins)
                 {
-                    AddError(openPin.Token, "Activation has no correspondng deactivation");
+                    AddError(openPin.Token, "Activation has no corresponding deactivation");
                     Pin lastPinInLifeLine = Matrix.LastRow[openPin.Lifeline.Index];
                     openPin.Activity.ReconnectEnd(lastPinInLifeLine);
                 }
