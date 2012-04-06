@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using KangaModeling.Compiler.SequenceDiagrams.Model;
+using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
@@ -25,9 +25,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
         public static ISequenceDiagram CreateFrom(string text, out IEnumerable<ModelError> errors)
         {
-            var elementFactory = new DiagramElementFactory();
-            var sequenceDiagram = new SequenceDiagram();
-            var astBuilder = new ModelBuilder(sequenceDiagram, elementFactory);
+            var matrix = new Matrix();
+            var astBuilder = new MatrixBuilder(matrix);
 
             using (var scanner = new Scanner(text))
             {
@@ -45,7 +44,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
                 }
             }
             errors = astBuilder.Errors;
-            return sequenceDiagram;
+            return matrix;
         }
     }
 }

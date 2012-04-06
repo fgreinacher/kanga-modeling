@@ -16,6 +16,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public Matrix Matrix { get; private set; }
 
+        #region IModelBuilder Members
+
         public IEnumerable<ModelError> Errors
         {
             get { return m_Errors; }
@@ -52,11 +54,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public void SetTitle(Token title)
         {
-            if (Matrix.Title != null)
+            if (!string.IsNullOrEmpty(Matrix.Root.Title))
             {
                 AddError(title, "Title is already set. Title can be set only once.");
             }
-            Matrix.Title = title.Value;
+            Matrix.Root.SetTitle(title.Value);
         }
 
         public void AddError(Token invalidToken, string message)
@@ -120,11 +122,17 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
             Row endRow = Matrix.LastRow;
             Pin endPin = endRow[target];
+            if (target.State.OpenPins.Count==0)
+            {
+                AddError(targetToken, "Unexpected deactivation. The lifeline must be activated before.");
+                return;
+            }
+
             OpenPin lastOpenPin = target.State.OpenPins.Pop();
             Activity lastOpenActivity = lastOpenPin.GetActivity();
 
             if (endPin.PinType != PinType.In &&
-                endPin.Signal.IsReturn)
+                endPin.Signal.SignalType==SignalType.Return)
             {
                 ILifeline sourceOfReturn = endPin.Signal.Start.Lifeline;
                 ILifeline sourceOfActivation = lastOpenActivity.Start.Signal.Start.Lifeline;
@@ -156,6 +164,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         {
             throw new NotImplementedException();
         }
+
+        #endregion
 
         private bool TryGetColumnById(string name, out Lifeline lifeline)
         {

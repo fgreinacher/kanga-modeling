@@ -1,6 +1,6 @@
 ﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
-    internal interface IPin
+    public interface IPin
     {
         ILifeline Lifeline { get; }
         PinType PinType { get; }

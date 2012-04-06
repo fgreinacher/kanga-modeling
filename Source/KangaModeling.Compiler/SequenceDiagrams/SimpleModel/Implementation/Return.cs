@@ -7,9 +7,9 @@
         {
         }
 
-        public override bool IsReturn
+        public override SignalType SignalType
         {
-            get { return true; }
+            get { return SignalType.Return; }
         }
     }
 }

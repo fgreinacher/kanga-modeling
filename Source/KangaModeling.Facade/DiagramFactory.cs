@@ -6,7 +6,6 @@ using System.Drawing;
 using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Visuals.SequenceDiagrams;
 using KangaModeling.Graphics.GdiPlus;
-using KangaModeling.Compiler.SequenceDiagrams.Model;
 
 namespace KangaModeling.Facade
 {

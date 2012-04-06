@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using KangaModeling.Compiler.SequenceDiagrams;
+using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 		#region Fields
 
 		private readonly TitleVisual m_TitleVisual;
-		private readonly IDictionary<IParticipant, ParticipantVisual> m_ParticipantVisuals = new Dictionary<IParticipant, ParticipantVisual>();
+        private readonly IDictionary<ILifeline, ParticipantVisual> m_ParticipantVisuals = new Dictionary<ILifeline, ParticipantVisual>();
 		private readonly IList<SignalVisual> m_SignalVisuals = new List<SignalVisual>();
 
 		#endregion
@@ -28,25 +29,25 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 		public SequenceDiagramVisual(ISequenceDiagram sequenceDiagram)
 		{
-			if (sequenceDiagram.Title != null)
+			if (string.IsNullOrEmpty(sequenceDiagram.Root.Title))
 			{
-				m_TitleVisual = new TitleVisual(sequenceDiagram.Title);
+                m_TitleVisual = new TitleVisual(sequenceDiagram.Root.Title);
 				AddChild(m_TitleVisual);
 			}
 
 			int participantIndex = 0;
-			foreach (var participant in sequenceDiagram.Participants)
+			foreach (var lifeline in sequenceDiagram.Lifelines)
 			{
-				var participantVisual = new ParticipantVisual(participant, participantIndex++);
-				m_ParticipantVisuals.Add(participant, participantVisual);
+                var participantVisual = new ParticipantVisual(lifeline, participantIndex++);
+                m_ParticipantVisuals.Add(lifeline, participantVisual);
 				AddChild(participantVisual);
 			}
 
-			foreach (var signal in sequenceDiagram.Content.SelectMany(c => c).OfType<SignalElement>())
+			foreach (var signal in sequenceDiagram.Signals)
 			{
 				var signalVisual = new SignalVisual(
-					m_ParticipantVisuals[signal.SourceParticipant],
-					m_ParticipantVisuals[signal.TargetParticipant],
+					m_ParticipantVisuals[signal.Start.Lifeline],
+					m_ParticipantVisuals[signal.End.Lifeline],
 					signal.SignalType,
 					signal.Name);
 				m_SignalVisuals.Add(signalVisual);

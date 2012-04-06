@@ -45,19 +45,13 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\DiagramCreator.cs" />
-    <Compile Include="SequenceDiagrams\Model\ActivationStatus.cs" />
-    <Compile Include="SequenceDiagrams\Model\DiagramElementFactory.cs" />
+    <Compile Include="SequenceDiagrams\FragmentType.cs" />
     <Compile Include="SequenceDiagrams\IModelBuilder.cs" />
-    <Compile Include="SequenceDiagrams\Model\InteractionOperand.cs" />
-    <Compile Include="SequenceDiagrams\Model\InteractionOperator.cs" />
-    <Compile Include="SequenceDiagrams\Model\IParticipant.cs" />
-    <Compile Include="SequenceDiagrams\Model\ISequenceDiagram.cs" />
-    <Compile Include="SequenceDiagrams\Model\OptFragment.cs" />
-    <Compile Include="SequenceDiagrams\Model\ParticipantCollection.cs" />
-    <Compile Include="SequenceDiagrams\Model\RootCombinedFragment.cs" />
-    <Compile Include="SequenceDiagrams\Model\SignalType.cs" />
+    <Compile Include="SequenceDiagrams\IParticipant.cs" />
+    <Compile Include="SequenceDiagrams\ISequenceDiagram.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\EndStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\EndStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\OneArgumentStatementParser.cs" />
@@ -66,7 +60,6 @@
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\OptStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\ActivateStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\ActivateStatementParser.cs" />
-    <Compile Include="SequenceDiagrams\Model\ModelBuilder.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\CallSignalStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\DeactivateStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\DeactivateStatementParser.cs" />
@@ -79,9 +72,6 @@
     <Compile Include="SequenceDiagrams\Parsing\_Statements\SignalStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\SignalStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\SimpleParticipantStatement.cs" />
-    <Compile Include="SequenceDiagrams\Model\SequenceDiagram.cs" />
-    <Compile Include="SequenceDiagrams\Model\Participant.cs" />
-    <Compile Include="SequenceDiagrams\Model\CombinedFragment.cs" />
     <Compile Include="SequenceDiagrams\Parsing\Parser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\ParticipantStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\StatementParser.cs" />
@@ -94,9 +84,7 @@
     <Compile Include="SequenceDiagrams\Parsing\_Statements\TitleStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\UnknownStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\Token.cs" />
-    <Compile Include="SequenceDiagrams\Model\DiagramElement.cs" />
-    <Compile Include="SequenceDiagrams\Model\LifelineStatusElement.cs" />
-    <Compile Include="SequenceDiagrams\Model\SignalElement.cs" />
+    <Compile Include="SequenceDiagrams\SignalType.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\IActivity.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\ILifeline.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\Implementation\Activity.cs" />

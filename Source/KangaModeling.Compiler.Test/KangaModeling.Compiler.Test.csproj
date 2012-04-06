@@ -51,15 +51,11 @@
     <Compile Include="SequenceDiagrams\Parsers\OptStetementParser.cs" />
     <Compile Include="SequenceDiagrams\Statements\EnsureParticipantStatementTest.cs" />
     <Compile Include="SequenceDiagrams\Statements\SimleParticipantStatementTest.cs" />
-    <Compile Include="SequenceDiagrams\Model\ModelBuilderTest.cs" />
     <Compile Include="SequenceDiagrams\Parsers\ActivateStatementParserTest.cs" />
     <Compile Include="SequenceDiagrams\Parsers\DeactivateStatementParserTest.cs" />
     <Compile Include="SequenceDiagrams\Statements\ParticipantStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsers\SignalStatementParserTest.cs" />
     <Compile Include="SequenceDiagrams\Helper\ParserExtensions.cs" />
-    <Compile Include="SequenceDiagrams\Model\ModelTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="SequenceDiagrams\ParserTest.cs" />
     <Compile Include="SequenceDiagrams\Parsers\ParticipantStatementParserTest.cs" />
     <Compile Include="SequenceDiagrams\ScannerTest.cs" />

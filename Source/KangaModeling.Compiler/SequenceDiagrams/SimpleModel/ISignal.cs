@@ -1,10 +1,10 @@
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
-    internal interface ISignal
+    public interface ISignal
     {
         IPin End { get; }
         string Name { get; set; }
         IPin Start { get; }
-        bool IsReturn { get; }
+        SignalType SignalType { get; }
     }
 }

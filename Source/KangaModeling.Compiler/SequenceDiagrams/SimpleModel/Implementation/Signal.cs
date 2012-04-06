@@ -26,7 +26,7 @@
             get { return m_Start; }
         }
 
-        public abstract bool IsReturn { get; }
+        public abstract SignalType SignalType { get; }
 
         #endregion
 
@@ -34,8 +34,10 @@
         {
             start.PinType = PinType.Out;
             m_Start = start;
+            m_Start.SetSignal(this);
             end.PinType = PinType.In;
             m_End = end;
+            m_End.SetSignal(this);
         }
     }
 }

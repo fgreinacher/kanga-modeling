@@ -1,6 +1,6 @@
 ﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
-    internal interface ILifeline
+    public interface ILifeline
     {
         string Name { get; }
         string Id { get; }

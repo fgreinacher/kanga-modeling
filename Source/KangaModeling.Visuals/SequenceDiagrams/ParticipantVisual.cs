@@ -1,5 +1,6 @@
 ﻿using System;
 using KangaModeling.Compiler.SequenceDiagrams;
+using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
 
@@ -9,7 +10,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 	{
 		#region Fields
 
-		private readonly IParticipant m_Participant;
+		private readonly ILifeline m_Participant;
 		private readonly int m_Index;
 
 		private Size m_NameSize;
@@ -18,7 +19,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 		#region Construction / Destruction / Initialisation
 
-		public ParticipantVisual(IParticipant participant, int index)
+		public ParticipantVisual(ILifeline participant, int index)
 		{
 			if (participant == null)
 				throw new ArgumentNullException("participant");

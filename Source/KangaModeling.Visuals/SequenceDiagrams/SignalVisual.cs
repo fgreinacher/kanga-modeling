@@ -86,7 +86,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 			var lineOptions = LineOptions.ArrowEnd;
 
-			if (m_Type == SignalType.CallReturn)
+			if (m_Type == SignalType.Return)
 			{
 				lineOptions = lineOptions | LineOptions.Dashed;
 			}
