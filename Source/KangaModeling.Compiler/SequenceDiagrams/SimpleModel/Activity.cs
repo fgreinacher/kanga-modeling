@@ -17,9 +17,24 @@
             get { return m_Start; }
         }
 
+        public int StartRowIndex
+        {
+            get { return m_Start.RowIndex; }
+        }
+
         public IPin End
         {
             get { return m_End; }
+        }
+
+        public int EndRowIndex
+        {
+            get { return m_End.RowIndex; }
+        }
+
+        public ILifeline Lifeline
+        {
+            get { return m_Start.Lifeline; }
         }
 
         public Orientation Orientation

@@ -7,5 +7,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         string Name { get; set; }
         IPin Start { get; }
         SignalType SignalType { get; }
+        int RowIndex { get; }
     }
 }

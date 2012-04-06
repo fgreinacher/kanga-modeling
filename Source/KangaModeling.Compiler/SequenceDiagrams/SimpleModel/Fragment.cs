@@ -23,6 +23,14 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             get { return m_Children; }
         }
 
+        protected IFragment Parent
+        {
+            get
+            {
+                return m_Parent;
+            }
+        }
+
         #region IFragment Members
 
         public abstract FragmentType FragmentType { get; }

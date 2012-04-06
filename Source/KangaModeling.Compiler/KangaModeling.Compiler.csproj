@@ -92,6 +92,7 @@
     <Compile Include="SequenceDiagrams\SimpleModel\Activity.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\Call.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\Fragment.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\SectionFragment.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\Lifeline.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\LifelineCollection.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\LifelineState.cs" />

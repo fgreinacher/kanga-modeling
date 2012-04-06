@@ -1,4 +1,6 @@
-﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+﻿using System;
+
+namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
     internal abstract class Signal : ISignal
     {
@@ -27,6 +29,11 @@
         }
 
         public abstract SignalType SignalType { get; }
+
+        public int RowIndex
+        {
+            get { return m_Start.RowIndex; }
+        }
 
         #endregion
 

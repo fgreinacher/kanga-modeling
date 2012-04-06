@@ -3,6 +3,7 @@
     public enum FragmentType
     {
         Root,
-        Opt
+        Opt,
+        Leaf
     }
 }
