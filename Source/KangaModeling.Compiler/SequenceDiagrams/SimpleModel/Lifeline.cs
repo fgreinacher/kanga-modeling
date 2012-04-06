@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
@@ -24,12 +23,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             get { return m_Matrix[Index, rowIndex]; }
         }
 
+        #region ILifeline Members
+
         public IEnumerable<IPin> Pins
         {
-            get { return m_Matrix.Rows.Select(row => row[Index]);}
+            get { return m_Matrix.Rows.Select(row => row[Index]); }
         }
-
-        #region ILifeline Members
 
         public string Id { get; private set; }
         public string Name { get; private set; }

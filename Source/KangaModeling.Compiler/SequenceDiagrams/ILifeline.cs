@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+namespace KangaModeling.Compiler.SequenceDiagrams
 {
     public interface ILifeline
     {
         string Name { get; }
         string Id { get; }
         int Index { get; }
-        IEnumerable<IPin> Pins { get;}
+        IEnumerable<IPin> Pins { get; }
     }
 }

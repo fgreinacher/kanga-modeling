@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+﻿using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics.Primitives;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
