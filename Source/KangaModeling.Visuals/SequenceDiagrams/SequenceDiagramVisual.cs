@@ -29,7 +29,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 		public SequenceDiagramVisual(ISequenceDiagram sequenceDiagram)
 		{
-			if (string.IsNullOrEmpty(sequenceDiagram.Root.Title))
+			if (!string.IsNullOrEmpty(sequenceDiagram.Root.Title))
 			{
                 m_TitleVisual = new TitleVisual(sequenceDiagram.Root.Title);
 				AddChild(m_TitleVisual);
