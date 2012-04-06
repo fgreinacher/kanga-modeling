@@ -15,7 +15,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             get { return Arguments[0]; }
         }
 
-        public override void Build(ModelBuilder builder)
+        public override void Build(IModelBuilder builder)
         {
             builder.StartOpt(GuardExpression);
         }

@@ -12,7 +12,7 @@
             get { return Arguments[0]; }
         }
 
-        public override void Build(ModelBuilder builder)
+        public override void Build(IModelBuilder builder)
         {
             builder.AddError(Source, string.Format("Unexpected argument in statement '{0}'", Keyword.Value));
         }

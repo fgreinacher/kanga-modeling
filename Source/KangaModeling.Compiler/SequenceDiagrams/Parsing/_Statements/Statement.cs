@@ -25,7 +25,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             Keyword = keyword;
         }
 
-        public abstract void Build(ModelBuilder builder);
+        public abstract void Build(IModelBuilder builder);
         public IEnumerable<Token> Tokens()
         {
             return Enumerable.Repeat(Keyword, 1).Concat(Arguments);

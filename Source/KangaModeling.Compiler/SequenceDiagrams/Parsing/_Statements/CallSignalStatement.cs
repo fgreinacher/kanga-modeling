@@ -11,7 +11,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
         }
 
-        public override void Build(ModelBuilder builder)
+        public override void Build(IModelBuilder builder)
         {
             builder.AddCallSignal(Source, Target, Name);
         }

@@ -49,6 +49,7 @@
     <Compile Include="SequenceDiagrams\DiagramCreator.cs" />
     <Compile Include="SequenceDiagrams\Model\ActivationStatus.cs" />
     <Compile Include="SequenceDiagrams\Model\DiagramElementFactory.cs" />
+    <Compile Include="SequenceDiagrams\IModelBuilder.cs" />
     <Compile Include="SequenceDiagrams\Model\InteractionOperand.cs" />
     <Compile Include="SequenceDiagrams\Model\InteractionOperator.cs" />
     <Compile Include="SequenceDiagrams\Model\IParticipant.cs" />
@@ -96,6 +97,27 @@
     <Compile Include="SequenceDiagrams\Model\DiagramElement.cs" />
     <Compile Include="SequenceDiagrams\Model\LifelineStatusElement.cs" />
     <Compile Include="SequenceDiagrams\Model\SignalElement.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\IActivity.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\ILifeline.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\Activity.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\Call.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\Fragment.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\Lifeline.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\LifelineCollection.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\LifelineState.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\Matrix.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\MatrixBuilder.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\OpenPin.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\Pin.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\RegularPin.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\Return.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\Row.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\RowsCollection.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Implementation\Signal.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\IPin.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\ISignal.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Orientation.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\PinType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

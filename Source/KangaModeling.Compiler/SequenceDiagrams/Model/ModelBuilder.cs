@@ -4,7 +4,7 @@ using KangaModeling.Compiler.SequenceDiagrams.Model;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
-    internal class ModelBuilder
+    internal class ModelBuilder : IModelBuilder
     {
         private readonly SequenceDiagram m_Diagram;
         private readonly DiagramElementFactory m_ElementFactory;
@@ -35,7 +35,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             get { return m_Errors; }
         }
 
-        internal virtual bool HasParticipant(string name)
+        public virtual bool HasParticipant(string name)
         {
             return m_Diagram.Participants.Contains(name);
         }
@@ -45,7 +45,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             return m_Diagram.Participants.TryGetValue(name, out participant);
         }
 
-        internal virtual void CreateParticipant(Token id, Token name)
+        public virtual void CreateParticipant(Token id, Token name)
         {
             Participant participant;
             if (TryGetParticipantByName(id.Value, out participant))
@@ -85,13 +85,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         }
 
 
-        internal void AddCallSignal(Token source, Token target, Token name)
+        public void AddCallSignal(Token source, Token target, Token name)
         {
             AddSignal(source, target, name, SignalType.Call);
         }
 
 
-        internal void AddReturnSignal(Token source, Token target, Token name)
+        public void AddReturnSignal(Token source, Token target, Token name)
         {
             AddSignal(source, target, name, SignalType.CallReturn);
         }
@@ -124,12 +124,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             m_Diagram.Content.InteractionOperand.AddElement(element);
         }
 
-        internal void Activate(Token target)
+        public void Activate(Token target)
         {
             ChangeState(target, ActivationStatus.Activate);
         }
 
-        internal void Deactivate(Token target)
+        public void Deactivate(Token target)
         {
             ChangeState(target, ActivationStatus.Deactivate);
         }

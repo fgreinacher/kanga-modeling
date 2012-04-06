@@ -7,7 +7,7 @@
         {
         }
 
-        public override void Build(ModelBuilder builder)
+        public override void Build(IModelBuilder builder)
         {
             builder.AddError(Keyword, "Unrecognized statement.");
         }

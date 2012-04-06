@@ -1,0 +1,55 @@
+﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+{
+    internal class Activity : IActivity
+    {
+        private Pin m_End;
+        private Pin m_Start;
+
+        public Activity(int level)
+        {
+            Level = level;
+        }
+
+        #region IActivity Members
+
+        public IPin Start
+        {
+            get { return m_Start; }
+        }
+
+        public IPin End
+        {
+            get { return m_End; }
+        }
+
+        public Orientation Orientation
+        {
+            get
+            {
+                return
+                    Level == 0
+                        ? Orientation.None
+                        : Start.Orientation;
+            }
+        }
+
+        public int Level { get; private set; }
+
+        #endregion
+
+        public void Connect(Pin startPin, Pin endPin)
+        {
+            startPin.SetActivity(this);
+            m_Start = startPin;
+            m_Start.SetLevel(Level);
+            ReconnectEnd(endPin);
+        }
+
+        public void ReconnectEnd(Pin endPin)
+        {
+            endPin.SetActivity(this);
+            m_End = endPin;
+            m_End.SetLevel(Level);
+        }
+    }
+}
