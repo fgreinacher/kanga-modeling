@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace KangaModeling.Compiler.SequenceDiagrams
+﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class MissingArgumentStatement : Statement
     {
@@ -18,5 +16,5 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
             builder.AddError(Source, string.Format("Argument expected in statement '{0}'", Keyword.Value));
         }
-   } 
+    }
 }

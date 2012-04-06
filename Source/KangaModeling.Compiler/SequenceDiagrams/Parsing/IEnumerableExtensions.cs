@@ -9,6 +9,5 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
             return source.Concat(Enumerable.Repeat(element, 1));
         }
-
     }
 }

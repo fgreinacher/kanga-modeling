@@ -2,7 +2,7 @@
 {
     internal class UnknownStatement : Statement
     {
-        public UnknownStatement(Token invalidToken) 
+        public UnknownStatement(Token invalidToken)
             : base(invalidToken)
         {
         }

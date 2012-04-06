@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace KangaModeling.Compiler.SequenceDiagrams
+﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class DeactivateStatement : StateStatement
     {
-        public DeactivateStatement(Token keyword, Token argument) 
+        public DeactivateStatement(Token keyword, Token argument)
             : base(keyword, argument)
         {
         }

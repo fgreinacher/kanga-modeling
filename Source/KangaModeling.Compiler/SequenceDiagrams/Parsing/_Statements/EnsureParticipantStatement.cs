@@ -2,7 +2,7 @@
 {
     internal class EnsureParticipantStatement : SimpleParticipantStatement
     {
-        public EnsureParticipantStatement(Token name) 
+        public EnsureParticipantStatement(Token name)
             : base(name, name)
         {
         }

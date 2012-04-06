@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace KangaModeling.Compiler.SequenceDiagrams
+﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class ActivateStatement : StateStatement
     {

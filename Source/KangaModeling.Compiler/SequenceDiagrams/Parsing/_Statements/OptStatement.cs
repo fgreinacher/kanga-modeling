@@ -1,13 +1,10 @@
-﻿using System;
-
-namespace KangaModeling.Compiler.SequenceDiagrams
+﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class OptStatement : Statement
     {
         public OptStatement(Token keyword, Token guardExpression)
             : base(keyword, guardExpression)
         {
-            
         }
 
         public Token GuardExpression

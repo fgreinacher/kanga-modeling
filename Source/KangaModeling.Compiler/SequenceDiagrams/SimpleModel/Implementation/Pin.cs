@@ -21,6 +21,11 @@
 
         public Row Row { get; private set; }
 
+        public Activity Activity
+        {
+            get { return m_Activity; }
+        }
+
         #region IPin Members
 
         public int Level
@@ -40,11 +45,10 @@
             get { return m_Signal; }
         }
 
-        public IActivity Activity
+        IActivity IPin.Activity
         {
             get { return m_Activity; }
         }
-
 
         public abstract Orientation Orientation { get; }
 

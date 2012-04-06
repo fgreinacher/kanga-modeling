@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
@@ -24,7 +23,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public void Extend(IEnumerable<Lifeline> lifeLine)
         {
-            foreach (var lifeline in lifeLine)
+            foreach (Lifeline lifeline in lifeLine)
             {
                 Extend(lifeline);
             }

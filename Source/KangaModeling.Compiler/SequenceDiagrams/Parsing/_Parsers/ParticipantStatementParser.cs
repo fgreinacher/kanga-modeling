@@ -29,7 +29,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             scanner.SkipWhiteSpaces();
             Token idToken = scanner.ReadToEnd();
 
-            if (idToken.Length==0)
+            if (idToken.Length == 0)
             {
                 yield return new MissingArgumentStatement(keywordToken, idToken);
                 yield break;

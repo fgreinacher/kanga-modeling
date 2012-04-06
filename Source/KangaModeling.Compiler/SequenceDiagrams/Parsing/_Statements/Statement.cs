@@ -7,16 +7,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
     {
         private readonly Token[] m_Arguments;
 
-        protected Token[] Arguments
-        {
-            get { return m_Arguments; }
-        }
-
-        protected Token Keyword { get; private set; }
-
         protected Statement()
         {
-            
         }
 
         protected Statement(Token keyword, params Token[] arguments)
@@ -25,7 +17,15 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             Keyword = keyword;
         }
 
+        protected Token[] Arguments
+        {
+            get { return m_Arguments; }
+        }
+
+        protected Token Keyword { get; private set; }
+
         public abstract void Build(IModelBuilder builder);
+
         public IEnumerable<Token> Tokens()
         {
             return Enumerable.Repeat(Keyword, 1).Concat(Arguments);

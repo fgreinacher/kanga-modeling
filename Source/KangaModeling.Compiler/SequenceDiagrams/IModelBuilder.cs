@@ -15,5 +15,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         void Deactivate(Token target);
         void StartOpt(Token guardExpression);
         void End();
+        void Flush();
     }
 }

@@ -7,25 +7,73 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class Scanner : IEnumerator<string>
     {
+        public const char EscapeCharacter = '"';
         private readonly IEnumerator<string> m_Lines;
         private readonly Stack<int> m_PositionStack;
-        public const char EscapeCharacter='"';
-
-        public int Line { get; private set; }
-        public int Column { get; private set; }
 
 
         public Scanner(string text) :
-            this(text.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.None))
+            this(text.Split(new[] {Environment.NewLine, "\n"}, StringSplitOptions.None))
         {
-            
         }
 
         public Scanner(IEnumerable<string> linesOfText)
         {
-            m_PositionStack =new Stack<int>();
+            m_PositionStack = new Stack<int>();
             m_Lines = linesOfText.GetEnumerator();
         }
+
+        public int Line { get; private set; }
+        public int Column { get; private set; }
+
+        private char CurrentChar
+        {
+            get { return LineText[Column]; }
+        }
+
+        private string LineText
+        {
+            get { return Current ?? string.Empty; }
+        }
+
+        public bool Eol
+        {
+            get { return Current == null ? true : Column == Current.Length; }
+        }
+
+        #region IEnumerator<string> Members
+
+        public void Dispose()
+        {
+            m_Lines.Dispose();
+        }
+
+        public bool MoveNext()
+        {
+            Line++;
+            Column = 0;
+            return m_Lines.MoveNext();
+        }
+
+        public void Reset()
+        {
+            Line = 0;
+            Column = 0;
+            m_PositionStack.Clear();
+            m_Lines.Reset();
+        }
+
+        public string Current
+        {
+            get { return m_Lines.Current; }
+        }
+
+        object IEnumerator.Current
+        {
+            get { return Current; }
+        }
+
+        #endregion
 
         public string GetKeyWord()
         {
@@ -46,11 +94,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         public Token ReadTo(string text)
         {
             int index = Current.IndexOf(text, Column, StringComparison.InvariantCulture);
-            while(index>0 &&  char.IsWhiteSpace(Current[index-1]))
+            while (index > 0 && char.IsWhiteSpace(Current[index - 1]))
             {
                 index--;
             }
-            return ReadWhile(() => index!=Column);
+            return ReadWhile(() => index != Column);
         }
 
         public Token ReadWord()
@@ -85,10 +133,10 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         private static bool IsWordChar(char ch)
         {
-            return 
-                (char.IsLetterOrDigit(ch) || 
-                 char.IsPunctuation(ch)) 
-                    && !IsSignalChar(ch);
+            return
+                (char.IsLetterOrDigit(ch) ||
+                 char.IsPunctuation(ch))
+                && !IsSignalChar(ch);
         }
 
         private static bool IsSignalChar(char ch)
@@ -115,10 +163,10 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
             bool isInEscapeMode = false;
 
-            StringBuilder buffer = new StringBuilder();
+            var buffer = new StringBuilder();
             while (!Eol && (isInEscapeMode || condition()))
-            {   
-                if(CurrentChar == EscapeCharacter)
+            {
+                if (CurrentChar == EscapeCharacter)
                 {
                     isInEscapeMode = !isInEscapeMode;
                 }
@@ -131,60 +179,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             return new Token(Line, Column, buffer.ToString());
         }
 
-        private char CurrentChar
-        {
-            get { return LineText[Column]; }
-        }
-
         public void SkipWhile(Func<char, bool> condition)
         {
             while (!Eol && condition(CurrentChar))
             {
                 Column++;
             }
-        }
-
-        private string LineText
-        {
-            get
-            {
-                return Current ?? string.Empty;
-            }
-        }
-
-        public bool Eol
-        {
-            get { return Current==null ? true : Column == Current.Length; }
-        }
-
-        public void Dispose()
-        {
-            m_Lines.Dispose();
-        }
-
-        public bool MoveNext()
-        {
-            Line++;
-            Column = 0;
-            return m_Lines.MoveNext();
-        }
-
-        public void Reset()
-        {
-            Line = 0;
-            Column = 0;
-            m_PositionStack.Clear();
-            m_Lines.Reset();
-        }
-
-        public string Current
-        {
-            get { return m_Lines.Current; } 
-        }
-
-        object IEnumerator.Current
-        {
-            get { return Current; }
         }
     }
 }

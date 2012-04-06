@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace KangaModeling.Compiler.SequenceDiagrams
+﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class EndStatement : Statement
     {
-        public EndStatement(Token keyword) 
+        public EndStatement(Token keyword)
             : base(keyword)
         {
         }

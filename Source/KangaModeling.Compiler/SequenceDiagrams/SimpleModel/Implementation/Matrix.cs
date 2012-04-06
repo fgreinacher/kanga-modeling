@@ -95,7 +95,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         private readonly Matrix m_Matrix;
         private string m_Title;
 
-        public RootFragment(Matrix matrix) 
+        public RootFragment(Matrix matrix)
             : base(null)
         {
             m_Matrix = matrix;
@@ -111,8 +111,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             get
             {
                 return m_Matrix.Lifelines.Count == 0
-                    ? null
-                    : m_Matrix.Lifelines[0];
+                           ? null
+                           : m_Matrix.Lifelines[0];
             }
         }
 
@@ -120,9 +120,9 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         {
             get
             {
-                return m_Matrix.Lifelines.Count == 0 
-                    ? null
-                    : m_Matrix.Lifelines[m_Matrix.Lifelines.Count-1];
+                return m_Matrix.Lifelines.Count == 0
+                           ? null
+                           : m_Matrix.Lifelines[m_Matrix.Lifelines.Count - 1];
             }
         }
 
@@ -140,9 +140,9 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         {
             get
             {
-                return string.IsNullOrEmpty(m_Title) 
-                    ? string.Empty 
-                    : string.Format("sd: {0}", m_Title);
+                return string.IsNullOrEmpty(m_Title)
+                           ? string.Empty
+                           : string.Format("sd: {0}", m_Title);
             }
         }
 

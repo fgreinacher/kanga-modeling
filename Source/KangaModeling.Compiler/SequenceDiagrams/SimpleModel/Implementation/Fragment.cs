@@ -23,15 +23,15 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             get { return m_Children; }
         }
 
-        public abstract FragmentType FragmentType {get;}
+        #region IFragment Members
+
+        public abstract FragmentType FragmentType { get; }
         public abstract ILifeline Left { get; }
         public abstract ILifeline Right { get; }
         public abstract int Top { get; }
         public abstract int Bottom { get; }
 
-        #region IFragment Members
-
-        public abstract string Title { get;}
+        public abstract string Title { get; }
 
         IFragment IFragment.Parent
         {

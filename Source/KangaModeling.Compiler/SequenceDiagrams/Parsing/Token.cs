@@ -6,14 +6,20 @@ namespace KangaModeling.Compiler.SequenceDiagrams
     [DebuggerDisplay("'{Value}' at Col {Start}")]
     public struct Token
     {
-        private readonly int m_Start;
         private readonly int m_Line;
+        private readonly int m_Start;
         private readonly string m_Value;
 
         public Token(int line, int end, string value)
         {
-            if (value == null) {throw new ArgumentNullException("value");}
-            if (value.Length>end) {throw new ArgumentOutOfRangeException("end", end, "End is less then length.");}
+            if (value == null)
+            {
+                throw new ArgumentNullException("value");
+            }
+            if (value.Length > end)
+            {
+                throw new ArgumentOutOfRangeException("end", end, "End is less then length.");
+            }
 
             m_Start = end - value.Length;
             m_Line = line;
@@ -57,9 +63,9 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public bool Equals(Token other)
         {
-            return 
-                other.m_Start == m_Start && 
-                other.m_Line == m_Line && 
+            return
+                other.m_Start == m_Start &&
+                other.m_Line == m_Line &&
                 Equals(other.m_Value, m_Value);
         }
 

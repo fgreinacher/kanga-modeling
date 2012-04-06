@@ -26,24 +26,24 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         public static ISequenceDiagram CreateFrom(string text, out IEnumerable<ModelError> errors)
         {
             var matrix = new Matrix();
-            var astBuilder = new MatrixBuilder(matrix);
+            var builder = new MatrixBuilder(matrix);
 
             using (var scanner = new Scanner(text))
             {
                 var parser = new Parser(scanner, new StatementParserFactory());
-                foreach (var statement in parser.Parse())
+                foreach (Statement statement in parser.Parse())
                 {
                     try
                     {
-                        statement.Build(astBuilder);
+                        statement.Build(builder);
                     }
                     catch (NotImplementedException)
                     {
-
                     }
                 }
+                builder.Flush();
             }
-            errors = astBuilder.Errors;
+            errors = builder.Errors;
             return matrix;
         }
     }

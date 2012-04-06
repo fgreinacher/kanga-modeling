@@ -105,7 +105,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
                 }
             }
 
-            var endPin = new OpenPin(target, startPin.Orientation);
+            var endPin = new OpenPin(target, startPin.Orientation, targetToken);
             target.State.OpenPins.Push(endPin);
             var activity = new Activity(level);
             activity.Connect(startPin, endPin);
@@ -122,7 +122,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
             Row endRow = Matrix.LastRow;
             Pin endPin = endRow[target];
-            if (target.State.OpenPins.Count==0)
+            if (target.State.OpenPins.Count == 0)
             {
                 AddError(targetToken, "Unexpected deactivation. The lifeline must be activated before.");
                 return;
@@ -132,7 +132,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             Activity lastOpenActivity = lastOpenPin.GetActivity();
 
             if (endPin.PinType != PinType.In &&
-                endPin.Signal.SignalType==SignalType.Return)
+                endPin.Signal.SignalType == SignalType.Return)
             {
                 ILifeline sourceOfReturn = endPin.Signal.Start.Lifeline;
                 ILifeline sourceOfActivation = lastOpenActivity.Start.Signal.Start.Lifeline;
@@ -163,6 +163,19 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         public void End()
         {
             throw new NotImplementedException();
+        }
+
+        public void Flush()
+        {
+            foreach (Lifeline lifeline in Matrix.Lifelines)
+            {
+                foreach (OpenPin openPin in lifeline.State.OpenPins)
+                {
+                    AddError(openPin.Token, "Activation has no correspondng deactivation");
+                    Pin lastPinInLifeLine = Matrix.LastRow[openPin.Lifeline.Index];
+                    openPin.Activity.ReconnectEnd(lastPinInLifeLine);
+                }
+            }
         }
 
         #endregion

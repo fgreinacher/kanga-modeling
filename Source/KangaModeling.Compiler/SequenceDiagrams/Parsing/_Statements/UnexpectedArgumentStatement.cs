@@ -16,5 +16,5 @@
         {
             builder.AddError(Source, string.Format("Unexpected argument in statement '{0}'", Keyword.Value));
         }
-   } 
+    }
 }

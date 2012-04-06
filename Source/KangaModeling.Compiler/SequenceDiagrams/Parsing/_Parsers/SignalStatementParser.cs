@@ -14,7 +14,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public SignalStatementParser()
             : this(null)
-        {}
+        {
+        }
 
         public SignalStatementParser(string signal)
         {
@@ -33,14 +34,14 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
             yield return
                 !source.IsEmpty()
-                    ? (Statement)new EnsureParticipantStatement(source)
-                    : (Statement)new MissingArgumentStatement(signalKeyword, source);
+                    ? new EnsureParticipantStatement(source)
+                    : (Statement) new MissingArgumentStatement(signalKeyword, source);
 
             Token target = scanner.ReadTo(ColonKeyowrd);
             yield return
                 !target.IsEmpty()
-                    ? (Statement)new EnsureParticipantStatement(target)
-                    : (Statement)new MissingArgumentStatement(signalKeyword, target);
+                    ? new EnsureParticipantStatement(target)
+                    : (Statement) new MissingArgumentStatement(signalKeyword, target);
 
 
             if (source.IsEmpty() || target.IsEmpty())
@@ -48,7 +49,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
                 yield break;
             }
 
-            scanner.SkipWhile(ch=>!char.IsLetterOrDigit(ch));
+            scanner.SkipWhile(ch => !char.IsLetterOrDigit(ch));
             Token signalName = scanner.ReadToEnd();
 
             switch (signalKeyword.Value)

@@ -19,7 +19,10 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             while (m_Scanner.MoveNext())
             {
                 m_Scanner.SkipWhiteSpaces();
-                if (m_Scanner.Eol) {continue;}
+                if (m_Scanner.Eol)
+                {
+                    continue;
+                }
                 string keyWordCandidate = m_Scanner.GetKeyWord();
                 StatementParser statementParser = m_StatementParserFactory.GetStatementParser(keyWordCandidate);
                 yield return statementParser;
