@@ -25,6 +25,14 @@ namespace KangaModeling.Compiler.SequenceDiagrams
                 pin.Activity.Start.Equals(pin);
         }
 
+		public static bool IsActivityEnd(this IPin pin)
+		{
+			if (pin == null) throw new ArgumentNullException("pin");
+			return
+				pin.Activity != null &&
+				pin.Activity.End.Equals(pin);
+		}
+
         public static bool IsSignalStart(this IPin pin)
         {
             if (pin == null) throw new ArgumentNullException("pin");

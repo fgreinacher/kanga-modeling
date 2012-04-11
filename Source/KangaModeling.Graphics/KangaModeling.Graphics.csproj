@@ -47,7 +47,6 @@
     </Compile>
     <Compile Include="Primitives\HorizontalAlignment.cs" />
     <Compile Include="IGraphicContext.cs" />
-    <Compile Include="Primitives\LineOptions.cs" />
     <Compile Include="Primitives\Point.cs" />
     <Compile Include="Primitives\Size.cs" />
     <Compile Include="Primitives\Style.cs" />

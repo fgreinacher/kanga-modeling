@@ -11,6 +11,12 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         const float c_BaseLifelineWidth = 2;
 
+		const float c_LineWidth = 2;
+
+		const float c_ArrowCapWidth = 7;
+
+		const float c_ArrowCapHeight = 4;
+
         #endregion
 
         #region Construction / Destruction / Initialisation
@@ -54,12 +60,12 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             LifelineCell signalTargetCell = (LifelineCell)Grid.GetCell(SignalTargetRow, SignalTargetColumn);
             float availableSpaceForSignal = CalculateAvailableSpaceForSignal(signalTargetCell);
 
-            Size nameSize = graphicContext.MeasureText(SignalName);
+            Size nameSize = graphicContext.MeasureText(SignalName).Plus(20, 0);
 
             float neededWidthDelta = nameSize.Width - availableSpaceForSignal;
             if (neededWidthDelta > 0)
             {
-                signalTargetCell.LeftOuterWidth += neededWidthDelta;
+				RightOuterWidth += neededWidthDelta;
             }
 
             TopOuterHeight = string.IsNullOrEmpty(SignalName) ? 15 : 5;
@@ -134,12 +140,14 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 to = tmp;
             }
 
-            var lineOptions = LineOptions.ArrowEnd;
             if (SignalType == SignalType.Signal)
-            {
-                lineOptions |= LineOptions.Dashed;
+			{
+				graphicContext.DrawDashedArrow(@from, to, c_LineWidth, c_ArrowCapWidth, c_ArrowCapHeight);
             }
-            graphicContext.DrawLine(@from, to, 2, lineOptions);
+			else if(SignalType == SignalType.Call)
+			{
+				graphicContext.DrawArrow(@from, to, c_LineWidth, c_ArrowCapWidth, c_ArrowCapHeight);
+			}
         }
 
         private float CalculateHorizontalLifelineCenterLeft()
@@ -174,7 +182,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             var cellsBetweenThisCellAndTargetCell = Grid
                 .CellsInRow(Row)
                 .Where(cell => cell.Column > Column && cell.Column < signalTargetCell.Column);
-
+				
             var availableSpaceInCellsBetween =
                 cellsBetweenThisCellAndTargetCell.Select(cell => cell.BodyWidth + cell.LeftOuterWidth + cell.RightOuterWidth).
                     Sum();

@@ -154,27 +154,26 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private void LayoutCellOuters(IGraphicContext graphicContext)
         {
-            foreach (var row in Rows())
+			foreach (var row in Rows().Reverse())
             {
-                foreach (var cell in CellsInRow(row))
+				foreach (var cell in CellsInRow(row).Reverse())
                 {
-                    cell.LayoutOuters(graphicContext);
-                }
-                NormalizeCellDimensions();
-            }
-
+					cell.LayoutOuters(graphicContext);
+				}
+			}
+			NormalizeCellDimensions();
         }
 
         private void LayoutCellBodies(IGraphicContext graphicContext)
         {
-            foreach (var row in Rows())
+			foreach (var row in Rows().Reverse())
             {
-                foreach (var cell in CellsInRow(row))
+                foreach (var cell in CellsInRow(row).Reverse())
                 {
-                    cell.LayoutBody(graphicContext);
-                }
-                NormalizeCellDimensions();
-            }
+					cell.LayoutBody(graphicContext);
+				}
+			}
+			NormalizeCellDimensions();
         }
 
         public Cell GetCell(int row, int column)
