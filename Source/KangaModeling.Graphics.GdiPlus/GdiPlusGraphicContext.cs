@@ -53,7 +53,7 @@ namespace KangaModeling.Graphics.GdiPlus
 
 		public void DrawLine(Point from, Point to, float width, LineOptions options = LineOptions.None)
 		{
-			using (var pen = new Pen(Brushes.Black, 2))
+			using (var pen = new Pen(Brushes.Black, width))
 			{
 				if (options.HasFlag(LineOptions.ArrowEnd))
 				{
@@ -64,6 +64,8 @@ namespace KangaModeling.Graphics.GdiPlus
 				{
 					pen.DashStyle = DashStyle.Dash;
 				}
+
+                pen.Alignment = PenAlignment.Left;
 
 				m_Graphics.DrawLine(pen, from.ToPointF(), to.ToPointF());
 			}

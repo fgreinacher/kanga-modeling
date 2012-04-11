@@ -48,10 +48,8 @@
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SequenceDiagrams\ActivityVisual.cs" />
     <Compile Include="SequenceDiagrams\ParticipantVisual.cs" />
     <Compile Include="SequenceDiagrams\SequenceDiagramVisual.cs" />
-    <Compile Include="SequenceDiagrams\SignalVisual.cs" />
     <Compile Include="SequenceDiagrams\TitleVisual.cs" />
     <Compile Include="Visual.cs" />
   </ItemGroup>

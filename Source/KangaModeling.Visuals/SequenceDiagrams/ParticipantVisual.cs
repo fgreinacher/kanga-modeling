@@ -1,6 +1,5 @@
 ﻿using System;
 using KangaModeling.Compiler.SequenceDiagrams;
-using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
 
@@ -50,14 +49,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 		#endregion
 
 		#region Overrides / Overrideables
-
-		protected override Size MeasureCore(IGraphicContext graphicContext)
-		{
-			m_NameSize = graphicContext.MeasureText(m_Participant.Name).Plus(10, 10);
-
-			return m_NameSize.Plus(5, 0);
-		}
-
+        
 		protected override void DrawCore(IGraphicContext graphicContext)
 		{
 			graphicContext.DrawLine(new Point(Width / 2, 0), new Point(Width / 2, Height), 2);

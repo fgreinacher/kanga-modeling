@@ -2,7 +2,6 @@
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace KangaModeling.Visuals
 {
@@ -36,25 +35,13 @@ namespace KangaModeling.Visuals
 		{
 			get { return m_Parent; }
 		}
-
-		public Size MeasuredSize
-		{
-			get;
-			private set;
-		}
-
+        
 		public Point Location
 		{
 			get;
 			set;
 		}
-
-		public bool AutoSize
-		{
-			get;
-			set;
-		}
-
+        
 		public Size Size
 		{
 			get;
@@ -85,11 +72,6 @@ namespace KangaModeling.Visuals
 			set { Location = new Point(X, value); }
 		}
 
-		public float CenterX
-		{
-			get { return X + Width / 2; }
-		}
-
 		#endregion
 
 		#region Public Methods
@@ -113,38 +95,10 @@ namespace KangaModeling.Visuals
 			visual.m_Parent = null;
 			m_Children.Remove(visual);
 		}
-
-		public Point LocalPointToGlobalPoint(Point localPoint)
-		{
-			if (Parent == null)
-			{
-				return localPoint;
-			}
-
-			return Parent.GlobalPointToLocalPoint(localPoint.Offset(Location.X, Location.Y));
-		}
-
-		public Point GlobalPointToLocalPoint(Point globalPoint)
-		{
-			if (Parent == null)
-			{
-				return globalPoint;
-			}
-
-			return Parent.GlobalPointToLocalPoint(globalPoint.Offset(-Location.X, -Location.Y));
-		}
-
+        
 		public void Layout(IGraphicContext graphicContext)
-		{
-			foreach (var child in Children)
-			{
-				child.Layout(graphicContext);
-			}
-
-			Arrange(graphicContext);
-			Measure(graphicContext);
-
-			if (AutoSize) Size = MeasuredSize;
+        {
+            LayoutCore(graphicContext);
 		}
 
 		public void Draw(IGraphicContext graphicContext)
@@ -164,41 +118,15 @@ namespace KangaModeling.Visuals
 
 		#region Overrides / Overrideables
 
-		protected virtual void ArrangeCore(IGraphicContext graphicContext)
+		protected virtual void LayoutCore(IGraphicContext graphicContext)
 		{
 		}
-
-		protected virtual Size MeasureCore(IGraphicContext graphicContext)
-		{
-			float maximumX = 0;
-			float maximumY = 0;
-
-			foreach (var child in Children)
-			{
-				maximumX = Math.Max(child.X + child.Width, maximumX);
-				maximumY = Math.Max(child.Y + child.Height, maximumY);
-			}
-
-			return new Size(maximumX, maximumY);
-		}
-
+        
 		protected virtual void DrawCore(IGraphicContext graphicContext)
 		{
 		}
-		#endregion
-
-		#region Private Methods
-
-		private void Arrange(IGraphicContext graphicContext)
-		{
-			ArrangeCore(graphicContext);
-		}
-
-		private void Measure(IGraphicContext graphicContext)
-		{
-			MeasuredSize = MeasureCore(graphicContext);
-		}
 
 		#endregion
-	}
+        
+    }
 }

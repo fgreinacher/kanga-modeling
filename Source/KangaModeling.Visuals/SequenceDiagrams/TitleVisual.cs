@@ -16,19 +16,12 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         public TitleVisual(string title)
         {
             m_Title = title;
-			
-			AutoSize = true;
         }
 
         #endregion
 
         #region Overrides / Overrideables
-
-        protected override Size MeasureCore(IGraphicContext graphicContext)
-        {
-            return graphicContext.MeasureText(m_Title);
-        }
-
+        
         protected override void DrawCore(IGraphicContext graphicContext)
         {
             graphicContext.DrawText(m_Title, HorizontalAlignment.Left, VerticalAlignment.Middle, new Point(0, 0), Size);
