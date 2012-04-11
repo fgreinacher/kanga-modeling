@@ -48,8 +48,12 @@
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SequenceDiagrams\ParticipantVisual.cs" />
+    <Compile Include="SequenceDiagrams\Cell.cs" />
+    <Compile Include="SequenceDiagrams\LifelineCell.cs" />
+    <Compile Include="SequenceDiagrams\LifelineNameCell.cs" />
     <Compile Include="SequenceDiagrams\SequenceDiagramVisual.cs" />
+    <Compile Include="SequenceDiagrams\SignalDirection.cs" />
+    <Compile Include="SequenceDiagrams\SignalType.cs" />
     <Compile Include="SequenceDiagrams\TitleVisual.cs" />
     <Compile Include="Visual.cs" />
   </ItemGroup>

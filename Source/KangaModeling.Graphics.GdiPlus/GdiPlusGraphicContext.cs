@@ -6,7 +6,6 @@ using Point = KangaModeling.Graphics.Primitives.Point;
 using Size = KangaModeling.Graphics.Primitives.Size;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.IO;
 using System.Runtime.InteropServices;
 using KangaModeling.Graphics.GdiPlus.Resources;
 

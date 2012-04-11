@@ -1,315 +1,69 @@
 ﻿using System.Collections.Generic;
 using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics;
-using KangaModeling.Graphics.Primitives;
 using System.Linq;
 using System;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class CellDescriptor
+    internal class Grid
     {
-        public CellDescriptor(int row, int column)
+        private readonly int m_RowCount;
+        private readonly int m_ColumnCount;
+        private readonly Cell[,] m_Cells;
+
+        public Grid(int rowCount, int columnCount)
         {
-            Row = row;
-            Column = column;
+            m_RowCount = rowCount;
+            m_ColumnCount = columnCount;
+            m_Cells = new Cell[rowCount, columnCount];
         }
 
-        public int Row { get; private set; }
-
-        public int Column { get; private set; }
-    }
-
-    internal abstract class Cell : Visual
-    {
-        private readonly Cell[,] m_Grid;
-        private readonly CellDescriptor m_CellDescriptor;
-
-        protected Cell(Cell[,] grid, CellDescriptor cellDescriptor)
+        public Cell GetCell(int row, int column)
         {
-            m_Grid = grid;
-            m_CellDescriptor = cellDescriptor;
+            return m_Cells[row, column];
         }
 
-        public Cell[,] Grid
+        internal void AddCell(Cell cell)
         {
-            get { return m_Grid; }
+            m_Cells[cell.Row, cell.Column] = cell;
         }
 
-        public int Row
+        public IEnumerable<Cell> Cells()
         {
-            get { return m_CellDescriptor.Row; }
+            return m_Cells.Cast<Cell>();
         }
 
-        public int Column
+        public IEnumerable<int> Rows()
         {
-            get { return m_CellDescriptor.Column; }
-        }
-
-        public float BodyWidth { get; set; }
-        public float BodyHeight { get; set; }
-
-        public float LeftOuterWidth { get; set; }
-        public float RightOuterWidth { get; set; }
-
-        public float TopOuterHeight { get; set; }
-        public float BottomOuterHeight { get; set; }
-
-        public void LayoutBody(IGraphicContext graphicContext)
-        {
-            LayoutBodyCore(graphicContext);
-        }
-
-        public void LayoutOuters(IGraphicContext graphicContext)
-        {
-            LayoutOutersCore(graphicContext);
-        }
-
-        #region Overrides / Overrideables
-
-        protected abstract void LayoutBodyCore(IGraphicContext graphicContext);
-
-        protected abstract void LayoutOutersCore(IGraphicContext graphicContext);
-
-        protected override void DrawCore(IGraphicContext graphicContext)
-        {
-            graphicContext.DrawRectangle(new Point(LeftOuterWidth, TopOuterHeight), new Size(BodyWidth, BodyHeight));
-
-            //string text = string.Format("R{0}, C{1}", Row, Column);
-
-            //graphicContext.DrawText(text, HorizontalAlignment.Left, VerticalAlignment.Top, new Point(LeftOuterWidth, TopOuterHeight), new Size(1000, 1000));
-        }
-
-        #endregion
-    }
-
-    internal enum LifelineCellSignalDirection
-    {
-        None,
-        In,
-        Out,
-    }
-
-    internal enum LifelineCellSignalType
-    {
-        None,
-        Call,
-        Signal,
-    }
-
-    internal class LifelineCell : Cell
-    {
-        const float baseLifelineWidth = 4;
-        const float MinimumBodyHeight = 30;
-
-        public LifelineCell(Cell[,] grid, CellDescriptor cellDescriptor)
-            : base(grid, cellDescriptor)
-        {
-        }
-
-        public LifelineCellSignalType SignalType { get; set; }
-
-        public LifelineCellSignalDirection SignalDirection { get; set; }
-
-        public CellDescriptor SignalTarget { get; set; }
-
-        public string SignalName { get; set; }
-
-        public int EnterActivationLevel { get; set; }
-
-        public int ExitActivationLevel { get; set; }
-
-        public bool CanDrawSignal { get; set; }
-
-        protected override void LayoutOutersCore(IGraphicContext graphicContext)
-        {
-            if (!CanDrawSignal || SignalType == LifelineCellSignalType.None)
+            for (int row = 0; row < m_RowCount; row++)
             {
-                return;
-            }
-
-            LifelineCell signalTargetCell = (LifelineCell)Grid[SignalTarget.Row, SignalTarget.Column];
-            float availableSpaceForSignal = CalculateAvailableSpaceForSignal(signalTargetCell);
-
-            Size nameSize = graphicContext.MeasureText(SignalName);
-
-            float neededWidthDelta = nameSize.Width - availableSpaceForSignal;
-            if (neededWidthDelta > 0)
-            {
-                signalTargetCell.LeftOuterWidth += neededWidthDelta;
-            }
-
-            TopOuterHeight = 5;
-        }
-
-        private Size m_SignalNameSize = Size.Empty;
-
-        protected override void LayoutBodyCore(IGraphicContext graphicContext)
-        {
-            BodyWidth = 0;
-            BodyHeight = 0;
-
-            if (SignalType == LifelineCellSignalType.None)
-            {
-                return;
-            }
-
-            m_SignalNameSize = graphicContext.MeasureText(SignalName);
-            BodyHeight = m_SignalNameSize.Height + 14;
-        }
-
-        protected override void DrawCore(IGraphicContext graphicContext)
-        {
-            DrawEnterLifeline(graphicContext);
-            DrawExitLifeline(graphicContext);
-            DrawSignal(graphicContext);
-
-            //base.DrawCore(graphicContext);
-        }
-
-        private void DrawEnterLifeline(IGraphicContext graphicContext)
-        {
-            Point from = new Point(HorizontalLifelineCenter(), 0);
-            Point to = new Point(HorizontalLifelineCenter(), VerticalLifelineCenter());
-
-            graphicContext.DrawLine(from, to, baseLifelineWidth + baseLifelineWidth * EnterActivationLevel);
-        }
-
-        private void DrawExitLifeline(IGraphicContext graphicContext)
-        {
-            Point from = new Point(HorizontalLifelineCenter(), VerticalLifelineCenter());
-            Point to = new Point(HorizontalLifelineCenter(), Height);
-
-            graphicContext.DrawLine(from, to, baseLifelineWidth + baseLifelineWidth * ExitActivationLevel);
-        }
-
-        private void DrawSignal(IGraphicContext graphicContext)
-        {
-            if (!CanDrawSignal || SignalType == LifelineCellSignalType.None)
-            {
-                return;
-            }
-
-            LifelineCell signalTargetCell = (LifelineCell)Grid[SignalTarget.Row, SignalTarget.Column];
-
-            Point from = new Point(HorizontalLifelineCenterRight(), VerticalLifelineCenter());
-            Point to = new Point(
-                (signalTargetCell.X - X) + signalTargetCell.HorizontalLifelineCenterLeft(),
-                VerticalLifelineCenter());
-
-            Size measuredTextSize = graphicContext.MeasureText(SignalName);
-
-            Point textLocation = @from.Offset(0, -measuredTextSize.Height);
-
-            Size textSize = new Size(to.X - from.X, measuredTextSize.Height);
-
-            graphicContext.DrawText(SignalName, HorizontalAlignment.Center, VerticalAlignment.Bottom, textLocation, textSize);
-
-            if (SignalDirection == LifelineCellSignalDirection.In)
-            {
-                Point tmp = from;
-                from = to;
-                to = tmp;
-            }
-
-            var lineOptions = LineOptions.ArrowEnd;
-            if (SignalType == LifelineCellSignalType.Signal)
-            {
-                lineOptions |= LineOptions.Dashed;
-            }
-            graphicContext.DrawLine(@from, to, 2, lineOptions);
-        }
-
-        private float HorizontalLifelineCenterLeft()
-        {
-            return HorizontalLifelineCenter() -
-                (baseLifelineWidth + baseLifelineWidth * Math.Max(EnterActivationLevel, ExitActivationLevel)) / 2;
-        }
-
-        private float HorizontalLifelineCenterRight()
-        {
-            return HorizontalLifelineCenter() +
-                (baseLifelineWidth + baseLifelineWidth * Math.Max(EnterActivationLevel, ExitActivationLevel)) / 2;
-        }
-
-        private float HorizontalLifelineCenter()
-        {
-            return LeftOuterWidth + ((BodyWidth / 2));
-        }
-
-        private float VerticalLifelineCenter()
-        {
-            return TopOuterHeight + m_SignalNameSize.Height;
-        }
-
-        private float CalculateAvailableSpaceForSignal(Cell signalTargetCell)
-        {
-            var cellsBetweenThisCellAndTargetCell = Grid.Cast<Cell>().Where(
-                cell => cell.Row == Row && cell.Column > Column && cell.Column < signalTargetCell.Column);
-
-            var availableSpaceInCellsBetween =
-                cellsBetweenThisCellAndTargetCell.Select(cell => cell.BodyWidth + cell.LeftOuterWidth + cell.RightOuterWidth).
-                    Sum();
-            var availableRightSpaceInThisCell = (BodyWidth / 2) + RightOuterWidth;
-            var availableLeftSpaceInTargetCell = (signalTargetCell.BodyWidth / 2) + signalTargetCell.LeftOuterWidth;
-
-            var availableSpaceForSignal =
-                availableSpaceInCellsBetween +
-                availableRightSpaceInThisCell +
-                availableLeftSpaceInTargetCell;
-            return availableSpaceForSignal;
-        }
-    }
-
-    internal class LifelineNameCell : Cell
-    {
-        public LifelineNameCell(Cell[,] grid, CellDescriptor cellDescriptor)
-            : base(grid, cellDescriptor)
-        {
-        }
-
-        public string Name { get; set; }
-        public bool IsTop { get; set; }
-        public bool IsBottom { get; set; }
-        public bool IsLeft { get; set; }
-        public bool IsRight { get; set; }
-
-        protected override void LayoutOutersCore(IGraphicContext graphicContext)
-        {
-            if (IsTop)
-            {
-                TopOuterHeight = 5;
-                BottomOuterHeight = 0;
-            }
-            else if (IsBottom)
-            {
-                BottomOuterHeight = 5;
-            }
-
-            RightOuterWidth = 5;
-
-            if (IsLeft)
-            {
-                LeftOuterWidth = 5;
+                yield return row;
             }
         }
 
-        protected override void LayoutBodyCore(IGraphicContext graphicContext)
+        public IEnumerable<int> Columns()
         {
-            Size nameSize = graphicContext.MeasureText(Name);
-
-            BodyWidth = nameSize.Width;
-            BodyHeight = nameSize.Height;
+            for (int column = 0; column < m_ColumnCount; column++)
+            {
+                yield return column;
+            }
         }
 
-        protected override void DrawCore(IGraphicContext graphicContext)
+        public IEnumerable<Cell> CellsInRow(int row)
         {
-            Point location = new Point(
-                LeftOuterWidth,
-                TopOuterHeight);
-            graphicContext.DrawRectangle(location, new Size(BodyWidth, BodyHeight));
-            graphicContext.DrawText(Name, HorizontalAlignment.Center, VerticalAlignment.Middle, location, new Size(BodyWidth, BodyHeight));
+            return Cells().Where(cell => cell.Row == row);
         }
+
+        public IEnumerable<Cell> CellsInColumn(int column)
+        {
+            return Cells().Where(cell => cell.Column == column);
+        }
+
+
+        public int RowCount { get; set; }
+
+        public int ColumnCount { get; set; }
     }
 
     public sealed class SequenceDiagramVisual : Visual
@@ -344,7 +98,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         #region Fields
 
-        private readonly Cell[,] m_CellGrid;
+        private readonly Grid m_Grid;
+        private readonly TitleVisual m_Title;
 
         #endregion
 
@@ -352,12 +107,21 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         public SequenceDiagramVisual(ISequenceDiagram sequenceDiagram)
         {
-            m_CellGrid = CreateCellGrid(sequenceDiagram);
+            m_Grid = CreateGrid(sequenceDiagram);
+            m_Title = new TitleVisual(sequenceDiagram.Root.Title);
+            AddChild(m_Title);
         }
 
         #endregion
 
         #region Overrides / Overrideables
+
+        protected override void DrawCore(IGraphicContext graphicContext)
+        {
+            base.DrawCore(graphicContext);
+
+
+        }
 
         protected override void LayoutCore(IGraphicContext graphicContext)
         {
@@ -369,29 +133,29 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         #region Private Methods
 
-        private Cell[,] CreateCellGrid(ISequenceDiagram sequenceDiagram)
+        private Grid CreateGrid(ISequenceDiagram sequenceDiagram)
         {
-            var columnCount = CalculateColumnCount(sequenceDiagram);
             var rowCount = CalculateRowCount(sequenceDiagram);
+            var columnCount = CalculateColumnCount(sequenceDiagram);
 
-            Cell[,] cellGrid = new Cell[rowCount, columnCount];
+            var grid = new Grid(rowCount, columnCount);
 
             foreach (var lifeline in sequenceDiagram.Lifelines)
             {
-                var topLifelineNameCell = new LifelineNameCell(cellGrid, new CellDescriptor(0, lifeline.Index))
+                var topLifelineNameCell = new LifelineNameCell(grid, 0, lifeline.Index)
                 {
                     IsTop = true,
                     IsLeft = lifeline.Index == 0,
                     IsRight = lifeline.Index == sequenceDiagram.Lifelines.Count(),
                     Name = lifeline.Name
                 };
-                AddCell(cellGrid, topLifelineNameCell);
+                AddCellToGridAndChildren(grid, topLifelineNameCell);
 
                 const int rowOffset = 1;
 
                 foreach (var pin in lifeline.Pins)
                 {
-                    var lifelineCell = new LifelineCell(cellGrid, new CellDescriptor(pin.RowIndex + rowOffset, lifeline.Index));
+                    var lifelineCell = new LifelineCell(grid, pin.RowIndex + rowOffset, lifeline.Index);
 
                     if (pin.IsSignalStart() && pin.IsSignalEnd())
                     {
@@ -401,23 +165,24 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     {
                         lifelineCell.CanDrawSignal = (pin.Signal.End.LifelineIndex > pin.LifelineIndex);
                         lifelineCell.SignalName = pin.Signal.Name;
-                        lifelineCell.SignalTarget = new CellDescriptor(pin.Signal.End.RowIndex + rowOffset,
-                                                                       pin.Signal.End.LifelineIndex);
-                        lifelineCell.SignalType = pin.Signal.SignalType == SignalType.Call
-                                                      ? LifelineCellSignalType.Call
-                                                      : LifelineCellSignalType.Signal;
-                        lifelineCell.SignalDirection = LifelineCellSignalDirection.Out;
+                        lifelineCell.SignalTargetRow = pin.Signal.End.RowIndex + rowOffset;
+                        lifelineCell.SignalTargetColumn = pin.Signal.End.LifelineIndex;
+
+                        lifelineCell.SignalType = pin.Signal.SignalType == Compiler.SequenceDiagrams.SignalType.Call
+                                                      ? SignalType.Call
+                                                      : SignalType.Signal;
+                        lifelineCell.SignalDirection = SignalDirection.Out;
                     }
                     else if (pin.IsSignalEnd())
                     {
                         lifelineCell.CanDrawSignal = (pin.Signal.Start.LifelineIndex > pin.LifelineIndex);
                         lifelineCell.SignalName = pin.Signal.Name;
-                        lifelineCell.SignalTarget = new CellDescriptor(pin.Signal.Start.RowIndex + rowOffset,
-                                                                       pin.Signal.Start.LifelineIndex);
-                        lifelineCell.SignalType = pin.Signal.SignalType == SignalType.Call
-                                                      ? LifelineCellSignalType.Call
-                                                      : LifelineCellSignalType.Signal;
-                        lifelineCell.SignalDirection = LifelineCellSignalDirection.In;
+                        lifelineCell.SignalTargetRow = pin.Signal.Start.RowIndex + rowOffset;
+                        lifelineCell.SignalTargetColumn = pin.Signal.Start.LifelineIndex;
+                        lifelineCell.SignalType = pin.Signal.SignalType == Compiler.SequenceDiagrams.SignalType.Call
+                                                      ? SignalType.Call
+                                                      : SignalType.Signal;
+                        lifelineCell.SignalDirection = SignalDirection.In;
                     }
 
                     if (pin.Activity != null)
@@ -429,8 +194,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                         }
                         else if (pin.Activity.End == pin)
                         {
-                            ((LifelineCell)cellGrid[lifelineCell.Row - 1, lifelineCell.Column]).EnterActivationLevel = pin.Level + 1;
-                            ((LifelineCell)cellGrid[lifelineCell.Row - 1, lifelineCell.Column]).ExitActivationLevel = pin.Level;
+                            LifelineCell previousLifelineCell = (LifelineCell)grid.GetCell(lifelineCell.Row - 1, lifelineCell.Column);
+
+                            previousLifelineCell.EnterActivationLevel = pin.Level + 1;
+                            previousLifelineCell.ExitActivationLevel = pin.Level;
                         }
                     }
                     else
@@ -439,25 +206,26 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     }
 
 
-                    AddCell(cellGrid, lifelineCell);
+                    AddCellToGridAndChildren(grid, lifelineCell);
                 }
 
-                var bottomLifelineNameCell = new LifelineNameCell(cellGrid, new CellDescriptor(rowCount - 1, lifeline.Index))
+                var bottomLifelineNameCell = new LifelineNameCell(grid, rowCount - 1, lifeline.Index)
                 {
                     IsBottom = true,
                     IsLeft = lifeline.Index == 0,
                     IsRight = lifeline.Index == sequenceDiagram.Lifelines.Count(),
                     Name = lifeline.Name
                 };
-                AddCell(cellGrid, bottomLifelineNameCell);
+
+                AddCellToGridAndChildren(grid, bottomLifelineNameCell);
             }
 
-            return cellGrid;
+            return grid;
         }
 
-        private void AddCell(Cell[,] cellGrid, Cell cell)
+        private void AddCellToGridAndChildren(Grid grid, Cell cell)
         {
-            cellGrid[cell.Row, cell.Column] = cell;
+            grid.AddCell(cell);
             AddChild(cell);
         }
 
@@ -479,32 +247,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             return columns;
         }
 
-        private IEnumerable<int> Rows()
-        {
-            for (int row = 0; row <= m_CellGrid.GetUpperBound(0); row++)
-            {
-                yield return row;
-            }
-        }
-
-        private IEnumerable<int> Columns()
-        {
-            for (int column = 0; column <= m_CellGrid.GetUpperBound(1); column++)
-            {
-                yield return column;
-            }
-        }
-
-        private IEnumerable<Cell> CellsInRow(int row)
-        {
-            return m_CellGrid.Cast<Cell>().Where(c => c.Row == row);
-        }
-
-        private IEnumerable<Cell> CellsInColumn(int column)
-        {
-            return m_CellGrid.Cast<Cell>().Where(c => c.Column == column);
-        }
-
         private void NormalizeCellDimensions()
         {
             var rowDimensions = CalculateRowDimensions();
@@ -512,17 +254,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             var y = 0f;
 
-            foreach (var row in Rows())
+            foreach (var row in m_Grid.Rows())
             {
                 var rowDimension = rowDimensions[row];
 
                 var x = 0f;
 
-                foreach (var column in Columns())
+                foreach (var column in m_Grid.Columns())
                 {
                     var columnDimension = columnDimensions[column];
 
-                    var cell = m_CellGrid[row, column];
+                    var cell = m_Grid.GetCell(row, column);
 
                     cell.X = x;
                     cell.Y = y;
@@ -550,11 +292,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             var rowDimensions = new List<RowDimension>();
 
-            foreach (var row in Rows())
+            foreach (var row in m_Grid.Rows())
             {
                 var rowDimension = new RowDimension();
 
-                foreach (var cellInRow in CellsInRow(row))
+                foreach (var cellInRow in m_Grid.CellsInRow(row))
                 {
                     rowDimension.BodyHeight = Math.Max(cellInRow.BodyHeight, rowDimension.BodyHeight);
                     rowDimension.TopOuterHeight = Math.Max(cellInRow.TopOuterHeight, rowDimension.TopOuterHeight);
@@ -570,11 +312,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             var columnDimensions = new List<ColumnDimension>();
 
-            foreach (var column in Columns())
+            foreach (var column in m_Grid.Columns())
             {
                 var columnDimension = new ColumnDimension();
 
-                foreach (var cellInColumn in CellsInColumn(column))
+                foreach (var cellInColumn in m_Grid.CellsInColumn(column))
                 {
                     columnDimension.BodyWidth = Math.Max(cellInColumn.BodyWidth, columnDimension.BodyWidth);
                     columnDimension.LeftOuterWidth = Math.Max(cellInColumn.LeftOuterWidth, columnDimension.LeftOuterWidth);
@@ -588,9 +330,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private void LayoutCellOuters(IGraphicContext graphicContext)
         {
-            foreach (var row in Rows())
+            foreach (var row in m_Grid.Rows())
             {
-                foreach (var cell in CellsInRow(row))
+                foreach (var cell in m_Grid.CellsInRow(row))
                 {
                     cell.LayoutOuters(graphicContext);
                 }
@@ -601,9 +343,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private void LayoutCellBodies(IGraphicContext graphicContext)
         {
-            foreach (var row in Rows())
+            foreach (var row in m_Grid.Rows())
             {
-                foreach (var cell in CellsInRow(row))
+                foreach (var cell in m_Grid.CellsInRow(row))
                 {
                     cell.LayoutBody(graphicContext);
                 }
