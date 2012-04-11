@@ -13,7 +13,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
             var keywordToken = new Token(0, 100, "participant");
             var nameToken = new Token(0,name.Length, name);
             ParticipantStatement target = new SimpleParticipantStatement(keywordToken, nameToken);
-            var builderMock = new Mock<IModelBuilder>(MockBehavior.Strict, null, null);
+            var builderMock = new Mock<IModelBuilder>(MockBehavior.Strict);
             builderMock.Setup(builder => builder.CreateParticipant(nameToken, nameToken));
             
             target.Build(builderMock.Object);
