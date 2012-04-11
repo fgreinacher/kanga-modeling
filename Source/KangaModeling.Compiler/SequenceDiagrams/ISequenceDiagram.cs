@@ -7,5 +7,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
     {
         IFragment Root { get; }
         IEnumerable<ILifeline> Lifelines { get; }
+        int RowCount { get; }
+        int LifelineCount { get; }
     }
 }

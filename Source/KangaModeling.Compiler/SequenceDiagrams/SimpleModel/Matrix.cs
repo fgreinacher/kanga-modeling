@@ -22,6 +22,16 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public LifelineCollection Lifelines { get; private set; }
 
+        public int RowCount
+        {
+            get { return Rows.Count; }
+        }
+
+        public int LifelineCount
+        {
+            get { return Lifelines.Count; }
+        }
+
         public RowsCollection Rows { get; private set; }
 
         public Row LastRow

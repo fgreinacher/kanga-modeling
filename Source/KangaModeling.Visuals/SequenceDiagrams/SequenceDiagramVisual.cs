@@ -49,10 +49,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private Grid CreateGrid(ISequenceDiagram sequenceDiagram)
         {
-            var rowCount = CalculateRowCount(sequenceDiagram);
-            var columnCount = CalculateColumnCount(sequenceDiagram);
+            var rowCount = sequenceDiagram.RowCount+2;
 
-            var grid = new Grid(rowCount, columnCount);
+            var grid = new Grid(rowCount, sequenceDiagram.LifelineCount);
 
             foreach (var lifeline in sequenceDiagram.Lifelines)
             {
@@ -60,7 +59,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 {
                     IsTop = true,
                     IsLeft = lifeline.Index == 0,
-                    IsRight = lifeline.Index == sequenceDiagram.Lifelines.Count(),
+                    IsRight = lifeline.Index == sequenceDiagram.LifelineCount,
                     Name = lifeline.Name
                 };
                 grid.AddCell(topLifelineNameCell);
@@ -103,6 +102,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     {
                         if (pin.Activity.Start == pin)
                         {
+                            //TODO use pin.Activity.Level and pin.Activity.Orientation
                             lifelineCell.EnterActivationLevel = activationLevel;
                             lifelineCell.ExitActivationLevel = ++activationLevel;
                         }
@@ -139,24 +139,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             }
 
             return grid;
-        }
-
-        private static int CalculateRowCount(ISequenceDiagram sequenceDiagram)
-        {
-            int rows = 2;
-
-            if (sequenceDiagram.Lifelines.Any())
-            {
-                rows += sequenceDiagram.Lifelines.First().Pins.Count();
-            }
-
-            return rows;
-        }
-
-        private static int CalculateColumnCount(ISequenceDiagram sequenceDiagram)
-        {
-            int columns = sequenceDiagram.Lifelines.Count();
-            return columns;
         }
 
         #endregion
