@@ -134,15 +134,15 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             if (endPin.PinType != PinType.In &&
                 endPin.Signal.SignalType == SignalType.Return)
             {
-                ILifeline sourceOfReturn = endPin.Signal.Start.Lifeline;
+                ILifeline targetOfReturn = endPin.Signal.End.Lifeline;
                 ILifeline sourceOfActivation = lastOpenActivity.Start.Signal.Start.Lifeline;
 
-                if (!sourceOfActivation.Equals(sourceOfReturn))
+                if (!sourceOfActivation.Equals(targetOfReturn))
                 {
                     AddError(targetToken,
                              string.Format(
                                  "Unexpected deactivation. Return came from '{0}' but activation was initiated by '{1}'",
-                                 sourceOfReturn.Id,
+                                 targetOfReturn.Id,
                                  sourceOfActivation.Id));
                 }
             }
