@@ -9,7 +9,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
     {
         #region Constants / Enums
 
-        const float c_BaseLifelineWidth = 4;
+        const float c_BaseLifelineWidth = 2;
 
         #endregion
 
@@ -62,7 +62,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 signalTargetCell.LeftOuterWidth += neededWidthDelta;
             }
 
-            TopOuterHeight = 5;
+            TopOuterHeight = string.IsNullOrEmpty(SignalName) ? 15 : 5;
         }
         
         protected override void LayoutBodyCore(IGraphicContext graphicContext)
@@ -75,7 +75,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 return;
             }
 
-            BodyHeight = graphicContext.MeasureText(SignalName).Height + 14;
+            BodyHeight = graphicContext.MeasureText(SignalName).Height + 2 * 7;
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
@@ -161,7 +161,12 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private float CalculateVerticalLifelineCenter(IGraphicContext graphicContext)
         {
-            return TopOuterHeight + graphicContext.MeasureText(SignalName).Height;
+            if (!string.IsNullOrEmpty(SignalName))
+            {
+                return TopOuterHeight + graphicContext.MeasureText(SignalName).Height;
+            }
+
+            return TopOuterHeight;
         }
 
         private float CalculateAvailableSpaceForSignal(Cell signalTargetCell)

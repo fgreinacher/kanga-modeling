@@ -20,7 +20,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         #endregion
 
+        #region Properties
+
+
+        #endregion
+
         #region Overrides / Overrideables
+
+        protected override void LayoutCore(IGraphicContext graphicContext)
+        {
+            Size = graphicContext.MeasureText(m_Title);
+        }
         
         protected override void DrawCore(IGraphicContext graphicContext)
         {

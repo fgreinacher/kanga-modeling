@@ -49,6 +49,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\Cell.cs" />
+    <Compile Include="SequenceDiagrams\Grid.cs" />
     <Compile Include="SequenceDiagrams\LifelineCell.cs" />
     <Compile Include="SequenceDiagrams\LifelineNameCell.cs" />
     <Compile Include="SequenceDiagrams\SequenceDiagramVisual.cs" />

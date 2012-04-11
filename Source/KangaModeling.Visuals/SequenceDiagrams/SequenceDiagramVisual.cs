@@ -1,101 +1,13 @@
-﻿using System.Collections.Generic;
-using KangaModeling.Compiler.SequenceDiagrams;
+﻿using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics;
 using System.Linq;
 using System;
+using KangaModeling.Graphics.Primitives;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class Grid
-    {
-        private readonly int m_RowCount;
-        private readonly int m_ColumnCount;
-        private readonly Cell[,] m_Cells;
-
-        public Grid(int rowCount, int columnCount)
-        {
-            m_RowCount = rowCount;
-            m_ColumnCount = columnCount;
-            m_Cells = new Cell[rowCount, columnCount];
-        }
-
-        public Cell GetCell(int row, int column)
-        {
-            return m_Cells[row, column];
-        }
-
-        internal void AddCell(Cell cell)
-        {
-            m_Cells[cell.Row, cell.Column] = cell;
-        }
-
-        public IEnumerable<Cell> Cells()
-        {
-            return m_Cells.Cast<Cell>();
-        }
-
-        public IEnumerable<int> Rows()
-        {
-            for (int row = 0; row < m_RowCount; row++)
-            {
-                yield return row;
-            }
-        }
-
-        public IEnumerable<int> Columns()
-        {
-            for (int column = 0; column < m_ColumnCount; column++)
-            {
-                yield return column;
-            }
-        }
-
-        public IEnumerable<Cell> CellsInRow(int row)
-        {
-            return Cells().Where(cell => cell.Row == row);
-        }
-
-        public IEnumerable<Cell> CellsInColumn(int column)
-        {
-            return Cells().Where(cell => cell.Column == column);
-        }
-
-
-        public int RowCount { get; set; }
-
-        public int ColumnCount { get; set; }
-    }
-
     public sealed class SequenceDiagramVisual : Visual
     {
-        private sealed class RowDimension
-        {
-            public float BodyHeight { get; set; }
-
-            public float TopOuterHeight { get; set; }
-
-            public float BottomOuterHeight { get; set; }
-
-            public float Height()
-            {
-                return BodyHeight + TopOuterHeight + BottomOuterHeight;
-            }
-        }
-
-        private sealed class ColumnDimension
-        {
-            public float BodyWidth { get; set; }
-
-            public float LeftOuterWidth { get; set; }
-
-            public float RightOuterWidth { get; set; }
-
-            public float Width()
-            {
-                return BodyWidth + LeftOuterWidth + RightOuterWidth;
-            }
-        }
-
         #region Fields
 
         private readonly Grid m_Grid;
@@ -108,6 +20,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         public SequenceDiagramVisual(ISequenceDiagram sequenceDiagram)
         {
             m_Grid = CreateGrid(sequenceDiagram);
+            AddChild(m_Grid);
+
             m_Title = new TitleVisual(sequenceDiagram.Root.Title);
             AddChild(m_Title);
         }
@@ -116,17 +30,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         #region Overrides / Overrideables
 
-        protected override void DrawCore(IGraphicContext graphicContext)
-        {
-            base.DrawCore(graphicContext);
-
-
-        }
-
         protected override void LayoutCore(IGraphicContext graphicContext)
         {
-            LayoutCellBodies(graphicContext);
-            LayoutCellOuters(graphicContext);
+            m_Title.Layout(graphicContext);
+            m_Grid.Layout(graphicContext);
+            
+            m_Title.Location = new Point(0, 0);
+            m_Grid.Location = new Point(0, m_Title.Height);
+
+            Size = new Size(
+                Math.Max(m_Title.Width, m_Grid.Width),
+                m_Title.Height + m_Grid.Height);
         }
 
         #endregion
@@ -226,7 +140,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private void AddCellToGridAndChildren(Grid grid, Cell cell)
         {
             grid.AddCell(cell);
-            AddChild(cell);
         }
 
         private static int CalculateRowCount(ISequenceDiagram sequenceDiagram)
@@ -245,112 +158,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             int columns = sequenceDiagram.Lifelines.Count();
             return columns;
-        }
-
-        private void NormalizeCellDimensions()
-        {
-            var rowDimensions = CalculateRowDimensions();
-            var columnDimensions = CalculateColumnDimensions();
-
-            var y = 0f;
-
-            foreach (var row in m_Grid.Rows())
-            {
-                var rowDimension = rowDimensions[row];
-
-                var x = 0f;
-
-                foreach (var column in m_Grid.Columns())
-                {
-                    var columnDimension = columnDimensions[column];
-
-                    var cell = m_Grid.GetCell(row, column);
-
-                    cell.X = x;
-                    cell.Y = y;
-                    cell.Width = columnDimension.Width();
-                    cell.Height = rowDimension.Height();
-
-                    cell.BodyWidth = columnDimension.BodyWidth;
-                    cell.BodyHeight = rowDimension.BodyHeight;
-                    cell.TopOuterHeight = rowDimension.TopOuterHeight;
-                    cell.BottomOuterHeight = rowDimension.BottomOuterHeight;
-                    cell.LeftOuterWidth = columnDimension.LeftOuterWidth;
-                    cell.RightOuterWidth = columnDimension.RightOuterWidth;
-
-                    x += cell.Width;
-                }
-
-                y += rowDimension.Height();
-            }
-
-            Width = columnDimensions.Select(rd => rd.Width()).Sum();
-            Height = rowDimensions.Select(rd => rd.Height()).Sum();
-        }
-
-        private List<RowDimension> CalculateRowDimensions()
-        {
-            var rowDimensions = new List<RowDimension>();
-
-            foreach (var row in m_Grid.Rows())
-            {
-                var rowDimension = new RowDimension();
-
-                foreach (var cellInRow in m_Grid.CellsInRow(row))
-                {
-                    rowDimension.BodyHeight = Math.Max(cellInRow.BodyHeight, rowDimension.BodyHeight);
-                    rowDimension.TopOuterHeight = Math.Max(cellInRow.TopOuterHeight, rowDimension.TopOuterHeight);
-                    rowDimension.BottomOuterHeight = Math.Max(cellInRow.BottomOuterHeight, rowDimension.BottomOuterHeight);
-                }
-
-                rowDimensions.Add(rowDimension);
-            }
-            return rowDimensions;
-        }
-
-        private List<ColumnDimension> CalculateColumnDimensions()
-        {
-            var columnDimensions = new List<ColumnDimension>();
-
-            foreach (var column in m_Grid.Columns())
-            {
-                var columnDimension = new ColumnDimension();
-
-                foreach (var cellInColumn in m_Grid.CellsInColumn(column))
-                {
-                    columnDimension.BodyWidth = Math.Max(cellInColumn.BodyWidth, columnDimension.BodyWidth);
-                    columnDimension.LeftOuterWidth = Math.Max(cellInColumn.LeftOuterWidth, columnDimension.LeftOuterWidth);
-                    columnDimension.RightOuterWidth = Math.Max(cellInColumn.RightOuterWidth, columnDimension.RightOuterWidth);
-                }
-
-                columnDimensions.Add(columnDimension);
-            }
-            return columnDimensions;
-        }
-
-        private void LayoutCellOuters(IGraphicContext graphicContext)
-        {
-            foreach (var row in m_Grid.Rows())
-            {
-                foreach (var cell in m_Grid.CellsInRow(row))
-                {
-                    cell.LayoutOuters(graphicContext);
-                }
-                NormalizeCellDimensions();
-            }
-
-        }
-
-        private void LayoutCellBodies(IGraphicContext graphicContext)
-        {
-            foreach (var row in m_Grid.Rows())
-            {
-                foreach (var cell in m_Grid.CellsInRow(row))
-                {
-                    cell.LayoutBody(graphicContext);
-                }
-                NormalizeCellDimensions();
-            }
         }
 
         #endregion

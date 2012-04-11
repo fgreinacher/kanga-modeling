@@ -50,9 +50,7 @@
         {
             get
             {
-                return string.IsNullOrEmpty(m_Title)
-                           ? string.Empty
-                           : string.Format("sd: {0}", m_Title);
+                return m_Title ?? string.Empty;
             }
         }
 

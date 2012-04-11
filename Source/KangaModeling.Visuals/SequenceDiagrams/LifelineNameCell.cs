@@ -32,21 +32,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void LayoutOutersCore(IGraphicContext graphicContext)
         {
-            const float outerMargin = 15;
-                
-            if (IsTop)
-            {
-                TopOuterHeight = outerMargin;
-                BottomOuterHeight = 0;
-            }
-            else if (IsBottom)
-            {
-                BottomOuterHeight = outerMargin;
-            }
-
-            RightOuterWidth = outerMargin;
-
-            if (IsLeft)
+            const float outerMargin = 5;
+            
+            if (!IsLeft)
             {
                 LeftOuterWidth = outerMargin;
             }
@@ -54,7 +42,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void LayoutBodyCore(IGraphicContext graphicContext)
         {
-            Size nameSize = graphicContext.MeasureText(Name);
+            Size nameSize = graphicContext.MeasureText(Name).Plus(20, 0);
 
             BodyWidth = nameSize.Width;
             BodyHeight = nameSize.Height;
