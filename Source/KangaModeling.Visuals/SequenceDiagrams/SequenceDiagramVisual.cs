@@ -34,7 +34,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             m_Title.Layout(graphicContext);
             m_Grid.Layout(graphicContext);
-            
+
             m_Title.Location = new Point(0, 0);
             m_Grid.Location = new Point(0, m_Title.Height);
 
@@ -66,6 +66,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 grid.AddCell(topLifelineNameCell);
 
                 const int rowOffset = 1;
+                int activationLevel = 0;
 
                 foreach (var pin in lifeline.Pins)
                 {
@@ -102,20 +103,26 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     {
                         if (pin.Activity.Start == pin)
                         {
-                            lifelineCell.EnterActivationLevel = pin.Level;
-                            lifelineCell.ExitActivationLevel = pin.Level + 1;
+                            lifelineCell.EnterActivationLevel = activationLevel;
+                            lifelineCell.ExitActivationLevel = ++activationLevel;
                         }
                         else if (pin.Activity.End == pin)
                         {
                             LifelineCell previousLifelineCell = (LifelineCell)grid.GetCell(lifelineCell.Row - 1, lifelineCell.Column);
 
-                            previousLifelineCell.EnterActivationLevel = pin.Level + 1;
-                            previousLifelineCell.ExitActivationLevel = pin.Level;
+                            previousLifelineCell.EnterActivationLevel = activationLevel;
+                            previousLifelineCell.ExitActivationLevel = --activationLevel;
+                            
+                        }
+                        else
+                        {
+                            lifelineCell.EnterActivationLevel = activationLevel;
+                            lifelineCell.ExitActivationLevel = activationLevel;
                         }
                     }
                     else
                     {
-                        lifelineCell.EnterActivationLevel = lifelineCell.ExitActivationLevel = pin.Level;
+                        lifelineCell.EnterActivationLevel = lifelineCell.ExitActivationLevel = activationLevel;
                     }
 
                     grid.AddCell(lifelineCell);
