@@ -63,7 +63,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     IsRight = lifeline.Index == sequenceDiagram.Lifelines.Count(),
                     Name = lifeline.Name
                 };
-                AddCellToGridAndChildren(grid, topLifelineNameCell);
+                grid.AddCell(topLifelineNameCell);
 
                 const int rowOffset = 1;
 
@@ -81,7 +81,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                         lifelineCell.SignalName = pin.Signal.Name;
                         lifelineCell.SignalTargetRow = pin.Signal.End.RowIndex + rowOffset;
                         lifelineCell.SignalTargetColumn = pin.Signal.End.LifelineIndex;
-
                         lifelineCell.SignalType = pin.Signal.SignalType == Compiler.SequenceDiagrams.SignalType.Call
                                                       ? SignalType.Call
                                                       : SignalType.Signal;
@@ -119,8 +118,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                         lifelineCell.EnterActivationLevel = lifelineCell.ExitActivationLevel = pin.Level;
                     }
 
-
-                    AddCellToGridAndChildren(grid, lifelineCell);
+                    grid.AddCell(lifelineCell);
                 }
 
                 var bottomLifelineNameCell = new LifelineNameCell(grid, rowCount - 1, lifeline.Index)
@@ -130,16 +128,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     IsRight = lifeline.Index == sequenceDiagram.Lifelines.Count(),
                     Name = lifeline.Name
                 };
-
-                AddCellToGridAndChildren(grid, bottomLifelineNameCell);
+                grid.AddCell(bottomLifelineNameCell);
             }
 
             return grid;
-        }
-
-        private void AddCellToGridAndChildren(Grid grid, Cell cell)
-        {
-            grid.AddCell(cell);
         }
 
         private static int CalculateRowCount(ISequenceDiagram sequenceDiagram)
