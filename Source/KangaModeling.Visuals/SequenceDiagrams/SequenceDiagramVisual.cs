@@ -11,7 +11,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 		#region Fields
 
 		private readonly Grid m_Grid;
-		private readonly TitleVisual m_Title;
 
 		#endregion
 
@@ -21,9 +20,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 		{
 			m_Grid = CreateGrid(sequenceDiagram);
 			AddChild(m_Grid);
-
-			m_Title = new TitleVisual(sequenceDiagram.Root.Title);
-			AddChild(m_Title);
 		}
 
 		#endregion
@@ -32,15 +28,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 		protected override void LayoutCore(IGraphicContext graphicContext)
 		{
-			m_Title.Layout(graphicContext);
 			m_Grid.Layout(graphicContext);
+			m_Grid.Location = new Point(0, 0);
 
-			m_Title.Location = new Point(0, 0);
-			m_Grid.Location = new Point(0, m_Title.Height);
-
-			Size = new Size(
-				Math.Max(m_Title.Width, m_Grid.Width),
-				m_Title.Height + m_Grid.Height);
+			Size = new Size(m_Grid.Width, m_Grid.Height);
 		}
 
 		#endregion
@@ -53,7 +44,29 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 			AddCellsToGrid(grid, sequenceDiagram);
 
+			InitializeFragmentProperties(grid, sequenceDiagram.Root);
+
 			return grid;
+		}
+
+		const int rowOffset = 1;
+
+		private void InitializeFragmentProperties(Grid grid, IFragment fragment)
+		{
+			if(grid.ColumnCount == 0) return;
+
+			var startLifelineCell = grid.GetCell(0, 0);
+			var endLifelineCell = grid.GetCell(grid.RowCount - 1, grid.ColumnCount - 1);
+			endLifelineCell.IsFragmentEnd  = true;
+			startLifelineCell.IsFragmentStart = true;
+			startLifelineCell.FragmentType = fragment.FragmentType;
+			startLifelineCell.FragmentTitle = fragment.Title;
+			startLifelineCell.FragmentEndCell = endLifelineCell;
+
+			foreach (IFragment childFragment in fragment.Children)
+			{
+				InitializeFragmentProperties(grid, fragment);
+			}
 		}
 
 		private void AddCellsToGrid(Grid grid, ISequenceDiagram sequenceDiagram)
@@ -62,7 +75,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 			{
 				AddTopLifelineNameCell(grid, sequenceDiagram, lifeline);
 
-				const int rowOffset = 1;
 				int previousExitActivationLevel = 0;
 
 				foreach (var pin in lifeline.Pins)

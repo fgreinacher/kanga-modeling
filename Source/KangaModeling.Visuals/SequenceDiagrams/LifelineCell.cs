@@ -197,5 +197,5 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         }
 
         #endregion
-    }
+	}
 }

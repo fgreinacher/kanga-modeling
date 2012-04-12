@@ -50,6 +50,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         public float TopOuterHeight { get; set; }
         public float BottomOuterHeight { get; set; }
 
+
+		public bool IsFragmentStart { get; set; }
+		public Cell FragmentEndCell { get; set; }
+
         #endregion
 
         #region Public Methods
@@ -82,5 +86,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         }
 
         #endregion
-    }
+
+		public bool IsFragmentEnd { get; set; }
+
+		public Compiler.SequenceDiagrams.FragmentType FragmentType { get; set; }
+
+		public string FragmentTitle { get; set; }
+	}
 }

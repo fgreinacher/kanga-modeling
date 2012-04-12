@@ -31,7 +31,14 @@ namespace KangaModeling.Graphics.GdiPlus
 		{
 			var rectangle = new RectangleF(location.ToPointF(), size.ToSizeF());
 
-			m_Graphics.FillRectangle(Brushes.LightBlue, rectangle);
+			m_Graphics.DrawRectangle(Pens.Black, location.X, location.Y, size.Width, size.Height);
+		}
+
+		public void FillRectangle(Point location, Size size)
+		{
+			var rectangle = new RectangleF(location.ToPointF(), size.ToSizeF());
+
+			m_Graphics.FillRectangle(Brushes.Orange, rectangle);
 		}
 
 		public void DrawText(string text, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Point location, Size size)
