@@ -29,15 +29,5 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             }
             return Dictionary.TryGetValue(key, out lifeline);
         }
-
-        public int IndexOf(string key)
-        {
-            Lifeline lifeline;
-            if (!TryGetValue(key, out lifeline))
-            {
-                return -1;
-            }
-            return IndexOf(lifeline);
-        }
     }
 }

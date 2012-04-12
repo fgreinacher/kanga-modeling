@@ -9,7 +9,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [Test]
         public void UnknownStatementConstructorTest()
         {
-            Token invalidToken = new Token(); // TODO: Initialize to an appropriate value
+            Token invalidToken = new Token(); 
             UnknownStatement target = new UnknownStatement(invalidToken);
             Assert.Inconclusive("TODO: Implement code to verify target");
         }
@@ -17,9 +17,9 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [Test]
         public void BuildTest()
         {
-            //Token invalidToken = new Token(); // TODO: Initialize to an appropriate value
-            //UnknownStatement target = new UnknownStatement(invalidToken); // TODO: Initialize to an appropriate value
-            //ModelBuilder builder = null; // TODO: Initialize to an appropriate value
+            //Token invalidToken = new Token(); 
+            //UnknownStatement target = new UnknownStatement(invalidToken); 
+            //ModelBuilder builder = null; 
             //target.Build(builder);
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }

@@ -18,11 +18,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public LifelineState State { get; private set; }
 
-        public Pin this[int rowIndex]
-        {
-            get { return m_Matrix[Index, rowIndex]; }
-        }
-
         #region ILifeline Members
 
         public IEnumerable<IPin> Pins
