@@ -50,24 +50,34 @@ namespace KangaModeling.Graphics.GdiPlus
 			}
 		}
 
-		public void DrawLine(Point from, Point to, float width, LineOptions options = LineOptions.None)
+		public void DrawLine(Point from, Point to, float width)
 		{
-			using (var pen = new Pen(Brushes.Black, width))
+			DrawLineCore(from, to, width, pen => { });
+		}
+
+		public void DrawDashedLine(Point from, Point to, float width)
+		{
+			DrawLineCore(from, to, width, pen =>
 			{
-				if (options.HasFlag(LineOptions.ArrowEnd))
-				{
-					pen.CustomEndCap = new AdjustableArrowCap(7, 4, false);
-				}
+				pen.DashStyle = DashStyle.Dash;
+			});
+		}
 
-				if (options.HasFlag(LineOptions.Dashed))
-				{
-					pen.DashStyle = DashStyle.Dash;
-				}
+		public void DrawArrow(Point from, Point to, float width, float arrowCapWidth, float arrowCapHeight)
+		{
+			DrawLineCore(from, to, width, pen =>
+			{
+				pen.CustomEndCap = new AdjustableArrowCap(arrowCapWidth, arrowCapHeight, false);
+			});
+		}
 
-                pen.Alignment = PenAlignment.Left;
-
-				m_Graphics.DrawLine(pen, from.ToPointF(), to.ToPointF());
-			}
+		public void DrawDashedArrow(Point from, Point to, float width, float arrowCapWidth, float arrowCapHeight)
+		{
+			DrawLineCore(from, to, width, pen =>
+			{
+				pen.DashStyle = DashStyle.Dash;
+				pen.CustomEndCap = new AdjustableArrowCap(arrowCapWidth, arrowCapHeight, false);
+			});
 		}
 
 		public Size MeasureText(string text)
@@ -100,6 +110,18 @@ namespace KangaModeling.Graphics.GdiPlus
 		#endregion
 
 		#region Private Methods
+
+		private void DrawLineCore(Point from, Point to, float width, Action<Pen> initializePen)
+		{
+			using (var pen = new Pen(Brushes.Black, width))
+			{
+				initializePen(pen);
+
+				pen.Alignment = PenAlignment.Left;
+
+				m_Graphics.DrawLine(pen, from.ToPointF(), to.ToPointF());
+			}
+		}
 
 		private void FillFontCollection()
 		{

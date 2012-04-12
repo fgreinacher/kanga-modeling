@@ -131,8 +131,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             OpenPin lastOpenPin = target.State.OpenPins.Pop();
             Activity lastOpenActivity = lastOpenPin.GetActivity();
 
-            if (endPin.PinType != PinType.In &&
-                endPin.Signal.SignalType == SignalType.Return)
+            if (endPin.PinType != PinType.In)
             {
                 ILifeline targetOfReturn = endPin.Signal.End.Lifeline;
                 ILifeline sourceOfActivation = lastOpenActivity.Start.Signal.Start.Lifeline;

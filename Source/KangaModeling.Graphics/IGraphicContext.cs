@@ -9,7 +9,13 @@ namespace KangaModeling.Graphics
 
         void DrawText(string text, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Point location, Size size);
 
-		void DrawLine(Point from, Point to, float width, LineOptions options = LineOptions.None);
+		void DrawLine(Point from, Point to, float width);
+
+		void DrawDashedLine(Point from, Point to, float width);
+
+		void DrawArrow(Point from, Point to, float width, float arrowCapWidth, float arrowCapHeight);
+
+		void DrawDashedArrow(Point from, Point to, float width, float arrowCapWidth, float arrowCapHeight);
 		        
         Size MeasureText(string text);
 
