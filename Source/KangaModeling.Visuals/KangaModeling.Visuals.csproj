@@ -55,7 +55,6 @@
     <Compile Include="SequenceDiagrams\SequenceDiagramVisual.cs" />
     <Compile Include="SequenceDiagrams\SignalDirection.cs" />
     <Compile Include="SequenceDiagrams\SignalType.cs" />
-    <Compile Include="SequenceDiagrams\TitleVisual.cs" />
     <Compile Include="Visual.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,8 @@ namespace KangaModeling.Graphics
     {
         void DrawRectangle(Point location, Size size);
 
+		void FillRectangle(Point location, Size size);
+
         void DrawText(string text, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Point location, Size size);
 
 		void DrawLine(Point from, Point to, float width);

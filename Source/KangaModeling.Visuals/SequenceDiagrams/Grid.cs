@@ -6,221 +6,251 @@ using KangaModeling.Graphics;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class Grid : Visual
-    {
-        private sealed class RowDimension
-        {
-            public float BodyHeight { get; set; }
+	internal sealed class RowDimension
+	{
+		public float BodyHeight { get; set; }
 
-            public float TopOuterHeight { get; set; }
+		public float TopOuterHeight { get; set; }
 
-            public float BottomOuterHeight { get; set; }
+		public float BottomOuterHeight { get; set; }
 
-            public float Height()
-            {
-                return BodyHeight + TopOuterHeight + BottomOuterHeight;
-            }
-        }
+		public float Height()
+		{
+			return BodyHeight + TopOuterHeight + BottomOuterHeight;
+		}
+	}
 
-        private sealed class ColumnDimension
-        {
-            public float BodyWidth { get; set; }
+	internal sealed class ColumnDimension
+	{
+		public float BodyWidth { get; set; }
 
-            public float LeftOuterWidth { get; set; }
+		public float LeftOuterWidth { get; set; }
 
-            public float RightOuterWidth { get; set; }
+		public float RightOuterWidth { get; set; }
 
-            public float Width()
-            {
-                return BodyWidth + LeftOuterWidth + RightOuterWidth;
-            }
-        }
+		public float Width()
+		{
+			return BodyWidth + LeftOuterWidth + RightOuterWidth;
+		}
+	}
 
-        private readonly int m_RowCount;
-        private readonly int m_ColumnCount;
-        private readonly Cell[,] m_Cells;
+	internal class Grid : Visual
+	{
+		private readonly int m_RowCount;
+		private readonly int m_ColumnCount;
 
-        public Grid(int rowCount, int columnCount)
-        {
-            m_RowCount = rowCount;
-            m_ColumnCount = columnCount;
-            m_Cells = new Cell[rowCount, columnCount];
-        }
+		private readonly RowDimension[] m_RowDimensions;
+		private readonly ColumnDimension[] m_ColumnDimensions;
 
-        protected override void LayoutCore(IGraphicContext graphicContext)
-        {
-            LayoutCellBodies(graphicContext);
-            LayoutCellOuters(graphicContext);
+		private readonly Cell[,] m_Cells;
 
-        }
-        private static int CalculateRowCount(ISequenceDiagram sequenceDiagram)
-        {
-            int rows = 2;
+		public Grid(int rowCount, int columnCount)
+		{
+			m_RowCount = rowCount;
+			m_RowDimensions = new RowDimension[m_RowCount];
+			for (int i = 0; i < m_RowCount; i++)
+			{
+				m_RowDimensions[i] = new RowDimension();
+			}
+			m_ColumnCount = columnCount;
+			m_ColumnDimensions = new ColumnDimension[m_ColumnCount];
+			for (int i = 0; i < m_ColumnCount; i++)
+			{
+				m_ColumnDimensions[i] = new ColumnDimension();
+			}
 
-            if (sequenceDiagram.Lifelines.Any())
-            {
-                rows += sequenceDiagram.Lifelines.First().Pins.Count();
-            }
+			m_Cells = new Cell[rowCount, columnCount];
+		}
 
-            return rows;
-        }
+		protected override void LayoutCore(IGraphicContext graphicContext)
+		{
+			LayoutCellBodies(graphicContext);
+			LayoutCellOuters(graphicContext);
 
-        private static int CalculateColumnCount(ISequenceDiagram sequenceDiagram)
-        {
-            int columns = sequenceDiagram.Lifelines.Count();
-            return columns;
-        }
+		}
+		private static int CalculateRowCount(ISequenceDiagram sequenceDiagram)
+		{
+			int rows = 2;
 
-        private void NormalizeCellDimensions()
-        {
-            var rowDimensions = CalculateRowDimensions();
-            var columnDimensions = CalculateColumnDimensions();
+			if (sequenceDiagram.Lifelines.Any())
+			{
+				rows += sequenceDiagram.Lifelines.First().Pins.Count();
+			}
 
-            var y = 0f;
+			return rows;
+		}
 
-            foreach (var row in Rows())
-            {
-                var rowDimension = rowDimensions[row];
+		private static int CalculateColumnCount(ISequenceDiagram sequenceDiagram)
+		{
+			int columns = sequenceDiagram.Lifelines.Count();
+			return columns;
+		}
 
-                var x = 0f;
+		private void NormalizeCellDimensions()
+		{
+			var rowDimensions = CalculateRowDimensions();
+			var columnDimensions = CalculateColumnDimensions();
 
-                foreach (var column in Columns())
-                {
-                    var columnDimension = columnDimensions[column];
+			var y = 0f;
 
-                    var cell = GetCell(row, column);
+			foreach (var row in Rows())
+			{
+				var rowDimension = rowDimensions[row];
 
-                    cell.X = x;
-                    cell.Y = y;
-                    cell.Width = columnDimension.Width();
-                    cell.Height = rowDimension.Height();
+				var x = 0f;
 
-                    cell.BodyWidth = columnDimension.BodyWidth;
-                    cell.BodyHeight = rowDimension.BodyHeight;
-                    cell.TopOuterHeight = rowDimension.TopOuterHeight;
-                    cell.BottomOuterHeight = rowDimension.BottomOuterHeight;
-                    cell.LeftOuterWidth = columnDimension.LeftOuterWidth;
-                    cell.RightOuterWidth = columnDimension.RightOuterWidth;
+				foreach (var column in Columns())
+				{
+					var columnDimension = columnDimensions[column];
 
-                    x += cell.Width;
-                }
+					var cell = GetCell(row, column);
 
-                y += rowDimension.Height();
-            }
+					cell.X = x;
+					cell.Y = y;
+					cell.Width = columnDimension.Width();
+					cell.Height = rowDimension.Height();
 
-            Width = columnDimensions.Select(rd => rd.Width()).Sum();
-            Height = rowDimensions.Select(rd => rd.Height()).Sum();
-        }
+					//cell.BodyWidth = columnDimension.BodyWidth;
+					//cell.BodyHeight = rowDimension.BodyHeight;
+					//cell.TopOuterHeight = rowDimension.TopOuterHeight;
+					//cell.BottomOuterHeight = rowDimension.BottomOuterHeight;
+					//cell.LeftOuterWidth = columnDimension.LeftOuterWidth;
+					//cell.RightOuterWidth = columnDimension.RightOuterWidth;
 
-        private List<RowDimension> CalculateRowDimensions()
-        {
-            var rowDimensions = new List<RowDimension>();
+					x += cell.Width;
+				}
 
-            foreach (var row in Rows())
-            {
-                var rowDimension = new RowDimension();
+				y += rowDimension.Height();
+			}
 
-                foreach (var cellInRow in CellsInRow(row))
-                {
-                    rowDimension.BodyHeight = Math.Max(cellInRow.BodyHeight, rowDimension.BodyHeight);
-                    rowDimension.TopOuterHeight = Math.Max(cellInRow.TopOuterHeight, rowDimension.TopOuterHeight);
-                    rowDimension.BottomOuterHeight = Math.Max(cellInRow.BottomOuterHeight, rowDimension.BottomOuterHeight);
-                }
+			Width = columnDimensions.Select(rd => rd.Width()).Sum();
+			Height = rowDimensions.Select(rd => rd.Height()).Sum();
+		}
 
-                rowDimensions.Add(rowDimension);
-            }
-            return rowDimensions;
-        }
+		private List<RowDimension> CalculateRowDimensions()
+		{
+			var rowDimensions = new List<RowDimension>();
 
-        private List<ColumnDimension> CalculateColumnDimensions()
-        {
-            var columnDimensions = new List<ColumnDimension>();
+			foreach (var row in Rows())
+			{
+				var rowDimension = new RowDimension();
 
-            foreach (var column in Columns())
-            {
-                var columnDimension = new ColumnDimension();
+				foreach (var cellInRow in CellsInRow(row))
+				{
+					rowDimension.BodyHeight = Math.Max(cellInRow.BodyHeight, rowDimension.BodyHeight);
+					rowDimension.TopOuterHeight = Math.Max(cellInRow.TopOuterHeight, rowDimension.TopOuterHeight);
+					rowDimension.BottomOuterHeight = Math.Max(cellInRow.BottomOuterHeight, rowDimension.BottomOuterHeight);
+				}
 
-                foreach (var cellInColumn in CellsInColumn(column))
-                {
-                    columnDimension.BodyWidth = Math.Max(cellInColumn.BodyWidth, columnDimension.BodyWidth);
-                    columnDimension.LeftOuterWidth = Math.Max(cellInColumn.LeftOuterWidth, columnDimension.LeftOuterWidth);
-                    columnDimension.RightOuterWidth = Math.Max(cellInColumn.RightOuterWidth, columnDimension.RightOuterWidth);
-                }
+				rowDimensions.Add(rowDimension);
+			}
+			return rowDimensions;
+		}
 
-                columnDimensions.Add(columnDimension);
-            }
-            return columnDimensions;
-        }
+		private List<ColumnDimension> CalculateColumnDimensions()
+		{
+			var columnDimensions = new List<ColumnDimension>();
 
-        private void LayoutCellOuters(IGraphicContext graphicContext)
-        {
+			foreach (var column in Columns())
+			{
+				var columnDimension = new ColumnDimension();
+
+				foreach (var cellInColumn in CellsInColumn(column))
+				{
+					columnDimension.BodyWidth = Math.Max(cellInColumn.BodyWidth, columnDimension.BodyWidth);
+					columnDimension.LeftOuterWidth = Math.Max(cellInColumn.LeftOuterWidth, columnDimension.LeftOuterWidth);
+					columnDimension.RightOuterWidth = Math.Max(cellInColumn.RightOuterWidth, columnDimension.RightOuterWidth);
+				}
+
+				columnDimensions.Add(columnDimension);
+			}
+			return columnDimensions;
+		}
+
+		private void LayoutCellOuters(IGraphicContext graphicContext)
+		{
 			foreach (var row in Rows().Reverse())
-            {
+			{
 				foreach (var cell in CellsInRow(row).Reverse())
-                {
+				{
 					cell.LayoutOuters(graphicContext);
 				}
 			}
 			NormalizeCellDimensions();
-        }
+		}
 
-        private void LayoutCellBodies(IGraphicContext graphicContext)
-        {
+		private void LayoutCellBodies(IGraphicContext graphicContext)
+		{
 			foreach (var row in Rows().Reverse())
-            {
-                foreach (var cell in CellsInRow(row).Reverse())
-                {
+			{
+				foreach (var cell in CellsInRow(row).Reverse())
+				{
 					cell.LayoutBody(graphicContext);
 				}
 			}
 			NormalizeCellDimensions();
-        }
+		}
 
-        public Cell GetCell(int row, int column)
-        {
-            return m_Cells[row, column];
-        }
+		public Cell GetCell(int row, int column)
+		{
+			return m_Cells[row, column];
+		}
 
-        internal void AddCell(Cell cell)
-        {
-            m_Cells[cell.Row, cell.Column] = cell;
-            AddChild(cell);
-        }
+		internal void AddCell(Cell cell)
+		{
+			m_Cells[cell.Row, cell.Column] = cell;
+			AddChild(cell);
+		}
 
-        public IEnumerable<Cell> Cells()
-        {
-            return m_Cells.Cast<Cell>();
-        }
+		public IEnumerable<Cell> Cells()
+		{
+			return m_Cells.Cast<Cell>();
+		}
 
-        public IEnumerable<int> Rows()
-        {
-            for (int row = 0; row < m_RowCount; row++)
-            {
-                yield return row;
-            }
-        }
+		public IEnumerable<int> Rows()
+		{
+			for (int row = 0; row < m_RowCount; row++)
+			{
+				yield return row;
+			}
+		}
 
-        public IEnumerable<int> Columns()
-        {
-            for (int column = 0; column < m_ColumnCount; column++)
-            {
-                yield return column;
-            }
-        }
+		public IEnumerable<int> Columns()
+		{
+			for (int column = 0; column < m_ColumnCount; column++)
+			{
+				yield return column;
+			}
+		}
 
-        public IEnumerable<Cell> CellsInRow(int row)
-        {
-            return Cells().Where(cell => cell.Row == row);
-        }
+		public IEnumerable<Cell> CellsInRow(int row)
+		{
+			return Cells().Where(cell => cell.Row == row);
+		}
 
-        public IEnumerable<Cell> CellsInColumn(int column)
-        {
-            return Cells().Where(cell => cell.Column == column);
-        }
+		public IEnumerable<Cell> CellsInColumn(int column)
+		{
+			return Cells().Where(cell => cell.Column == column);
+		}
 
+		public RowDimension RowDimension(int row)
+		{
+			return m_RowDimensions[row];
+		}
 
-        public int RowCount { get; set; }
+		public ColumnDimension ColumnDimension(int column)
+		{
+			return m_ColumnDimensions[column];
+		}
 
-        public int ColumnCount { get; set; }
-    }
+		public int RowCount
+		{
+			get { return m_RowCount; }
+		}
+
+		public int ColumnCount
+		{
+			get { return m_ColumnCount; }
+		}
+	}
 }
