@@ -6,44 +6,59 @@ using KangaModeling.Graphics;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
+	internal sealed class RowDimension
+	{
+		public float BodyHeight { get; set; }
+
+		public float TopOuterHeight { get; set; }
+
+		public float BottomOuterHeight { get; set; }
+
+		public float Height()
+		{
+			return BodyHeight + TopOuterHeight + BottomOuterHeight;
+		}
+	}
+
+	internal sealed class ColumnDimension
+	{
+		public float BodyWidth { get; set; }
+
+		public float LeftOuterWidth { get; set; }
+
+		public float RightOuterWidth { get; set; }
+
+		public float Width()
+		{
+			return BodyWidth + LeftOuterWidth + RightOuterWidth;
+		}
+	}
+
 	internal class Grid : Visual
 	{
-		private sealed class RowDimension
-		{
-			public float BodyHeight { get; set; }
-
-			public float TopOuterHeight { get; set; }
-
-			public float BottomOuterHeight { get; set; }
-
-			public float Height()
-			{
-				return BodyHeight + TopOuterHeight + BottomOuterHeight;
-			}
-		}
-
-		private sealed class ColumnDimension
-		{
-			public float BodyWidth { get; set; }
-
-			public float LeftOuterWidth { get; set; }
-
-			public float RightOuterWidth { get; set; }
-
-			public float Width()
-			{
-				return BodyWidth + LeftOuterWidth + RightOuterWidth;
-			}
-		}
-
 		private readonly int m_RowCount;
 		private readonly int m_ColumnCount;
+
+		private readonly RowDimension[] m_RowDimensions;
+		private readonly ColumnDimension[] m_ColumnDimensions;
+
 		private readonly Cell[,] m_Cells;
 
 		public Grid(int rowCount, int columnCount)
 		{
 			m_RowCount = rowCount;
+			m_RowDimensions = new RowDimension[m_RowCount];
+			for (int i = 0; i < m_RowCount; i++)
+			{
+				m_RowDimensions[i] = new RowDimension();
+			}
 			m_ColumnCount = columnCount;
+			m_ColumnDimensions = new ColumnDimension[m_ColumnCount];
+			for (int i = 0; i < m_ColumnCount; i++)
+			{
+				m_ColumnDimensions[i] = new ColumnDimension();
+			}
+
 			m_Cells = new Cell[rowCount, columnCount];
 		}
 
@@ -95,12 +110,12 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 					cell.Width = columnDimension.Width();
 					cell.Height = rowDimension.Height();
 
-					cell.BodyWidth = columnDimension.BodyWidth;
-					cell.BodyHeight = rowDimension.BodyHeight;
-					cell.TopOuterHeight = rowDimension.TopOuterHeight;
-					cell.BottomOuterHeight = rowDimension.BottomOuterHeight;
-					cell.LeftOuterWidth = columnDimension.LeftOuterWidth;
-					cell.RightOuterWidth = columnDimension.RightOuterWidth;
+					//cell.BodyWidth = columnDimension.BodyWidth;
+					//cell.BodyHeight = rowDimension.BodyHeight;
+					//cell.TopOuterHeight = rowDimension.TopOuterHeight;
+					//cell.BottomOuterHeight = rowDimension.BottomOuterHeight;
+					//cell.LeftOuterWidth = columnDimension.LeftOuterWidth;
+					//cell.RightOuterWidth = columnDimension.RightOuterWidth;
 
 					x += cell.Width;
 				}
@@ -216,6 +231,16 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 		public IEnumerable<Cell> CellsInColumn(int column)
 		{
 			return Cells().Where(cell => cell.Column == column);
+		}
+
+		public RowDimension RowDimension(int row)
+		{
+			return m_RowDimensions[row];
+		}
+
+		public ColumnDimension ColumnDimension(int column)
+		{
+			return m_ColumnDimensions[column];
 		}
 
 		public int RowCount
