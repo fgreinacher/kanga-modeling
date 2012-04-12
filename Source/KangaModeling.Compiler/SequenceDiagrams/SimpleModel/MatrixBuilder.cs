@@ -42,13 +42,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public void AddCallSignal(Token source, Token target, Token name)
         {
-            Signal call = new Call(name.Value);
+            Signal call = ElementFactory.CreateCall(name);
             AddSignal(source, target, call);
         }
 
         public void AddReturnSignal(Token source, Token target, Token name)
         {
-            Signal returnSignal = new Return(name.Value);
+            Signal returnSignal = ElementFactory.CreateReturn(name);
             AddSignal(source, target, returnSignal);
         }
 
@@ -107,7 +107,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
             var endPin = new OpenPin(target, startPin.Orientation, targetToken);
             target.State.OpenPins.Push(endPin);
-            var activity = new Activity(level);
+            var activity = ElementFactory.CreateActivity(level);
             activity.Connect(startPin, endPin);
         }
 
