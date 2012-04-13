@@ -37,7 +37,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         #endregion
 
-        public void Connect(Pin start, Pin end)
+        public virtual void Connect(Pin start, Pin end)
         {
             start.PinType = PinType.Out;
             m_Start = start;

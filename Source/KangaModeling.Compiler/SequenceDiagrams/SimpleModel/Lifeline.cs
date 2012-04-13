@@ -27,7 +27,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public string Id { get; private set; }
         public string Name { get; private set; }
-        public int Index { get; private set; }
+        public virtual int Index { get; private set; }
 
         #endregion
     }

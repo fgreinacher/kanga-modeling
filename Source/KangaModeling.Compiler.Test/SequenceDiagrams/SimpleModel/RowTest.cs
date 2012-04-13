@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
 using NUnit.Framework;
 
@@ -8,57 +9,42 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
     public class RowTest
     {
       
-        [Test]
-        public void ExtendTest()
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(10)]
+        public void ExtendTest(int lifeLineCount)
         {
-            int index = 0; 
-            var target = new Row(index); 
-            IEnumerable<Lifeline> lifeLine = null; 
-            target.Extend(lifeLine);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+            var target = new Row(0);
+            Lifeline lifeline = new Lifeline(null, null, null, 0);
+            IEnumerable<Lifeline> lifeLines = Enumerable.Repeat(lifeline, lifeLineCount); 
+            target.Extend(lifeLines);
+            Assert.AreEqual(lifeLines.Count(), target.Count);
         }
 
-        [Test]
-        public void ExtendTest1()
-        {
-            int index = 0; 
-            var target = new Row(index); 
-            Lifeline lifeLine = null; 
-            target.Extend(lifeLine);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
-        }
 
-        [Test]
-        
-        public void IndexTest()
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(100)]
+        public void IndexTest(int index)
         {
-            //PrivateObject param0 = null; 
-            //var target = new Row_Accessor(param0); 
-            //int expected = 0; 
-            //int actual;
-            //target.Index = expected;
-            //actual = target.Index;
-            //Assert.AreEqual(expected, actual);
-            //Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        public void ItemTest()
-        {
-            int index = 0; 
-            var target = new Row(index); 
-            Lifeline lifeline = null; 
-            Pin actual;
-            actual = target[lifeline];
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        public void RowConstructorTest()
-        {
-            int index = 0; 
             var target = new Row(index);
-            Assert.Inconclusive("TODO: Implement code to verify target");
+            Assert.AreEqual(index, target.Index);
+        }
+
+        [TestCase(1)]
+        [TestCase(12)]
+        public void ItemTest(int index)
+        {
+            var target = new Row(0); 
+            Lifeline lifeline = new Lifeline(null, null, null, index);
+            RegularPin expected = new RegularPin(null, null);
+            for (int i = 0; i <= index; i++)
+            {
+                target.Add(null);
+            }
+            target[index] = expected;
+            Pin actual = target[lifeline];
+            Assert.AreEqual(expected, actual);
         }
     }
 }

@@ -4,19 +4,19 @@
     {
         private readonly Lifeline m_Lifeline;
         private Activity m_Activity;
-        private int m_Level;
         private Signal m_Signal;
+        private PinType m_PinType;
 
         protected Pin()
         {
-            PinType = PinType.None;
+            m_PinType = PinType.None;
         }
 
         protected Pin(Row row, Lifeline lifeline, PinType pinType)
         {
             Row = row;
             m_Lifeline = lifeline;
-            PinType = pinType;
+            m_PinType = pinType;
         }
 
         public Row Row { get; private set; }
@@ -30,15 +30,19 @@
 
         public int Level
         {
-            get { return m_Level; }
+            get { return Activity == null ? 0 : Activity.Level; }
         }
 
-        public ILifeline Lifeline
+        public virtual ILifeline Lifeline
         {
             get { return m_Lifeline; }
         }
 
-        public PinType PinType { get; set; }
+        public virtual PinType PinType
+        {
+            get { return m_PinType; }
+            set { m_PinType = value; }
+        }
 
         public ISignal Signal
         {
@@ -57,19 +61,19 @@
             get { return Lifeline.Index; }
         }
 
-        public int RowIndex
+        public virtual int RowIndex
         {
             get { return Row.Index; }
         }
 
         #endregion
 
-        public void SetSignal(Signal signal)
+        public virtual void SetSignal(Signal signal)
         {
             m_Signal = signal;
         }
 
-        public void SetActivity(Activity activity)
+        public virtual void SetActivity(Activity activity)
         {
             m_Activity = activity;
         }
@@ -77,11 +81,6 @@
         public Activity GetActivity()
         {
             return m_Activity;
-        }
-
-        public void SetLevel(int level)
-        {
-            m_Level = level;
         }
     }
 }

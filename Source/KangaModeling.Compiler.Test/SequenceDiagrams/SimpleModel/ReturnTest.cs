@@ -5,25 +5,28 @@ using NUnit.Framework;
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
 {
     [TestFixture]
-    public class ReturnTest
+    public sealed class ReturnTest : SignalTest
     {
-
-        [Test]
-        public void ReturnConstructorTest()
+        internal override Signal CreateSignal()
         {
-            string name = string.Empty; 
-            var target = new Return(name);
-            Assert.Inconclusive("TODO: Implement code to verify target");
+            return new Return(string.Empty);
         }
+
+        [TestCase("")]
+        [TestCase("SomeName")]
+        public void ReturnConstructorTest(string name)
+        {
+            var target = new Return(name);
+            Assert.AreEqual(name, target.Name);
+        }
+
 
         [Test]
         public void SignalTypeTest()
         {
-            string name = string.Empty; 
-            var target = new Return(name); 
-            SignalType actual;
-            actual = target.SignalType;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            var target = CreateSignal();
+            SignalType actual = target.SignalType;
+            Assert.AreEqual(SignalType.Return, actual);
         }
     }
 }

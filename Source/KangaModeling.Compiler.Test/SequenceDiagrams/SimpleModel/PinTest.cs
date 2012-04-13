@@ -1,96 +1,91 @@
-﻿using KangaModeling.Compiler.SequenceDiagrams;
+﻿using System;
+using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+using Moq;
 using NUnit.Framework;
 
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
 {
     [TestFixture]
-    public class PinTest
+    public abstract class PinTest
     {
-        internal virtual Pin CreatePin()
+        internal Pin CreatePin()
         {
-            // TODO: Instantiate an appropriate concrete class.
-            Pin target = null;
-            return target;
+            return CreatePin(null, null);
         }
 
+        internal abstract Pin CreatePin(Row row, Lifeline lifeline);
 
         [Test]
         public void ActivityTest()
         {
-            Pin target = CreatePin(); 
-            Activity actual;
-            actual = target.Activity;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        
-        public void ActivityTest1()
-        {
-            IPin target = CreatePin(); 
-            IActivity actual;
-            actual = target.Activity;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            Pin target = CreatePin();
+            Assert.IsNull(target.Activity);
+            Activity expected = new Activity(0);
+            target.SetActivity(expected);
+            IActivity actual = target.Activity;
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
         public void GetActivityTest()
         {
-            Pin target = CreatePin(); 
-            Activity expected = null; 
-            Activity actual;
-            actual = target.GetActivity();
+            Pin target = CreatePin();
+            Assert.IsNull(target.GetActivity());
+            Activity expected = new Activity(0);
+            target.SetActivity(expected);
+            Activity actual = target.GetActivity();
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
-        [Test]
-        public void LevelTest()
+        [TestCase(0)]
+        [TestCase(10)]
+        public void LevelTest(int level)
         {
-            Pin target = CreatePin(); 
-            int actual;
-            actual = target.Level;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            Pin target = CreatePin();
+            Assert.AreEqual(0, target.Level);
+            Activity expected = new Activity(level);
+            target.SetActivity(expected);
+            Assert.AreEqual(level, target.Level);
         }
 
-        [Test]
-        public void LifelineIndexTest()
+        [TestCase(0)]
+        [TestCase(10)]
+        public void LifelineIndexTest(int index)
         {
-            Pin target = CreatePin(); 
-            int actual;
-            actual = target.LifelineIndex;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            var lifelineMock = new Mock<Lifeline>(MockBehavior.Strict, null, null, null, 0);
+            lifelineMock.Setup(lifeline => lifeline.Index).Returns(index);
+
+            Pin target = CreatePin(null, lifelineMock.Object); 
+            int actual = target.LifelineIndex;
+            Assert.AreEqual(index, actual);
+
+            lifelineMock.VerifyAll();
         }
 
         [Test]
         public void LifelineTest()
         {
-            Pin target = CreatePin(); 
-            ILifeline actual;
-            actual = target.Lifeline;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            var lifelineStub = new Mock<Lifeline>(MockBehavior.Loose, null, null, null, 0);
+
+            Pin target = CreatePin(null, lifelineStub.Object);
+            ILifeline actual = target.Lifeline;
+            Assert.AreEqual(lifelineStub.Object, actual);
         }
 
         [Test]
-        public void OrientationTest()
-        {
-            Pin target = CreatePin(); 
-            Orientation actual;
-            actual = target.Orientation;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
+        public abstract void OrientationTest();
 
-        [Test]
-        public void PinTypeTest()
+        [TestCase(PinType.None)]
+        [TestCase(PinType.In)]
+        [TestCase(PinType.Out)]
+        public void PinTypeTest(PinType expected)
         {
-            Pin target = CreatePin(); 
-            var expected = new PinType(); 
-            PinType actual;
+            Pin target = CreatePin();
+            Assert.AreEqual(PinType.None, target.PinType);
             target.PinType = expected;
-            actual = target.PinType;
+            PinType actual = target.PinType;
             Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         [Test]
@@ -129,8 +124,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         public void SetLevelTest()
         {
             Pin target = CreatePin(); 
-            int level = 0; 
-            target.SetLevel(level);
+            int level = 0;
             Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
 

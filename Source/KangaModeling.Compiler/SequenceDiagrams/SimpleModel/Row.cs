@@ -21,9 +21,9 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             Add(new RegularPin(this, lifeLine));
         }
 
-        public void Extend(IEnumerable<Lifeline> lifeLine)
+        public void Extend(IEnumerable<Lifeline> lifeLines)
         {
-            foreach (Lifeline lifeline in lifeLine)
+            foreach (Lifeline lifeline in lifeLines)
             {
                 Extend(lifeline);
             }

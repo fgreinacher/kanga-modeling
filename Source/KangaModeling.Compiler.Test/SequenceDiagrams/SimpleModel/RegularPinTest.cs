@@ -1,15 +1,20 @@
-﻿using KangaModeling.Compiler.SequenceDiagrams;
+﻿using System;
+using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
 using NUnit.Framework;
 
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
 {
     [TestFixture]
-    public class RegularPinTest
+    public class RegularPinTest : PinTest
     {
-      
+        internal override Pin CreatePin(Row row, Lifeline lifeline)
+        {
+            return new RegularPin(row, lifeline);
+        }
+
         [Test]
-        public void OrientationTest()
+        public override void OrientationTest()
         {
             Row row = null; 
             Lifeline lifeline = null; 

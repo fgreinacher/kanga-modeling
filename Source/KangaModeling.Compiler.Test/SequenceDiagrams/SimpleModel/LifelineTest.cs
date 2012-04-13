@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+using Moq;
 using NUnit.Framework;
 
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
@@ -25,27 +27,28 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         [Test]
         public void PinsTest()
         {
-            //matrixMoc
-            Matrix matrix = null;
+            var matrixStub = new Mock<Matrix>(MockBehavior.Loose);
             const string id = "SomeId";
             const string name = "SomeName";
             const int index = 123;
-            var target = new Lifeline(matrix, id, name, index); 
-            IEnumerable<IPin> actual;
-            actual = target.Pins;
+
+            var pinStub = new Mock<RegularPin>();
+            
+            var rowMock = new Mock<Row>(MockBehavior.Strict);
+            rowMock.Setup(row => row[index]).Returns(pinStub.Object);
+            //matrixStub.Setup(matrix => matrix.Rows).Returns(Enumerable.Repeat(rowMock.Object, 10).ToArray());
+
+            var target = new Lifeline(matrixStub.Object, id, name, index); 
+            IEnumerable<IPin> actual = target.Pins;
+            Assert.Inconclusive("Get rid of demeter violation inside the method.");
         }
 
         [Test]
         public void StateTest()
         {
-            //PrivateObject param0 = null; 
-            //var target = new Lifeline_Accessor(param0); 
-            //LifelineState_Accessor expected = null; 
-            //LifelineState_Accessor actual;
-            //target.State = expected;
-            //actual = target.State;
-            //Assert.AreEqual(expected, actual);
-            //Assert.Inconclusive("Verify the correctness of this test method.");
+            var target = new Lifeline(null, null, null, 0);
+            LifelineState actual = target.State; 
+            Assert.IsNotNull(actual);
         }
     }
 }

@@ -42,7 +42,7 @@
             get
             {
                 return
-                    Level == 0
+                    Level == 0 || Start==null
                         ? Orientation.None
                         : Start.Orientation;
             }
@@ -56,7 +56,6 @@
         {
             startPin.SetActivity(this);
             m_Start = startPin;
-            m_Start.SetLevel(Level);
             ReconnectEnd(endPin);
         }
 
@@ -64,7 +63,6 @@
         {
             endPin.SetActivity(this);
             m_End = endPin;
-            m_End.SetLevel(Level);
         }
     }
 }

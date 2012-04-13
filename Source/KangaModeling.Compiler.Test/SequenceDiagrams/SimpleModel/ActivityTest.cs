@@ -1,5 +1,6 @@
 ﻿using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+using Moq;
 using NUnit.Framework;
 
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
@@ -7,106 +8,140 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
     [TestFixture]
     public class ActivityTest
     {
-        [Test]
-        public void ActivityConstructorTest()
+        [TestCase(0)]
+        [TestCase(10)]
+        public void ActivityConstructorTest(int level)
         {
-            int level = 0; 
             var target = new Activity(level);
-            Assert.Inconclusive("TODO: Implement code to verify target");
+            Assert.AreEqual(level, target.Level);
         }
 
-        [Test]
-        public void ConnectTest()
+        [TestCase(0)]
+        [TestCase(10)]
+        public void ConnectTest(int level)
         {
-            int level = 0; 
             var target = new Activity(level); 
-            Pin startPin = null; 
-            Pin endPin = null; 
+
+            var startPinMock = new Mock<Pin>(MockBehavior.Strict);
+            startPinMock.Setup(pin => pin.SetActivity(target));
+
+            var endPinMock = new Mock<Pin>(MockBehavior.Strict);
+            endPinMock.Setup(pin => pin.SetActivity(target));
+
+            Pin startPin = startPinMock.Object; 
+            Pin endPin = endPinMock.Object; 
             target.Connect(startPin, endPin);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+
+            Assert.AreEqual(startPin, target.Start);
+            Assert.AreEqual(endPin, target.End);
+
+            startPinMock.VerifyAll();
+            endPinMock.VerifyAll();
         }
 
-        [Test]
-        public void EndRowIndexTest()
+        [TestCase(0)]
+        [TestCase(12)]
+        public void EndRowIndexTest(int rowIndex)
         {
-            int level = 0; 
-            var target = new Activity(level); 
-            int actual;
-            actual = target.EndRowIndex;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            var target = new Activity(0);
+
+            var startPinStub = new Mock<Pin>(MockBehavior.Loose);
+
+            var endPinStub = new Mock<Pin>(MockBehavior.Loose);
+            endPinStub.Setup(pin => pin.RowIndex).Returns(rowIndex);
+
+            target.Connect(startPinStub.Object, endPinStub.Object);
+
+            int actual = target.EndRowIndex;
+            Assert.AreEqual(rowIndex, actual);
         }
 
-        [Test]
-        public void EndTest()
+        [TestCase(0)]
+        [TestCase(12)]
+        public void StartRowIndexTest(int rowIndex)
         {
-            int level = 0; 
-            var target = new Activity(level); 
-            IPin actual;
-            actual = target.End;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
+            var target = new Activity(0);
 
-        [Test]
-        public void LevelTest()
-        {
-            //PrivateObject param0 = null; 
-            //var target = new Activity_Accessor(param0); 
-            //int expected = 0; 
-            //int actual;
-            //target.Level = expected;
-            //actual = target.Level;
-            //Assert.AreEqual(expected, actual);
-            //Assert.Inconclusive("Verify the correctness of this test method.");
+            var startPinStub = new Mock<Pin>(MockBehavior.Loose);
+            startPinStub.Setup(pin => pin.RowIndex).Returns(rowIndex);
+
+            var endPinStub = new Mock<Pin>(MockBehavior.Loose);
+
+            target.Connect(startPinStub.Object, endPinStub.Object);
+
+            int actual = target.StartRowIndex;
+            Assert.AreEqual(rowIndex, actual);
         }
 
         [Test]
         public void LifelineTest()
         {
-            int level = 0; 
-            var target = new Activity(level); 
-            ILifeline actual;
-            actual = target.Lifeline;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            var target = new Activity(0);
+
+            ILifeline lifeline = new Mock<ILifeline>(MockBehavior.Loose).Object;
+            Pin endPin = new Mock<Pin>(MockBehavior.Loose).Object;
+
+            var startPinStub = new Mock<Pin>(MockBehavior.Loose);
+            startPinStub.Setup(pin => pin.Lifeline).Returns(lifeline);
+
+            Pin startPin = startPinStub.Object;
+            
+            target.Connect(startPin, endPin);
+
+            Assert.AreEqual(lifeline, target.Lifeline);
         }
 
         [Test]
-        public void OrientationTest()
+        public void OrientationTestLevel0()
         {
-            int level = 0; 
-            var target = new Activity(level); 
-            Orientation actual;
-            actual = target.Orientation;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            var target = new Activity(0); 
+            Orientation actual = target.Orientation;
+            Assert.AreEqual(Orientation.None, actual);
+        }
+
+        [Test]
+        public void OrientationTestLevel1_StartNull()
+        {
+            var target = new Activity(1);
+            Orientation actual = target.Orientation;
+            Assert.AreEqual(Orientation.None, actual);
+        }
+
+        [Test]
+        public void OrientationTestLevel1_StartOrientation()
+        {
+            var target = new Activity(1);
+
+            var startPinMock = new Mock<Pin>(MockBehavior.Strict);
+            startPinMock.Setup(pin => pin.SetActivity(target));
+            startPinMock.Setup(pin => pin.Orientation).Returns(Orientation.Left);
+
+            var endPinStub = new Mock<Pin>(MockBehavior.Loose);
+
+            Pin startPin = startPinMock.Object;
+            Pin endPin = endPinStub.Object;
+            target.Connect(startPin, endPin);
+
+            Orientation actual = target.Orientation;
+            Assert.AreEqual(Orientation.Left, actual);
+
+            startPinMock.VerifyAll();
         }
 
         [Test]
         public void ReconnectEndTest()
         {
-            int level = 0; 
-            var target = new Activity(level); 
-            Pin endPin = null; 
+            var target = new Activity(0);
+
+            var endPinMock = new Mock<Pin>(MockBehavior.Strict);
+            endPinMock.Setup(pin => pin.SetActivity(target));
+
+            Pin endPin = endPinMock.Object;
             target.ReconnectEnd(endPin);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
-        }
 
-        [Test]
-        public void StartRowIndexTest()
-        {
-            int level = 0; 
-            var target = new Activity(level); 
-            int actual;
-            actual = target.StartRowIndex;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
+            Assert.AreEqual(endPin, target.End);
 
-        [Test]
-        public void StartTest()
-        {
-            int level = 0; 
-            var target = new Activity(level); 
-            IPin actual;
-            actual = target.Start;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            endPinMock.VerifyAll();
         }
     }
 }

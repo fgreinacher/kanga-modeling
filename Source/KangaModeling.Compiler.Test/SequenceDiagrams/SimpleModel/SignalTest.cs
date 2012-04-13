@@ -1,75 +1,56 @@
 ﻿using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+using Moq;
 using NUnit.Framework;
 
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
 {
     [TestFixture]
-    public class SignalTest
+    public abstract class SignalTest
     {
-        internal virtual Signal CreateSignal()
-        {
-            // TODO: Instantiate an appropriate concrete class.
-            Signal target = null;
-            return target;
-        }
+        internal abstract Signal CreateSignal();
 
         [Test]
         public void ConnectTest()
         {
-            Signal target = CreateSignal(); 
-            Pin start = null; 
-            Pin end = null; 
-            target.Connect(start, end);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+            Signal target = CreateSignal();
+            var startPinMock = new Mock<Pin>(MockBehavior.Strict);
+            startPinMock.Setup(pin => pin.SetSignal(target));
+            startPinMock.SetupProperty(pin => pin.PinType, PinType.None);
+
+            var endPinMock = new Mock<Pin>(MockBehavior.Strict);
+            endPinMock.Setup(pin => pin.SetSignal(target));
+            endPinMock.SetupProperty(pin => pin.PinType, PinType.None);
+
+            Pin startPin = startPinMock.Object;
+            Pin endPin = endPinMock.Object;
+            target.Connect(startPin, endPin);
+
+            Assert.AreEqual(startPin, target.Start);
+            Assert.AreEqual(endPin, target.End);
+
+            Assert.AreEqual(startPin.PinType, PinType.Out);
+            Assert.AreEqual(endPin.PinType, PinType.In);
+
+            startPinMock.VerifyAll();
+            endPinMock.VerifyAll();
         }
 
-        [Test]
-        public void EndTest()
+        [TestCase(0)]
+        [TestCase(12)]
+        public void RowIndexTest(int rowIndex)
         {
             Signal target = CreateSignal(); 
-            IPin actual;
-            actual = target.End;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
 
-        [Test]
-        public void NameTest()
-        {
-            Signal target = CreateSignal(); 
-            string expected = string.Empty; 
-            string actual;
-            target.Name = expected;
-            actual = target.Name;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
+            var startPinStub = new Mock<Pin>(MockBehavior.Loose);
+            startPinStub.Setup(pin => pin.RowIndex).Returns(rowIndex);
 
-        [Test]
-        public void RowIndexTest()
-        {
-            Signal target = CreateSignal(); 
-            int actual;
-            actual = target.RowIndex;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
+            var endPinStub = new Mock<Pin>(MockBehavior.Loose);
 
-        [Test]
-        public void SignalTypeTest()
-        {
-            Signal target = CreateSignal(); 
-            SignalType actual;
-            actual = target.SignalType;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
+            target.Connect(startPinStub.Object, endPinStub.Object);
 
-        [Test]
-        public void StartTest()
-        {
-            Signal target = CreateSignal(); 
-            IPin actual;
-            actual = target.Start;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            int actual = target.RowIndex;
+            Assert.AreEqual(rowIndex, actual);
         }
     }
 }

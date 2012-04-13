@@ -5,52 +5,29 @@ using NUnit.Framework;
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
 {
     [TestFixture]
-    public class CallTest
+    public sealed class CallTest : SignalTest
     {
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-
-        [Test]
-        public void CallConstructorTest()
+        internal override Signal CreateSignal()
         {
-            string name = string.Empty; 
-            var target = new Call(name);
-            Assert.Inconclusive("TODO: Implement code to verify target");
+            return new Call(string.Empty);
         }
 
+
+        [TestCase("")]
+        [TestCase("SomeName")]
+        public void CallConstructorTest(string name)
+        {
+            var target = new Call(name);
+            Assert.AreEqual(name, target.Name);
+        }
+
+ 
         [Test]
         public void SignalTypeTest()
         {
-            string name = string.Empty; 
-            var target = new Call(name); 
-            SignalType actual;
-            actual = target.SignalType;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            var target = CreateSignal(); 
+            SignalType actual = target.SignalType;
+            Assert.AreEqual(SignalType.Call, actual);
         }
     }
 }
