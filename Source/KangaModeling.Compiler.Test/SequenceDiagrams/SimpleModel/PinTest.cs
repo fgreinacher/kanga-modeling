@@ -73,9 +73,6 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
             Assert.AreEqual(lifelineStub.Object, actual);
         }
 
-        [Test]
-        public abstract void OrientationTest();
-
         [TestCase(PinType.None)]
         [TestCase(PinType.In)]
         [TestCase(PinType.Out)]
@@ -88,62 +85,41 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        public void RowIndexTest()
+        [TestCase(0)]
+        [TestCase(10)]
+        public virtual void RowIndexTest(int index)
         {
-            Pin target = CreatePin(); 
-            int actual;
-            actual = target.RowIndex;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            var rowMock = new Mock<Row>(MockBehavior.Strict, 0);
+            rowMock.Setup(row => row.Index).Returns(index);
+
+            Pin target = CreatePin(rowMock.Object, null);
+            int actual = target.RowIndex;
+            Assert.AreEqual(index, actual);
+
+            rowMock.VerifyAll();
         }
 
         [Test]
-        
-        public void RowTest()
+        public virtual void RowTest()
         {
-            //PrivateObject param0 = null; 
-            //var target = new Pin_Accessor(param0); 
-            //Row_Accessor expected = null; 
-            //Row_Accessor actual;
-            //target.Row = expected;
-            //actual = target.Row;
-            //Assert.AreEqual(expected, actual);
-            //Assert.Inconclusive("Verify the correctness of this test method.");
-        }
+            var rowStub = new Mock<Row>(MockBehavior.Loose, 0);
 
-        [Test]
-        public void SetActivityTest()
-        {
-            Pin target = CreatePin(); 
-            Activity activity = null; 
-            target.SetActivity(activity);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
-        }
-
-        [Test]
-        public void SetLevelTest()
-        {
-            Pin target = CreatePin(); 
-            int level = 0;
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+            Pin target = CreatePin(rowStub.Object, null);
+            Row actual = target.Row;
+            Assert.AreEqual(rowStub.Object, actual);
         }
 
         [Test]
         public void SetSignalTest()
         {
-            Pin target = CreatePin(); 
-            Signal signal = null; 
-            target.SetSignal(signal);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
-        }
+            var signalStub = new Mock<Signal>(MockBehavior.Loose, null);
 
-        [Test]
-        public void SignalTest()
-        {
-            Pin target = CreatePin(); 
-            ISignal actual;
-            actual = target.Signal;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            Pin target = CreatePin();
+            Assert.IsNull(target.Signal);
+
+            Signal signal = signalStub.Object; 
+            target.SetSignal(signal);
+            Assert.AreEqual(signal, target.Signal);
         }
     }
 }

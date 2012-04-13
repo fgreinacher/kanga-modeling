@@ -1,4 +1,6 @@
-﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+﻿using System;
+
+namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
     internal class OpenPin : Pin
     {
@@ -9,6 +11,14 @@
         {
             m_Orientation = orientation;
             Token = token;
+        }
+
+        public override Row Row
+        {
+            get
+            {
+                throw new NotSupportedException("OpenPin is not pinned to any row.");
+            }
         }
 
         public override Orientation Orientation

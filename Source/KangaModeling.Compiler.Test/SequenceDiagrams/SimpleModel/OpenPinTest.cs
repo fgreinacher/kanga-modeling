@@ -14,40 +14,33 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
             return new OpenPin(lifeline, Orientation.None, new Token());
         }
 
-        [Test]
-        public void OpenPinConstructorTest()
+        [TestCase(Orientation.None)]
+        [TestCase(Orientation.Left)]
+        [TestCase(Orientation.Right)]
+        public void OpenPinConstructorTest(Orientation orientation)
         {
             Lifeline lifeline = null; 
-            var orientation = new Orientation(); 
             var token = new Token(); 
             var target = new OpenPin(lifeline, orientation, token);
-            Assert.Inconclusive("TODO: Implement code to verify target");
+            Assert.AreEqual(orientation, target.Orientation);
+            Assert.AreEqual(lifeline, target.Lifeline);
+            Assert.AreEqual(token, target.Token);
         }
 
         [Test]
-        public override void OrientationTest()
+        [ExpectedException(typeof(NotSupportedException))]
+        public override void RowTest()
         {
-            Lifeline lifeline = null; 
-            var orientation = new Orientation(); 
-            var token = new Token(); 
-            var target = new OpenPin(lifeline, orientation, token); 
-            Orientation actual;
-            actual = target.Orientation;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            var target = CreatePin();
+            Assert.IsNull(target.Row);
         }
 
-        [Test]
-        
-        public void TokenTest()
+        [TestCase(0)]
+        [ExpectedException(typeof(NotSupportedException))]
+        public override void RowIndexTest(int index)
         {
-            //PrivateObject param0 = null; 
-            //var target = new OpenPin_Accessor(param0); 
-            //var expected = new Token(); 
-            //Token actual;
-            //target.Token = expected;
-            //actual = target.Token;
-            //Assert.AreEqual(expected, actual);
-            //Assert.Inconclusive("Verify the correctness of this test method.");
+            var target = CreatePin();
+            Assert.Equals(int.MaxValue, target.RowIndex);
         }
     }
 }

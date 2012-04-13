@@ -19,7 +19,7 @@
             m_PinType = pinType;
         }
 
-        public Row Row { get; private set; }
+        public virtual Row Row { get; private set; }
 
         public Activity Activity
         {
