@@ -1,4 +1,6 @@
-﻿using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+﻿using System.Collections.Generic;
+using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+using Moq;
 using NUnit.Framework;
 
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
@@ -6,20 +8,30 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
     [TestFixture]
     public class RowsCollectionTest
     {
-        [Test]
-        public void ExtendTest()
-        {
-            var target = new RowsCollection(); 
-            Lifeline lifeline = null; 
-            target.Extend(lifeline);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
-        }
-
-        [Test]
-        public void RowsCollectionConstructorTest()
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(10)]
+        public void ExtendTest(int rowCount)
         {
             var target = new RowsCollection();
-            Assert.Inconclusive("TODO: Implement code to verify target");
+
+            var lifeLineStub = new Mock<Lifeline>(MockBehavior.Loose, null, null, null, 0);
+            Lifeline lifeline = lifeLineStub.Object;
+            var rowMocks = new Stack<Mock>();
+            for (int i = 0; i < rowCount; i++)
+            {
+                var rowMock = new Mock<Row>(MockBehavior.Strict, 0);
+                rowMocks.Push(rowMock);
+                rowMock.Setup(row => row.Extend(lifeline));
+                Row targetRow = rowMock.Object;
+                target.Add(targetRow);
+            }
+            target.Extend(lifeline);
+
+            foreach (var rowMock in rowMocks)
+            {
+                rowMock.VerifyAll();
+            }
         }
     }
 }

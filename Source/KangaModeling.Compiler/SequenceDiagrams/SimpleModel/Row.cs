@@ -16,7 +16,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             get { return this[lifeline.Index]; }
         }
 
-        public void Extend(Lifeline lifeLine)
+        public virtual void Extend(Lifeline lifeLine)
         {
             Add(new RegularPin(this, lifeLine));
         }
