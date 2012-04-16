@@ -16,25 +16,6 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         }
 
         [Test]
-        public void BottomTest()
-        {
-            Fragment target = CreateFragment(); 
-            int actual;
-            actual = target.Bottom;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        public void ChildrenTest()
-        {
-            Fragment target = CreateFragment(); 
-            IEnumerable<Fragment> actual;
-            actual = target.Children;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        
         public void ChildrenTest1()
         {
             IFragment target = CreateFragment(); 
@@ -53,15 +34,6 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         }
 
         [Test]
-        public void LeftTest()
-        {
-            Fragment target = CreateFragment(); 
-            ILifeline actual;
-            actual = target.Left;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
         
         public void ParentTest()
         {
@@ -71,34 +43,6 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
-        [Test]
-        
-        public void ParentTest1()
-        {
-            //PrivateObject param0 = null; 
-            //var target = new Fragment_Accessor(param0); 
-            //IFragment actual;
-            //actual = target.Parent;
-            //Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        public void ParnetTest()
-        {
-            Fragment target = CreateFragment(); 
-            Fragment actual;
-            actual = target.Parnet;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        public void RightTest()
-        {
-            Fragment target = CreateFragment(); 
-            ILifeline actual;
-            actual = target.Right;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
 
         [Test]
         public void TitleTest()
@@ -106,15 +50,6 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
             Fragment target = CreateFragment(); 
             string actual;
             actual = target.Title;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        public void TopTest()
-        {
-            Fragment target = CreateFragment(); 
-            int actual;
-            actual = target.Top;
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
     }

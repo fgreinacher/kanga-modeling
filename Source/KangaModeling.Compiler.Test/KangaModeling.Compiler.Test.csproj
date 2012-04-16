@@ -55,7 +55,6 @@
     <Compile Include="SequenceDiagrams\SimpleModel\LifelineCollectionTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\LifelineStateTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\LifelineTest.cs" />
-    <Compile Include="SequenceDiagrams\SimpleModel\MatrixBuilderTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\MatrixTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\OpenPinTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\PinTest.cs" />

@@ -9,9 +9,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         IFragment Parent { get; }
         IEnumerable<IFragment> Children { get; }
         FragmentType FragmentType { get; }
-        ILifeline Left { get; }
-        ILifeline Right { get; }
-        int Top { get; }
-        int Bottom { get; }
+        IEnumerable<IActivity> Activities { get; }
+        IEnumerable<ISignal> Signals  { get; }
     }
 }

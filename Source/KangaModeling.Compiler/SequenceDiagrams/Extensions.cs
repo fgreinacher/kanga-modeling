@@ -109,25 +109,85 @@ namespace KangaModeling.Compiler.SequenceDiagrams
                    .Where(signal => signal != null);
         }
 
-        [Obsolete("For compatibility purposes only. Use one of the Signals() methods on ILifeline.")]
-        public static IEnumerable<ISignal> Signals(this ISequenceDiagram diagram)
+        public static IEnumerable<ILifeline> Lifelines(this ISignal signal)
         {
-            if (diagram == null) throw new ArgumentNullException("diagram");
-            return
-                diagram
-                    .Lifelines
-                    .SelectMany(line => line.OutSignals())
-                    .OrderBy(signal=>signal.Start.RowIndex);
+            yield return signal.Start.Lifeline;
+            yield return signal.End.Lifeline;
         }
 
-        [Obsolete("For compatibility purposes only. Use the Activities() method on ILifeline.")]
-        public static IEnumerable<IActivity> Activities(this ISequenceDiagram diagram)
+        public static IEnumerable<ILifeline> Lifelines(this IFragment fragment)
         {
-            if (diagram == null) throw new ArgumentNullException("diagram");
+            if (fragment == null) throw new ArgumentNullException("fragment");
+            return 
+                fragment
+                    .Signals
+                    .SelectMany(Lifelines)
+            .Concat(
+                fragment
+                    .Activities
+                    .Select(activity=>activity.Lifeline));
+        }
+
+        public static int Left(this IFragment fragment)
+        {
+            return 
+                fragment
+                    .Lifelines()
+                    .Min(lifeline => lifeline.Index);
+        }
+
+        public static int Right(this IFragment fragment)
+        {
             return
-                diagram
-                    .Lifelines
-                    .SelectMany(line => line.Activities());
+                fragment
+                    .Lifelines()
+                    .Max(lifeline => lifeline.Index);
+        }
+
+        public static IEnumerable<int> Rows(this IFragment fragment, bool includeActivityEnd)
+        {
+            if (fragment == null) throw new ArgumentNullException("fragment");
+            return
+                fragment
+                    .Children
+                    .SelectMany(child=> child.Rows(includeActivityEnd))
+            .Concat(
+                fragment
+                    .Signals
+                    .Select(signal=>signal.RowIndex))
+            .Concat(
+                fragment
+                    .Activities
+                    .SelectMany(activity => activity.Rows(includeActivityEnd)));
+        }
+
+        public static IEnumerable<int> Rows(this IActivity activity, bool includeActivityEnd)
+        {
+            yield return activity.StartRowIndex;
+            yield return activity.EndRowIndex;
+        }
+
+        public static int Top(this IFragment fragment)
+        {
+            return 
+                fragment
+                    .Rows(false)
+                    .Min();
+        }
+
+        public static int Bottom(this IFragment fragment)
+        {
+            return 
+              fragment
+                .Bottom(true);
+        }
+
+        public static int Bottom(this IFragment fragment, bool includeActivityEnd)
+        {
+            return 
+                fragment
+                    .Rows(includeActivityEnd)
+                    .Max();
         }
     }
 }

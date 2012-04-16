@@ -6,49 +6,76 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
     {
         private readonly IList<Fragment> m_Children;
         private readonly Fragment m_Parent;
+        private readonly Stack<IActivity> m_Activities;
+        private readonly Stack<ISignal> m_Signals;
 
         protected Fragment(Fragment parent)
         {
             m_Children = new List<Fragment>();
             m_Parent = parent;
+            m_Activities = new Stack<IActivity>();
+            m_Signals = new Stack<ISignal>();
         }
 
-        public Fragment Parnet
+        public void Add(ISignal signal)
         {
-            get { return m_Parent; }
+            m_Signals.Append(signal);
         }
 
-        public IEnumerable<Fragment> Children
+        public void Add(IActivity activity)
         {
-            get { return m_Children; }
+            m_Activities.Append(activity);
         }
 
-        protected IFragment Parent
+       #region IFragment Members
+
+        public abstract FragmentType FragmentType { get; }
+
+        public virtual string Title
         {
             get
             {
-                return m_Parent;
-            }
+                switch (FragmentType)
+                {
+                    case FragmentType.Root:
+                        return "sd";
+
+                    case FragmentType.Opt:
+                        return "opt";
+
+                    case FragmentType.Alt:
+                        return "alt";
+
+                    case FragmentType.Loop:
+                        return "loop";
+
+                    default:
+                        return string.Empty;
+                }
+            } 
         }
 
-        #region IFragment Members
-
-        public abstract FragmentType FragmentType { get; }
-        public abstract ILifeline Left { get; }
-        public abstract ILifeline Right { get; }
-        public abstract int Top { get; }
-        public abstract int Bottom { get; }
-
-        public abstract string Title { get; }
-
-        IFragment IFragment.Parent
+        public IFragment Parent
         {
             get { return m_Parent; }
         }
 
-        IEnumerable<IFragment> IFragment.Children
+        public IEnumerable<IFragment> Children
         {
             get { return m_Children; }
+        }
+
+        public IEnumerable<IActivity> Activities
+        {
+            get { return m_Activities; }
+        }
+
+        public IEnumerable<ISignal> Signals
+        {
+            get
+            {
+                return m_Signals;
+            }
         }
 
         #endregion

@@ -17,7 +17,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         {
             get
             {
-                throw new NotSupportedException("OpenPin is not pinned to any row.");
+                throw new NotSupportedException("Open pin is not pinned to any row.");
             }
         }
 

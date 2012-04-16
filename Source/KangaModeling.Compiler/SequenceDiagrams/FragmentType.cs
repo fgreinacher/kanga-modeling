@@ -4,6 +4,8 @@
     {
         Root,
         Opt,
+        Alt,
+        Loop,
         Leaf
     }
 }

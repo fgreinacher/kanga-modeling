@@ -91,9 +91,10 @@
     <Compile Include="SequenceDiagrams\ILifeline.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\Activity.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\Call.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\CombinedFragemnt.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\ElementFactory.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\Fragment.cs" />
-    <Compile Include="SequenceDiagrams\SimpleModel\SectionFragment.cs" />
+    <Compile Include="SequenceDiagrams\SimpleModel\Operand.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\Lifeline.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\LifelineCollection.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\LifelineState.cs" />
