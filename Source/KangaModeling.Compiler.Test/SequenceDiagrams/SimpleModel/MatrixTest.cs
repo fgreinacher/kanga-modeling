@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
 using NUnit.Framework;
 
@@ -8,129 +7,88 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
     [TestFixture]
     public class MatrixTest
     {
-       
-        [Test]
-        public void CreateLifelineTest()
-        {
-            var target = new Matrix(); 
-            string id = string.Empty; 
-            string name = string.Empty; 
-            Lifeline expected = null; 
-            Lifeline actual;
-            actual = target.CreateLifeline(id, name);
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        public void CreateRowTest()
-        {
-            var target = new Matrix(); 
-            Row expected = null; 
-            Row actual;
-            actual = target.CreateRow();
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        public void ItemTest()
-        {
-            var target = new Matrix(); 
-            int lifelineIndex = 0; 
-            int rowIndex = 0; 
-            Pin actual;
-            actual = target[lifelineIndex, rowIndex];
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        public void LastRowTest()
-        {
-            var target = new Matrix(); 
-            Row actual;
-            actual = target.LastRow;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        public void LifelineCountTest()
-        {
-            var target = new Matrix(); 
-            int actual;
-            actual = target.LifelineCount;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        
-        public void LifelinesTest()
-        {
-            ISequenceDiagram target = new Matrix(); 
-            IEnumerable<ILifeline> actual;
-            actual = target.Lifelines;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        
-        public void LifelinesTest1()
-        {
-            //var target = new Matrix_Accessor(); 
-            //LifelineCollection_Accessor expected = null; 
-            //LifelineCollection_Accessor actual;
-            //target.Lifelines = expected;
-            //actual = target.Lifelines;
-            //Assert.AreEqual(expected, actual);
-            //Assert.Inconclusive("Verify the correctness of this test method.");
-        }
 
         [Test]
         public void MatrixConstructorTest()
         {
             var target = new Matrix();
-            Assert.Inconclusive("TODO: Implement code to verify target");
+            Assert.NotNull(target.Lifelines);
+            Assert.IsInstanceOf(typeof(LifelineCollection), target.Lifelines);
+            Assert.AreEqual(0, target.Lifelines.Count);
+            
+            Assert.NotNull(target.Rows);
+            Assert.IsInstanceOf(typeof(RowsCollection), target.Rows);
+            Assert.AreEqual(1, target.Rows.Count);
+            Assert.IsInstanceOf(typeof(IEnumerable<Pin>), target.Rows[0]);
+            Assert.AreEqual(0, target.Rows[0].Count);
+
+            Assert.NotNull(target.Root);
+            Assert.IsInstanceOf(typeof(RootFragment), target.Root);
         }
 
-        [Test]
-        
-        public void RootTest()
-        {
-            ISequenceDiagram target = new Matrix(); 
-            IFragment actual;
-            actual = target.Root;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
 
         [Test]
-        public void RootTest1()
-        {
-            var target = new Matrix(); 
-            RootFragment actual;
-            actual = target.Root;
-            Assert.Inconclusive("Verify the correctness of this test method.");
-        }
-
-        [Test]
-        public void RowCountTest()
+        public void CreateLifelineTest()
         {
             var target = new Matrix(); 
-            int actual;
-            actual = target.RowCount;
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            const string id = "SomeId"; 
+            const string name = "SomeName"; 
+            Lifeline actual = target.CreateLifeline(id, name);
+            Assert.AreEqual(id, actual.Id);
+            Assert.AreEqual(name, actual.Name);
+            //TODO Unable to assert matrix. The same Demeter violation.
+            //Assert.AreEqual(target, actual.);
         }
 
-        [Test]
-        
-        public void RowsTest()
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(10)]
+        public void CreateRowTest(int lifelineCount)
         {
-            //var target = new Matrix_Accessor(); 
-            //RowsCollection_Accessor expected = null; 
-            //RowsCollection_Accessor actual;
-            //target.Rows = expected;
-            //actual = target.Rows;
-            //Assert.AreEqual(expected, actual);
-            //Assert.Inconclusive("Verify the correctness of this test method.");
+            var target = new Matrix();
+            for (int i = 0; i < lifelineCount; i++)
+            {
+                string id = i.ToString();
+                target.CreateLifeline(id, id);
+            }
+
+            Row actual = target.CreateRow();
+            Assert.AreEqual(2, target.Rows.Count);
+            Assert.AreEqual(actual, target.Rows[1]);
+
+            Assert.AreEqual(lifelineCount, target.Rows[0].Count);
+            Assert.AreEqual(lifelineCount, target.Rows[1].Count);
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(10)]
+        public void LastRowTest(int aditionalRowCount)
+        {
+            var target = new Matrix();
+            Row expected = target.Rows[0];
+            for (int i = 0; i < aditionalRowCount; i++)
+            {
+                expected = target.CreateRow();
+            }
+            Row actual = target.LastRow;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(10)]
+        public void LifelineCountTest(int expected)
+        {
+            var target = new Matrix();
+            for (int i = 0; i < expected; i++)
+            {
+                string id = i.ToString();
+                target.CreateLifeline(id, id);
+            }
+
+            int actual = target.LifelineCount;
+            Assert.AreEqual(expected, actual);
         }
     }
 }

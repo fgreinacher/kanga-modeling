@@ -25,6 +25,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         }
 
         [Test]
+        [Ignore("TODO Demeter violation inside Pins implementation must be eliminated first.")]
         public void PinsTest()
         {
             var matrixStub = new Mock<Matrix>(MockBehavior.Loose);
