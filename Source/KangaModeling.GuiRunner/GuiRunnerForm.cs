@@ -143,12 +143,35 @@ namespace KangaModeling.GuiRunner
 
 		private void buttonSample4_Click(object sender, EventArgs e)
 		{
-			inputTextBox.AppendText("activate A" + Environment.NewLine);
+			inputTextBox.AppendText("activate B" + Environment.NewLine);
 		}
 
 		private void buttonSample5_Click(object sender, EventArgs e)
 		{
-			inputTextBox.AppendText("deactivate A" + Environment.NewLine);
+			inputTextBox.AppendText("deactivate B" + Environment.NewLine);
 		}
+
+        private void buttonBigSample_Click(object sender, EventArgs e)
+        {
+            inputTextBox.Lines = new []
+                {
+                    @"title Diagram 1",
+                    @"A->B : Ping()",
+                    @"activate B",
+                    @"B-->A : isOk",
+                    @"deactivate B",
+                    @"alt isOk",
+                    @"B->C : More()",
+                    @"activate C",
+                    @"C-->B : result",
+                    @"deactivate C",
+                    @"else !isOk",
+                    @"B->C : Less()",
+                    @"activate C",
+                    @"C-->B : result",
+                    @"deactivate C",
+                    @"end",
+                };
+        }
 	}
 }

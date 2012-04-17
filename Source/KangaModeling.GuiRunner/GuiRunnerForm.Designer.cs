@@ -34,6 +34,7 @@
             this.outputPictureBox = new System.Windows.Forms.PictureBox();
             this.checkBoxImidiateCompile = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonBigSample = new System.Windows.Forms.Button();
             this.buttonSample5 = new System.Windows.Forms.Button();
             this.buttonSample4 = new System.Windows.Forms.Button();
             this.buttonSample3 = new System.Windows.Forms.Button();
@@ -53,7 +54,7 @@
             // compileButton
             // 
             this.compileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.compileButton.Location = new System.Drawing.Point(10, 173);
+            this.compileButton.Location = new System.Drawing.Point(4, 230);
             this.compileButton.Name = "compileButton";
             this.compileButton.Size = new System.Drawing.Size(102, 29);
             this.compileButton.TabIndex = 1;
@@ -67,9 +68,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.outputPictureBox.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.outputPictureBox.Location = new System.Drawing.Point(13, 221);
+            this.outputPictureBox.Location = new System.Drawing.Point(13, 281);
             this.outputPictureBox.Name = "outputPictureBox";
-            this.outputPictureBox.Size = new System.Drawing.Size(776, 258);
+            this.outputPictureBox.Size = new System.Drawing.Size(569, 308);
             this.outputPictureBox.TabIndex = 2;
             this.outputPictureBox.TabStop = false;
             // 
@@ -78,7 +79,7 @@
             this.checkBoxImidiateCompile.AutoSize = true;
             this.checkBoxImidiateCompile.Checked = true;
             this.checkBoxImidiateCompile.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxImidiateCompile.Location = new System.Drawing.Point(10, 150);
+            this.checkBoxImidiateCompile.Location = new System.Drawing.Point(4, 207);
             this.checkBoxImidiateCompile.Name = "checkBoxImidiateCompile";
             this.checkBoxImidiateCompile.Size = new System.Drawing.Size(106, 17);
             this.checkBoxImidiateCompile.TabIndex = 4;
@@ -87,6 +88,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonBigSample);
             this.panel1.Controls.Add(this.buttonSample5);
             this.panel1.Controls.Add(this.buttonSample4);
             this.panel1.Controls.Add(this.buttonSample3);
@@ -96,8 +98,18 @@
             this.panel1.Controls.Add(this.buttonSample1);
             this.panel1.Location = new System.Drawing.Point(13, 13);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(116, 205);
+            this.panel1.Size = new System.Drawing.Size(116, 262);
             this.panel1.TabIndex = 5;
+            // 
+            // buttonBigSample
+            // 
+            this.buttonBigSample.Location = new System.Drawing.Point(3, 149);
+            this.buttonBigSample.Name = "buttonBigSample";
+            this.buttonBigSample.Size = new System.Drawing.Size(109, 23);
+            this.buttonBigSample.TabIndex = 5;
+            this.buttonBigSample.Text = "Big Sample";
+            this.buttonBigSample.UseVisualStyleBackColor = true;
+            this.buttonBigSample.Click += new System.EventHandler(this.buttonBigSample_Click);
             // 
             // buttonSample5
             // 
@@ -151,10 +163,10 @@
             // 
             // inputTextBox
             // 
-            this.inputTextBox.Font = new System.Drawing.Font("Lucida Console", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputTextBox.Font = new System.Drawing.Font("Lucida Console", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputTextBox.Location = new System.Drawing.Point(135, 13);
             this.inputTextBox.Name = "inputTextBox";
-            this.inputTextBox.Size = new System.Drawing.Size(654, 96);
+            this.inputTextBox.Size = new System.Drawing.Size(447, 124);
             this.inputTextBox.TabIndex = 6;
             this.inputTextBox.Text = "";
             this.inputTextBox.WordWrap = false;
@@ -171,9 +183,9 @@
             this.columnHeader5});
             this.listBoxErrors.GridLines = true;
             this.listBoxErrors.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listBoxErrors.Location = new System.Drawing.Point(135, 115);
+            this.listBoxErrors.Location = new System.Drawing.Point(135, 143);
             this.listBoxErrors.Name = "listBoxErrors";
-            this.listBoxErrors.Size = new System.Drawing.Size(654, 100);
+            this.listBoxErrors.Size = new System.Drawing.Size(447, 100);
             this.listBoxErrors.SmallImageList = this.imageListGrid;
             this.listBoxErrors.TabIndex = 7;
             this.listBoxErrors.UseCompatibleStateImageBehavior = false;
@@ -183,7 +195,7 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "Description";
-            this.columnHeader2.Width = 358;
+            this.columnHeader2.Width = 204;
             // 
             // columnHeader3
             // 
@@ -207,7 +219,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(794, 491);
+            this.ClientSize = new System.Drawing.Size(587, 601);
             this.Controls.Add(this.listBoxErrors);
             this.Controls.Add(this.inputTextBox);
             this.Controls.Add(this.panel1);
@@ -239,6 +251,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ImageList imageListGrid;
+        private System.Windows.Forms.Button buttonBigSample;
 	}
 }
 
