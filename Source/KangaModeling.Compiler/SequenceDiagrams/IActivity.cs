@@ -13,7 +13,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         int EndRowIndex { get; }
 
         ILifeline Lifeline { get; }
-        
+
         Orientation Orientation { get; }
         int Level { get; }
     }

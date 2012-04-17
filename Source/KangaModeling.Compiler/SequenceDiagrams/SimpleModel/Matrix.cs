@@ -7,12 +7,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
     {
         private readonly RootFragment m_Root;
 
-        public Matrix()
+        public Matrix(RootFragment root)
         {
+            m_Root = root;
             Lifelines = new LifelineCollection(StringComparer.InvariantCultureIgnoreCase);
             Rows = new RowsCollection();
             CreateRow();
-            m_Root = new RootFragment();
         }
 
         public RootFragment Root
@@ -21,16 +21,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         }
 
         public LifelineCollection Lifelines { get; private set; }
-
-        public int RowCount
-        {
-            get { return Rows.Count; }
-        }
-
-        public int LifelineCount
-        {
-            get { return Lifelines.Count; }
-        }
 
         public RowsCollection Rows { get; private set; }
 
@@ -46,7 +36,17 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         #region ISequenceDiagram Members
 
-        IFragment ISequenceDiagram.Root
+        public int RowCount
+        {
+            get { return Rows.Count; }
+        }
+
+        public int LifelineCount
+        {
+            get { return Lifelines.Count; }
+        }
+
+        ICombinedFragment ISequenceDiagram.Root
         {
             get { return m_Root; }
         }

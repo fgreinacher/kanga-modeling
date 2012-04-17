@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
 using NUnit.Framework;
 
@@ -11,7 +12,8 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         [Test]
         public void MatrixConstructorTest()
         {
-            var target = new Matrix();
+            var root = new RootFragment();
+            var target = new Matrix(root);
             Assert.NotNull(target.Lifelines);
             Assert.IsInstanceOf(typeof(LifelineCollection), target.Lifelines);
             Assert.AreEqual(0, target.Lifelines.Count);
@@ -22,7 +24,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
             Assert.IsInstanceOf(typeof(IEnumerable<Pin>), target.Rows[0]);
             Assert.AreEqual(0, target.Rows[0].Count);
 
-            Assert.NotNull(target.Root);
+            Assert.AreEqual(root, target.Root);
             Assert.IsInstanceOf(typeof(RootFragment), target.Root);
         }
 
@@ -30,7 +32,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         [Test]
         public void CreateLifelineTest()
         {
-            var target = new Matrix(); 
+            var target = new Matrix(null); 
             const string id = "SomeId"; 
             const string name = "SomeName"; 
             Lifeline actual = target.CreateLifeline(id, name);
@@ -45,7 +47,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         [TestCase(10)]
         public void CreateRowTest(int lifelineCount)
         {
-            var target = new Matrix();
+            var target = new Matrix(null);
             for (int i = 0; i < lifelineCount; i++)
             {
                 string id = i.ToString();
@@ -65,7 +67,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         [TestCase(10)]
         public void LastRowTest(int aditionalRowCount)
         {
-            var target = new Matrix();
+            var target = new Matrix(null);
             Row expected = target.Rows[0];
             for (int i = 0; i < aditionalRowCount; i++)
             {
@@ -80,7 +82,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         [TestCase(10)]
         public void LifelineCountTest(int expected)
         {
-            var target = new Matrix();
+            var target = new Matrix(null);
             for (int i = 0; i < expected; i++)
             {
                 string id = i.ToString();

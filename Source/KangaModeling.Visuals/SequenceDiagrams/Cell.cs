@@ -162,7 +162,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 		public bool IsFragmentEnd { get; set; }
 
-		public Compiler.SequenceDiagrams.FragmentType FragmentType { get; set; }
+		public Compiler.SequenceDiagrams.OperatorType OperatorType { get; set; }
 
 		public string FragmentTitle { get; set; }
 	}

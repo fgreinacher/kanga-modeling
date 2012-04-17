@@ -15,10 +15,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public override Row Row
         {
-            get
-            {
-                throw new NotSupportedException("Open pin is not pinned to any row.");
-            }
+            get { throw new NotSupportedException("Open pin is not pinned to any row."); }
         }
 
         public override Orientation Orientation

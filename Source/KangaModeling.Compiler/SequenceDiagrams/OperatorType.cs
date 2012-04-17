@@ -1,11 +1,10 @@
 ﻿namespace KangaModeling.Compiler.SequenceDiagrams
 {
-    public enum FragmentType
+    public enum OperatorType
     {
         Root,
         Opt,
         Alt,
         Loop,
-        Leaf
     }
 }

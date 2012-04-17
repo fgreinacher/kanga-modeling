@@ -42,7 +42,7 @@
             get
             {
                 return
-                    Level == 0 || Start==null
+                    Level == 0 || Start == null
                         ? Orientation.None
                         : Start.Orientation;
             }

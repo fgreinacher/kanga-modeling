@@ -1,10 +1,7 @@
-using System.Collections.Generic;
-
 namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal interface IModelBuilder
     {
-        IEnumerable<ModelError> Errors { get; }
         bool HasParticipant(string name);
         void CreateParticipant(Token id, Token name);
         void AddCallSignal(Token source, Token target, Token name);
@@ -13,8 +10,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         void AddError(Token invalidToken, string message);
         void Activate(Token target);
         void Deactivate(Token target);
-        void StartOpt(Token guardExpression);
-        void End();
+        void StartOpt(Token keyword, Token guardExpression);
+        void StartAlt(Token keyword, Token guardExpression);
+        void StartElse(Token keyword, Token guardExpression);
+        void StartLoop(Token keyword, Token guardExpression);
+        void End(Token endToken);
         void Flush();
     }
 }

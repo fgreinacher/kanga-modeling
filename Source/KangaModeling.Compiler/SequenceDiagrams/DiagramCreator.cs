@@ -25,8 +25,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
         public static ISequenceDiagram CreateFrom(string text, out IEnumerable<ModelError> errors)
         {
-            var matrix = new Matrix();
-            var builder = new MatrixBuilder(matrix);
+            var errorsLog = new Queue<ModelError>();
+            errors = errorsLog;
+
+            var root = new RootFragment();
+            var matrix = new Matrix(root);
+            var builder = new MatrixBuilder(matrix, errorsLog);
 
             using (var scanner = new Scanner(text))
             {
@@ -43,7 +47,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams
                 }
                 builder.Flush();
             }
-            errors = builder.Errors;
             return matrix;
         }
     }

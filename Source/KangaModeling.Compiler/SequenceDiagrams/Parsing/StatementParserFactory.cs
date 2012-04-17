@@ -27,6 +27,15 @@
                 case OptStatementParser.OptKeyword:
                     return new OptStatementParser();
 
+                case AltStatementParser.AltKeyword:
+                    return new AltStatementParser();
+
+                case ElseStatementParser.ElseKeyword:
+                    return new ElseStatementParser();
+
+                case LoopStatementParser.LoopKeyword:
+                    return new LoopStatementParser();
+
                 case EndStatementParser.EndKeyword:
                     return new EndStatementParser();
 

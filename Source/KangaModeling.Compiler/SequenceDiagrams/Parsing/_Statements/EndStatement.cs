@@ -9,7 +9,7 @@
 
         public override void Build(IModelBuilder builder)
         {
-            builder.End();
+            builder.End(Keyword);
         }
     }
 }

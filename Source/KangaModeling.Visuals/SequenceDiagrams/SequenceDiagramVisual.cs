@@ -1,4 +1,5 @@
 ﻿using KangaModeling.Compiler.SequenceDiagrams;
+using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
 using KangaModeling.Graphics;
 using System.Linq;
 using System;
@@ -51,7 +52,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 		const int rowOffset = 1;
 
-		private void InitializeFragmentProperties(Grid grid, IFragment fragment)
+		private void InitializeFragmentProperties(Grid grid, ICombinedFragment fragment)
 		{
 			if(grid.ColumnCount == 0) return;
 
@@ -59,14 +60,14 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 			var endLifelineCell = grid.GetCell(grid.RowCount - 1, grid.ColumnCount - 1);
 			endLifelineCell.IsFragmentEnd  = true;
 			startLifelineCell.IsFragmentStart = true;
-			startLifelineCell.FragmentType = fragment.FragmentType;
+			startLifelineCell.OperatorType = fragment.OperatorType;
 			startLifelineCell.FragmentTitle = fragment.Title;
 			startLifelineCell.FragmentEndCell = endLifelineCell;
 
-			foreach (IFragment childFragment in fragment.Children)
-			{
-				InitializeFragmentProperties(grid, fragment);
-			}
+            //foreach (ICombinedFragment childFragment in fragment.Operands.SelectMany(operand=>operand.Children))
+            //{
+            //    InitializeFragmentProperties(grid, fragment);
+            //}
 		}
 
 		private void AddCellsToGrid(Grid grid, ISequenceDiagram sequenceDiagram)

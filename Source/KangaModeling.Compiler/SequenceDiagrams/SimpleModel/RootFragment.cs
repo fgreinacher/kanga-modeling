@@ -1,17 +1,12 @@
 ﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
-    internal class RootFragment : Fragment
+    internal class RootFragment : CombinedFragment
     {
         private string m_Title;
 
         public RootFragment()
-            : base(null)
+            : base(null, OperatorType.Root, new Token(0, 0, string.Empty))
         {
-        }
-
-        public override FragmentType FragmentType
-        {
-            get { return FragmentType.Root; }
         }
 
         public override string Title

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
@@ -7,25 +6,23 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
     internal class MatrixBuilder : IModelBuilder
     {
         private readonly Queue<ModelError> m_Errors;
+        private readonly Stack<CombinedFragment> m_Fragments;
+        private readonly Matrix m_Matrix;
 
-        public MatrixBuilder(Matrix matrix)
+        public MatrixBuilder(Matrix matrix, Queue<ModelError> errors)
         {
-            Matrix = matrix;
-            m_Errors = new Queue<ModelError>();
+            m_Matrix = matrix;
+            m_Errors = errors;
+            m_Fragments = new Stack<CombinedFragment>();
+            m_Fragments.Push(matrix.Root);
+            CreateOperand(new Token(0, 0, string.Empty));
         }
-
-        public Matrix Matrix { get; private set; }
 
         #region IModelBuilder Members
 
-        public IEnumerable<ModelError> Errors
-        {
-            get { return m_Errors; }
-        }
-
         public bool HasParticipant(string name)
         {
-            return Matrix.Lifelines.Contains(name);
+            return m_Matrix.Lifelines.Contains(name);
         }
 
         public virtual void CreateParticipant(Token id, Token name)
@@ -36,7 +33,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             }
             else
             {
-                Matrix.CreateLifeline(id.Value, name.Value);
+                m_Matrix.CreateLifeline(id.Value, name.Value);
             }
         }
 
@@ -54,11 +51,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public void SetTitle(Token title)
         {
-            if (!string.IsNullOrEmpty(Matrix.Root.Title))
+            if (!string.IsNullOrEmpty(m_Matrix.Root.Title))
             {
                 AddError(title, "Title is already set. Title can be set only once.");
             }
-            Matrix.Root.SetTitle(title.Value);
+            m_Matrix.Root.SetTitle(title.Value);
         }
 
         public void AddError(Token invalidToken, string message)
@@ -76,7 +73,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
                 return;
             }
 
-            Row startRow = Matrix.LastRow;
+            Row startRow = m_Matrix.LastRow;
             Pin startPin = startRow[target];
             if (startPin.PinType != PinType.In)
             {
@@ -107,8 +104,9 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
             var endPin = new OpenPin(target, startPin.Orientation, targetToken);
             target.State.OpenPins.Push(endPin);
-            var activity = ElementFactory.CreateActivity(level);
+            Activity activity = ElementFactory.CreateActivity(level);
             activity.Connect(startPin, endPin);
+            CurrentOperand().Add(activity);
         }
 
         public void Deactivate(Token targetToken)
@@ -120,7 +118,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
                 return;
             }
 
-            Row endRow = Matrix.LastRow;
+            Row endRow = m_Matrix.LastRow;
             Pin endPin = endRow[target];
             if (target.State.OpenPins.Count == 0)
             {
@@ -147,41 +145,75 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             }
             else
             {
-                endRow = Matrix.CreateRow();
+                endRow = m_Matrix.CreateRow();
                 endPin = endRow[target];
             }
 
             lastOpenActivity.ReconnectEnd(endPin);
         }
 
-        public void StartOpt(Token guardExpression)
+        public void StartOpt(Token keyword, Token guardExpression)
         {
-            throw new NotImplementedException();
+            StartFragment(keyword, OperatorType.Opt);
+            CreateOperand(guardExpression);
         }
 
-        public void End()
+        public void StartAlt(Token keyword, Token guardExpression)
         {
-            throw new NotImplementedException();
+            StartFragment(keyword, OperatorType.Alt);
+            CreateOperand(guardExpression);
+        }
+
+        public void StartElse(Token keyword, Token guardExpression)
+        {
+            if (CurrentOperand().Parent.OperatorType != OperatorType.Alt)
+            {
+                AddError(keyword, "Unexpected else statement. Else can be used only inside alt statement.");
+                return;
+            }
+            CreateOperand(guardExpression);
+        }
+
+        public void StartLoop(Token keyword, Token guardExpression)
+        {
+            StartFragment(keyword, OperatorType.Loop);
+            CreateOperand(guardExpression);
+        }
+
+        public void End(Token endToken)
+        {
+            if (!IsEndExpected())
+            {
+                AddError(endToken, "Unexpected end statement.");
+                return;
+            }
+            m_Fragments.Pop();
         }
 
         public void Flush()
         {
-            foreach (Lifeline lifeline in Matrix.Lifelines)
+            DetectActivitiesWithOpenEnd();
+            DetectUnclosedCombinedFragments();
+        }
+
+        #endregion
+
+        private void DetectActivitiesWithOpenEnd()
+        {
+            foreach (Lifeline lifeline in m_Matrix.Lifelines)
             {
                 foreach (OpenPin openPin in lifeline.State.OpenPins)
                 {
                     AddError(openPin.Token, "Activation has no corresponding deactivation");
-                    Pin lastPinInLifeLine = Matrix.LastRow[openPin.Lifeline.Index];
+                    Pin lastPinInLifeLine = m_Matrix.LastRow[openPin.Lifeline.Index];
                     openPin.Activity.ReconnectEnd(lastPinInLifeLine);
                 }
             }
         }
 
-        #endregion
-
         private bool TryGetColumnById(string name, out Lifeline lifeline)
         {
-            return Matrix.Lifelines.TryGetValue(name, out lifeline);
+            return m_Matrix.Lifelines.TryGetValue(name, out lifeline);
         }
 
         private void AddSignal(Token sourceToken, Token targetToken, Signal signal)
@@ -200,8 +232,48 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
                 return;
             }
 
-            Row row = Matrix.CreateRow();
+            Row row = m_Matrix.CreateRow();
             signal.Connect(row[source], row[target]);
+            CurrentOperand().Add(signal);
+        }
+
+        private CombinedFragment CurrentFragment()
+        {
+            return m_Fragments.Peek();
+        }
+
+        private Operand CurrentOperand()
+        {
+            return CurrentFragment().LastOperand();
+        }
+
+        private void StartFragment(Token keyword, OperatorType operatorType)
+        {
+            var fragment = new CombinedFragment(CurrentOperand(), operatorType, keyword);
+            CurrentOperand().Add(fragment);
+            m_Fragments.Push(fragment);
+        }
+
+
+        private void CreateOperand(Token guardExpression)
+        {
+            CombinedFragment parent = CurrentFragment();
+            var operand = new Operand(parent, guardExpression.Value);
+            parent.Add(operand);
+        }
+
+        private bool IsEndExpected()
+        {
+            return (CurrentFragment().OperatorType != OperatorType.Root);
+        }
+
+        private void DetectUnclosedCombinedFragments()
+        {
+            while (IsEndExpected())
+            {
+                CombinedFragment fragment = m_Fragments.Pop();
+                AddError(fragment.Token, "Unclosed combined fragment. Corresponding end statement is missing.");
+            }
         }
     }
 }

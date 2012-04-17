@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
     internal static class ElementFactory
     {

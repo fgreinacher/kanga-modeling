@@ -51,7 +51,6 @@
     <Compile Include="SequenceDiagrams\Parsers\OptStetementParser.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\ActivityTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\CallTest.cs" />
-    <Compile Include="SequenceDiagrams\SimpleModel\FragmentTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\LifelineCollectionTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\LifelineStateTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\LifelineTest.cs" />
@@ -63,7 +62,6 @@
     <Compile Include="SequenceDiagrams\SimpleModel\RootFragmentTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\RowsCollectionTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\RowTest.cs" />
-    <Compile Include="SequenceDiagrams\SimpleModel\SectionFragmentTest.cs" />
     <Compile Include="SequenceDiagrams\SimpleModel\SignalTest.cs" />
     <Compile Include="SequenceDiagrams\Statements\EnsureParticipantStatementTest.cs" />
     <Compile Include="SequenceDiagrams\Statements\SimleParticipantStatementTest.cs" />

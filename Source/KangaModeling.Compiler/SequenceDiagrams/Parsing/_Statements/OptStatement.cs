@@ -14,7 +14,7 @@
 
         public override void Build(IModelBuilder builder)
         {
-            builder.StartOpt(GuardExpression);
+            builder.StartOpt(Keyword, GuardExpression);
         }
     }
 }

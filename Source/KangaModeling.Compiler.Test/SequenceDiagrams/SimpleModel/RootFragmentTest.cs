@@ -13,8 +13,8 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         public void FragmentTypeTest()
         {
             var target = new RootFragment(); 
-            FragmentType actual;
-            actual = target.FragmentType;
+            OperatorType actual;
+            actual = target.OperatorType;
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
 

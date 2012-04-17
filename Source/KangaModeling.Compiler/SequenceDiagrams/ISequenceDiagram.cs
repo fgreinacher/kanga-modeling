@@ -5,7 +5,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 {
     public interface ISequenceDiagram
     {
-        IFragment Root { get; }
+        ICombinedFragment Root { get; }
         IEnumerable<ILifeline> Lifelines { get; }
         int RowCount { get; }
         int LifelineCount { get; }

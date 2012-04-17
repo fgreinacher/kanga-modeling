@@ -4,8 +4,8 @@
     {
         private readonly Lifeline m_Lifeline;
         private Activity m_Activity;
-        private Signal m_Signal;
         private PinType m_PinType;
+        private Signal m_Signal;
 
         protected Pin()
         {
