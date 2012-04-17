@@ -5,11 +5,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
     internal class MatrixBuilder : IModelBuilder
     {
-        private readonly Queue<ModelError> m_Errors;
+        private readonly ModelErrors m_Errors;
         private readonly Stack<CombinedFragment> m_Fragments;
         private readonly Matrix m_Matrix;
 
-        public MatrixBuilder(Matrix matrix, Queue<ModelError> errors)
+        public MatrixBuilder(Matrix matrix, ModelErrors errors)
         {
             m_Matrix = matrix;
             m_Errors = errors;
@@ -60,8 +60,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public void AddError(Token invalidToken, string message)
         {
-            var error = new ModelError(invalidToken, message);
-            m_Errors.Enqueue(error);
+            m_Errors.Add(invalidToken, message);
         }
 
         public void Activate(Token targetToken)

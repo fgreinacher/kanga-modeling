@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+namespace KangaModeling.Compiler.SequenceDiagrams
 {
     public interface ICombinedFragment
     {
