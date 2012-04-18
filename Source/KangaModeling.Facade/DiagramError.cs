@@ -12,12 +12,13 @@ namespace KangaModeling.Facade
 	/// </summary>
 	public class DiagramError
 	{
-		public DiagramError(string message, int tokenLine, int tokenStart, int tokenLength)
+		public DiagramError(string message, int tokenLine, int tokenStart, int tokenLength, string value)
 		{
 			Message = message;
 			TokenLine = tokenLine;
 			TokenStart = tokenStart;
 			TokenLength = tokenLength;
+		    TokenValue = value;
 		}
 
 		public string Message { get; private set; }

@@ -34,7 +34,7 @@ namespace KangaModeling.Facade
 			var diagramErrors = new List<DiagramError>();
 			foreach (ModelError modelError in modelErrors)
 			{
-				diagramErrors.Add(new DiagramError(modelError.Message, modelError.Token.Line, modelError.Token.Start, modelError.Token.Length));
+				diagramErrors.Add(new DiagramError(modelError.Message, modelError.Token.Line, modelError.Token.Start, modelError.Token.Length, modelError.Token.Value));
 			}
 
 			return new DiagramResult(
