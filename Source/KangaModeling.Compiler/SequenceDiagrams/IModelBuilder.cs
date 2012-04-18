@@ -2,8 +2,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal interface IModelBuilder
     {
-        bool HasParticipant(string name);
         void CreateParticipant(Token id, Token name);
+        void EnsureParticipant(Token id);
         void AddCallSignal(Token source, Token target, Token name);
         void AddReturnSignal(Token source, Token target, Token name);
         void SetTitle(Token title);

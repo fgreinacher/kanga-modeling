@@ -9,10 +9,7 @@
 
         public override void Build(IModelBuilder builder)
         {
-            if (!builder.HasParticipant(Id.Value))
-            {
-                base.Build(builder);
-            }
+            builder.EnsureParticipant(Id);
         }
     }
 }

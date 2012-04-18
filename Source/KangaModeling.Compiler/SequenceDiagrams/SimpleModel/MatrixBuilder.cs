@@ -5,11 +5,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
     internal class MatrixBuilder : IModelBuilder
     {
-        private readonly ModelErrors m_Errors;
+        private readonly ModelErrorsCollection m_Errors;
         private readonly Stack<CombinedFragment> m_Fragments;
         private readonly Matrix m_Matrix;
 
-        public MatrixBuilder(Matrix matrix, ModelErrors errors)
+        public MatrixBuilder(Matrix matrix, ModelErrorsCollection errors)
         {
             m_Matrix = matrix;
             m_Errors = errors;
@@ -20,21 +20,32 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         #region IModelBuilder Members
 
-        public bool HasParticipant(string name)
+        private bool HasParticipant(string name)
         {
             return m_Matrix.Lifelines.Contains(name);
         }
 
         public virtual void CreateParticipant(Token id, Token name)
         {
+            CreateParticipant(id, name, true);
+        }
+
+        public virtual void EnsureParticipant(Token id)
+        {
+            CreateParticipant(id, id, false);
+        }
+
+        private void CreateParticipant(Token id, Token name, bool errorIfExists)
+        {
             if (HasParticipant(id.Value))
             {
-                AddError(id, "Lifeline with this id already exists.");
+                if (errorIfExists)
+                {
+                    AddError(id, "Lifeline with this id already exists.");
+                }
+                return;
             }
-            else
-            {
-                m_Matrix.CreateLifeline(id.Value, name.Value);
-            }
+            m_Matrix.CreateLifeline(id.Value, name.Value);
         }
 
         public void AddCallSignal(Token source, Token target, Token name)

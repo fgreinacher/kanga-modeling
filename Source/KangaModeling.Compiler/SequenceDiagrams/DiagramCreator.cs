@@ -13,7 +13,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
         public static ISequenceDiagram CreateFrom(string text)
         {
-            return CreateFrom(text, new ModelErrors());
+            return CreateFrom(text, new ModelErrorsCollection());
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         /// <param name="text">The text to parse.</param>
         /// <param name="errors"></param>
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
-        public static ISequenceDiagram CreateFrom(string text,  ModelErrors errors)
+        public static ISequenceDiagram CreateFrom(string text,  ModelErrorsCollection errors)
         {
             var root = new RootFragment();
             var matrix = new Matrix(root);
