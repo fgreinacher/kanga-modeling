@@ -55,9 +55,11 @@
     <Compile Include="SequenceDiagrams\IParticipant.cs" />
     <Compile Include="SequenceDiagrams\ISequenceDiagram.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\AltStatementParser.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\_Parsers\DisposeStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\LoopStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\ElseStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\AltStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\_Statements\DisposeStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\LoopStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\ElseStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\EndStatement.cs" />

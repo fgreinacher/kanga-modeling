@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
@@ -127,6 +128,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
                 AddError(targetToken, "No such Lifeline");
                 return;
             }
+            Deactivate(target, targetToken, true);
+        }
+
+        private void Deactivate(Lifeline target, Token targetToken, bool errorIfUnexpectedDeactivation)
+        {
+            
 
             Row endRow = m_Matrix.LastRow;
             Pin endPin = endRow[target];
@@ -204,6 +211,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         {
             DetectActivitiesWithOpenEnd();
             DetectUnclosedCombinedFragments();
+        }
+
+        public void Dispose(Token target)
+        {
+            
         }
 
         #endregion

@@ -39,6 +39,10 @@
                 case EndStatementParser.EndKeyword:
                     return new EndStatementParser();
 
+                case DisposeStatementParser.DestroyKeyword:
+                case DisposeStatementParser.DisposeKeyword:
+                    return new DisposeStatementParser();
+
                 default:
                     return new UnknownStatementParser();
             }
