@@ -118,12 +118,17 @@ namespace KangaModeling.Visuals
 
 		#region Overrides / Overrideables
 
-		protected virtual void LayoutCore(IGraphicContext graphicContext)
+		internal protected virtual void LayoutCore(IGraphicContext graphicContext)
 		{
+            foreach (var visual in Children)
+            {
+                visual.LayoutCore(graphicContext);
+            }
 		}
         
 		protected virtual void DrawCore(IGraphicContext graphicContext)
 		{
+
 		}
 
 		#endregion

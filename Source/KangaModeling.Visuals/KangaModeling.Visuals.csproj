@@ -48,13 +48,24 @@
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SequenceDiagrams\Cell.cs" />
-    <Compile Include="SequenceDiagrams\Grid.cs" />
-    <Compile Include="SequenceDiagrams\LifelineCell.cs" />
-    <Compile Include="SequenceDiagrams\LifelineNameCell.cs" />
+    <Compile Include="SequenceDiagrams\ActivityVisual.cs" />
+    <Compile Include="SequenceDiagrams\Column.cs" />
+    <Compile Include="SequenceDiagrams\ColumnDimension.cs" />
+    <Compile Include="SequenceDiagrams\FramedText.cs" />
+    <Compile Include="SequenceDiagrams\GridLayout.cs" />
+    <Compile Include="SequenceDiagrams\LifelinesLayer.cs" />
+    <Compile Include="SequenceDiagrams\LifelineVisual.cs" />
+    <Compile Include="SequenceDiagrams\FragmentVisual.cs" />
+    <Compile Include="SequenceDiagrams\OperandVisual.cs" />
+    <Compile Include="SequenceDiagrams\Row.cs" />
+    <Compile Include="SequenceDiagrams\RowDimension.cs" />
     <Compile Include="SequenceDiagrams\SequenceDiagramVisual.cs" />
+    <Compile Include="SequenceDiagrams\SiganlVisual.cs" />
     <Compile Include="SequenceDiagrams\SignalDirection.cs" />
+    <Compile Include="SequenceDiagrams\SignalsLayer.cs" />
     <Compile Include="SequenceDiagrams\SignalType.cs" />
+    <Compile Include="SequenceDiagrams\TextVisual.cs" />
+    <Compile Include="SequenceDiagrams\XCross.cs" />
     <Compile Include="Visual.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -67,7 +78,9 @@
       <Name>KangaModeling.Graphics</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SeqDiag2\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

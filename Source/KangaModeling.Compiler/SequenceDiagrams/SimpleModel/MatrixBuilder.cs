@@ -133,8 +133,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         private void Deactivate(Lifeline target, Token targetToken, bool errorIfUnexpectedDeactivation)
         {
-            
-
             Row endRow = m_Matrix.LastRow;
             Pin endPin = endRow[target];
             if (target.State.OpenPins.Count == 0)

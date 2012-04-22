@@ -113,5 +113,19 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             yield return signal.Start.Lifeline;
             yield return signal.End.Lifeline;
         }
+
+        public static IEnumerable<ISignal> AllSignals(this ISequenceDiagram sequenceDiagram)
+        {
+            if (sequenceDiagram == null) {throw new ArgumentNullException("sequenceDiagram");}
+            
+            return
+                sequenceDiagram
+                    .Lifelines
+                    .SelectMany(InSignals)
+                    .Union(
+                        sequenceDiagram
+                            .Lifelines
+                            .SelectMany(OutSignals));
+        }
     }
 }
