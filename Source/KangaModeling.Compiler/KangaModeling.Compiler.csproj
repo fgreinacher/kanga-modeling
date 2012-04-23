@@ -47,8 +47,11 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SequenceDiagrams\AreaContainer.cs" />
     <Compile Include="SequenceDiagrams\DiagramCreator.cs" />
     <Compile Include="SequenceDiagrams\Extensions.cs" />
+    <Compile Include="SequenceDiagrams\IArea.cs" />
+    <Compile Include="SequenceDiagrams\LeafArea.cs" />
     <Compile Include="SequenceDiagrams\ModelErrorsCollection.cs" />
     <Compile Include="SequenceDiagrams\OperatorType.cs" />
     <Compile Include="SequenceDiagrams\IModelBuilder.cs" />

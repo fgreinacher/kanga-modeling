@@ -25,7 +25,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             //Alocation form center symetrically in both directions.
             float widthToAlocate = Width*(m_Activity.Level + 1);
-            m_Column.Allocate(widthToAlocate);
+            m_Column.Body.Allocate(widthToAlocate);
 
             base.LayoutCore(graphicContext);
         }
@@ -37,10 +37,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                                             ? -xFromCenterAbsoulute
                                             : xFromCenterAbsoulute;
 
-            float x = m_Column.Middle + xFromCenterRelative - Width/2;
+            float x = m_Column.Body.Middle + xFromCenterRelative - Width/2;
 
-            float yStart = m_StartRow.Bottom;
-            float yEnd = m_EndRow.Bottom;
+            float yStart = m_StartRow.Body.Bottom;
+            float yEnd = m_EndRow.Body.Bottom;
 
             var location = new Point(x, yStart);
             var size = new Size(Width, yEnd - yStart);

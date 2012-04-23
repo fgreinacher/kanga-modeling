@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {

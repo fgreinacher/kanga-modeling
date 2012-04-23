@@ -27,7 +27,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             m_TextSize = graphicContext.MeasureText(m_Signal.Name);
 
             m_EndColumn.Allocate(m_TextSize.Width + TextPadding*2);
-            m_Row.Allocate(m_TextSize.Height);
+            m_Row.Body.Allocate(m_TextSize.Height);
             base.LayoutCore(graphicContext);
         }
 
@@ -43,20 +43,20 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private void DrawText(IGraphicContext graphicContext)
         {
             float xText = m_Signal.End.Orientation == Orientation.Right
-                              ? m_EndColumn.Middle + 2
-                              : m_EndColumn.Middle - 2 - m_TextSize.Width;
+                              ? m_EndColumn.Body.Middle + 2
+                              : m_EndColumn.Body.Middle - 2 - m_TextSize.Width;
 
-            float yText = m_Row.Bottom - 2 - m_TextSize.Height;
+            float yText = m_Row.Body.Bottom - 2 - m_TextSize.Height;
             graphicContext.DrawText(m_Signal.Name, HorizontalAlignment.Center, VerticalAlignment.Middle,
                                     new Point(xText, yText), m_TextSize + new Padding(2));
         }
 
         private void DrawArrow(IGraphicContext graphicContext)
         {
-            float xStart = m_StartColumn.Middle + GetXFromCenterRelative(m_Signal.Start, m_Signal.Start.Level);
-            float xEnd = m_EndColumn.Middle + GetXFromCenterRelative(m_Signal.End);
+            float xStart = m_StartColumn.Body.Middle + GetXFromCenterRelative(m_Signal.Start, m_Signal.Start.Level);
+            float xEnd = m_EndColumn.Body.Middle + GetXFromCenterRelative(m_Signal.End);
 
-            float y = m_Row.Bottom;
+            float y = m_Row.Body.Bottom;
 
             var start = new Point(xStart, y);
             var end = new Point(xEnd, y);
@@ -79,7 +79,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private float GetXFromCenterRelative(IPin pin)
         {
             int levels = pin.Level;
-            if (m_Signal.End.Activity!=null)
+            if (m_Signal.End.Activity != null)
             {
                 levels++;
             }
@@ -88,7 +88,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private float GetXFromCenterRelative(IPin pin, int levels)
         {
-            float xFromCenterAbsoulute = ActivityVisual.ActivityWidth / 2 * levels;
+            float xFromCenterAbsoulute = ActivityVisual.ActivityWidth/2*levels;
 
             return pin.Orientation == Orientation.Left
                        ? -xFromCenterAbsoulute

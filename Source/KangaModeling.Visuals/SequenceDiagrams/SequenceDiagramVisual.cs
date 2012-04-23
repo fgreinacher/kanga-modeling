@@ -21,7 +21,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             AddChild(new LifelinesLayer(m_SequenceDiagram.Lifelines, m_GridLayout));
             AddChild(new SignalsLayer(m_SequenceDiagram.AllSignals(), m_GridLayout));
-            AddChild(new FragmentVisual(m_SequenceDiagram.Root, m_GridLayout));
+            AddChild(new RootFragmentVisual(m_SequenceDiagram.Root, m_GridLayout));
         }
 
         protected internal override void LayoutCore(IGraphicContext graphicContext)

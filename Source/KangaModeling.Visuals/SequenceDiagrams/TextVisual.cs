@@ -24,7 +24,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             base.LayoutCore(graphicContext);
             Size = graphicContext.MeasureText(m_Name) + Padding;
             m_Column.Allocate(Size.Width);
-            m_Row.Allocate(Size.Height);
+            m_Row.Body.Allocate(Size.Height);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)

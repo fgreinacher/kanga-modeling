@@ -1,24 +1,17 @@
-﻿using System;
-using KangaModeling.Compiler.SequenceDiagrams;
+﻿using KangaModeling.Compiler.SequenceDiagrams;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class FragmentVisual : Visual
+    internal class FragmentVisual : FragmentVisualBase
     {
-        private readonly ICombinedFragment m_Root;
-
-        public FragmentVisual(ICombinedFragment root, GridLayout gridLayout)
+        public FragmentVisual(ICombinedFragment fragment, GridLayout gridLayout)
+            : base(fragment, gridLayout)
         {
-            m_Root = root;
-            Initialize();
-        }
+            TopRow = gridLayout.Rows[Area.Top];
+            BottomRow = gridLayout.Rows[Area.Bottom];
 
-        private void Initialize()
-        {
-            foreach (var operand in m_Root.Operands)
-            {
-                AddChild(new OperandVisual(operand));
-            }
+            LeftColumn = gridLayout.Columns[Area.Left];
+            RightColumn = gridLayout.Columns[Area.Right];
         }
     }
 }

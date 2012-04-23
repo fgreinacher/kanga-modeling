@@ -116,8 +116,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public static IEnumerable<ISignal> AllSignals(this ISequenceDiagram sequenceDiagram)
         {
-            if (sequenceDiagram == null) {throw new ArgumentNullException("sequenceDiagram");}
-            
+            if (sequenceDiagram == null)
+            {
+                throw new ArgumentNullException("sequenceDiagram");
+            }
+
             return
                 sequenceDiagram
                     .Lifelines
@@ -126,6 +129,64 @@ namespace KangaModeling.Compiler.SequenceDiagrams
                         sequenceDiagram
                             .Lifelines
                             .SelectMany(OutSignals));
+        }
+
+        public static IArea GetArea(this IOperand operand)
+        {
+            if (operand == null) throw new ArgumentNullException("operand");
+            IEnumerable<IArea> signalsAreas = operand.Signals.Select(GetArea);
+            IEnumerable<IArea> childrenAreas = operand.Children.Select(GetArea);
+
+            return new AreaContainer(signalsAreas.Concat(childrenAreas), false);
+        }
+
+
+        public static IArea GetArea(this ICombinedFragment fragment)
+        {
+            if (fragment == null) throw new ArgumentNullException("fragment");
+            return new AreaContainer(fragment.Operands.Select(GetArea), true);
+        }
+
+        public static IArea GetArea(this ISignal signal)
+        {
+            if (signal == null) throw new ArgumentNullException("signal");
+            return
+                new LeafArea(
+                    Math.Min(signal.Start.LifelineIndex, signal.End.LifelineIndex),
+                    Math.Max(signal.Start.LifelineIndex, signal.End.LifelineIndex),
+                    signal.RowIndex,
+                    signal.RowIndex);
+        }
+
+        public static int LeftDepth(this IArea area)
+        {
+            return area.DepthWhile(child => child.Left == area.Left);
+        }
+
+        public static int RightDepth(this IArea area)
+        {
+            return area.DepthWhile(child => child.Right == area.Right);
+        }
+
+        public static int TopDepth(this IArea area)
+        {
+            return area.DepthWhile(child => child.Top == area.Top);
+        }
+
+        public static int BottomDepth(this IArea area)
+        {
+            return area.DepthWhile(child => child.Bottom == area.Bottom);
+        }
+
+        internal static int DepthWhile(this IArea area, Func<IArea, bool> condition)
+        {
+            int result =
+                area
+                    .Children
+                    .Where(condition)
+                    .Aggregate(0, (current, child) => Math.Max(current, child.DepthWhile(condition)));
+
+            return !area.HasFrame ? result : result + 1;
         }
     }
 }

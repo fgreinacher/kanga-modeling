@@ -31,13 +31,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             Size = m_TextVisual.Size;
             //TODO Constant to padding
             m_Column.Allocate(Size.Width + 5);
-            m_Row.Allocate(Size.Height);
+            m_Row.Body.Allocate(Size.Height);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
             float y = m_Row.Bottom - Size.Height;
-            float x = m_Column.Middle - Size.Width/2;
+            float x = m_Column.Body.Middle - Size.Width/2;
 
             Location = new Point(x, y);
 

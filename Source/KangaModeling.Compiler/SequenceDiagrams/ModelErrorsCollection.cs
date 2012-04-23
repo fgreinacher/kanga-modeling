@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
@@ -12,7 +11,9 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
             m_Errors = new Queue<ModelError>();
         }
-        
+
+        #region IEnumerable<ModelError> Members
+
         public IEnumerator<ModelError> GetEnumerator()
         {
             return m_Errors.GetEnumerator();
@@ -22,6 +23,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         {
             return GetEnumerator();
         }
+
+        #endregion
 
         public void Add(Token invalidToken, string message)
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
@@ -22,7 +21,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         /// <param name="text">The text to parse.</param>
         /// <param name="errors"></param>
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
-        public static ISequenceDiagram CreateFrom(string text,  ModelErrorsCollection errors)
+        public static ISequenceDiagram CreateFrom(string text, ModelErrorsCollection errors)
         {
             var root = new RootFragment();
             var matrix = new Matrix(root);

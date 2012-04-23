@@ -18,14 +18,14 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         protected internal override void LayoutCore(IGraphicContext graphicContext)
         {
             m_Column.Allocate(Width);
-            m_Row.Allocate(Height + 20);
+            m_Row.Body.Allocate(Height + 20);
             base.LayoutCore(graphicContext);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            float x = m_Column.Middle;
-            float y = m_Row.Middle;
+            float x = m_Column.Body.Middle;
+            float y = m_Row.Body.Middle;
 
             float hWidth = Width/2;
             float hHeight = Height/2;

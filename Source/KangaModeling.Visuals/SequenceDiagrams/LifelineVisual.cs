@@ -37,9 +37,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            float x = m_Column.Middle;
+            float x = m_Column.Body.Middle;
             float yStart = m_StartRow.Bottom;
-            float yEnd = m_EndRow.Middle;
+            float yEnd = m_EndRow.Body.Middle;
             graphicContext.DrawLine(new Point(x, yStart), new Point(x, yEnd), 1);
             base.DrawCore(graphicContext);
         }

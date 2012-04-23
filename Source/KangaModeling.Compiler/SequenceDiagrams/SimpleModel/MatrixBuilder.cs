@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
@@ -21,11 +20,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         #region IModelBuilder Members
 
-        private bool HasParticipant(string name)
-        {
-            return m_Matrix.Lifelines.Contains(name);
-        }
-
         public virtual void CreateParticipant(Token id, Token name)
         {
             CreateParticipant(id, name, true);
@@ -34,19 +28,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         public virtual void EnsureParticipant(Token id)
         {
             CreateParticipant(id, id, false);
-        }
-
-        private void CreateParticipant(Token id, Token name, bool errorIfExists)
-        {
-            if (HasParticipant(id.Value))
-            {
-                if (errorIfExists)
-                {
-                    AddError(id, "Lifeline with this id already exists.");
-                }
-                return;
-            }
-            m_Matrix.CreateLifeline(id.Value, name.Value);
         }
 
         public void AddCallSignal(Token source, Token target, Token name)
@@ -131,42 +112,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             Deactivate(target, targetToken, true);
         }
 
-        private void Deactivate(Lifeline target, Token targetToken, bool errorIfUnexpectedDeactivation)
-        {
-            Row endRow = m_Matrix.LastRow;
-            Pin endPin = endRow[target];
-            if (target.State.OpenPins.Count == 0)
-            {
-                AddError(targetToken, "Unexpected deactivation. The lifeline must be activated before.");
-                return;
-            }
-
-            OpenPin lastOpenPin = target.State.OpenPins.Pop();
-            Activity lastOpenActivity = lastOpenPin.GetActivity();
-
-            if (endPin.PinType != PinType.In && endPin.Signal != null)
-            {
-                ILifeline targetOfReturn = endPin.Signal.End.Lifeline;
-                ILifeline sourceOfActivation = lastOpenActivity.Start.Signal.Start.Lifeline;
-
-                if (!sourceOfActivation.Equals(targetOfReturn))
-                {
-                    AddError(targetToken,
-                             string.Format(
-                                 "Unexpected deactivation. Return came from '{0}' but activation was initiated by '{1}'",
-                                 targetOfReturn.Id,
-                                 sourceOfActivation.Id));
-                }
-            }
-            else
-            {
-                endRow = m_Matrix.CreateRow();
-                endPin = endRow[target];
-            }
-
-            lastOpenActivity.ReconnectEnd(endPin);
-        }
-
         public void StartOpt(Token keyword, Token guardExpression)
         {
             StartFragment(keyword, OperatorType.Opt);
@@ -213,10 +158,63 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public void Dispose(Token target)
         {
-            
         }
 
         #endregion
+
+        private bool HasParticipant(string name)
+        {
+            return m_Matrix.Lifelines.Contains(name);
+        }
+
+        private void CreateParticipant(Token id, Token name, bool errorIfExists)
+        {
+            if (HasParticipant(id.Value))
+            {
+                if (errorIfExists)
+                {
+                    AddError(id, "Lifeline with this id already exists.");
+                }
+                return;
+            }
+            m_Matrix.CreateLifeline(id.Value, name.Value);
+        }
+
+        private void Deactivate(Lifeline target, Token targetToken, bool errorIfUnexpectedDeactivation)
+        {
+            Row endRow = m_Matrix.LastRow;
+            Pin endPin = endRow[target];
+            if (target.State.OpenPins.Count == 0)
+            {
+                AddError(targetToken, "Unexpected deactivation. The lifeline must be activated before.");
+                return;
+            }
+
+            OpenPin lastOpenPin = target.State.OpenPins.Pop();
+            Activity lastOpenActivity = lastOpenPin.GetActivity();
+
+            if (endPin.PinType != PinType.In && endPin.Signal != null)
+            {
+                ILifeline targetOfReturn = endPin.Signal.End.Lifeline;
+                ILifeline sourceOfActivation = lastOpenActivity.Start.Signal.Start.Lifeline;
+
+                if (!sourceOfActivation.Equals(targetOfReturn))
+                {
+                    AddError(targetToken,
+                             string.Format(
+                                 "Unexpected deactivation. Return came from '{0}' but activation was initiated by '{1}'",
+                                 targetOfReturn.Id,
+                                 sourceOfActivation.Id));
+                }
+            }
+            else
+            {
+                endRow = m_Matrix.CreateRow();
+                endPin = endRow[target];
+            }
+
+            lastOpenActivity.ReconnectEnd(endPin);
+        }
 
         private void DetectActivitiesWithOpenEnd()
         {

@@ -33,6 +33,11 @@ namespace KangaModeling.Graphics.Primitives
             return new Size(size.Width + padding.Left + padding.Right , size.Height + padding.Top + padding.Bottom);
         }
 
+        public static Padding operator *(Padding padding, float factor)
+        {
+            return new Padding(padding.Left * factor, padding.Right * factor, padding.Top * factor, padding.Bottom * factor);
+        }
+
         public bool Equals(Padding other)
         {
             if (ReferenceEquals(null, other)) return false;
