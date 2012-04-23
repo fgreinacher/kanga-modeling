@@ -4,14 +4,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal class Column
     {
+        public const int MinWidth = 40;
+
         private float m_MinWidth;
 
         public Column()
         {
-            m_MinWidth = 10;
+            m_MinWidth = MinWidth + 10;
             LeftGap = new ColumnSection();
             Body = new ColumnSection();
             RightGap = new ColumnSection();
+            Body.Allocate(MinWidth);
         }
 
         public ColumnSection LeftGap { get; private set; }

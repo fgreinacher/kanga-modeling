@@ -4,7 +4,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal class Row
     {
-        public const float MinHeight = 20;
+        public const float MinHeight = 40;
 
         private float m_MinHeight;
 
