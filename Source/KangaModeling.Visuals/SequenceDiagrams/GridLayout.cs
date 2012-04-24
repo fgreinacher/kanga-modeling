@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
+using System.Diagnostics;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
@@ -30,18 +31,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         public Row HeaderRow { get; private set; }
         public Row FooterRow { get; private set; }
 
-        public void AdjustLoactions()
-        {
-            AdjustRowLocations();
-            AdjustColumnLocations();
-        }
-
-
 		protected override void LayoutCore(IGraphicContext graphicContext)
 		{
 			base.LayoutCore(graphicContext);
 
-			AdjustLoactions();
+			AdjustLocations();
 
 			Column lastColumn = Columns[Columns.Count - 1];
 			Row lastRow = FooterRow;
@@ -50,6 +44,40 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 		}
 
 		protected override void DrawCore(IGraphicContext graphicContext)
+		{
+			DrawCellAreas(graphicContext);
+		}
+		
+		private void AdjustLocations()
+		{
+			AdjustRowLocations();
+			AdjustColumnLocations();
+		}
+
+        private void AdjustColumnLocations()
+        {
+            Column prevColumn = null;
+            foreach (Column currentColumn in Columns)
+            {
+                currentColumn.AdjustLocation(prevColumn);
+                prevColumn = currentColumn;
+            }
+        }
+
+        private void AdjustRowLocations()
+        {
+            HeaderRow.AdjustLocation(null);
+            Row prevRow = HeaderRow;
+            foreach (Row currentRow in Rows)
+            {
+                currentRow.AdjustLocation(prevRow);
+                prevRow = currentRow;
+            }
+            FooterRow.AdjustLocation(prevRow);
+        }
+
+		[Conditional("DEBUG")]
+		private void DrawCellAreas(IGraphicContext graphicContext)
 		{
 			foreach (var row in Rows)
 			{
@@ -87,27 +115,5 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 				}
 			}
 		}
-
-        private void AdjustColumnLocations()
-        {
-            Column prevColumn = null;
-            foreach (Column currentColumn in Columns)
-            {
-                currentColumn.AdjustLocation(prevColumn);
-                prevColumn = currentColumn;
-            }
-        }
-
-        private void AdjustRowLocations()
-        {
-            HeaderRow.AdjustLocation(null);
-            Row prevRow = HeaderRow;
-            foreach (Row currentRow in Rows)
-            {
-                currentRow.AdjustLocation(prevRow);
-                prevRow = currentRow;
-            }
-            FooterRow.AdjustLocation(prevRow);
-        }
     }
 }
