@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Drawing;
-using KangaModeling.Graphics.Primitives;
 
 namespace KangaModeling.Graphics.GdiPlus.Utilities
 {
     internal static class ConversionExtensions
     {
+		public static Color ToColor(this Primitives.Color color)
+		{
+			return Color.FromArgb(color.A, color.R, color.G, color.B);
+		}
+
         public static PointF ToPointF(this Primitives.Point point)
         {
             return new PointF(point.X, point.Y);
@@ -16,17 +20,17 @@ namespace KangaModeling.Graphics.GdiPlus.Utilities
             return new SizeF(size.Width, size.Height);
         }
 
-        public static StringAlignment ToStringAlignment(this HorizontalAlignment horizontalAlignment)
+		public static StringAlignment ToStringAlignment(this Primitives.HorizontalAlignment horizontalAlignment)
         {
             switch (horizontalAlignment)
             {
-                case HorizontalAlignment.Left:
+				case Primitives.HorizontalAlignment.Left:
                     return StringAlignment.Near;
 
-                case HorizontalAlignment.Right:
+				case Primitives.HorizontalAlignment.Right:
                     return StringAlignment.Far;
 
-                case HorizontalAlignment.Center:
+				case Primitives.HorizontalAlignment.Center:
                     return StringAlignment.Center;
 
                 default:
@@ -35,17 +39,17 @@ namespace KangaModeling.Graphics.GdiPlus.Utilities
         }
 
 
-        public static StringAlignment ToStringAlignment(this VerticalAlignment verticalAlignment)
+		public static StringAlignment ToStringAlignment(this Primitives.VerticalAlignment verticalAlignment)
         {
             switch (verticalAlignment)
             {
-                case VerticalAlignment.Top:
+				case Primitives.VerticalAlignment.Top:
                     return StringAlignment.Near;
 
-                case VerticalAlignment.Bottom:
+				case Primitives.VerticalAlignment.Bottom:
                     return StringAlignment.Far;
 
-                case VerticalAlignment.Middle:
+				case Primitives.VerticalAlignment.Middle:
                     return StringAlignment.Center;
 
                 default:

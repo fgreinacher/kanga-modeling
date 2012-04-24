@@ -91,7 +91,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 			var textLocation = new Point(xStart + 4, yStart + 4);
 			graphicContext.DrawText(m_Fragment.Title, HorizontalAlignment.Center, VerticalAlignment.Bottom, textLocation,
 									m_HeaderSize);
-			graphicContext.DrawRectangle(new Point(xStart, yStart), Size);
+			graphicContext.DrawRectangle(new Point(xStart, yStart), Size, Color.Red);
 
 			var textFramePoint1 = new Point(xStart, yStart + m_HeaderSize.Height + 5);
 			var textFramePoint2 = new Point(xStart + m_HeaderSize.Width, yStart + m_HeaderSize.Height + 5);

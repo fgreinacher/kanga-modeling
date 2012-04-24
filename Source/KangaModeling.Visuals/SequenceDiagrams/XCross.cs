@@ -16,10 +16,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         }
 
         protected internal override void LayoutCore(IGraphicContext graphicContext)
-        {
+		{
+			base.LayoutCore(graphicContext);
+
             m_Column.Allocate(Width);
             m_Row.Body.Allocate(Height + 20);
-            base.LayoutCore(graphicContext);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)

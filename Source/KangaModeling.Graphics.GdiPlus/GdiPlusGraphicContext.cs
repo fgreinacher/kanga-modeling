@@ -4,6 +4,7 @@ using KangaModeling.Graphics.GdiPlus.Utilities;
 using KangaModeling.Graphics.Primitives;
 using Point = KangaModeling.Graphics.Primitives.Point;
 using Size = KangaModeling.Graphics.Primitives.Size;
+using Color = KangaModeling.Graphics.Primitives.Color;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
@@ -27,18 +28,24 @@ namespace KangaModeling.Graphics.GdiPlus
 
 		#region IGraphicContext Members
 
-		public void DrawRectangle(Point location, Size size)
+		public void DrawRectangle(Point location, Size size, Color color)
 		{
 			var rectangle = new RectangleF(location.ToPointF(), size.ToSizeF());
 
-			m_Graphics.DrawRectangle(Pens.Black, location.X, location.Y, size.Width, size.Height);
+			using (var pen = new Pen(color.ToColor()))
+			{
+				m_Graphics.DrawRectangle(pen, location.X, location.Y, size.Width, size.Height);
+			}
 		}
 
-		public void FillRectangle(Point location, Size size)
+		public void FillRectangle(Point location, Size size, Color color)
 		{
 			var rectangle = new RectangleF(location.ToPointF(), size.ToSizeF());
 
-			m_Graphics.FillRectangle(Brushes.Orange, rectangle);
+			using (var brush = new SolidBrush(color.ToColor()))
+			{
+				m_Graphics.FillRectangle(brush, rectangle);
+			}
 		}
 
 		public void DrawText(string text, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Point location, Size size)

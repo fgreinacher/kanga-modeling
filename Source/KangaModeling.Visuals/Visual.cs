@@ -97,7 +97,12 @@ namespace KangaModeling.Visuals
 		}
         
 		public void Layout(IGraphicContext graphicContext)
-        {
+		{
+			foreach (var visual in Children)
+			{
+				visual.Layout(graphicContext);
+			}
+
             LayoutCore(graphicContext);
 		}
 
@@ -120,10 +125,6 @@ namespace KangaModeling.Visuals
 
 		internal protected virtual void LayoutCore(IGraphicContext graphicContext)
 		{
-            foreach (var visual in Children)
-            {
-                visual.LayoutCore(graphicContext);
-            }
 		}
         
 		protected virtual void DrawCore(IGraphicContext graphicContext)

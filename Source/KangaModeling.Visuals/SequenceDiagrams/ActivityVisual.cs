@@ -22,12 +22,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         }
 
         protected internal override void LayoutCore(IGraphicContext graphicContext)
-        {
+		{
+			base.LayoutCore(graphicContext);
+
             //Alocation form center symetrically in both directions.
             float widthToAlocate = Width*(m_Activity.Level + 1);
             m_Column.Body.Allocate(widthToAlocate);
 
-            base.LayoutCore(graphicContext);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
@@ -44,9 +45,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             var location = new Point(x, yStart);
             var size = new Size(Width, yEnd - yStart);
-            graphicContext.DrawRectangle(location, size);
-            //TODO Fill white
-            //graphicContext.FillRectangle(location, size);
+
+			graphicContext.FillRectangle(location, size, Color.White);
+			graphicContext.DrawRectangle(location, size, Color.Black);
 
             base.DrawCore(graphicContext);
         }
