@@ -11,14 +11,31 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private readonly IArea m_Area;
         private readonly ICombinedFragment m_Fragment;
         private readonly GridLayout m_GridLayout;
+        private readonly Padding m_PaddingDepth;
+
         private Size m_TextSize;
         private Padding m_InnerPadding;
+
 
         public FragmentVisualBase(ICombinedFragment fragment, GridLayout gridLayout)
         {
             m_Fragment = fragment;
             m_GridLayout = gridLayout;
             m_Area = m_Fragment.GetArea();
+
+            int topDepth = m_Area.TopDepth();
+            int leftDepth = m_Area.LeftDepth();
+
+            int bottomDepth = m_Area.BottomDepth();
+            int rightDepth = m_Area.RightDepth();
+
+            m_PaddingDepth = 
+                new Padding(
+                    leftDepth, 
+                    rightDepth, 
+                    topDepth, 
+                    bottomDepth);
+
             Initialize();
         }
 
@@ -53,14 +70,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             m_TextSize = graphicContext.MeasureText(m_Fragment.Title);
 
-            int topDepth = m_Area.TopDepth();
-            int leftDepth = m_Area.LeftDepth();
-
-            int bottomDepth = m_Area.BottomDepth();
-            int rightDepth = m_Area.RightDepth();
-
             m_InnerPadding =
-                new Padding(leftDepth * FramePadding , rightDepth * FramePadding , (m_TextSize.Height + FramePadding) * topDepth, bottomDepth * FramePadding);
+                new Padding(m_PaddingDepth.Left * FramePadding, m_PaddingDepth.Right * FramePadding, (m_TextSize.Height + FramePadding) * m_PaddingDepth.Top, m_PaddingDepth.Bottom * FramePadding);
 
             TopRow.TopGap.Allocate(m_InnerPadding.Top + 2 * FramePadding);
             BottomRow.BottomGap.Allocate(m_InnerPadding.Bottom);
@@ -85,10 +96,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             Size = new Size(xEnd - xStart, yEnd - yStart);
 
-            var textLocation = new Point(xStart, yStart);
+            Location = new Point(xStart, yStart);
             const float hPadding = FramePadding/2;
-            graphicContext.DrawText(m_Fragment.Title, HorizontalAlignment.Center, VerticalAlignment.Middle, textLocation, m_TextSize + new Padding(hPadding));
-            graphicContext.DrawRectangle(new Point(xStart, yStart), Size);
+            graphicContext.DrawText(m_Fragment.Title, HorizontalAlignment.Center, VerticalAlignment.Middle, Location, m_TextSize + new Padding(hPadding));
+            graphicContext.DrawRectangle(Location, Size);
 
             var textFramePoint1 = new Point(xStart, yStart + m_TextSize.Height + hPadding);
             var textFramePoint2 = new Point(xStart + m_TextSize.Width, yStart + m_TextSize.Height + hPadding);

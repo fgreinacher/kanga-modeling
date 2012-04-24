@@ -8,7 +8,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
     {
         private readonly GridLayout m_GridLayout;
         private readonly IOperand m_Operand;
-        private readonly Row m_TopRow;
+		private readonly Row m_TopRow;
         private Size m_TextSize;
 
         public OperandVisual(IOperand operand, Row topRow, GridLayout gridLayout)
@@ -32,20 +32,20 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             base.LayoutCore(graphicContext);
 
             m_TextSize = graphicContext.MeasureText(m_Operand.GuardExpression);
-            Size = m_TextSize;
+            Size = m_TextSize + new Padding(10);
             m_TopRow.TopGap.Allocate(m_TextSize.Height);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            float yText = m_TopRow.Top;
+            float yText = m_TopRow.TopGap.Bottom;
             float yLine = yText + m_TextSize.Height;
 
-            //float xStart = m_LeftColumn.Left;
-            //float xEnd = m_RightColumn.Right;
-            //graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), 1);
+            float xStart = Parent.Location.X;
+            float xEnd = Parent.Location.X + Parent.Size.Width;
 
-            //graphicContext.DrawText(m_Operand.GuardExpression, HorizontalAlignment.Center, VerticalAlignment.Middle, new Point(xStart, yText), m_TextSize);
+            graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), 1);
+            graphicContext.DrawText(m_Operand.GuardExpression, HorizontalAlignment.Center, VerticalAlignment.Top, new Point(xStart, yText), m_TextSize);
 
             base.DrawCore(graphicContext);
         }

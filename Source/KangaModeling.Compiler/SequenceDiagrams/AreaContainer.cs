@@ -18,22 +18,22 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public int Left
         {
-            get { return m_Children.Select(a => a.Left).Min(); }
+			get { return m_Children.Any() ? m_Children.Select(a => a.Left).Min() : 0; }
         }
 
         public int Right
         {
-            get { return m_Children.Select(a => a.Right).Max(); }
+			get { return m_Children.Any() ? m_Children.Select(a => a.Right).Max() : 0; }
         }
 
         public int Top
         {
-            get { return m_Children.Select(a => a.Top).Min(); }
+            get { return m_Children.Any() ? m_Children.Select(a => a.Top).Min() : 0; }
         }
 
         public int Bottom
         {
-            get { return m_Children.Select(a => a.Bottom).Max(); }
+			get { return m_Children.Any() ? m_Children.Select(a => a.Bottom).Max() : 0; }
         }
 
         public IEnumerable<IArea> Children
