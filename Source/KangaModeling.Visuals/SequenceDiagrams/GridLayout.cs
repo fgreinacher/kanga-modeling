@@ -35,6 +35,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 		{
 			base.LayoutCore(graphicContext);
 
+			if(Columns.Count == 0)
+			{
+				return;
+			}
+
 			AdjustLocations();
 
 			Column lastColumn = Columns[Columns.Count - 1];

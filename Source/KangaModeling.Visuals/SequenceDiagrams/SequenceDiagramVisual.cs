@@ -6,25 +6,14 @@ using System.Linq;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-	[Flags]
-	public enum SequenceDiagramVisualOptions
-	{
-		None = 0,
-		EnableGridLayer = 1 << 0,
-	}
-
 	public class SequenceDiagramVisual : Visual
 	{
 		private readonly GridLayout m_GridLayout;
 		private readonly ISequenceDiagram m_SequenceDiagram;
-		private readonly SequenceDiagramVisualOptions m_Options;
 
-		public SequenceDiagramVisual(
-			ISequenceDiagram sequenceDiagram,
-			SequenceDiagramVisualOptions options = SequenceDiagramVisualOptions.EnableGridLayer)
+		public SequenceDiagramVisual(ISequenceDiagram sequenceDiagram)
 		{
 			m_SequenceDiagram = sequenceDiagram;
-			m_Options = options;
 			m_GridLayout = new GridLayout(sequenceDiagram.LifelineCount, sequenceDiagram.RowCount);
 
 			Initialize();
@@ -40,7 +29,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 				AddChild(new SignalsLayer(allSignals, m_GridLayout));
 				AddChild(new RootFragmentVisual(m_SequenceDiagram.Root, m_GridLayout));
 			}
-
 			AddChild(m_GridLayout);
 		}
 

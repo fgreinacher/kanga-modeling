@@ -120,10 +120,7 @@ namespace KangaModeling.GuiRunner
 
 		private void inputTextBox_TextChanged(object sender, EventArgs e)
 		{
-			if (checkBoxImidiateCompile.Checked)
-			{
-				Compile();
-			}
+			Compile();
 		}
 
 		private void buttonSample1_Click(object sender, EventArgs e)
@@ -151,9 +148,9 @@ namespace KangaModeling.GuiRunner
 			inputTextBox.AppendText("deactivate B" + Environment.NewLine);
 		}
 
-        private void buttonBigSample_Click(object sender, EventArgs e)
-        {
-            inputTextBox.Lines = new []
+		private void buttonBigSample_Click(object sender, EventArgs e)
+		{
+			inputTextBox.Lines = new[]
                 {
                     @"title Diagram 1",
                     @"A->B : Ping()",
@@ -172,6 +169,6 @@ namespace KangaModeling.GuiRunner
                     @"deactivate C",
                     @"end",
                 };
-        }
+		}
 	}
 }
