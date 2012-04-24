@@ -20,7 +20,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected Padding Padding { get; private set; }
 
-        protected internal override void LayoutCore(IGraphicContext graphicContext)
+        protected override void LayoutCore(IGraphicContext graphicContext)
         {
             base.LayoutCore(graphicContext);
             Size = graphicContext.MeasureText(m_Name);

@@ -37,7 +37,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         }
 
 
-		protected internal override void LayoutCore(IGraphicContext graphicContext)
+		protected override void LayoutCore(IGraphicContext graphicContext)
 		{
 			base.LayoutCore(graphicContext);
 

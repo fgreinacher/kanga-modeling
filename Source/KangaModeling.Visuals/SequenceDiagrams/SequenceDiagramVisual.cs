@@ -44,7 +44,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 			AddChild(m_GridLayout);
 		}
 
-		protected internal override void LayoutCore(IGraphicContext graphicContext)
+		protected override void LayoutCore(IGraphicContext graphicContext)
 		{
 			base.LayoutCore(graphicContext);
 

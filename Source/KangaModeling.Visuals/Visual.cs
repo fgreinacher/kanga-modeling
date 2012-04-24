@@ -123,7 +123,7 @@ namespace KangaModeling.Visuals
 
 		#region Overrides / Overrideables
 
-		internal protected virtual void LayoutCore(IGraphicContext graphicContext)
+		protected virtual void LayoutCore(IGraphicContext graphicContext)
 		{
 		}
         

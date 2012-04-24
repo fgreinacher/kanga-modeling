@@ -21,7 +21,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             Width = ActivityWidth;
         }
 
-        protected internal override void LayoutCore(IGraphicContext graphicContext)
+        protected override void LayoutCore(IGraphicContext graphicContext)
 		{
 			base.LayoutCore(graphicContext);
 

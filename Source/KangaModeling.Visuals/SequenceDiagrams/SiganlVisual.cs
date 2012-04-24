@@ -24,7 +24,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             m_Row = row;
         }
 
-        protected internal override void LayoutCore(IGraphicContext graphicContext)
+        protected override void LayoutCore(IGraphicContext graphicContext)
 		{
 			base.LayoutCore(graphicContext);
             m_TextSize = graphicContext.MeasureText(m_Signal.Name);
