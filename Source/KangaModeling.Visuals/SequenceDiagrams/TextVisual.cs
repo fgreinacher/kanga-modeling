@@ -5,6 +5,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal class TextVisual : Visual
     {
+        public const float MinWidth = 40;
         private readonly Column m_Column;
         private readonly string m_Name;
         private readonly Row m_Row;
@@ -22,7 +23,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         protected internal override void LayoutCore(IGraphicContext graphicContext)
         {
             base.LayoutCore(graphicContext);
-            Size = graphicContext.MeasureText(m_Name) + Padding;
+            Size = graphicContext.MeasureText(m_Name);
+            if (Size.Width< MinWidth)
+            {
+                Size = new Size(MinWidth, Height);
+            }
             m_Column.Allocate(Size.Width);
             m_Row.Body.Allocate(Size.Height);
         }

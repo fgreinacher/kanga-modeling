@@ -20,7 +20,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 			base.LayoutCore(graphicContext);
 
             m_Column.Allocate(Width);
-            m_Row.Body.Allocate(Height + 20);
+            m_Row.Body.Allocate(Height);
+            m_Row.TopGap.Allocate(16);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)

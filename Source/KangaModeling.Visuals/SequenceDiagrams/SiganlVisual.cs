@@ -7,6 +7,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
     internal class SiganlVisual : Visual
     {
         public const float TextPadding = 6;
+        public const int ArrowCapHeight = 8;
+
 
         private readonly Column m_EndColumn;
         private readonly Row m_Row;
@@ -27,8 +29,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 			base.LayoutCore(graphicContext);
             m_TextSize = graphicContext.MeasureText(m_Signal.Name);
 
-            m_EndColumn.Allocate(m_TextSize.Width + TextPadding*2);
-            m_Row.Body.Allocate(m_TextSize.Height);
+            ColumnSection columnSection = m_Signal.End.Orientation == Orientation.Left ? m_EndColumn.LeftGap : m_EndColumn.RightGap;
+            columnSection.Allocate(m_TextSize.Width + TextPadding * 2);
+            m_Row.Body.Allocate(m_TextSize.Height + TextPadding * 2);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
@@ -43,12 +46,12 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private void DrawText(IGraphicContext graphicContext)
         {
             float xText = m_Signal.End.Orientation == Orientation.Right
-                              ? m_EndColumn.Body.Middle + 2
-                              : m_EndColumn.Body.Middle - 2 - m_TextSize.Width;
+                              ? m_EndColumn.Body.Right + TextPadding 
+                              : m_EndColumn.Body.Left - TextPadding  - m_TextSize.Width;
 
-            float yText = m_Row.Body.Bottom - 2 - m_TextSize.Height;
+            float yText = m_Row.Body.Bottom - TextPadding - m_TextSize.Height;
             graphicContext.DrawText(m_Signal.Name, HorizontalAlignment.Center, VerticalAlignment.Middle,
-                                    new Point(xText, yText), m_TextSize + new Padding(2));
+                                    new Point(xText, yText), m_TextSize + new Padding(TextPadding));
         }
 
         private void DrawArrow(IGraphicContext graphicContext)
@@ -64,11 +67,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             switch (m_Signal.SignalType)
             {
                 case Compiler.SequenceDiagrams.SignalType.Call:
-                    graphicContext.DrawArrow(start, end, 1, 8, 8);
+                    graphicContext.DrawArrow(start, end, 2, ArrowCapHeight, ArrowCapHeight);
                     break;
 
                 case Compiler.SequenceDiagrams.SignalType.Return:
-                    graphicContext.DrawDashedArrow(start, end, 1, 8, 8);
+                    graphicContext.DrawDashedArrow(start, end, 2, ArrowCapHeight, ArrowCapHeight);
                     break;
 
                 default:

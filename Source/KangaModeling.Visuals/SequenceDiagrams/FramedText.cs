@@ -41,7 +41,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             Location = new Point(x, y);
 
-            graphicContext.DrawRectangle(Location, m_TextVisual.Size, Color.Red);
+            graphicContext.DrawRectangle(Location, Size, Color.Black);
             base.DrawCore(graphicContext);
         }
     }

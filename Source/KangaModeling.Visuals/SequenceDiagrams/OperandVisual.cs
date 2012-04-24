@@ -9,19 +9,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private readonly GridLayout m_GridLayout;
         private readonly IOperand m_Operand;
 		private readonly Row m_TopRow;
-		private readonly Column m_RightColumn;
-		private readonly Column m_LeftColumn;
         private Size m_TextSize;
-		private readonly Padding m_OuterPadding;
 
-        public OperandVisual(IOperand operand, Row topRow, Column leftColumn, Column rightColumn, GridLayout gridLayout, Padding outerPadding)
+        public OperandVisual(IOperand operand, Row topRow, GridLayout gridLayout)
         {
             m_Operand = operand;
             m_TopRow = topRow;
-			m_LeftColumn = leftColumn;
-			m_RightColumn = rightColumn;
             m_GridLayout = gridLayout;
-			m_OuterPadding = outerPadding;
             Initialize();
         }
 
@@ -38,20 +32,20 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             base.LayoutCore(graphicContext);
 
             m_TextSize = graphicContext.MeasureText(m_Operand.GuardExpression);
-            Size = m_TextSize;
+            Size = m_TextSize + new Padding(10);
             m_TopRow.TopGap.Allocate(m_TextSize.Height);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            float yText = m_TopRow.Top;
+            float yText = m_TopRow.TopGap.Bottom;
             float yLine = yText + m_TextSize.Height;
 
-			float xStart = m_LeftColumn.Body.Left - m_OuterPadding.Left;
-			float xEnd = m_RightColumn.Body.Right + m_OuterPadding.Right;
+            float xStart = Parent.Location.X;
+            float xEnd = Parent.Location.X + Parent.Size.Width;
 
-			graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), 1);
-			graphicContext.DrawText(m_Operand.GuardExpression, HorizontalAlignment.Center, VerticalAlignment.Top, new Point(xStart, yText), m_TextSize);
+            graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), 1);
+            graphicContext.DrawText(m_Operand.GuardExpression, HorizontalAlignment.Center, VerticalAlignment.Top, new Point(xStart, yText), m_TextSize);
 
             base.DrawCore(graphicContext);
         }
