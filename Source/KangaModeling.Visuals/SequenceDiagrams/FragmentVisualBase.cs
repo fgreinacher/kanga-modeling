@@ -29,11 +29,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             int bottomDepth = m_Area.BottomDepth();
             int rightDepth = m_Area.RightDepth();
 
-            m_PaddingDepth = 
+            m_PaddingDepth =
                 new Padding(
-                    leftDepth, 
-                    rightDepth, 
-                    topDepth, 
+                    leftDepth,
+                    rightDepth,
+                    topDepth,
                     bottomDepth);
 
             Initialize();
@@ -51,6 +51,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private void Initialize()
         {
+            int operandIndex = 0;
             foreach (IOperand operand in m_Fragment.Operands)
             {
                 if (!operand.Signals.Any())
@@ -60,7 +61,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
                 int topRowIndex = operand.Signals.Select(signal => signal.RowIndex).Min();
                 Row topRow = m_GridLayout.Rows[topRowIndex];
-                AddChild(new OperandVisual(operand, topRow, m_GridLayout));
+                AddChild(new OperandVisual(operand, operandIndex++, topRow, m_GridLayout));
             }
         }
 
@@ -73,7 +74,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             m_InnerPadding =
                 new Padding(m_PaddingDepth.Left * FramePadding, m_PaddingDepth.Right * FramePadding, (m_TextSize.Height + FramePadding) * m_PaddingDepth.Top, m_PaddingDepth.Bottom * FramePadding);
 
-            TopRow.TopGap.Allocate(m_InnerPadding.Top + 2 * FramePadding);
+            var firstChild = Children.FirstOrDefault();
+            var firstChildHeight = firstChild != null ? firstChild.Height : 0;
+
+            TopRow.TopGap.Allocate(m_InnerPadding.Top + firstChildHeight);
             BottomRow.BottomGap.Allocate(m_InnerPadding.Bottom);
 
             LeftColumn.LeftGap.Allocate(m_InnerPadding.Left);
@@ -82,8 +86,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            float yStart = TopRow.TopGap.Bottom - m_TextSize.Height - 8;
-            float yEnd = BottomRow.BottomGap.Bottom + m_InnerPadding.Bottom;
+            float yStart = TopRow.TopGap.Top;
+            float yEnd = BottomRow.BottomGap.Top + m_InnerPadding.Bottom;
 
             float xStart = LeftColumn.Body.Left - m_InnerPadding.Left;
             float xEnd = RightColumn.Body.Right + m_InnerPadding.Right;
@@ -97,7 +101,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             Size = new Size(xEnd - xStart, yEnd - yStart);
 
             Location = new Point(xStart, yStart);
-            const float hPadding = FramePadding/2;
+            const float hPadding = FramePadding / 2;
             graphicContext.DrawText(m_Fragment.Title, HorizontalAlignment.Center, VerticalAlignment.Middle, Location, m_TextSize + new Padding(hPadding));
             graphicContext.DrawRectangle(Location, Size, Color.Black);
 

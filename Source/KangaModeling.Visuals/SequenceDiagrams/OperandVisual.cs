@@ -8,12 +8,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
     {
         private readonly GridLayout m_GridLayout;
         private readonly IOperand m_Operand;
-		private readonly Row m_TopRow;
-        private Size m_TextSize;
+        private readonly int m_OperandIndex;
+        private readonly Row m_TopRow;
 
-        public OperandVisual(IOperand operand, Row topRow, GridLayout gridLayout)
+        public OperandVisual(IOperand operand, int operandIndex, Row topRow, GridLayout gridLayout)
         {
             m_Operand = operand;
+            m_OperandIndex = operandIndex;
             m_TopRow = topRow;
             m_GridLayout = gridLayout;
             Initialize();
@@ -31,21 +32,31 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             base.LayoutCore(graphicContext);
 
-            m_TextSize = graphicContext.MeasureText(m_Operand.GuardExpression);
-            Size = m_TextSize + new Padding(10);
-            m_TopRow.TopGap.Allocate(m_TextSize.Height);
+            if (string.IsNullOrEmpty(m_Operand.GuardExpression))
+            {
+                Size = Size.Empty;
+            }
+            else
+            {
+                Size = graphicContext.MeasureText(m_Operand.GuardExpression);
+                m_TopRow.TopGap.Allocate(Height);
+            }
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            float yText = m_TopRow.TopGap.Bottom;
-            float yLine = yText + m_TextSize.Height;
+            float yLine = m_TopRow.TopGap.Bottom - Height;
+            float yText = yLine + 5;
 
             float xStart = Parent.Location.X;
             float xEnd = Parent.Location.X + Parent.Size.Width;
 
-            graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), 1);
-            graphicContext.DrawText(m_Operand.GuardExpression, HorizontalAlignment.Center, VerticalAlignment.Top, new Point(xStart, yText), m_TextSize);
+            if (m_OperandIndex > 0)
+            {
+                graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), 1);
+            }
+
+            graphicContext.DrawText(m_Operand.GuardExpression, HorizontalAlignment.Left, VerticalAlignment.Top, new Point(xStart + 5, yText), Size);
 
             base.DrawCore(graphicContext);
         }

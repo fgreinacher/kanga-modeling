@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
@@ -61,7 +62,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public IEnumerable<IOperand> Operands
         {
-            get { return m_Operands; }
+            get { return m_Operands.Reverse(); }
         }
 
         #endregion

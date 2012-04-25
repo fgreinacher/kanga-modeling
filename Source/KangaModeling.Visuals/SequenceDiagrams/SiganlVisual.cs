@@ -25,13 +25,15 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         }
 
         protected override void LayoutCore(IGraphicContext graphicContext)
-		{
-			base.LayoutCore(graphicContext);
+        {
+            base.LayoutCore(graphicContext);
             m_TextSize = graphicContext.MeasureText(m_Signal.Name);
 
             ColumnSection columnSection = m_Signal.End.Orientation == Orientation.Left ? m_EndColumn.LeftGap : m_EndColumn.RightGap;
             columnSection.Allocate(m_TextSize.Width + TextPadding * 2);
             m_Row.Body.Allocate(m_TextSize.Height + TextPadding * 2);
+
+            m_Row.BottomGap.Allocate(ArrowCapHeight + 2);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
@@ -46,8 +48,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private void DrawText(IGraphicContext graphicContext)
         {
             float xText = m_Signal.End.Orientation == Orientation.Right
-                              ? m_EndColumn.Body.Right + TextPadding 
-                              : m_EndColumn.Body.Left - TextPadding  - m_TextSize.Width;
+                              ? m_EndColumn.Body.Right + TextPadding
+                              : m_EndColumn.Body.Left - TextPadding - m_TextSize.Width;
 
             float yText = m_Row.Body.Bottom - TextPadding - m_TextSize.Height;
             graphicContext.DrawText(m_Signal.Name, HorizontalAlignment.Center, VerticalAlignment.Middle,
@@ -91,7 +93,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private float GetXFromCenterRelative(IPin pin, int levels)
         {
-            float xFromCenterAbsoulute = ActivityVisual.ActivityWidth/2*levels;
+            float xFromCenterAbsoulute = ActivityVisual.ActivityWidth / 2 * levels;
 
             return pin.Orientation == Orientation.Left
                        ? -xFromCenterAbsoulute
