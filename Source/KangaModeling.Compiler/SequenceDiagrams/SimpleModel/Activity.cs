@@ -63,6 +63,8 @@
         {
             endPin.SetActivity(this);
             m_End = endPin;
+            m_Start.UpdateLevel();
+            m_End.UpdateLevel();
         }
     }
 }

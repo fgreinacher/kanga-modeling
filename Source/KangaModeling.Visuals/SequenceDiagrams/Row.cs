@@ -5,6 +5,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
     internal class Row
     {
         public const float MinHeight = 40;
+        public const float MinPadding = 8;
 
         private float m_MinHeight;
 
@@ -15,6 +16,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             Body = new RowSection();
             BottomGap = new RowSection();
             Body.Allocate(MinHeight);
+            BottomGap.Allocate(MinPadding);
         }
 
         public RowSection TopGap { get; private set; }

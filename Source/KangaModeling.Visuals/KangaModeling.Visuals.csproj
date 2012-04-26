@@ -64,7 +64,7 @@
     <Compile Include="SequenceDiagrams\OperandVisual.cs" />
     <Compile Include="SequenceDiagrams\RowDimension.cs" />
     <Compile Include="SequenceDiagrams\SequenceDiagramVisual.cs" />
-    <Compile Include="SequenceDiagrams\SiganlVisual.cs" />
+    <Compile Include="SequenceDiagrams\SignalVisual.cs" />
     <Compile Include="SequenceDiagrams\SignalDirection.cs" />
     <Compile Include="SequenceDiagrams\SignalsLayer.cs" />
     <Compile Include="SequenceDiagrams\SignalType.cs" />

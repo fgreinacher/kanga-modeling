@@ -43,6 +43,9 @@
             end.PinType = PinType.In;
             m_End = end;
             m_End.SetSignal(this);
+
+            start.UpdateLevel();
+            end.UpdateLevel();
         }
     }
 }

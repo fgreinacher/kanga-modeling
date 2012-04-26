@@ -1,4 +1,6 @@
-﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+﻿using System;
+
+namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
     internal abstract class Pin : IPin
     {
@@ -30,7 +32,7 @@
 
         public int Level
         {
-            get { return Activity == null ? 0 : Activity.Level; }
+            get; private set; //{ return Activity == null ? 0 : Activity.Level; }
         }
 
         public virtual ILifeline Lifeline
@@ -81,6 +83,11 @@
         public Activity GetActivity()
         {
             return m_Activity;
+        }
+
+        public void UpdateLevel()
+        {
+            this.Level = m_Lifeline.State.GetLevel(this.Orientation);
         }
     }
 }

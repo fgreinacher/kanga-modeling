@@ -74,29 +74,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             }
 
 
-            int level;
-            IEnumerable<Pin> openPins = target.State.OpenPins;
-            if (openPins.Count() == 0)
-            {
-                level = 0;
-            }
-            else
-            {
-                if (startPin.Orientation == Orientation.Left)
-                {
-                    target.State.LeftLevel++;
-                    level = target.State.LeftLevel;
-                }
-                else
-                {
-                    target.State.RightLevel++;
-                    level = target.State.RightLevel;
-                }
-            }
+            
 
             var endPin = new OpenPin(target, startPin.Orientation, targetToken);
             target.State.OpenPins.Push(endPin);
-            Activity activity = ElementFactory.CreateActivity(level);
+            int currentLevel = target.State.GetLevel(startPin.Orientation);
+            Activity activity = ElementFactory.CreateActivity(currentLevel);
+            target.State.IncLevel(startPin.Orientation);
             activity.Connect(startPin, endPin);
             CurrentOperand().Add(activity);
         }
@@ -214,6 +198,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             }
 
             lastOpenActivity.ReconnectEnd(endPin);
+            target.State.DecLevel(lastOpenActivity.Orientation);
         }
 
         private void DetectActivitiesWithOpenEnd()
@@ -251,7 +236,10 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             }
 
             Row row = m_Matrix.CreateRow();
-            signal.Connect(row[source], row[target]);
+            Pin start = row[source];
+            Pin pin = row[target];
+            signal.Connect(start, pin);
+
             CurrentOperand().Add(signal);
         }
 

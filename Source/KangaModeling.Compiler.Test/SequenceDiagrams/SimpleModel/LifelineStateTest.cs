@@ -11,13 +11,12 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
         [Test]
         public void LeftLevelTest()
         {
-            var target = new LifelineState(); 
-            int expected = 0; 
-            int actual;
-            target.LeftLevel = expected;
-            actual = target.LeftLevel;
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            //var target = new LifelineState(); 
+            //int expected = 0; 
+            //int actual;
+            ////actual = target.LeftLevel;
+            ////Assert.AreEqual(expected, actual);
+            //Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
         [Test]
@@ -46,9 +45,8 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.SimpleModel
             var target = new LifelineState(); 
             int expected = 0; 
             int actual;
-            target.RightLevel = expected;
-            actual = target.RightLevel;
-            Assert.AreEqual(expected, actual);
+            //actual = target.RightLevel;
+            //Assert.AreEqual(expected, actual);
             Assert.Inconclusive("Verify the correctness of this test method.");
         }
     }

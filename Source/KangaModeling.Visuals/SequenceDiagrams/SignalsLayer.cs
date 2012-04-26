@@ -23,7 +23,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 Column startColumn = m_GridLayout.Columns[signal.Start.LifelineIndex];
                 Column endColumn = m_GridLayout.Columns[signal.End.LifelineIndex];
 
-                AddChild(new SiganlVisual(signal, startColumn, endColumn, row));
+                AddChild(new SignalVisual(signal, startColumn, endColumn, row));
             }
         }
     }
