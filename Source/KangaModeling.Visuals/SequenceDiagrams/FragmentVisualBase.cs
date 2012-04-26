@@ -92,19 +92,23 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected void DrawInternal(float xEnd, float xStart, float yEnd, float yStart, IGraphicContext graphicContext)
         {
+            Location = new Point(xStart, yStart);
             Size = new Size(xEnd - xStart, yEnd - yStart);
 
-            Location = new Point(xStart, yStart);
-            const float hPadding = FramePadding / 2;
-            graphicContext.DrawText(m_Fragment.Title, HorizontalAlignment.Center, VerticalAlignment.Middle, Location, m_TextSize + new Padding(hPadding));
             graphicContext.DrawRectangle(Location, Size, Color.Black);
 
-            var textFramePoint1 = new Point(xStart, yStart + m_TextSize.Height + hPadding);
-            var textFramePoint2 = new Point(xStart + m_TextSize.Width, yStart + m_TextSize.Height + hPadding);
-            var textFramePoint3 = new Point(xStart + m_TextSize.Width + FramePadding, yStart);
+            if (!string.IsNullOrEmpty(m_Fragment.Title))
+            {
+                const float hPadding = FramePadding / 2;
+                graphicContext.DrawText(m_Fragment.Title, HorizontalAlignment.Center, VerticalAlignment.Middle, Location, m_TextSize + new Padding(hPadding));
 
-            graphicContext.DrawLine(textFramePoint1, textFramePoint2, 1);
-            graphicContext.DrawLine(textFramePoint2, textFramePoint3, 1);
+                var textFramePoint1 = new Point(xStart, yStart + m_TextSize.Height + hPadding);
+                var textFramePoint2 = new Point(xStart + m_TextSize.Width, yStart + m_TextSize.Height + hPadding);
+                var textFramePoint3 = new Point(xStart + m_TextSize.Width + FramePadding, yStart);
+
+                graphicContext.DrawLine(textFramePoint1, textFramePoint2, 1);
+                graphicContext.DrawLine(textFramePoint2, textFramePoint3, 1);
+            }
         }
     }
 }
