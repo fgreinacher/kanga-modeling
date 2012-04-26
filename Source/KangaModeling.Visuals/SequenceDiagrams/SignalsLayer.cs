@@ -20,10 +20,21 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             foreach (ISignal signal in m_Signals)
             {
                 Row row = m_GridLayout.Rows[signal.RowIndex];
-                Column startColumn = m_GridLayout.Columns[signal.Start.LifelineIndex];
-                Column endColumn = m_GridLayout.Columns[signal.End.LifelineIndex];
 
-                AddChild(new SignalVisual(signal, startColumn, endColumn, row));
+                bool isSelfSignal = signal.Start == signal.End;
+                if (isSelfSignal)
+                {
+                    Column column = m_GridLayout.Columns[signal.Start.LifelineIndex];
+
+                    AddChild(new SelfSignalVisual(signal, column, row));
+                }
+                else
+                {
+                    Column startColumn = m_GridLayout.Columns[signal.Start.LifelineIndex];
+                    Column endColumn = m_GridLayout.Columns[signal.End.LifelineIndex];
+
+                    AddChild(new SignalVisual(signal, startColumn, endColumn, row));
+                }
             }
         }
     }
