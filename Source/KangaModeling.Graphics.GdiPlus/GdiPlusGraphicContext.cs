@@ -59,12 +59,18 @@ namespace KangaModeling.Graphics.GdiPlus
 					stringFormat.Alignment = horizontalAlignment.ToStringAlignment();
 					stringFormat.LineAlignment = verticalAlignment.ToStringAlignment();
 
-					m_Graphics.DrawString(text, font, Brushes.Black, rectangle, stringFormat);
+				    string stringToDraw = ReplaceLineBreaks(text);
+                    m_Graphics.DrawString(stringToDraw, font, Brushes.Black, rectangle, stringFormat);
 				}
 			}
 		}
 
-		public void DrawLine(Point from, Point to, float width)
+	    private static string ReplaceLineBreaks(string text)
+	    {
+	        return text.Replace("\\n", Environment.NewLine);
+	    }
+
+	    public void DrawLine(Point from, Point to, float width)
 		{
 			DrawLineCore(from, to, width, pen => { });
 		}
@@ -98,7 +104,8 @@ namespace KangaModeling.Graphics.GdiPlus
 		{
 			using (var font = CreateFont())
 			{
-				SizeF size = m_Graphics.MeasureString(text, font);
+                string stringToDraw = ReplaceLineBreaks(text);
+                SizeF size = m_Graphics.MeasureString(stringToDraw, font);
 				return new Size(size.Width, size.Height);
 			}
 		}
