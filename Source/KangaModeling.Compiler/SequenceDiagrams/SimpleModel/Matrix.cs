@@ -12,7 +12,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             m_Root = root;
             Lifelines = new LifelineCollection(StringComparer.InvariantCultureIgnoreCase);
             Rows = new RowsCollection();
-            CreateRow();
         }
 
         public RootFragment Root
