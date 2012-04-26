@@ -54,13 +54,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             int operandIndex = 0;
             foreach (IOperand operand in m_Fragment.Operands)
             {
-                if (!operand.Signals.Any())
-                {
-                    continue;
-                }
-
-                int topRowIndex = operand.Signals.Select(signal => signal.RowIndex).Min();
-                Row topRow = m_GridLayout.Rows[topRowIndex];
+                Row topRow = m_GridLayout.Rows[m_Area.Top];
                 AddChild(new OperandVisual(operand, operandIndex++, topRow, m_GridLayout));
             }
         }
