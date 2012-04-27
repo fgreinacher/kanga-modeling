@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
     internal abstract class Pin : IPin
     {

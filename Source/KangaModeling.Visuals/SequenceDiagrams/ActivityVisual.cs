@@ -33,7 +33,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            float xFromCenterAbsoulute = Width/2*m_Activity.Level;
+            float xFromCenterAbsoulute = Width / 2 * m_Activity.Level;
             float xFromCenterRelative = m_Activity.Orientation == Orientation.Left
                                             ? -xFromCenterAbsoulute
                                             : xFromCenterAbsoulute;

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
@@ -9,10 +11,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         private readonly string m_GuardExpression;
         private readonly CombinedFragment m_Parent;
         private readonly Stack<ISignal> m_Signals;
+        private readonly Token m_Token;
 
-        public Operand(CombinedFragment parent, string guardExpression)
+        public Operand(CombinedFragment parent, string guardExpression, Token token)
         {
             m_Parent = parent;
+            m_Token = token;
             m_GuardExpression = guardExpression;
             m_Activities = new Stack<IActivity>();
             m_Signals = new Stack<ISignal>();
@@ -44,6 +48,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         public IEnumerable<ICombinedFragment> Children
         {
             get { return m_Children; }
+        }
+
+        public Token Token
+        {
+            get { return m_Token;}
         }
 
         #endregion

@@ -131,6 +131,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
                 AddError(endToken, "Unexpected end statement.");
                 return;
             }
+
+            Operand lastOperand = CurrentFragment().LastOperand();
+            if (lastOperand.IsEmpty())
+            {
+                AddError(lastOperand.Token, "Operand has no content.");
+            }
+
             m_Fragments.Pop();
         }
 
@@ -268,7 +275,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         private void CreateOperand(Token guardExpression)
         {
             CombinedFragment parent = CurrentFragment();
-            var operand = new Operand(parent, guardExpression.Value);
+            var operand = new Operand(parent, guardExpression.Value, guardExpression);
             parent.Add(operand);
         }
 

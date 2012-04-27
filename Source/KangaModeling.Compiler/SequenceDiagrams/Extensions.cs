@@ -188,5 +188,10 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
             return !area.HasFrame ? result : result + 1;
         }
+
+        public static bool IsEmpty(this IOperand operand)
+        {
+            return !operand.Signals.Any() && !operand.Children.Any();
+        }
     }
 }
