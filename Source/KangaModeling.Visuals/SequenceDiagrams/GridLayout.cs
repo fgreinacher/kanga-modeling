@@ -45,7 +45,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             Column lastColumn = Columns[Columns.Count - 1];
             Row lastRow = FooterRow;
 
-            Size = new Size(lastColumn.RightGap.Right, lastRow.BottomGap.Bottom);
+            Size = new Size(lastColumn.Right, lastRow.Bottom);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)

@@ -68,6 +68,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             m_InnerPadding =
                 new Padding(m_PaddingDepth.Left * FramePadding, m_PaddingDepth.Right * FramePadding, (m_TextSize.Height + FramePadding) * m_PaddingDepth.Top, m_PaddingDepth.Bottom * FramePadding);
 
+            Width = m_TextSize.Width + FramePadding;
+
             var firstChild = Children.FirstOrDefault();
             var firstChildHeight = firstChild != null ? firstChild.Height : 0;
 
