@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GuiRunnerForm));
             this.compileButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonNesteAdtivities = new System.Windows.Forms.Button();
             this.buttonBigSample = new System.Windows.Forms.Button();
             this.buttonSample5 = new System.Windows.Forms.Button();
             this.buttonSample4 = new System.Windows.Forms.Button();
@@ -49,8 +50,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.outputImagePanel = new System.Windows.Forms.Panel();
             this.outputPictureBox = new System.Windows.Forms.PictureBox();
-            this.buttonNesteAdtivities = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inputAndOutputSplitContainer)).BeginInit();
             this.inputAndOutputSplitContainer.Panel1.SuspendLayout();
@@ -77,7 +77,7 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.buttonSave);
             this.panel1.Controls.Add(this.buttonNesteAdtivities);
             this.panel1.Controls.Add(this.buttonBigSample);
             this.panel1.Controls.Add(this.buttonSample5);
@@ -90,6 +90,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(79, 409);
             this.panel1.TabIndex = 5;
+            // 
+            // buttonNesteAdtivities
+            // 
+            this.buttonNesteAdtivities.Location = new System.Drawing.Point(4, 178);
+            this.buttonNesteAdtivities.Name = "buttonNesteAdtivities";
+            this.buttonNesteAdtivities.Size = new System.Drawing.Size(69, 23);
+            this.buttonNesteAdtivities.TabIndex = 6;
+            this.buttonNesteAdtivities.Text = "Nested";
+            this.buttonNesteAdtivities.UseVisualStyleBackColor = true;
+            this.buttonNesteAdtivities.Click += new System.EventHandler(this.buttonNesteAdtivities_Click);
             // 
             // buttonBigSample
             // 
@@ -172,8 +182,8 @@
             // inputAndOutputSplitContainer.Panel2
             // 
             this.inputAndOutputSplitContainer.Panel2.Controls.Add(this.outputImagePanel);
-            this.inputAndOutputSplitContainer.Size = new System.Drawing.Size(754, 409);
-            this.inputAndOutputSplitContainer.SplitterDistance = 251;
+            this.inputAndOutputSplitContainer.Size = new System.Drawing.Size(1169, 600);
+            this.inputAndOutputSplitContainer.SplitterDistance = 389;
             this.inputAndOutputSplitContainer.TabIndex = 9;
             // 
             // inputAndErrorsSplitContainer
@@ -190,8 +200,8 @@
             // inputAndErrorsSplitContainer.Panel2
             // 
             this.inputAndErrorsSplitContainer.Panel2.Controls.Add(this.listBoxErrors);
-            this.inputAndErrorsSplitContainer.Size = new System.Drawing.Size(251, 409);
-            this.inputAndErrorsSplitContainer.SplitterDistance = 195;
+            this.inputAndErrorsSplitContainer.Size = new System.Drawing.Size(389, 600);
+            this.inputAndErrorsSplitContainer.SplitterDistance = 286;
             this.inputAndErrorsSplitContainer.TabIndex = 0;
             // 
             // inputTextBox
@@ -201,7 +211,7 @@
             this.inputTextBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputTextBox.Location = new System.Drawing.Point(0, 0);
             this.inputTextBox.Name = "inputTextBox";
-            this.inputTextBox.Size = new System.Drawing.Size(251, 195);
+            this.inputTextBox.Size = new System.Drawing.Size(389, 286);
             this.inputTextBox.TabIndex = 11;
             this.inputTextBox.Text = "";
             this.inputTextBox.WordWrap = false;
@@ -219,7 +229,7 @@
             this.listBoxErrors.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listBoxErrors.Location = new System.Drawing.Point(0, 0);
             this.listBoxErrors.Name = "listBoxErrors";
-            this.listBoxErrors.Size = new System.Drawing.Size(251, 210);
+            this.listBoxErrors.Size = new System.Drawing.Size(389, 310);
             this.listBoxErrors.SmallImageList = this.imageListGrid;
             this.listBoxErrors.TabIndex = 11;
             this.listBoxErrors.UseCompatibleStateImageBehavior = false;
@@ -229,7 +239,7 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "Description";
-            this.columnHeader2.Width = 131;
+            this.columnHeader2.Width = 189;
             // 
             // columnHeader3
             // 
@@ -255,7 +265,7 @@
             this.outputImagePanel.Location = new System.Drawing.Point(0, 0);
             this.outputImagePanel.Name = "outputImagePanel";
             this.outputImagePanel.Padding = new System.Windows.Forms.Padding(10);
-            this.outputImagePanel.Size = new System.Drawing.Size(499, 409);
+            this.outputImagePanel.Size = new System.Drawing.Size(776, 600);
             this.outputImagePanel.TabIndex = 9;
             // 
             // outputPictureBox
@@ -268,30 +278,23 @@
             this.outputPictureBox.TabIndex = 3;
             this.outputPictureBox.TabStop = false;
             // 
-            // buttonNesteAdtivities
+            // buttonSave
             // 
-            this.buttonNesteAdtivities.Location = new System.Drawing.Point(4, 178);
-            this.buttonNesteAdtivities.Name = "buttonNesteAdtivities";
-            this.buttonNesteAdtivities.Size = new System.Drawing.Size(69, 23);
-            this.buttonNesteAdtivities.TabIndex = 6;
-            this.buttonNesteAdtivities.Text = "Neted Act.";
-            this.buttonNesteAdtivities.UseVisualStyleBackColor = true;
-            this.buttonNesteAdtivities.Click += new System.EventHandler(this.buttonNesteAdtivities_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(4, 207);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(69, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Neted Fr.";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.buttonSave.Image = global::KangaModeling.GuiRunner.Properties.Resources.Save_icon1;
+            this.buttonSave.Location = new System.Drawing.Point(4, 298);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(69, 57);
+            this.buttonSave.TabIndex = 7;
+            this.buttonSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // GuiRunnerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(865, 430);
+            this.ClientSize = new System.Drawing.Size(1280, 621);
             this.Controls.Add(this.inputAndOutputSplitContainer);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -333,9 +336,9 @@
 		private System.Windows.Forms.ColumnHeader columnHeader2;
 		private System.Windows.Forms.ColumnHeader columnHeader3;
 		private System.Windows.Forms.ColumnHeader columnHeader4;
-		private System.Windows.Forms.ColumnHeader columnHeader5;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.Button buttonNesteAdtivities;
+        private System.Windows.Forms.Button buttonSave;
 	}
 }
 

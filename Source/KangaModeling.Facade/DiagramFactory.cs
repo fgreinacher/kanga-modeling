@@ -40,7 +40,8 @@ namespace KangaModeling.Facade
 			return new DiagramResult(
 				arguments,
 				GenerateBitmap(sequenceDiagram),
-				diagramErrors.ToArray());
+				diagramErrors.ToArray(),
+                sequenceDiagram.Root.Title);
 		}
 
 		private static Bitmap GenerateBitmap(ISequenceDiagram sd)

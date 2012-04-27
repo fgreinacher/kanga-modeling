@@ -9,8 +9,11 @@ namespace KangaModeling.GuiRunner
 {
     public partial class GuiRunnerForm : Form
     {
+        private string m_LastTitle;
+
         public GuiRunnerForm()
         {
+            m_LastTitle = "noname";
             InitializeComponent();
         }
 
@@ -18,14 +21,19 @@ namespace KangaModeling.GuiRunner
         {
             var diagramArguments = new DiagramArguments(inputTextBox.Text, DiagramType.Sequence, DiagramStyle.Sketchy);
             var diagramResult = DiagramFactory.Create(diagramArguments);
-
             ProcessResult(diagramResult);
         }
 
         private void ProcessResult(DiagramResult diagramResult)
         {
+            ProcessName(diagramResult);
             ProcessResultImage(diagramResult.Image);
             ProcessResultErrors(diagramResult.Errors);
+        }
+
+        private void ProcessName(DiagramResult diagramResult)
+        {
+            m_LastTitle = diagramResult.Name;
         }
 
         private void ProcessResultImage(Image image)
@@ -189,6 +197,19 @@ namespace KangaModeling.GuiRunner
                     @"b-->A",
                     @"deactivate B"
                 };
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog =  new SaveFileDialog();
+            saveFileDialog.DefaultExt = "png";
+            saveFileDialog.FileName = m_LastTitle + ".png";
+            if (saveFileDialog.ShowDialog()!=DialogResult.OK)
+            {
+                return;
+            }
+
+            outputPictureBox.Image.Save(saveFileDialog.FileName);
         }
     }
 }

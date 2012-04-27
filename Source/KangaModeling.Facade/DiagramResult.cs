@@ -12,11 +12,12 @@ namespace KangaModeling.Facade
 	/// </summary>
 	public class DiagramResult : IDisposable
 	{
-		public DiagramResult(DiagramArguments arguments, Image image, DiagramError[] errors)
+		public DiagramResult(DiagramArguments arguments, Image image, IEnumerable<DiagramError> errors, string name)
 		{
 			Arguments = arguments;
 			Image = image;
 			Errors = errors;
+		    Name = name;
 		}
 
 		public DiagramArguments Arguments { get; private set; }
@@ -24,8 +25,9 @@ namespace KangaModeling.Facade
 		public Image Image { get; private set; }
 
 		public IEnumerable<DiagramError> Errors { get; private set; }
+	    public string Name { get; set; }
 
-		public void Dispose()
+	    public void Dispose()
 		{
 			Image.Dispose();
 		}
