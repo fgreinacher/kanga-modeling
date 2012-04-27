@@ -33,7 +33,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public int Level
         {
-            get; private set; //{ return Activity == null ? 0 : Activity.Level; }
+            get; private set;
         }
 
         public virtual ILifeline Lifeline
@@ -88,16 +88,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public void UpdateLevel()
         {
-            if (!IsLastPin())
-            {
-                return;
-            }
             this.Level = m_Lifeline.State.GetLevel(this.Orientation);
-        }
-
-        private bool IsLastPin()
-        {
-            return m_Lifeline.Pins.Last() == this;
         }
     }
 }

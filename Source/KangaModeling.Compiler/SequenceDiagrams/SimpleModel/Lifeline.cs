@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
+    [DebuggerDisplay("Lifeline: ({index}) '{id}'")]
     internal class Lifeline : ILifeline
     {
         private readonly Matrix m_Matrix;

@@ -1,4 +1,6 @@
-﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+﻿using System.Diagnostics;
+
+namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
     internal abstract class Signal : ISignal
     {
