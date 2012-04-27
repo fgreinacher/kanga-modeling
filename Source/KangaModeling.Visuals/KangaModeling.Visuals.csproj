@@ -52,6 +52,8 @@
     <Compile Include="SequenceDiagrams\Column.cs" />
     <Compile Include="SequenceDiagrams\ColumnDimension.cs" />
     <Compile Include="SequenceDiagrams\ColumnSection.cs" />
+    <Compile Include="SequenceDiagrams\InvisibleOperandVisual.cs" />
+    <Compile Include="SequenceDiagrams\OperandVisualBase.cs" />
     <Compile Include="SequenceDiagrams\SelfSignalVisual.cs" />
     <Compile Include="SequenceDiagrams\SignalVisualBase.cs" />
     <Compile Include="SequenceDiagrams\FragmentVisualBase.cs" />

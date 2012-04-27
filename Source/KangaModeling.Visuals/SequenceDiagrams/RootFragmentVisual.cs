@@ -7,23 +7,26 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal class RootFragmentVisual : FragmentVisual
     {
-        private readonly GridLayout m_GridLayout;
 
         public RootFragmentVisual(ICombinedFragment fragment, GridLayout gridLayout)
             : base(fragment, gridLayout)
         {
-            m_GridLayout = gridLayout;
             TopRow = gridLayout.HeaderRow;
             BottomRow = gridLayout.FooterRow;
             LeftColumn = gridLayout.Columns[0];
             RightColumn = gridLayout.Columns[gridLayout.Columns.Count - 1];
         }
 
+        protected override Visual CreateOperandVisual(IOperand operand)
+        {
+            return new InvisibleOperandVisual(operand, GridLayout);
+        }
+
         protected override void LayoutCore(IGraphicContext graphicContext)
         {
             base.LayoutCore(graphicContext);
 
-            IList<Column> columns = m_GridLayout.Columns;
+            IList<Column> columns = GridLayout.Columns;
             float widthSum = columns.Select(column => column.Width).Sum();
             if (widthSum<this.Width)
             {

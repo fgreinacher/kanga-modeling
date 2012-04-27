@@ -11,6 +11,12 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private readonly IArea m_Area;
         private readonly ICombinedFragment m_Fragment;
         private readonly GridLayout m_GridLayout;
+
+        public GridLayout GridLayout
+        {
+            get { return m_GridLayout; }
+        }
+
         private readonly Padding m_PaddingDepth;
 
         private Size m_TextSize;
@@ -51,12 +57,15 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private void Initialize()
         {
-            int operandIndex = 0;
             foreach (IOperand operand in m_Fragment.Operands)
             {
-                Row topRow = m_GridLayout.Rows[m_Area.Top];
-                AddChild(new OperandVisual(operand, operandIndex++, topRow, m_GridLayout));
+                AddChild(CreateOperandVisual(operand));
             }
+        }
+
+        protected  virtual Visual CreateOperandVisual(IOperand operand)
+        {
+            return new OperandVisual(operand, m_GridLayout);
         }
 
         protected override void LayoutCore(IGraphicContext graphicContext)
