@@ -57,15 +57,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private void Initialize()
         {
+            bool isFirst = true;
             foreach (IOperand operand in m_Fragment.Operands)
             {
-                AddChild(CreateOperandVisual(operand));
+                AddChild(CreateOperandVisual(operand, isFirst));
+                isFirst = false;
             }
         }
 
-        protected  virtual Visual CreateOperandVisual(IOperand operand)
+        protected virtual Visual CreateOperandVisual(IOperand operand, bool isFirst)
         {
-            return new OperandVisual(operand, m_GridLayout);
+            return new OperandVisual(operand, m_GridLayout, isFirst);
         }
 
         protected override void LayoutCore(IGraphicContext graphicContext)

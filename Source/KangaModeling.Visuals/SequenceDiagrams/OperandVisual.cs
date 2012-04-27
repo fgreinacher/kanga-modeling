@@ -6,12 +6,14 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal class OperandVisual : OperandVisualBase
     {
+        private readonly bool m_IsFirst;
         private readonly Row m_TopRow;
         private readonly string m_GuardExpressionText;
 
-        public OperandVisual(IOperand operand, GridLayout gridLayout) 
+        public OperandVisual(IOperand operand, GridLayout gridLayout, bool isFirst) 
             : base(operand, gridLayout) 
         {
+            m_IsFirst = isFirst;
             IArea area = operand.GetArea();
             m_TopRow = gridLayout.Rows[area.Top];
             Initialize();
@@ -41,7 +43,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             float xStart = Parent.Location.X;
             float xEnd = Parent.Location.X + Parent.Size.Width;
 
-            graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), 1);
+            if (!m_IsFirst)
+            {
+                graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), 1);
+            }
             graphicContext.DrawText(m_GuardExpressionText, HorizontalAlignment.Left, VerticalAlignment.Top, new Point(xStart + 5, yText), Size);
 
             base.DrawCore(graphicContext);

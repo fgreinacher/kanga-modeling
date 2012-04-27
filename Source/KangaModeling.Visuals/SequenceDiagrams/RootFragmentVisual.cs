@@ -17,7 +17,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             RightColumn = gridLayout.Columns[gridLayout.Columns.Count - 1];
         }
 
-        protected override Visual CreateOperandVisual(IOperand operand)
+        protected override Visual CreateOperandVisual(IOperand operand, bool isFirst)
         {
             return new InvisibleOperandVisual(operand, GridLayout);
         }
