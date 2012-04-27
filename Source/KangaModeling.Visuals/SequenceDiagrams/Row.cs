@@ -4,8 +4,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal class Row
     {
-        public const float MinHeight = 40;
-        public const float MinPadding = 8;
+        public const float MinHeight = 20;
+        public const float RowPadding = 4;
 
         private float m_MinHeight;
 
@@ -16,7 +16,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             Body = new RowSection();
             BottomGap = new RowSection();
             Body.Allocate(MinHeight);
-            BottomGap.Allocate(MinPadding);
         }
 
         public RowSection TopGap { get; private set; }
@@ -25,17 +24,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         public float Height
         {
-            get { return TopGap.Height + Body.Height + BottomGap.Height; }
+            get { return TopGap.Height + Body.Height + BottomGap.Height + 2 * RowPadding; }
         }
 
         public float Top
         {
-            get { return TopGap.Top; }
+            get { return TopGap.Top - RowPadding; }
         }
 
         public float Bottom
         {
-            get { return BottomGap.Bottom; }
+            get { return BottomGap.Bottom +  RowPadding; }
         }
 
         public void Allocate(float height)
@@ -52,6 +51,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private void AdjustSectionLocations(Row prevRow)
         {
             TopGap.Top = prevRow == null ? 0 : prevRow.Bottom;
+            TopGap.Top += RowPadding;
             Body.Top = TopGap.Bottom;
             BottomGap.Top = Body.Bottom;
         }

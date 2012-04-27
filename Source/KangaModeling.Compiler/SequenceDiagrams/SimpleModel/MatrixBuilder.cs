@@ -237,6 +237,10 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
             Row row = m_Matrix.CreateRow();
             Pin start = row[source];
+            if (source==target)
+            {
+                row = m_Matrix.CreateRow();
+            }
             Pin pin = row[target];
             signal.Connect(start, pin);
 

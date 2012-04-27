@@ -7,12 +7,14 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal class SelfSignalVisual : SignalVisualBase
     {
-        protected readonly Column m_Column;
+        private readonly Column m_Column;
+        private readonly Row m_EndRow;
 
-        public SelfSignalVisual(ISignal signal, Column column, Row row)
+        public SelfSignalVisual(ISignal signal, Column column, Row row, Row endRow)
             : base(signal, row)
         {
             m_Column = column;
+            m_EndRow = endRow;
         }
 
         protected override void LayoutCore(IGraphicContext graphicContext)
@@ -55,22 +57,23 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             }
 
             float xStart = m_Column.Body.Middle + GetXFromCenterRelative(m_Signal.Start);
-            float xEnd = m_Column.Body.Right + ArrowCapHeight + (TextPadding * 2);
+            float xEnd = m_Column.Body.Middle + GetXFromCenterRelative(m_Signal.End);
+            float xRight = m_Column.Body.Right + ArrowCapHeight + (TextPadding * 2);
 
-            float yStart = m_Row.Body.Top;
-            float yEnd = m_Row.Body.Bottom;
+            float yTop = m_Row.Body.Bottom;
+            float yBottom = m_EndRow.Body.Bottom;
 
             drawLine(
-                new Point(xStart, yStart),
-                new Point(xEnd, yStart),
+                new Point(xStart, yTop),
+                new Point(xRight, yTop),
                 2);
             drawLine(
-                new Point(xEnd, yStart),
-                new Point(xEnd, yEnd),
+                new Point(xRight, yTop),
+                new Point(xRight, yBottom),
                 2);
             drawArrow(
-                new Point(xEnd, yEnd),
-                new Point(xStart, yEnd),
+                new Point(xRight, yBottom),
+                new Point(xEnd, yBottom),
                 2,
                 ArrowCapHeight,
                 ArrowCapHeight);

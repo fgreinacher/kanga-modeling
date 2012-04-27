@@ -47,5 +47,10 @@
             start.UpdateLevel();
             end.UpdateLevel();
         }
+
+        public bool IsSelfSignal
+        {
+            get { return this.Start.Lifeline == this.End.Lifeline; }
+        }
     }
 }

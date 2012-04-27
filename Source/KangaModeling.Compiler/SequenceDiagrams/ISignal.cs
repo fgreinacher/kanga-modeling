@@ -11,5 +11,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         IPin Start { get; }
         SignalType SignalType { get; }
         int RowIndex { get; }
+        bool IsSelfSignal { get; }
     }
 }

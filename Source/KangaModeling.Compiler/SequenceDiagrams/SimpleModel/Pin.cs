@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
@@ -87,7 +88,16 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public void UpdateLevel()
         {
+            if (!IsLastPin())
+            {
+                return;
+            }
             this.Level = m_Lifeline.State.GetLevel(this.Orientation);
+        }
+
+        private bool IsLastPin()
+        {
+            return m_Lifeline.Pins.Last() == this;
         }
     }
 }
