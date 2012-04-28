@@ -38,14 +38,5 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
 			Size = m_GridLayout.Size;
 		}
-
-		protected override void DrawCore(IGraphicContext graphicContext)
-		{		
-			base.DrawCore(graphicContext);
-		}
-
-		private void AdjustSize()
-		{
-		}
 	}
 }
