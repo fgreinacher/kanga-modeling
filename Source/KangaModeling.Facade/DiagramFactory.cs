@@ -64,6 +64,7 @@ namespace KangaModeling.Facade
 					renderGraphics.Clear(Color.White);
 					renderGraphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 					renderGraphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+				    renderGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
 					graphicContext = new GdiPlusGraphicContext(renderGraphics);
 
