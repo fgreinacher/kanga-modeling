@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace KangaModeling.Graphics.GdiPlus.Utilities
+namespace KangaModeling.Graphics.GdiPlus
 {
     internal static class ConversionExtensions
     {

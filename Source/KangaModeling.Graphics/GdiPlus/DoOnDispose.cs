@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KangaModeling.Graphics.GdiPlus.Utilities
+namespace KangaModeling.Graphics.GdiPlus
 {
 	internal sealed class DoOnDispose : IDisposable
 	{

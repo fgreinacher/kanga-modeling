@@ -47,14 +47,15 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="GdiPlus\BezierCurve.cs" />
     <Compile Include="GdiPlus\GdiPlusGraphicContext.cs" />
     <Compile Include="GdiPlus\Resources\Fonts.Designer.cs">
       <DependentUpon>Fonts.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GdiPlus\Utilities\ConversionExtensions.cs" />
-    <Compile Include="GdiPlus\Utilities\DoOnDispose.cs" />
+    <Compile Include="GdiPlus\ConversionExtensions.cs" />
+    <Compile Include="GdiPlus\DoOnDispose.cs" />
     <Compile Include="Primitives\Color.cs" />
     <Compile Include="Primitives\Padding.cs" />
     <Compile Include="Primitives\HorizontalAlignment.cs" />

@@ -22,14 +22,14 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             base.LayoutCore(graphicContext);
 
             m_Column.RightGap.Allocate(m_TextSize.Width + ArrowCapHeight + TextPadding * 2);
-            m_Row.Body.Allocate(m_TextSize.Height + TextPadding * 2);
+            m_EndRow.Body.Allocate(m_TextSize.Height + TextPadding * 2);
         }
 
         protected override void DrawText(IGraphicContext graphicContext)
         {
             float xText = m_Column.Body.Right + ArrowCapHeight + TextPadding;
-            float yText = m_Row.Body.Bottom - TextPadding - m_TextSize.Height;
-            graphicContext.DrawText(m_Signal.Name, HorizontalAlignment.Center, VerticalAlignment.Middle,
+            float yText = m_EndRow.Body.Bottom - TextPadding - m_TextSize.Height;
+            graphicContext.DrawText(m_Signal.Name, HorizontalAlignment.Left, VerticalAlignment.Middle,
                                     new Point(xText, yText), m_TextSize + new Padding(TextPadding));
         }
 
@@ -58,7 +58,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             float xStart = m_Column.Body.Middle + GetXFromCenterRelative(m_Signal.Start);
             float xEnd = m_Column.Body.Middle + GetXFromCenterRelative(m_Signal.End);
-            float xRight = m_Column.Body.Right + ArrowCapHeight + (TextPadding * 2);
+            float xRight = m_Column.Body.Right + ArrowCapHeight;
 
             float yTop = m_Row.Body.Bottom;
             float yBottom = m_EndRow.Body.Bottom;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using KangaModeling.Graphics.GdiPlus.Utilities;
 using KangaModeling.Graphics.Primitives;
 using Point = KangaModeling.Graphics.Primitives.Point;
 using Size = KangaModeling.Graphics.Primitives.Size;
@@ -42,12 +41,10 @@ namespace KangaModeling.Graphics.GdiPlus
                 Point bottomLeft = location.Offset(0, size.Height);
                 Point bottomRight = location.Offset(size.Width, size.Height);
 
-                DrawLineCore(topLeft, topRight, pen.Width, p => { });
-                DrawLineCore(topRight, bottomRight, pen.Width, p => { });
-                DrawLineCore(bottomRight, bottomLeft, pen.Width, p => { });
-                DrawLineCore(bottomLeft, topLeft, pen.Width, p => { });
-
-                //m_Graphics.DrawRectangle(pen, location.X, location.Y, size.Width, size.Height);
+                DrawLineCore(topLeft, topRight, pen.Width, color);
+                DrawLineCore(topRight, bottomRight, pen.Width, color);
+                DrawLineCore(bottomRight, bottomLeft, pen.Width, color);
+                DrawLineCore(bottomLeft, topLeft, pen.Width, color);
             }
         }
 
@@ -85,12 +82,12 @@ namespace KangaModeling.Graphics.GdiPlus
 
         public void DrawLine(Point from, Point to, float width)
         {
-            DrawLineCore(from, to, width, pen => { });
+            DrawLineCore(from, to, width, Color.Black);
         }
 
         public void DrawDashedLine(Point from, Point to, float width)
         {
-            DrawLineCore(from, to, width, pen =>
+            DrawLineCore(from, to, width, Color.Black, pen =>
             {
                 pen.DashStyle = DashStyle.Dash;
             });
@@ -98,7 +95,7 @@ namespace KangaModeling.Graphics.GdiPlus
 
         public void DrawArrow(Point from, Point to, float width, float arrowCapWidth, float arrowCapHeight)
         {
-            DrawLineCore(from, to, width, pen =>
+            DrawLineCore(from, to, width, Color.Black, pen =>
             {
                 pen.CustomEndCap = new AdjustableArrowCap(arrowCapWidth, arrowCapHeight, false);
             });
@@ -106,7 +103,7 @@ namespace KangaModeling.Graphics.GdiPlus
 
         public void DrawDashedArrow(Point from, Point to, float width, float arrowCapWidth, float arrowCapHeight)
         {
-            DrawLineCore(from, to, width, pen =>
+            DrawLineCore(from, to, width, Color.Black, pen =>
             {
                 pen.DashStyle = DashStyle.Dash;
                 pen.CustomEndCap = new AdjustableArrowCap(arrowCapWidth, arrowCapHeight, false);
@@ -145,31 +142,31 @@ namespace KangaModeling.Graphics.GdiPlus
 
         #region Private Methods
 
-        private void DrawLineCore(Point from, Point to, float width, Action<Pen> initializePen)
+        private void DrawLineCore(Point from, Point to, float width, Color color)
         {
-            using (var pen = new Pen(Brushes.Black, width))
+            DrawLineCore(from, to, width, color, p => { });
+        }
+
+        private void DrawLineCore(Point from, Point to, float width, Color color, Action<Pen> initializePen)
+        {
+            using (var brush = new SolidBrush(System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B)))
+            using (var pen = new Pen(brush, width))
             {
                 initializePen(pen);
 
-                pen.Alignment = PenAlignment.Left;
-
-                m_Graphics.SmoothingMode = SmoothingMode.HighQuality;
-                
-                int minimumOff = -5;
-                int maximumOff = 5;
-                
-                float firstControlPointPosition = (float)m_Random.Next(20, 80) / 100;
-                Point firstControlPoint = new Point(
-                    from.X + (to.X - from.X) * firstControlPointPosition + m_Random.Next(minimumOff, maximumOff),
-                    from.Y + (to.Y - from.Y) * firstControlPointPosition + m_Random.Next(minimumOff, maximumOff));
-
-                float secondControlPointPosition = (float)m_Random.Next(20, 80) / 100;
-                Point secondControlPoint = new Point(
-                    from.X + (to.X - from.X) * secondControlPointPosition + m_Random.Next(minimumOff, maximumOff),
-                    from.Y + (to.Y - from.Y) * secondControlPointPosition + m_Random.Next(minimumOff, maximumOff));
-
-                m_Graphics.DrawBezier(pen, from.ToPointF(), firstControlPoint.ToPointF(), secondControlPoint.ToPointF(), to.ToPointF());
+                using (AntiAliasedGraphics())
+                {
+                    var bezierCurve = new BezierCurve(from, to);
+                    m_Graphics.DrawBezier(pen, from.ToPointF(), bezierCurve.FirstControlPoint.ToPointF(), bezierCurve.SecondControlPoint.ToPointF(), to.ToPointF());
+                }
             }
+        }
+
+        private DoOnDispose AntiAliasedGraphics()
+        {
+            var oldSmoothingMode = m_Graphics.SmoothingMode;
+            m_Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            return new DoOnDispose(() => m_Graphics.SmoothingMode = oldSmoothingMode);
         }
 
         private void FillFontCollection()
