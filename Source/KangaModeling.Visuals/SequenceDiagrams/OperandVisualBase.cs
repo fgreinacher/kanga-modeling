@@ -2,7 +2,7 @@ using KangaModeling.Compiler.SequenceDiagrams;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class OperandVisualBase : Visual
+    internal abstract class OperandVisualBase : Visual
     {
         private readonly GridLayout m_GridLayout;
         private readonly IOperand m_Operand;
@@ -11,7 +11,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             m_Operand = operand;
             m_GridLayout = gridLayout;
-            Initialize();
         }
 
         protected void Initialize()

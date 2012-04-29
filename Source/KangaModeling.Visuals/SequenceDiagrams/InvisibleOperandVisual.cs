@@ -7,6 +7,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         public InvisibleOperandVisual(IOperand operand, GridLayout gridLayout) 
             : base(operand, gridLayout)
         {
+            Initialize();
         }
     }
 }
