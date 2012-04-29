@@ -20,14 +20,23 @@ namespace KangaModeling.Graphics.GdiPlus
 
         private void CalculateControlPoints()
         {
+            int maximumMistake = CalculateMaximumMistake();
+
+            CalculateFirstControlPoint(maximumMistake);
+            CalculateSecondControlPoint(maximumMistake);
+        }
+
+        private int CalculateMaximumMistake()
+        {
             float lineLength = (float)Math.Sqrt(
                 Math.Pow(EndPoint.X - StartPoint.X, 2) +
                 Math.Pow(EndPoint.Y - StartPoint.Y, 2));
 
-            int maximumMistake = (int)Math.Round(lineLength / 35);
+            int maximumMistake = Math.Min(
+                (int)Math.Round(lineLength / 35),
+                10);
 
-            CalculateFirstControlPoint(maximumMistake);
-            CalculateSecondControlPoint(maximumMistake);
+            return maximumMistake;
         }
 
         private void CalculateFirstControlPoint(int maximumMistake)
