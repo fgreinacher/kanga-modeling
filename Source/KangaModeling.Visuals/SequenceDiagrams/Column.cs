@@ -41,15 +41,15 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             m_MinWidth = Math.Max(m_MinWidth, width);
         }
 
-        public void AdjustLocation(Column prevColumn)
+        public void AdjustLocation(float x)
         {
             ExtendGaps();
-            AdjustSectionLocations(prevColumn);
+            AdjustSectionLocations(x);
         }
 
-        private void AdjustSectionLocations(Column prevColumn)
+        private void AdjustSectionLocations(float x)
         {
-            LeftGap.Left = prevColumn == null ? 0 : prevColumn.Right;
+            LeftGap.Left = x;
             Body.Left = LeftGap.Right;
             RightGap.Left = Body.Right;
         }

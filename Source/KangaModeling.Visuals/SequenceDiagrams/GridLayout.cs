@@ -7,6 +7,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal class GridLayout : Visual
     {
+        private readonly Padding m_Padding = new Padding(10);
+
         public GridLayout(int lifelineCount, int rowCount)
         {
             Rows = new List<Row>();
@@ -45,7 +47,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             Column lastColumn = Columns[Columns.Count - 1];
             Row lastRow = FooterRow;
 
-            Size = new Size(lastColumn.Right, lastRow.Bottom);
+            Size = new Size(lastColumn.Right + m_Padding.Right, lastRow.Bottom + m_Padding.Bottom);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
@@ -64,26 +66,27 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             Column prevColumn = null;
             foreach (Column currentColumn in Columns)
             {
-                currentColumn.AdjustLocation(prevColumn);
+                float x = (prevColumn != null) ? prevColumn.Right : m_Padding.Left;
+                currentColumn.AdjustLocation(x);
                 prevColumn = currentColumn;
             }
         }
 
         private void AdjustRowLocations()
         {
-            HeaderRow.AdjustLocation(null);
+            HeaderRow.AdjustLocation(m_Padding.Top);
             Row prevRow = HeaderRow;
             foreach (Row currentRow in Rows)
             {
-                currentRow.AdjustLocation(prevRow);
+                currentRow.AdjustLocation(prevRow.Bottom);
                 prevRow = currentRow;
             }
-            FooterRow.AdjustLocation(prevRow);
+            FooterRow.AdjustLocation(prevRow.Bottom);
         }
 
         [Conditional("DEBUG")]
         private void DrawCellAreas(IGraphicContext graphicContext)
-        {
+        {            
             foreach (var row in Rows)
             {
                 var rowTop = row.Top;

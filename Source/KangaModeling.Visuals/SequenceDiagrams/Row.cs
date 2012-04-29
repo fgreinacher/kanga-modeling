@@ -42,15 +42,15 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             m_MinHeight = Math.Max(m_MinHeight, Height);
         }
 
-        public void AdjustLocation(Row prevRow)
+        public void AdjustLocation(float y)
         {
             ExtendGaps();
-            AdjustSectionLocations(prevRow);
+            AdjustSectionLocations(y);
         }
 
-        private void AdjustSectionLocations(Row prevRow)
+        private void AdjustSectionLocations(float y)
         {
-            TopGap.Top = prevRow == null ? 0 : prevRow.Bottom;
+            TopGap.Top = y;
             TopGap.Top += RowPadding;
             Body.Top = TopGap.Bottom;
             BottomGap.Top = Body.Bottom;
