@@ -18,14 +18,14 @@ namespace CommandLineRunner
 			Options opts = new Options();
 			if (!new CommandLineParser().ParseArguments(args, opts))
 			{
-				System.Console.Error.WriteLine(opts.GetHelp());
+				Console.Error.WriteLine(opts.GetHelp());
 				return -1;
 			}
-			new CommandLineRunner().run(opts);
+			new CommandLineRunner().Run(opts);
 			return 0;
 		}
 
-		internal void run(Options opts)
+		internal void Run(Options opts)
 		{
 			var arguments = new DiagramArguments(opts.Model, DiagramType.Sequence, DiagramStyle.Sketchy);
 			var result = DiagramFactory.Create(arguments);

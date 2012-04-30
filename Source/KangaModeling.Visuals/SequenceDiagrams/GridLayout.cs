@@ -52,7 +52,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            DrawCellAreas(graphicContext);
+            //DrawCellAreas(graphicContext);
         }
 
         private void AdjustLocations()

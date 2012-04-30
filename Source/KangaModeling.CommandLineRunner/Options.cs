@@ -15,7 +15,6 @@ namespace CommandLineRunner
         [Option("o", "output", Required = false, HelpText = "output file to write image to")]
         public String FileName = "out.png";
 
-        // TODO pimp cmd line parser to support ImageFormat (that is, any class!)
         [Option("f", "format", Required = false, HelpText = "format of output")]
         public String Format = "png";
 

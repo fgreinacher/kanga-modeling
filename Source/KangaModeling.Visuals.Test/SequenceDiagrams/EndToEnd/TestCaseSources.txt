@@ -1,0 +1,171 @@
+﻿# One participant
+participant a
+
+# Two participants
+participant a
+participant b
+
+# 10 participants
+participant a0
+participant a1
+participant a2
+participant a3
+participant a4
+participant a5
+participant a6
+participant a7
+participant a8
+participant a9
+
+# Call
+a->b
+
+# Call and return
+a->b
+b-->a
+
+# Call and return with activation
+a->b
+activate b
+b-->a
+deactivate b
+
+# Call and return with lifeline order
+participant b
+participant a
+a->b
+b-->a
+
+# Call and return with lifeline aliases
+a->b
+activate b
+b-->a
+deactivate b
+
+# Call and return with signal names
+a->b : Call
+activate b
+b-->a : Return
+deactivate b
+
+# Title
+title Some title
+a->b
+
+# Title multiline
+title Some title\nline1\nline2\nline3
+a->b
+
+# Self call
+A->A
+activate A
+
+# Lifeline alias
+participant Some component with long name as A
+A->B
+
+# Multiline texts
+title Title line 1\n line 2
+participant A line 1\n line 2 as A
+A->A : call line 1\n line 2
+
+# Escaped names
+"Escaped : name A "-> "Escaped : name B"
+
+# alt
+alt first 
+a->b 
+else second
+a->c
+else third
+a->d
+end
+
+# opt
+a->b
+activate b
+opt sometimes
+b->c
+activate c
+c-->b
+deactivate c
+end
+b-->a
+deactivate b
+
+# loop
+a->b
+activate b
+loop for i=0 to 100
+b->c
+activate c
+c-->b
+deactivate c
+end
+b-->a
+deactivate b
+
+# Nested combined fragments
+title Hello!
+opt never
+a->b
+activate b
+loop for i=0 to 100
+b->c
+activate c
+c-->b
+deactivate c
+alt first
+c->a
+activate a
+a-->c
+deactivate a
+else second
+c->b
+activate b
+a-->b
+deactivate b
+else third
+c->c
+activate c
+deactivate c
+end
+end
+b-->a
+deactivate b
+end
+
+# Nested activation
+title Diagram 1
+A->B : Ping()
+activate B
+B->C : call C
+activate C
+C->B
+activate B
+b-->c
+deactivate B
+c->B
+deactivate C
+b-->A
+deactivate B
+
+# Big sample
+title Diagram 1
+A->B : Ping()
+activate B
+B-->A : isOk
+deactivate B
+alt isOk
+B->C : More()
+activate C
+C-->B : result
+deactivate C
+else !isOk
+B->C : Less()
+activate C
+C-->B : result
+deactivate C
+end
+
+#end
