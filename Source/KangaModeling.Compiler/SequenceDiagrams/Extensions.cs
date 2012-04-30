@@ -154,8 +154,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams
                 new LeafArea(
                     Math.Min(signal.Start.LifelineIndex, signal.End.LifelineIndex),
                     Math.Max(signal.Start.LifelineIndex, signal.End.LifelineIndex),
-                    signal.RowIndex,
-                    signal.RowIndex);
+                    Math.Min(signal.Start.RowIndex, signal.End.RowIndex),
+                    Math.Max(signal.Start.RowIndex, signal.End.RowIndex));
         }
 
         public static int LeftDepth(this IArea area)

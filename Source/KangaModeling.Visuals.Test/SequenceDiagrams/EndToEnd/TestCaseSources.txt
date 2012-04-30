@@ -59,6 +59,7 @@ a->b
 # Self call
 A->A
 activate A
+deactivate A
 
 # Lifeline alias
 participant Some component with long name as A
@@ -123,12 +124,17 @@ deactivate a
 else second
 c->b
 activate b
-a-->b
+b-->c
 deactivate b
 else third
-c->c
+c->b
+activate b
+b->c
 activate c
+c-->b
 deactivate c
+b-->c
+deactivate b
 end
 end
 b-->a
