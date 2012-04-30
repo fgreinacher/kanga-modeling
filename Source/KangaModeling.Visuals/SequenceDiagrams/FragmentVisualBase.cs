@@ -11,6 +11,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private readonly IArea m_Area;
         private readonly ICombinedFragment m_Fragment;
         private readonly GridLayout m_GridLayout;
+        public float BottomOffset { get; protected set; }
 
         public GridLayout GridLayout
         {
@@ -45,7 +46,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             Initialize();
         }
 
-        protected Row TopRow { get; set; }
+        public Row TopRow { get; set; }
         protected Row BottomRow { get; set; }
         protected Column LeftColumn { get; set; }
         protected Column RightColumn { get; set; }
@@ -76,15 +77,16 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             m_TextSize = graphicContext.MeasureText(m_Fragment.Title);
 
-            m_InnerPadding =
-                new Padding(m_PaddingDepth.Left * FramePadding, m_PaddingDepth.Right * FramePadding, (m_TextSize.Height + FramePadding) * m_PaddingDepth.Top, m_PaddingDepth.Bottom * FramePadding);
+            m_InnerPadding = m_PaddingDepth * FramePadding;
 
             Width = m_TextSize.Width + FramePadding;
 
-            var firstChild = Children.FirstOrDefault();
-            var firstChildHeight = firstChild != null ? firstChild.Height : 0;
+            var firstChild = Children.FirstOrDefault() as OperandVisualBase;
+            var firstChildBottomOffset = firstChild != null ? firstChild.BottomOffset : 0;
 
-            TopRow.TopGap.Allocate(m_InnerPadding.Top + firstChildHeight);
+            BottomOffset = firstChildBottomOffset + m_TextSize.Height;
+
+            TopRow.TopGap.Allocate(BottomOffset + 4);
             BottomRow.BottomGap.Allocate(m_InnerPadding.Bottom);
 
             LeftColumn.LeftGap.Allocate(m_InnerPadding.Left);
@@ -93,7 +95,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            float yStart = TopRow.TopGap.Top;
+            float yStart = TopRow.TopGap.Bottom - BottomOffset - 4 ;
             float yEnd = BottomRow.BottomGap.Top + m_InnerPadding.Bottom;
 
             float xStart = LeftColumn.Body.Left - m_InnerPadding.Left;

@@ -1,4 +1,5 @@
-﻿using KangaModeling.Compiler.SequenceDiagrams;
+﻿using System.Linq;
+using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
 
@@ -24,21 +25,27 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             base.LayoutCore(graphicContext);
 
-            if (string.IsNullOrEmpty(m_GuardExpressionText))
-            {
-                Size = Size.Empty;
-            }
-            else
-            {
-                Size = graphicContext.MeasureText(m_GuardExpressionText);
-                m_TopRow.TopGap.Allocate(Height + 4);
-            }
+            Size = string.IsNullOrEmpty(m_GuardExpressionText) 
+                ? Size.Empty 
+                : graphicContext.MeasureText(m_GuardExpressionText);
+            
+            float childBottomOffset = 
+                Children
+                    .Where(visual => visual is FragmentVisual)
+                    .Cast<FragmentVisual>()
+                    .Where(fragment => fragment.TopRow == m_TopRow)
+                    .Select(fragment => fragment.BottomOffset)
+                    .DefaultIfEmpty()
+                    .Max();
+            BottomOffset = childBottomOffset + Size.Height + 8;
+
+            m_TopRow.TopGap.Allocate(BottomOffset);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            float yLine = m_TopRow.TopGap.Bottom - Height;
-            float yText = yLine + 4;
+            float yLine = m_TopRow.TopGap.Bottom - BottomOffset + 4;
+            float yText = yLine + 2;
 
             float xStart = Parent.Location.X;
             float xEnd = Parent.Location.X + Parent.Size.Width;
@@ -47,7 +54,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             {
                 graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), 1);
             }
-            graphicContext.DrawText(m_GuardExpressionText, HorizontalAlignment.Left, VerticalAlignment.Top, new Point(xStart + 5, yText), Size);
+            graphicContext.DrawText(m_GuardExpressionText, HorizontalAlignment.Left, VerticalAlignment.Middle, new Point(xStart + 5, yText), Size);
 
             base.DrawCore(graphicContext);
         }

@@ -6,6 +6,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
     {
         private readonly GridLayout m_GridLayout;
         private readonly IOperand m_Operand;
+        public float BottomOffset { get; protected set; }
+
 
         protected OperandVisualBase(IOperand operand, GridLayout gridLayout)
         {
