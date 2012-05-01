@@ -2,60 +2,88 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Kanga Modelling Demo</title>
+    <style><!-- 
+body,td,div,.p,a{font-family:arial,sans-serif } 
+div,td{color:#000} 
+.f,.fl:link{color:#6f6f6f} 
+a:link,.w,a.w:link,.w a:link{color:#00c} 
+a:visited,.fl:visited{color:#551a8b} 
+a:active,.fl:active{color:#f00} 
+.t a:link,.t a:active,.t a:visited,.t{color:#ffffff} 
+.t{background-color:#3366cc} 
+.h{color:#3366cc;font-size:14px} 
+.i,.i:link{color:#a90a08} 
+.a,.a:link{color:#008000} 
+.z{display:none} 
+div.n {margin-top: 1ex} 
+.n a{font-size:10pt; color:#000} 
+.n .i{font-size:10pt; font-weight:bold} 
+.q a:visited,.q a:link,.q a:active,.q {text-decoration: none; color: #00c;} 
+.b{font-size: 12pt; color:#00c; font-weight:bold} 
+//--> 
+        .style1
+        {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
 </head>
-<body onload="Compile()">
-    <table>
-        <tr>
-            <th>
-                Press button to compile
-            </th>
-            <th>
-            </th>
-            <th>
-                Compile as you type
-            </th>
-        </tr>
-        <tr>
-            <td valign="top">
-                <form method="get" action="SequenceDiagram.aspx">
-                <textarea rows="10" cols="30" name="code">
+<body onload="Compile()" style="padding:30px">
+    <h3>
+        What is KangaModeling?</h3>
+    <p>
+        Kanga Modeling is an open source project hosted at <a href="http://kangamodeling.codeplex.com" target="_blank">
+            kangamodeling.codeplex.com</a>.</p>
+    <p>
+        Kanga Modeling allows you to produce UML (like) diagrams very easily. The main idea
+        is to generate the diagram from a lightweight markup textual diagram description
+        language.</p>
+    <h3>
+        How does this language look like?</h3>
+    <p>
+        See <a href="http://kangamodeling.codeplex.com/documentation" target="_blank">KangaModeling
+            Documentation</a> for complete language tutorial at <a href="http://kangamodeling.codeplex.com/documentation" target="_blank">
+                kangamodeling.codeplex.com/documentation</a>.</p>
+    <h3>
+        What is <b>kangamodelling.org</b> good for?</h3>
+    <p>
+        This is a web service which generates and returns a diagram image based on code
+        snippet you posted to the URL using POST or GET.
+    </p>
+    <blockquote>
+       You can use it in your <strong>Blog</strong>,<strong>Wiki</strong> or <strong>Website</strong> to generate nice looking diagrams from compact markup.</blockquote>
+    <p>
+        Just try it out by clicking on following URL</p>
+    <p class="style2">
+        <a href="http://kangamodeling.org/SequenceDiagram.aspx?code=Alice-%3EBob:Hello!"
+            target="_blank">http://kangamodeling.org/SequenceDiagram.aspx?code=Alice->Bob:Hello!</a></p>
+    <p>
+        We post code <strong>"Alice->Bob:Hello!"</strong> to URL <strong>"http://kangamodeling.org/SequenceDiagram.aspx?code="</strong>
+        and received a diagram image. For more complex diagrams you could probably use JavaScript
+        like we do in the playroud below (see source of this page) or some server side scripting
+        like PHP.</p>
+    <h3>
+        Playground</h3>
+    <p>
+        Just type code in the area below and the image will be updated on the fly.</p>
+    <p>
+        For more comfortable editing with syntax check and hints we recommend to use Kanga
+        Modeling UI available for download at <a href="http://kangamodeling.codeplex.com/releases">
+            kangamodeling.codeplex.com/releases</a>.</p>
+    <script type="text/jscript" lang="javascript">
+        function Compile() {
+            var codeText = document.getElementById("SourceCode").value;
+            var image = document.getElementById("DiagramImage");
+            image.src = 'SequenceDiagram.aspx?code=' + encodeURI(codeText);
+        }
+    </script>
+    <textarea rows="10" cols="30" id="SourceCode" onkeyup="Compile()">
 title Hello World
-participant A
-A->B: Hi, how are you?
-activate B
-B->A: I'm fine, thanks!
-deactivate B
-A->C: What about you darling?
+Alice->Bob: Hi!
+activate Bob
+Bob-->Alice: Hey!
+deactivate Bob
         </textarea>
-                <br />
-                <button type="submit">
-                    Get Image</button>
-                </form>
-            </td>
-            <td>
-                &nbsp;
-            </td>
-            <td valign="top">
-                <script type="text/jscript" language="javascript">
-                    function Compile() {
-                        var codeText = document.getElementById("SourceCode").value;
-                        var image = document.getElementById("DiagramImage");
-                        image.src = 'SequenceDiagram.aspx?code=' + encodeURI(codeText);
-                    }
-                </script>
-                <textarea rows="10" cols="30" id="SourceCode" onkeyup="Compile()">
-title Hello World
-participant A
-A->B: Hi, how are you?
-activate B
-B->A: I'm fine, thanks!
-deactivate B
-A->C: What about you darling?
-        </textarea>
-                <br />
-                <img id="DiagramImage" src="" alt="Sequence Diagram" />
-            </td>
-        </tr>
-    </table>
+    <br />
+    <img id="DiagramImage" src="" alt="Sequence Diagram" on />
 </body>
 </html>
