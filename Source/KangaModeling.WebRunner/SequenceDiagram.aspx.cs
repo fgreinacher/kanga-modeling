@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using KangaModeling.Facade;
 
 namespace KangaModelling.WebApplication
@@ -17,7 +18,11 @@ namespace KangaModelling.WebApplication
 			{
 				Response.Cache.SetCacheability(System.Web.HttpCacheability.Public);
 				Response.ContentType = "image/png";
-				result.Image.Save(Response.OutputStream, ImageFormat.Png);
+
+                MemoryStream temp = new MemoryStream();
+                result.Image.Save(temp, ImageFormat.Png);
+                byte[] buffer = temp.GetBuffer();
+                Response.OutputStream.Write(buffer, 0, buffer.Length);
 			}
 		}
 	}
