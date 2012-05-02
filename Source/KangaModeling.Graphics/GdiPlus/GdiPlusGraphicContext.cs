@@ -48,6 +48,16 @@ namespace KangaModeling.Graphics.GdiPlus
             }
         }
 
+        public void FillPolygon(IEnumerable<Point> points, Color color)
+        {
+            var pointsF = points.Select(p => p.ToPointF()).ToArray(); 
+
+            using (var brush = new SolidBrush(color.ToColor()))
+            {
+                m_Graphics.FillPolygon(brush, pointsF);
+            }
+        }
+
         public void FillRectangle(Point location, Size size, Color color)
         {
             var rectangle = new RectangleF(location.ToPointF(), size.ToSizeF());

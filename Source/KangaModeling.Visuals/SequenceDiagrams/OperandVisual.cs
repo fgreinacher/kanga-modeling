@@ -54,7 +54,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             {
                 graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), 1);
             }
-            graphicContext.DrawText(m_GuardExpressionText, HorizontalAlignment.Left, VerticalAlignment.Middle, new Point(xStart + 5, yText), Size);
+            
+            Point textLocation = new Point(xStart + 5, yText);
+            graphicContext.FillRectangle(textLocation, Size, Color.SemiTransparent);
+            graphicContext.DrawText(m_GuardExpressionText, HorizontalAlignment.Left, VerticalAlignment.Middle, textLocation, Size);
 
             base.DrawCore(graphicContext);
         }

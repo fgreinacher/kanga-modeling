@@ -110,20 +110,36 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             Location = new Point(xStart, yStart);
             Size = new Size(xEnd - xStart, yEnd - yStart);
 
-            graphicContext.DrawRectangle(Location, Size, Color.Black);
-
             if (!string.IsNullOrEmpty(m_Fragment.Title))
             {
-                const float hPadding = FramePadding / 2;
-                graphicContext.DrawText(m_Fragment.Title, HorizontalAlignment.Center, VerticalAlignment.Middle, Location, m_TextSize + new Padding(hPadding));
-
-                var textFramePoint1 = new Point(xStart, yStart + m_TextSize.Height + hPadding);
-                var textFramePoint2 = new Point(xStart + m_TextSize.Width, yStart + m_TextSize.Height + hPadding);
-                var textFramePoint3 = new Point(xStart + m_TextSize.Width + FramePadding, yStart);
-
-                graphicContext.DrawLine(textFramePoint1, textFramePoint2, 1);
-                graphicContext.DrawLine(textFramePoint2, textFramePoint3, 1);
+                DrawTextFrame(xStart, yStart, graphicContext);
+                DrawText(graphicContext);
             }
+
+            DrawOuterFrame(graphicContext);
+        }
+
+        private void DrawOuterFrame(IGraphicContext graphicContext)
+        {
+            graphicContext.DrawRectangle(Location, Size, Color.Black);
+        }
+
+        private void DrawText(IGraphicContext graphicContext)
+        {
+            Size textArea = m_TextSize + new Padding(FramePadding / 2);
+            graphicContext.DrawText(m_Fragment.Title, HorizontalAlignment.Center, VerticalAlignment.Middle, Location, textArea);
+        }
+
+        private void DrawTextFrame(float xStart, float yStart, IGraphicContext graphicContext)
+        {
+            var textFramePoint1 = new Point(xStart, yStart + m_TextSize.Height + FramePadding / 2);
+            var textFramePoint2 = new Point(xStart + m_TextSize.Width, yStart + m_TextSize.Height + FramePadding / 2);
+            var textFramePoint3 = new Point(xStart + m_TextSize.Width + FramePadding, yStart);
+
+            graphicContext.FillPolygon( new[] {Location, textFramePoint1, textFramePoint2, textFramePoint3, Location}, Color.SemiTransparent); 
+                
+            graphicContext.DrawLine(textFramePoint1, textFramePoint2, 1);
+            graphicContext.DrawLine(textFramePoint2, textFramePoint3, 1);
         }
     }
 }
