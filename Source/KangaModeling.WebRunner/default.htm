@@ -1,8 +1,13 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Kanga Modelling Demo</title>
+    <title>Kanga Modelling - Create Sequence Diagrams Using Markup Language</title>
     <style>
+        body
+        {
+            background-color:#eeeeee;
+        }
+        
         body, td, div, .p, a
         {
             font-family: arial,sans-serif;
@@ -10,6 +15,7 @@
         div, td
         {
             color: #000;
+            background-color:White;
         }
         .f, .fl:link
         {
@@ -85,18 +91,28 @@
             top: 0px;
             left: 50%;
             margin-left: -400px;
+            padding-left: 15px;
+            padding-right: 15px;
+            border-right-style:groove;
+            border-left-style:groove;
         }
         tt
         {
             font-weight: bolder;
             color: Blue;
         }
+        
+        .title
+        {
+            vertical-align:middle;
+            padding: 5px;
+        }
     </style>
 </head>
 <body onload="Compile()">
     <div class="main">
-        <h2>
-            What is KangaModeling?</h2>
+        <h2 class="title">
+        <img src="img/kangalogo.png" alt="Kanga Modeling Logo" class="title"/><span class="title">What is KangaModeling?</span></h2>
         <p>
             Kanga Modeling is an open source project hosted at <a href="http://kangamodeling.codeplex.com"
                 target="_blank">kangamodeling.codeplex.com</a>.<br />
@@ -117,6 +133,7 @@
             using POST or GET.
         </p>
         <hr />
+        <h2>Usage</h2>
         <blockquote style="font-size: large">
             You can use it in your <strong>Blog</strong>,<strong>Wiki</strong> or <strong>Website</strong>
             to generate nice looking diagrams from compact markup.</blockquote>
@@ -152,12 +169,12 @@
         <h3>
             Playground</h3>
         <p>
-            Just type code in the area below and the image will be updated as you type.</p>
+            Just type code in the area above and the image will be updated as you type.</p>
         <p>
             For more comfortable editing with syntax check and error hints we recommend to use Kanga
             Modeling UI available for download at <a href="http://kangamodeling.codeplex.com/releases">
                 kangamodeling.codeplex.com/releases</a>.</p>
-        <script type="text/jscript" lang="javascript">
+        <script language="javascript">
             function Compile() {
                 var codeText = document.getElementById("SourceCode").value;
                 var image = document.getElementById("DiagramImage");

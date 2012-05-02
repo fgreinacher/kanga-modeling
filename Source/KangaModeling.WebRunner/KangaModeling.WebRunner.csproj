@@ -56,20 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="default.htm" />
+    <Content Include="img\kangalogo.png" />
     <Content Include="img\sdhello.png" />
     <Content Include="js\kangasd.js" />
     <Content Include="lib\js\clipboard.swf" />
-    <Content Include="lib\js\shBrushCpp.js" />
-    <Content Include="lib\js\shBrushCSharp.js" />
-    <Content Include="lib\js\shBrushCss.js" />
-    <Content Include="lib\js\shBrushDelphi.js" />
-    <Content Include="lib\js\shBrushJava.js" />
-    <Content Include="lib\js\shBrushJScript.js" />
-    <Content Include="lib\js\shBrushPhp.js" />
-    <Content Include="lib\js\shBrushPython.js" />
-    <Content Include="lib\js\shBrushRuby.js" />
-    <Content Include="lib\js\shBrushSql.js" />
-    <Content Include="lib\js\shBrushVb.js" />
     <Content Include="lib\js\shBrushXml.js" />
     <Content Include="lib\js\shCore.js" />
     <Content Include="lib\css\SyntaxHighlighter.css" />
