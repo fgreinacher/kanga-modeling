@@ -31,10 +31,28 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 {
                     Column startColumn = m_GridLayout.Columns[signal.Start.LifelineIndex];
                     Column endColumn = m_GridLayout.Columns[signal.End.LifelineIndex];
+                    ColumnSection endColumnNeighborSection = GetEndColumnNeighborSection(signal);
 
-                    AddChild(new SignalVisual(signal, startColumn, endColumn, row));
+                    AddChild(new SignalVisual(signal, startColumn, endColumn, row, endColumnNeighborSection));
                 }
             }
+        }
+
+        private ColumnSection GetEndColumnNeighborSection(ISignal signal)
+        {
+            int neighborIndex = signal.End.Orientation == Orientation.Left
+                                    ? signal.End.LifelineIndex - 1
+                                    : signal.End.LifelineIndex + 1;
+
+            ColumnSection endColumnNeighborSection = null;
+            if (neighborIndex>=0 && neighborIndex<m_GridLayout.Columns.Count)
+            {
+                Column endColumnNeighbor = m_GridLayout.Columns[neighborIndex];
+                endColumnNeighborSection = signal.End.Orientation == Orientation.Left
+                                               ? endColumnNeighbor.RightGap
+                                               : endColumnNeighbor.LeftGap;
+            }
+            return endColumnNeighborSection;
         }
     }
 }

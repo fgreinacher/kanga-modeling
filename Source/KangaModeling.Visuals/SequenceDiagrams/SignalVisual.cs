@@ -8,13 +8,15 @@ namespace KangaModeling.Visuals.SequenceDiagrams
     internal class SignalVisual : SignalVisualBase
     {
         private readonly Column m_EndColumn;
+        private readonly ColumnSection m_EndColumnNeighbor;
         private readonly Column m_StartColumn;
 
-        public SignalVisual(ISignal signal, Column startColumn, Column endColumn, Row row)
+        public SignalVisual(ISignal signal, Column startColumn, Column endColumn, Row row, ColumnSection endColumnNeighbor)
             : base(signal, row)
         {
             m_StartColumn = startColumn;
             m_EndColumn = endColumn;
+            m_EndColumnNeighbor = endColumnNeighbor;
         }
 
         protected override void LayoutCore(IGraphicContext graphicContext)
@@ -22,7 +24,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             base.LayoutCore(graphicContext);
 
             ColumnSection columnSection = m_Signal.End.Orientation == Orientation.Left ? m_EndColumn.LeftGap : m_EndColumn.RightGap;
-            columnSection.Allocate(m_TextSize.Width + TextPadding * 2);
+            float width = m_TextSize.Width + TextPadding * 2;
+            
+            if (m_EndColumnNeighbor == null)
+            {
+                columnSection.Allocate(width);
+            }
+            else
+            {
+                columnSection.Allocate(width / 2);
+                m_EndColumnNeighbor.Allocate(width / 2);
+            }
             m_Row.Body.Allocate(m_TextSize.Height + TextPadding * 2);
         }
 
