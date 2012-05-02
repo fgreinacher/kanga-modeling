@@ -14,7 +14,7 @@ namespace KangaModeling.Graphics
 
         void DrawText(string text, HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Point location, Size size);
 
-		void DrawLine(Point from, Point to, float width);
+		void DrawLine(Point from, Point to, float width, Color color = null);
 
 		void DrawDashedLine(Point from, Point to, float width);
 

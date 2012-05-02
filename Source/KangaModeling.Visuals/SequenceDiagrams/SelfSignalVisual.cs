@@ -35,7 +35,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void DrawArrow(IGraphicContext graphicContext)
         {
-            Action<Point, Point, float> drawLine;
+            Action<Point, Point, float, Color> drawLine;
             Action<Point, Point, float, float, float> drawArrow;
 
             switch (m_Signal.SignalType)
@@ -51,7 +51,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     break;
 
                 default:
-                    drawLine = (a, b, c) => { };
+                    drawLine = (a, b, c, d) => { };
                     drawArrow = (a, b, c, d, e) => { };
                     break;
             }
@@ -66,11 +66,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             drawLine(
                 new Point(xStart, yTop),
                 new Point(xRight, yTop),
-                2);
+                2,
+                Color.Black);
             drawLine(
                 new Point(xRight, yTop),
                 new Point(xRight, yBottom),
-                2);
+                2,
+                Color.Black);
             drawArrow(
                 new Point(xRight, yBottom),
                 new Point(xEnd, yBottom),

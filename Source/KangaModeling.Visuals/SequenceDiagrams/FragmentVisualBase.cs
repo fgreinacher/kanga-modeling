@@ -121,7 +121,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private void DrawOuterFrame(IGraphicContext graphicContext)
         {
-            graphicContext.DrawRectangle(Location, Size, Color.Black);
+            graphicContext.DrawRectangle(Location, Size, Color.Gray);
         }
 
         private void DrawText(IGraphicContext graphicContext)
@@ -138,8 +138,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             graphicContext.FillPolygon( new[] {Location, textFramePoint1, textFramePoint2, textFramePoint3, Location}, Color.SemiTransparent); 
                 
-            graphicContext.DrawLine(textFramePoint1, textFramePoint2, 1);
-            graphicContext.DrawLine(textFramePoint2, textFramePoint3, 1);
+            graphicContext.DrawLine(textFramePoint1, textFramePoint2, 1, Color.Gray);
+            graphicContext.DrawLine(textFramePoint2, textFramePoint3, 1, Color.Gray);
         }
     }
 }

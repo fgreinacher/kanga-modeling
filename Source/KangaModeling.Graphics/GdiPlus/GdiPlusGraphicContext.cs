@@ -90,9 +90,13 @@ namespace KangaModeling.Graphics.GdiPlus
             return text.Replace("\\n", Environment.NewLine);
         }
 
-        public void DrawLine(Point from, Point to, float width)
+        public void DrawLine(Point from, Point to, float width, Color color = null)
         {
-            DrawLineCore(from, to, width, Color.Black);
+            if (color==null)
+            {
+                color = Color.Black;
+            }
+            DrawLineCore(from, to, width, color);
         }
 
         public void DrawDashedLine(Point from, Point to, float width)

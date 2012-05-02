@@ -14,6 +14,7 @@ namespace KangaModeling.Graphics.Primitives
 		public static readonly Color White = new Color(255, 255, 255, 255);
 		public static readonly Color Transparent = new Color(0, 0, 0, 0);
         public static readonly Color SemiTransparent = new Color(170, 255, 255, 255);
+        public static readonly Color Gray = new Color(255, 50, 50, 50);
 
 		private readonly byte[] m_ARGB = new byte[4];
 
