@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Kanga Modelling - Create Sequence Diagrams Using Markup Language</title>
-    <style>
+    <style type="text/css">
         body
         {
             background-color:#eeeeee;
@@ -214,12 +214,26 @@ deactivate Bob
             this page) or some server side scripting like PHP.</p>
         <hr />
         <link type="text/css" rel="stylesheet" href="lib/css/SyntaxHighlighter.css"></link>
-        <script language="javascript" src="lib/js/shCore.js"></script>
-        <script language="javascript" src="lib/js/shBrushXml.js"></script>
-        <script language="javascript">
+        <script type="text/javascript" language="javascript" src="lib/js/shCore.js"></script>
+        <script type="text/javascript" language="javascript" src="lib/js/shBrushXml.js"></script>
+        <script type="text/javascript" language="javascript">
             dp.SyntaxHighlighter.ClipboardSwf = 'lib/js/clipboard.swf';
             dp.SyntaxHighlighter.HighlightAll('code');
         </script>
     </div>
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-31389040-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+</script>
 </body>
 </html>

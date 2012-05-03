@@ -5,6 +5,12 @@ namespace KangaModeling.Visuals.SequenceDiagrams
     internal abstract class OperandVisualBase : Visual
     {
         private readonly GridLayout m_GridLayout;
+
+        protected GridLayout GridLayout
+        {
+            get { return m_GridLayout; }
+        }
+
         private readonly IOperand m_Operand;
         public float BottomOffset { get; protected set; }
 

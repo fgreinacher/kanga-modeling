@@ -15,9 +15,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             BottomRow = gridLayout.FooterRow;
             LeftColumn = gridLayout.Columns[0];
             RightColumn = gridLayout.Columns[gridLayout.Columns.Count - 1];
+            Initialize();
         }
 
-        protected override Visual CreateOperandVisual(IOperand operand, bool isFirst)
+        protected override Visual CreateOperandVisual(IOperand operand, bool isFirst, Column leftColumn, Column rightColumn)
         {
             return new InvisibleOperandVisual(operand, GridLayout);
         }
@@ -25,18 +26,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         protected override void LayoutCore(IGraphicContext graphicContext)
         {
             base.LayoutCore(graphicContext);
-
-            IList<Column> columns = GridLayout.Columns;
-            float widthSum = columns.Select(column => column.Width).Sum();
-            if (widthSum<this.Width)
-            {
-                float widthPerCoulumn = this.Width/columns.Count;
-                foreach (Column column in columns)
-                {
-                    column.Allocate(widthPerCoulumn);
-                }
-            }
-
+            this.GridLayout.AllocateBetween(LeftColumn, RightColumn, this.Width + 3 * FramePadding);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)

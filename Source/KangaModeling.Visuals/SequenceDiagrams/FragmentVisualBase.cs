@@ -5,7 +5,7 @@ using KangaModeling.Graphics.Primitives;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class FragmentVisualBase : Visual
+    internal abstract class FragmentVisualBase : Visual
     {
         public const float FramePadding = 10;
         private readonly IArea m_Area;
@@ -24,7 +24,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private Padding m_InnerPadding;
 
 
-        public FragmentVisualBase(ICombinedFragment fragment, GridLayout gridLayout)
+        protected FragmentVisualBase(ICombinedFragment fragment, GridLayout gridLayout)
         {
             m_Fragment = fragment;
             m_GridLayout = gridLayout;
@@ -42,8 +42,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     rightDepth,
                     topDepth,
                     bottomDepth);
-
-            Initialize();
         }
 
         public Row TopRow { get; set; }
@@ -56,20 +54,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             get { return m_Area; }
         }
 
-        private void Initialize()
+        protected void Initialize()
         {
             bool isFirst = true;
             foreach (IOperand operand in m_Fragment.Operands)
             {
-                AddChild(CreateOperandVisual(operand, isFirst));
+                AddChild(CreateOperandVisual(operand, isFirst, LeftColumn, RightColumn));
                 isFirst = false;
             }
         }
 
-        protected virtual Visual CreateOperandVisual(IOperand operand, bool isFirst)
-        {
-            return new OperandVisual(operand, m_GridLayout, isFirst);
-        }
+        protected abstract Visual CreateOperandVisual(IOperand operand, bool isFirst, Column leftColumn, Column rightColumn);
 
         protected override void LayoutCore(IGraphicContext graphicContext)
         {

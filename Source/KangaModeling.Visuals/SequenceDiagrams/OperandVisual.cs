@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
@@ -8,13 +9,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
     internal class OperandVisual : OperandVisualBase
     {
         private readonly bool m_IsFirst;
+        private readonly Column m_LeftColumn;
+        private readonly Column m_RightColumn;
         private readonly Row m_TopRow;
         private readonly string m_GuardExpressionText;
 
-        public OperandVisual(IOperand operand, GridLayout gridLayout, bool isFirst) 
+        public OperandVisual(IOperand operand, GridLayout gridLayout, bool isFirst, Column leftColumn, Column rightColumn)
             : base(operand, gridLayout) 
         {
             m_IsFirst = isFirst;
+            m_LeftColumn = leftColumn;
+            m_RightColumn = rightColumn;
             IArea area = operand.GetArea();
             m_TopRow = gridLayout.Rows[area.Top];
             Initialize();
@@ -40,6 +45,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             BottomOffset = childBottomOffset + Size.Height + 8;
 
             m_TopRow.TopGap.Allocate(BottomOffset);
+
+            this.GridLayout.AllocateBetween(m_LeftColumn, m_RightColumn, this.Size.Width);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
