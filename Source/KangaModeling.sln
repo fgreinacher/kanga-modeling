@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Facade", "03 Facade", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Facade", "KangaModeling.Facade\KangaModeling.Facade.csproj", "{B8B9203B-7981-4392-A866-06E3CE56F986}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Web", "KangaModeling.Web\KangaModeling.Web.csproj", "{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -134,6 +136,16 @@ Global
 		{B8B9203B-7981-4392-A866-06E3CE56F986}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B8B9203B-7981-4392-A866-06E3CE56F986}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B8B9203B-7981-4392-A866-06E3CE56F986}.Release|x86.ActiveCfg = Release|Any CPU
+		{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -147,6 +159,7 @@ Global
 		{77312AEB-91AB-4209-8113-AD115CB1A866} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
 		{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
 		{A5CB1DE5-BBB1-47BB-967E-06749A382D21} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
+		{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442} = {3517360B-7BE8-465D-AE4D-1B95A45E934E}
 		{B8B9203B-7981-4392-A866-06E3CE56F986} = {6E758006-184E-4175-9938-16C46CE4830A}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution

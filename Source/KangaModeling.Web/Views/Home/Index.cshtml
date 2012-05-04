@@ -1,0 +1,115 @@
+﻿@{
+  ViewBag.Title = "Index";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2 class="title">
+  <img src="@Url.Content("~/Content/Images/kangalogo.png")" alt="Kanga Modeling Logo" class="title" /><span
+    class="title">What is KangaModeling?</span></h2>
+<p>
+  Kanga Modeling is an open source project hosted at <a href="http://kangamodeling.codeplex.com"
+    target="_blank">kangamodeling.codeplex.com</a>.<br />
+  Kanga Modeling allows you to produce UML (like) diagrams very easily. The main idea
+  is to generate the diagram from a lightweight markup textual diagram description
+  language.</p>
+<h3>
+  Markup syntax</h3>
+<p>
+  See <a href="http://kangamodeling.codeplex.com/documentation" target="_blank">KangaModeling
+    Documentation</a> for complete language tutorial at <a href="http://kangamodeling.codeplex.com/documentation"
+      target="_blank">kangamodeling.codeplex.com/documentation</a>.</p>
+<h2>
+  kangamodelling.org</h2>
+<p>
+  <a href="http://kangamodelling.org">kangamodelling.org</a> is a web service which
+  generates and returns a diagram image based on code snippet you posted to the URL
+  using POST or GET.
+</p>
+<hr />
+<h2>
+  Usage</h2>
+<blockquote style="font-size: large">
+  You can use it in your <strong>Blog</strong>,<strong>Wiki</strong> or <strong>Website</strong>
+  to generate nice looking diagrams from compact markup.</blockquote>
+<h4>
+  Placing the code</h4>
+<p>
+  Place your markup code on the page and surround it with <tt>&lt;pre&gt;</tt> tag.
+  Set <tt>class</tt> attribute to <tt>kanga.sd</tt>.
+</p>
+<pre name="code" class="html">
+&lt;pre class=&quot;kanga.sd&quot;&gt;
+    title Hello World 
+    Alice-&gt;Bob: Hi! 
+    activate Bob 
+    Bob--&gt;Alice: Hey! 
+    deactivate Bob 
+&lt;/pre&gt;    </pre>
+<h4>
+  Making it work</h4>
+<p>
+  Finally, to get the whole thing to render properly on the page, you have to add
+  JavaScript to the page.
+</p>
+<pre name="code" class="html">
+ &lt;script type=&quot;text/javascript&quot; src=&quot;http://kangamodeling.org/js/kangasd.js&quot;&gt;&lt;/script&gt;</pre>
+<p>
+  For optimal result, place this code at the very end of your page. A sequence deiagram
+  will appair in place of your markup code.</p>
+<img src="@Url.Content("~/Content/Images/sdhello.png")" alt="Sample sequence diagram" />
+<p>
+  You can download sample html here <a href="sample.htm" target="_blank">sample.htm</a>.</p>
+<hr />
+<h3>
+  Playground</h3>
+<p>
+  Just type code in the area above and the image will be updated as you type.</p>
+<p>
+  For more comfortable editing with syntax check and error hints we recommend to use
+  Kanga Modeling UI available for download at <a href="http://kangamodeling.codeplex.com/releases">
+    kangamodeling.codeplex.com/releases</a>.</p>
+
+<script language="javascript" type="text/javascript">
+  function Compile() {
+
+    var text = $('#SourceCode').val();
+    
+    KANGA.createDiagram(text, 'sequence', 'sketchy', function (result) {
+
+      $('#DiagramImage').attr("src", result.uri);
+
+    });
+  }
+</script>
+
+<table>
+  <tr>
+    <td valign="top">
+      <textarea rows="10" cols="30" id="SourceCode" onkeyup="Compile()">
+title Hello World
+Alice->Bob: Hi!
+activate Bob
+Bob-->Alice: Hey!
+deactivate Bob
+        </textarea>
+    </td>
+    <td valign="top">
+      <img id="DiagramImage" src="" alt="Sequence Diagram" />
+    </td>
+  </tr>
+</table>
+<hr />
+<h4>
+  How it works?</h4>
+<p>
+  There is no magic behind. The javascript finds all <tt>pre</tt> tags having class
+  <tt>kanga.sd</tt>. The code content will be sent to to URL <strong><tt>"http://kangamodeling.org/SequenceDiagram.aspx?code="</tt></strong>.
+  Server generates a diagram image. The content of <tt>pre</tt> tag will be replaced
+  with this image. Just try it out by clicking on following URL</p>
+<p class="style2">
+  <a href="http://kangamodeling.org/SequenceDiagram.aspx?code=Alice-%3EBob:Hello!"
+    target="_blank"><tt>http://kangamodeling.org/SequenceDiagram.aspx?code=Alice->Bob:Hello!</tt></a></p>
+<p>
+  Using <tt>pre</tt> could be good enaugh for most scenarios. For more complex usecases
+  you could probably use JavaScript like we do in the playroud below (see source of
+  this page) or some server side scripting like PHP.</p>
+<hr />
