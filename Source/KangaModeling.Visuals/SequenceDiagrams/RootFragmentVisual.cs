@@ -2,14 +2,15 @@
 using System.Linq;
 using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics;
+using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal class RootFragmentVisual : FragmentVisual
     {
 
-        public RootFragmentVisual(ICombinedFragment fragment, GridLayout gridLayout)
-            : base(fragment, gridLayout)
+        public RootFragmentVisual(IStyle style, ICombinedFragment fragment, GridLayout gridLayout)
+            : base(style, fragment, gridLayout)
         {
             TopRow = gridLayout.HeaderRow;
             BottomRow = gridLayout.FooterRow;
@@ -20,7 +21,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override Visual CreateOperandVisual(IOperand operand, bool isFirst, Column leftColumn, Column rightColumn)
         {
-            return new InvisibleOperandVisual(operand, GridLayout);
+            return new InvisibleOperandVisual(Style, operand, GridLayout);
         }
 
         protected override void LayoutCore(IGraphicContext graphicContext)

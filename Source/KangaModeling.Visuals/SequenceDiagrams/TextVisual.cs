@@ -1,5 +1,6 @@
 ﻿using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
+using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
@@ -10,7 +11,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private readonly string m_Name;
         private readonly Row m_Row;
 
-        public TextVisual(string name, Column column, Row row)
+        public TextVisual(IStyle style, string name, Column column, Row row)
+            : base(style)
         {
             m_Name = name;
             m_Column = column;
@@ -23,8 +25,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         protected override void LayoutCore(IGraphicContext graphicContext)
         {
             base.LayoutCore(graphicContext);
-            Size = graphicContext.MeasureText(m_Name);
-            if (Size.Width< MinWidth)
+            Size = graphicContext.MeasureText(m_Name, Style.Lifeline.NameFont, Style.Lifeline.NameFontSize);
+            if (Size.Width < MinWidth)
             {
                 Size = new Size(MinWidth, Height);
             }
@@ -35,7 +37,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         protected override void DrawCore(IGraphicContext graphicContext)
         {
             Location = Parent.Location;
-            graphicContext.DrawText(m_Name, HorizontalAlignment.Center, VerticalAlignment.Middle, Location, Size);
+            graphicContext.DrawText(Location, Size, m_Name, Style.Lifeline.NameFont, Style.Lifeline.NameFontSize, Style.Lifeline.NameTextColor, HorizontalAlignment.Center, VerticalAlignment.Middle);
         }
     }
 }

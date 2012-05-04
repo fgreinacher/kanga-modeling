@@ -1,5 +1,6 @@
 ﻿using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
+using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
@@ -9,7 +10,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private readonly Row m_Row;
         private TextVisual m_TextVisual;
 
-        public FramedText(string text, Column column, Row row)
+        public FramedText(IStyle style, string text, Column column, Row row)
+            : base(style)
         {
             m_Column = column;
             m_Row = row;
@@ -19,7 +21,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private void Initialize(string text)
         {
-            m_TextVisual = new TextVisual(text, m_Column, m_Row);
+            m_TextVisual = new TextVisual(Style, text, m_Column, m_Row);
             AddChild(m_TextVisual);
         }
 
@@ -41,7 +43,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             Location = new Point(x, y);
 
-            graphicContext.DrawRectangle(Location, Size, Color.Black);
+            graphicContext.DrawRectangle(Location, Size, Style.Lifeline.NameFrameColor, Style.LineStyle);
             base.DrawCore(graphicContext);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using KangaModeling.Compiler.SequenceDiagrams;
+using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
@@ -8,7 +9,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private readonly GridLayout m_GridLayout;
         private readonly IEnumerable<ISignal> m_Signals;
 
-        public SignalsLayer(IEnumerable<ISignal> signals, GridLayout gridLayout)
+        public SignalsLayer(IStyle style, IEnumerable<ISignal> signals, GridLayout gridLayout)
+            : base(style)
         {
             m_Signals = signals;
             m_GridLayout = gridLayout;
@@ -25,7 +27,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 {
                     Column column = m_GridLayout.Columns[signal.Start.LifelineIndex];
                     Row endRow = m_GridLayout.Rows[signal.End.RowIndex];
-                    AddChild(new SelfSignalVisual(signal, column, row, endRow));
+                    AddChild(new SelfSignalVisual(Style, signal, column, row, endRow));
                 }
                 else
                 {
@@ -33,7 +35,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     Column endColumn = m_GridLayout.Columns[signal.End.LifelineIndex];
                     ColumnSection endColumnNeighborSection = GetEndColumnNeighborSection(signal);
 
-                    AddChild(new SignalVisual(signal, startColumn, endColumn, row, endColumnNeighborSection));
+                    AddChild(new SignalVisual(Style, signal, startColumn, endColumn, row, endColumnNeighborSection));
                 }
             }
         }
@@ -45,7 +47,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                                     : signal.End.LifelineIndex + 1;
 
             ColumnSection endColumnNeighborSection = null;
-            if (neighborIndex>=0 && neighborIndex<m_GridLayout.Columns.Count)
+            if (neighborIndex >= 0 && neighborIndex < m_GridLayout.Columns.Count)
             {
                 Column endColumnNeighbor = m_GridLayout.Columns[neighborIndex];
                 endColumnNeighborSection = signal.End.Orientation == Orientation.Left

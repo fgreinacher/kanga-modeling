@@ -2,6 +2,7 @@
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
 using System;
+using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
@@ -10,8 +11,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private readonly Column m_Column;
         private readonly Row m_EndRow;
 
-        public SelfSignalVisual(ISignal signal, Column column, Row row, Row endRow)
-            : base(signal, row)
+        public SelfSignalVisual(IStyle style, ISignal signal, Column column, Row row, Row endRow)
+            : base(style, signal, row)
         {
             m_Column = column;
             m_EndRow = endRow;
@@ -29,14 +30,21 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             float xText = m_Column.Body.Right + ArrowCapHeight + TextPadding;
             float yText = m_EndRow.Body.Bottom - TextPadding - m_TextSize.Height;
-            graphicContext.DrawText(m_Signal.Name, HorizontalAlignment.Left, VerticalAlignment.Middle,
-                                    new Point(xText, yText), m_TextSize + new Padding(TextPadding));
+            graphicContext.DrawText(
+                new Point(xText, yText), 
+                m_TextSize + new Padding(TextPadding),
+                m_Signal.Name, 
+                Style.Signal.Font, 
+                Style.Signal.FontSize, 
+                Style.Signal.TextColor,
+                HorizontalAlignment.Left, 
+                VerticalAlignment.Middle);
         }
 
         protected override void DrawArrow(IGraphicContext graphicContext)
         {
-            Action<Point, Point, float, Color> drawLine;
-            Action<Point, Point, float, float, float> drawArrow;
+            Action<Point, Point, float, Color, LineStyle> drawLine;
+            Action<Point, Point, float, float, float, Color, LineStyle> drawArrow;
 
             switch (m_Signal.SignalType)
             {
@@ -51,8 +59,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     break;
 
                 default:
-                    drawLine = (a, b, c, d) => { };
-                    drawArrow = (a, b, c, d, e) => { };
+                    drawLine = (a, b, c, d, e) => { };
+                    drawArrow = (a, b, c, d, e, f, g) => { };
                     break;
             }
 
@@ -66,19 +74,23 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             drawLine(
                 new Point(xStart, yTop),
                 new Point(xRight, yTop),
-                2,
-                Color.Black);
+                Style.Signal.Width,
+                Style.Signal.LineColor,
+                Style.LineStyle);
             drawLine(
                 new Point(xRight, yTop),
                 new Point(xRight, yBottom),
-                2,
-                Color.Black);
+                Style.Signal.Width,
+                Style.Signal.LineColor,
+                Style.LineStyle);
             drawArrow(
                 new Point(xRight, yBottom),
                 new Point(xEnd, yBottom),
-                2,
+                Style.Signal.Width,
                 ArrowCapHeight,
-                ArrowCapHeight);
+                ArrowCapHeight,
+                Style.Signal.LineColor,
+                Style.LineStyle);
         }
     }
 }

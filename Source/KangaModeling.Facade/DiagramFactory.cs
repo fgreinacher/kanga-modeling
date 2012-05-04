@@ -6,6 +6,7 @@ using System.Drawing;
 using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Visuals.SequenceDiagrams;
 using KangaModeling.Graphics.GdiPlus;
+using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Facade
 {
@@ -46,7 +47,7 @@ namespace KangaModeling.Facade
 
 		private static Bitmap GenerateBitmap(ISequenceDiagram sd)
 		{
-			var sequenceDiagramVisual = new SequenceDiagramVisual(sd);
+			var sequenceDiagramVisual = new SequenceDiagramVisual(new ClassicStyle(), sd);
 
 			using (var measureBitmap = new Bitmap(1, 1))
 			using (var measureGraphics = System.Drawing.Graphics.FromImage(measureBitmap))

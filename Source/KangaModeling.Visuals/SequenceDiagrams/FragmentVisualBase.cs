@@ -2,6 +2,7 @@
 using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
+using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
@@ -24,7 +25,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private Padding m_InnerPadding;
 
 
-        protected FragmentVisualBase(ICombinedFragment fragment, GridLayout gridLayout)
+        protected FragmentVisualBase(IStyle style, ICombinedFragment fragment, GridLayout gridLayout)
+            : base(style)
         {
             m_Fragment = fragment;
             m_GridLayout = gridLayout;
@@ -70,7 +72,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             base.LayoutCore(graphicContext);
 
-            m_TextSize = graphicContext.MeasureText(m_Fragment.Title);
+            m_TextSize = graphicContext.MeasureText(m_Fragment.Title, Style.Fragment.Font, Style.Fragment.FontSize);
 
             m_InnerPadding = m_PaddingDepth * FramePadding;
 
@@ -116,13 +118,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private void DrawOuterFrame(IGraphicContext graphicContext)
         {
-            graphicContext.DrawRectangle(Location, Size, Color.Gray);
+            graphicContext.DrawRectangle(Location, Size, Style.Fragment.FrameColor, Style.LineStyle);
         }
 
         private void DrawText(IGraphicContext graphicContext)
         {
             Size textArea = m_TextSize + new Padding(FramePadding / 2);
-            graphicContext.DrawText(m_Fragment.Title, HorizontalAlignment.Center, VerticalAlignment.Middle, Location, textArea);
+            graphicContext.DrawText(Location, textArea, m_Fragment.Title, Style.Fragment.Font, Style.Fragment.FontSize, Style.Fragment.TextColor, HorizontalAlignment.Center, VerticalAlignment.Middle);
         }
 
         private void DrawTextFrame(float xStart, float yStart, IGraphicContext graphicContext)
@@ -133,8 +135,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             graphicContext.FillPolygon( new[] {Location, textFramePoint1, textFramePoint2, textFramePoint3, Location}, Color.SemiTransparent); 
                 
-            graphicContext.DrawLine(textFramePoint1, textFramePoint2, 1, Color.Gray);
-            graphicContext.DrawLine(textFramePoint2, textFramePoint3, 1, Color.Gray);
+            graphicContext.DrawLine(textFramePoint1, textFramePoint2, Style.Fragment.TextFrameWidth, Style.Fragment.TextFrameColor, Style.LineStyle);
+            graphicContext.DrawLine(textFramePoint2, textFramePoint3, Style.Fragment.TextFrameWidth, Style.Fragment.TextFrameColor, Style.LineStyle);
         }
     }
 }

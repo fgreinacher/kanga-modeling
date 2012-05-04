@@ -2,6 +2,7 @@
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
 using System;
+using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
@@ -14,7 +15,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         protected readonly Row m_Row;
         protected Size m_TextSize;
 
-        protected SignalVisualBase(ISignal signal, Row row)
+        protected SignalVisualBase(IStyle style, ISignal signal, Row row)
+            : base(style)
         {
             m_Signal = signal;
             m_Row = row;
@@ -24,7 +26,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             base.LayoutCore(graphicContext);
 
-            m_TextSize = graphicContext.MeasureText(m_Signal.Name);
+            m_TextSize = graphicContext.MeasureText(m_Signal.Name, Style.Signal.Font, Style.Signal.FontSize);
         }
 
         protected sealed override void DrawCore(IGraphicContext graphicContext)
@@ -39,11 +41,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected float GetXFromCenterRelative(IPin pin)
         {
-            float xFromCenterAbsoulute = ActivityVisual.ActivityWidth / 2 * pin.Level;
+            float xFromCenterAbsoulute = Style.Activity.Width / 2 * pin.Level;
 
             return pin.Orientation == Orientation.Left
                        ? -xFromCenterAbsoulute
                        : xFromCenterAbsoulute;
         }
-    }    
+    }
 }

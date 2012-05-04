@@ -57,12 +57,13 @@
     <Compile Include="GdiPlus\ConversionExtensions.cs" />
     <Compile Include="GdiPlus\DoOnDispose.cs" />
     <Compile Include="Primitives\Color.cs" />
+    <Compile Include="Primitives\Font.cs" />
     <Compile Include="Primitives\Padding.cs" />
     <Compile Include="Primitives\HorizontalAlignment.cs" />
     <Compile Include="IGraphicContext.cs" />
     <Compile Include="Primitives\Point.cs" />
     <Compile Include="Primitives\Size.cs" />
-    <Compile Include="Primitives\Style.cs" />
+    <Compile Include="Primitives\LineStyle.cs" />
     <Compile Include="Primitives\VerticalAlignment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -3,6 +3,7 @@ using System.Linq;
 using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
+using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
@@ -14,8 +15,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private readonly Row m_TopRow;
         private readonly string m_GuardExpressionText;
 
-        public OperandVisual(IOperand operand, GridLayout gridLayout, bool isFirst, Column leftColumn, Column rightColumn)
-            : base(operand, gridLayout) 
+        public OperandVisual(IStyle style, IOperand operand, GridLayout gridLayout, bool isFirst, Column leftColumn, Column rightColumn)
+            : base(style, operand, gridLayout) 
         {
             m_IsFirst = isFirst;
             m_LeftColumn = leftColumn;
@@ -32,7 +33,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             Size = string.IsNullOrEmpty(m_GuardExpressionText) 
                 ? Size.Empty 
-                : graphicContext.MeasureText(m_GuardExpressionText);
+                : graphicContext.MeasureText(m_GuardExpressionText, Style.GuardExpression.Font, Style.GuardExpression.FontSize);
             
             float childBottomOffset = 
                 Children
@@ -59,12 +60,16 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             if (!m_IsFirst)
             {
-                graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), 1);
+                graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), Style.Fragment.OperandSeparatorWidth, Style.Fragment.OperandSeparatorColor, Style.LineStyle);
             }
             
             Point textLocation = new Point(xStart + 5, yText);
             graphicContext.FillRectangle(textLocation, Size, Color.SemiTransparent);
-            graphicContext.DrawText(m_GuardExpressionText, HorizontalAlignment.Left, VerticalAlignment.Middle, textLocation, Size);
+            graphicContext.DrawText(
+                textLocation, Size,
+                m_GuardExpressionText, 
+                Style.GuardExpression.Font, Style.GuardExpression.FontSize, Style.GuardExpression.TextColor,
+                HorizontalAlignment.Left, VerticalAlignment.Middle);
 
             base.DrawCore(graphicContext);
         }

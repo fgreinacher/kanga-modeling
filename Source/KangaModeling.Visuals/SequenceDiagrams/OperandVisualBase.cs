@@ -1,4 +1,5 @@
 using KangaModeling.Compiler.SequenceDiagrams;
+using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
@@ -15,7 +16,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         public float BottomOffset { get; protected set; }
 
 
-        protected OperandVisualBase(IOperand operand, GridLayout gridLayout)
+        protected OperandVisualBase(IStyle style, IOperand operand, GridLayout gridLayout)
+            : base(style)
         {
             m_Operand = operand;
             m_GridLayout = gridLayout;
@@ -25,7 +27,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             foreach (ICombinedFragment fragment in m_Operand.Children)
             {
-                AddChild(new FragmentVisual(fragment, m_GridLayout));
+                AddChild(new FragmentVisual(Style, fragment, m_GridLayout));
             }
         }
     }

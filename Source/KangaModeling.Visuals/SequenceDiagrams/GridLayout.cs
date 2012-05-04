@@ -4,6 +4,7 @@ using System.Linq;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
 using System.Diagnostics;
+using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
@@ -11,7 +12,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
     {
         private readonly Padding m_Padding = new Padding(10);
 
-        public GridLayout(int lifelineCount, int rowCount)
+        public GridLayout(IStyle style, int lifelineCount, int rowCount)
+            : base(style)
         {
             Rows = new List<Row>();
             Columns = new List<Column>();
@@ -57,7 +59,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             return GetSectionsBetween(fromIndex, toIndex, gapsOnly);
         }
 
-    
+
         private IEnumerable<ColumnSection> GetSectionsBetween(int startLifelineId, int endLifelineId, bool gapsOnly)
         {
             yield return Columns[startLifelineId].RightGap;
@@ -93,7 +95,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            //DrawCellAreas(graphicContext);
+            if (Style.DrawCellAreas)
+            {
+                DrawCellAreas(graphicContext);
+            }
         }
 
         private void AdjustLocations()
@@ -127,7 +132,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         [Conditional("DEBUG")]
         private void DrawCellAreas(IGraphicContext graphicContext)
-        {            
+        {
             foreach (var row in Rows)
             {
                 var rowTop = row.Top;
@@ -150,7 +155,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     graphicContext.DrawRectangle(
                         new Point(columnLeft, rowTop),
                         new Size(columnWidth, rowHeight),
-                        new Color(100, Color.Green));
+                        new Color(100, Color.Green),
+                        Style.LineStyle);
 
                     graphicContext.FillRectangle(
                         new Point(columnBodyLeft, rowBodyTop),
@@ -160,7 +166,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     graphicContext.DrawRectangle(
                         new Point(columnBodyLeft, rowBodyTop),
                         new Size(columnBodyWidth, rowBodyHeight),
-                        new Color(100, Color.Red));
+                        new Color(100, Color.Red),
+                        Style.LineStyle);
                 }
             }
         }
