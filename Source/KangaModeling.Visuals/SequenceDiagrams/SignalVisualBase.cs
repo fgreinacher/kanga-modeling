@@ -26,7 +26,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             base.LayoutCore(graphicContext);
 
-            m_TextSize = graphicContext.MeasureText(m_Signal.Name, Style.Signal.Font, Style.Signal.FontSize);
+            m_TextSize = graphicContext.MeasureText(m_Signal.Name, Style.Common.Font, Style.Signal.FontSize);
         }
 
         protected sealed override void DrawCore(IGraphicContext graphicContext)

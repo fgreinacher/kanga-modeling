@@ -33,7 +33,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             Size = string.IsNullOrEmpty(m_GuardExpressionText) 
                 ? Size.Empty 
-                : graphicContext.MeasureText(m_GuardExpressionText, Style.GuardExpression.Font, Style.GuardExpression.FontSize);
+                : graphicContext.MeasureText(m_GuardExpressionText, Style.Common.Font, Style.GuardExpression.FontSize);
             
             float childBottomOffset = 
                 Children
@@ -60,7 +60,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             if (!m_IsFirst)
             {
-                graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), Style.Fragment.OperandSeparatorWidth, Style.Fragment.OperandSeparatorColor, Style.LineStyle);
+                graphicContext.DrawDashedLine(new Point(xStart, yLine), new Point(xEnd, yLine), Style.Fragment.OperandSeparatorWidth, Style.Fragment.OperandSeparatorColor, Style.Common.LineStyle);
             }
             
             Point textLocation = new Point(xStart + 5, yText);
@@ -68,7 +68,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             graphicContext.DrawText(
                 textLocation, Size,
                 m_GuardExpressionText, 
-                Style.GuardExpression.Font, Style.GuardExpression.FontSize, Style.GuardExpression.TextColor,
+                Style.Common.Font, Style.GuardExpression.FontSize, Style.GuardExpression.TextColor,
                 HorizontalAlignment.Left, VerticalAlignment.Middle);
 
             base.DrawCore(graphicContext);

@@ -47,7 +47,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             var size = new Size(Width, yEnd - yStart);
 
             graphicContext.FillRectangle(location, size, Style.Activity.BackColor);
-            graphicContext.DrawRectangle(location, size, Style.Activity.FrameColor, Style.LineStyle);
+            graphicContext.DrawRectangle(location, size, Style.Activity.FrameColor, Style.Common.LineStyle);
 
             base.DrawCore(graphicContext);
         }

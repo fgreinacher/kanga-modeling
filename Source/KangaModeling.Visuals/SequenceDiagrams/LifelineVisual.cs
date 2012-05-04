@@ -41,7 +41,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             float x = m_Column.Body.Middle;
             float yStart = m_StartRow.Bottom;
             float yEnd = m_EndRow.Body.Middle;
-            graphicContext.DrawLine(new Point(x, yStart), new Point(x, yEnd), Style.Lifeline.Width, Style.Lifeline.Color, Style.LineStyle);
+            graphicContext.DrawLine(new Point(x, yStart), new Point(x, yEnd), Style.Lifeline.Width, Style.Lifeline.Color, Style.Common.LineStyle);
             base.DrawCore(graphicContext);
         }
     }

@@ -6,16 +6,25 @@ using KangaModeling.Graphics.Primitives;
 
 namespace KangaModeling.Visuals.SequenceDiagrams.Styles
 {
+    public interface ICommonProperties
+    {
+        Font Font { get; }
+        LineStyle LineStyle { get; }
+    }
+
+    public interface IDebugProperties
+    {
+        bool DrawCellAreas { get; }
+    }
+
     public interface ILifelineProperties
     {
         float Width { get; }
 
         Color Color { get; }
 
-        Color NameFrameColor { get; } // Black
-
-        Font NameFont { get; }
-
+        Color NameFrameColor { get; }
+        
         float NameFontSize { get; }
 
         Color NameTextColor { get; }
@@ -27,35 +36,31 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
 
     public interface IGuardExpressionProperties
     {
-        Font Font { get; }
-
         float FontSize { get; }
 
         Color TextColor { get; }
     }
 
-    public interface IActivityProperties 
+    public interface IActivityProperties
     {
-        float Width { get; } // 10
-        
-        Color FrameColor { get; } // black
+        float Width { get; }
 
-        Color BackColor { get; } // white
+        Color FrameColor { get; }
+
+        Color BackColor { get; }
     }
 
     public interface IFragmentProperties
     {
-        Font Font { get; }
-
         float FontSize { get; }
 
         Color FrameColor { get; }
 
         Color TextColor { get; }
 
-        float TextFrameWidth { get; } // 1
+        float TextFrameWidth { get; }
 
-        Color TextFrameColor { get; } // Color.Gray
+        Color TextFrameColor { get; }
 
         float OperandSeparatorWidth { get; }
 
@@ -66,9 +71,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
         float FontSize { get; }
 
         Color TextColor { get; }
-
-        Font Font { get; }
-
+        
         float Width { get; }
 
         Color LineColor { get; }
@@ -76,10 +79,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
 
     public interface IStyle
     {
-        bool DrawCellAreas { get; }
+        ICommonProperties Common { get; }
 
-        LineStyle LineStyle { get; }
-        
+        IDebugProperties Debug { get; }
+
         ILifelineProperties Lifeline { get; }
 
         IGuardExpressionProperties GuardExpression { get; }

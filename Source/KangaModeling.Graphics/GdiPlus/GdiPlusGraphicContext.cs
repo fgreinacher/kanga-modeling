@@ -26,6 +26,7 @@ namespace KangaModeling.Graphics.GdiPlus
 
             m_Graphics = graphics;
 
+            m_Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             FillFontCollection();
         }
 

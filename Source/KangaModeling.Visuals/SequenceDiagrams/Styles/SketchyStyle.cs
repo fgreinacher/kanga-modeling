@@ -8,20 +8,24 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
 {
     public class SketchyStyle :
         IStyle,
+        ICommonProperties,
+        IDebugProperties,
         ILifelineProperties,
         IGuardExpressionProperties,
         IActivityProperties,
         IFragmentProperties,
         ISignalProperties
     {
-        bool IStyle.DrawCellAreas
+        private const float c_BaseFontSize = 12;
+
+        ICommonProperties IStyle.Common
         {
-            get { return false; }
+            get { return this; }
         }
 
-        LineStyle IStyle.LineStyle
+        IDebugProperties IStyle.Debug
         {
-            get { return LineStyle.Sketchy; }
+            get { return this; }
         }
 
         ILifelineProperties IStyle.Lifeline
@@ -64,17 +68,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
             get { return Color.Black; }
         }
 
-        Font ILifelineProperties.NameFont
-        {
-            get { return Font.Handwritten; }
-        }
-
         float ILifelineProperties.NameFontSize
         {
             get { return c_BaseFontSize; }
         }
-
-        private const float c_BaseFontSize = 12;
 
         Color ILifelineProperties.NameTextColor
         {
@@ -89,11 +86,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
         float ILifelineProperties.XCrossWidth
         {
             get { return 1; }
-        }
-
-        Font IGuardExpressionProperties.Font
-        {
-            get { return Font.Handwritten; }
         }
 
         float IGuardExpressionProperties.FontSize
@@ -120,12 +112,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
         {
             get { return Color.White; }
         }
-
-        Font IFragmentProperties.Font
-        {
-            get { return Font.Handwritten; }
-        }
-
+        
         float IFragmentProperties.FontSize
         {
             get { return c_BaseFontSize; }
@@ -170,12 +157,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
         {
             get { return Color.Black; }
         }
-
-        Font ISignalProperties.Font
-        {
-            get { return Font.Handwritten; }
-        }
-
+        
         float ISignalProperties.Width
         {
             get { return 2; }
@@ -184,6 +166,21 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
         Color ISignalProperties.LineColor
         {
             get { return Color.Black; }
+        }
+
+        Font ICommonProperties.Font
+        {
+            get { return Font.Handwritten; }
+        }
+
+        LineStyle ICommonProperties.LineStyle
+        {
+            get { return LineStyle.Sketchy; }
+        }
+
+        bool IDebugProperties.DrawCellAreas
+        {
+            get { return false; }
         }
     }
 }

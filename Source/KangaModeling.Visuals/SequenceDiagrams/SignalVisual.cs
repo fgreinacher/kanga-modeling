@@ -50,7 +50,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 new Point(xText, yText),
                 m_TextSize + new Padding(TextPadding),
                 m_Signal.Name,
-                Style.Signal.Font,
+                Style.Common.Font,
                 Style.Signal.FontSize,
                 Style.Signal.TextColor,
                 HorizontalAlignment.Center,
@@ -77,7 +77,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                         ArrowCapHeight,
                         ArrowCapHeight,
                         Style.Signal.LineColor,
-                        Style.LineStyle);
+                        Style.Common.LineStyle);
                     break;
 
                 case Compiler.SequenceDiagrams.SignalType.Return:
@@ -88,7 +88,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                         ArrowCapHeight,
                         ArrowCapHeight,
                         Style.Signal.LineColor,
-                        Style.LineStyle);
+                        Style.Common.LineStyle);
                     break;
 
                 default:

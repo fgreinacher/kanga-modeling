@@ -40,8 +40,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             var leftBottom = new Point(x - hWidth, y + hHeight);
             var rightBottom = new Point(x + hWidth, y + hHeight);
 
-            graphicContext.DrawLine(leftTop, rightBottom, Style.Lifeline.XCrossWidth, Style.Lifeline.XCrossColor, Style.LineStyle);
-            graphicContext.DrawLine(rightTop, leftBottom, Style.Lifeline.XCrossWidth, Style.Lifeline.XCrossColor, Style.LineStyle);
+            graphicContext.DrawLine(leftTop, rightBottom, Style.Lifeline.XCrossWidth, Style.Lifeline.XCrossColor, Style.Common.LineStyle);
+            graphicContext.DrawLine(rightTop, leftBottom, Style.Lifeline.XCrossWidth, Style.Lifeline.XCrossColor, Style.Common.LineStyle);
 
             base.DrawCore(graphicContext);
         }

@@ -53,7 +53,7 @@
     <Compile Include="SequenceDiagrams\ColumnSection.cs" />
     <Compile Include="SequenceDiagrams\InvisibleOperandVisual.cs" />
     <Compile Include="SequenceDiagrams\Styles\ClassicStyle.cs" />
-    <Compile Include="SequenceDiagrams\Styles\DebugStyleDecorator.cs" />
+    <Compile Include="SequenceDiagrams\Styles\DebugStyle.cs" />
     <Compile Include="SequenceDiagrams\Styles\IStyle.cs" />
     <Compile Include="SequenceDiagrams\OperandVisualBase.cs" />
     <Compile Include="SequenceDiagrams\SelfSignalVisual.cs" />

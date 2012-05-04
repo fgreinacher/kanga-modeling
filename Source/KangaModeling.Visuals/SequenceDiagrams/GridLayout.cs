@@ -95,7 +95,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            if (Style.DrawCellAreas)
+            if (Style.Debug.DrawCellAreas)
             {
                 DrawCellAreas(graphicContext);
             }
@@ -156,7 +156,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                         new Point(columnLeft, rowTop),
                         new Size(columnWidth, rowHeight),
                         new Color(100, Color.Green),
-                        Style.LineStyle);
+                        Style.Common.LineStyle);
 
                     graphicContext.FillRectangle(
                         new Point(columnBodyLeft, rowBodyTop),
@@ -167,7 +167,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                         new Point(columnBodyLeft, rowBodyTop),
                         new Size(columnBodyWidth, rowBodyHeight),
                         new Color(100, Color.Red),
-                        Style.LineStyle);
+                        Style.Common.LineStyle);
                 }
             }
         }

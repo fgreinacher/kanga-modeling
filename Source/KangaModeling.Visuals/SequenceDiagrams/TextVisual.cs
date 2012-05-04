@@ -25,7 +25,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         protected override void LayoutCore(IGraphicContext graphicContext)
         {
             base.LayoutCore(graphicContext);
-            Size = graphicContext.MeasureText(m_Name, Style.Lifeline.NameFont, Style.Lifeline.NameFontSize);
+            Size = graphicContext.MeasureText(m_Name, Style.Common.Font, Style.Lifeline.NameFontSize);
             if (Size.Width < MinWidth)
             {
                 Size = new Size(MinWidth, Height);
@@ -37,7 +37,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         protected override void DrawCore(IGraphicContext graphicContext)
         {
             Location = Parent.Location;
-            graphicContext.DrawText(Location, Size, m_Name, Style.Lifeline.NameFont, Style.Lifeline.NameFontSize, Style.Lifeline.NameTextColor, HorizontalAlignment.Center, VerticalAlignment.Middle);
+            graphicContext.DrawText(Location, Size, m_Name, Style.Common.Font, Style.Lifeline.NameFontSize, Style.Lifeline.NameTextColor, HorizontalAlignment.Center, VerticalAlignment.Middle);
         }
     }
 }

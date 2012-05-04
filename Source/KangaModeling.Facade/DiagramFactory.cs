@@ -47,7 +47,7 @@ namespace KangaModeling.Facade
 
 		private static Bitmap GenerateBitmap(ISequenceDiagram sd)
 		{
-			var sequenceDiagramVisual = new SequenceDiagramVisual(new ClassicStyle(), sd);
+			var sequenceDiagramVisual = new SequenceDiagramVisual(new DebugStyle(new SketchyStyle()), sd);
 
 			using (var measureBitmap = new Bitmap(1, 1))
 			using (var measureGraphics = System.Drawing.Graphics.FromImage(measureBitmap))

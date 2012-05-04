@@ -43,7 +43,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             Location = new Point(x, y);
 
-            graphicContext.DrawRectangle(Location, Size, Style.Lifeline.NameFrameColor, Style.LineStyle);
+            graphicContext.DrawRectangle(Location, Size, Style.Lifeline.NameFrameColor, Style.Common.LineStyle);
             base.DrawCore(graphicContext);
         }
     }

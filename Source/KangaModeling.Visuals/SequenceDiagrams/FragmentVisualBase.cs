@@ -72,7 +72,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             base.LayoutCore(graphicContext);
 
-            m_TextSize = graphicContext.MeasureText(m_Fragment.Title, Style.Fragment.Font, Style.Fragment.FontSize);
+            m_TextSize = graphicContext.MeasureText(m_Fragment.Title, Style.Common.Font, Style.Fragment.FontSize);
 
             m_InnerPadding = m_PaddingDepth * FramePadding;
 
@@ -118,13 +118,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private void DrawOuterFrame(IGraphicContext graphicContext)
         {
-            graphicContext.DrawRectangle(Location, Size, Style.Fragment.FrameColor, Style.LineStyle);
+            graphicContext.DrawRectangle(Location, Size, Style.Fragment.FrameColor, Style.Common.LineStyle);
         }
 
         private void DrawText(IGraphicContext graphicContext)
         {
             Size textArea = m_TextSize + new Padding(FramePadding / 2);
-            graphicContext.DrawText(Location, textArea, m_Fragment.Title, Style.Fragment.Font, Style.Fragment.FontSize, Style.Fragment.TextColor, HorizontalAlignment.Center, VerticalAlignment.Middle);
+            graphicContext.DrawText(Location, textArea, m_Fragment.Title, Style.Common.Font, Style.Fragment.FontSize, Style.Fragment.TextColor, HorizontalAlignment.Center, VerticalAlignment.Middle);
         }
 
         private void DrawTextFrame(float xStart, float yStart, IGraphicContext graphicContext)
@@ -133,10 +133,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             var textFramePoint2 = new Point(xStart + m_TextSize.Width, yStart + m_TextSize.Height + FramePadding / 2);
             var textFramePoint3 = new Point(xStart + m_TextSize.Width + FramePadding, yStart);
 
-            graphicContext.FillPolygon( new[] {Location, textFramePoint1, textFramePoint2, textFramePoint3, Location}, Color.SemiTransparent); 
-                
-            graphicContext.DrawLine(textFramePoint1, textFramePoint2, Style.Fragment.TextFrameWidth, Style.Fragment.TextFrameColor, Style.LineStyle);
-            graphicContext.DrawLine(textFramePoint2, textFramePoint3, Style.Fragment.TextFrameWidth, Style.Fragment.TextFrameColor, Style.LineStyle);
+            graphicContext.FillPolygon( new[] {Location, textFramePoint1, textFramePoint2, textFramePoint3, Location}, Color.SemiTransparent);
+
+            graphicContext.DrawLine(textFramePoint1, textFramePoint2, Style.Fragment.TextFrameWidth, Style.Fragment.TextFrameColor, Style.Common.LineStyle);
+            graphicContext.DrawLine(textFramePoint2, textFramePoint3, Style.Fragment.TextFrameWidth, Style.Fragment.TextFrameColor, Style.Common.LineStyle);
         }
     }
 }

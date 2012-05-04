@@ -34,7 +34,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 new Point(xText, yText), 
                 m_TextSize + new Padding(TextPadding),
                 m_Signal.Name, 
-                Style.Signal.Font, 
+                Style.Common.Font, 
                 Style.Signal.FontSize, 
                 Style.Signal.TextColor,
                 HorizontalAlignment.Left, 
@@ -76,13 +76,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 new Point(xRight, yTop),
                 Style.Signal.Width,
                 Style.Signal.LineColor,
-                Style.LineStyle);
+                Style.Common.LineStyle);
             drawLine(
                 new Point(xRight, yTop),
                 new Point(xRight, yBottom),
                 Style.Signal.Width,
                 Style.Signal.LineColor,
-                Style.LineStyle);
+                Style.Common.LineStyle);
             drawArrow(
                 new Point(xRight, yBottom),
                 new Point(xEnd, yBottom),
@@ -90,7 +90,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 ArrowCapHeight,
                 ArrowCapHeight,
                 Style.Signal.LineColor,
-                Style.LineStyle);
+                Style.Common.LineStyle);
         }
     }
 }
