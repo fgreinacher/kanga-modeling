@@ -16,7 +16,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
         IFragmentProperties,
         ISignalProperties
     {
-        private const float c_BaseFontSize = 12;
+        private const float c_BaseFontSize = 14;
 
         ICommonProperties IStyle.Common
         {
@@ -83,9 +83,14 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
             get { return Color.Black; }
         }
 
-        float ILifelineProperties.XCrossWidth
+        float ILifelineProperties.XCrossLineWidth
         {
             get { return 1; }
+        }
+
+        Size ILifelineProperties.XCrossSize
+        {
+            get { return new Size(16, 16); }
         }
 
         float IGuardExpressionProperties.FontSize
@@ -121,6 +126,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
         Color IFragmentProperties.FrameColor
         {
             get { return Color.Black; }
+        }
+
+        float IFragmentProperties.FramePadding
+        {
+            get { return 10; }
         }
 
         Color IFragmentProperties.TextColor
@@ -163,9 +173,19 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
             get { return 2; }
         }
 
+        float ISignalProperties.ArrowCapSize
+        {
+            get { return 8; }
+        }
+
         Color ISignalProperties.LineColor
         {
             get { return Color.Black; }
+        }
+
+        float ISignalProperties.TextPadding
+        {
+            get { return 6; }
         }
 
         Font ICommonProperties.Font
@@ -176,6 +196,11 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
         LineStyle ICommonProperties.LineStyle
         {
             get { return LineStyle.Sketchy; }
+        }
+
+        Padding ICommonProperties.GridPadding
+        {
+            get { return new Padding(10); }
         }
 
         bool IDebugProperties.DrawCellAreas

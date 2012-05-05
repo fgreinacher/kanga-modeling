@@ -22,17 +22,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             base.LayoutCore(graphicContext);
 
-            m_Column.RightGap.Allocate(m_TextSize.Width + ArrowCapHeight + TextPadding * 2);
-            m_EndRow.Body.Allocate(m_TextSize.Height + TextPadding * 2);
+            m_Column.RightGap.Allocate(m_TextSize.Width + Style.Signal.ArrowCapSize + Style.Signal.TextPadding * 2);
+            m_EndRow.Body.Allocate(m_TextSize.Height + Style.Signal.TextPadding * 2);
         }
 
         protected override void DrawText(IGraphicContext graphicContext)
         {
-            float xText = m_Column.Body.Right + ArrowCapHeight + TextPadding;
-            float yText = m_EndRow.Body.Bottom - TextPadding - m_TextSize.Height;
+            float xText = m_Column.Body.Right + Style.Signal.ArrowCapSize + Style.Signal.TextPadding;
+            float yText = m_EndRow.Body.Bottom - Style.Signal.TextPadding - m_TextSize.Height;
             graphicContext.DrawText(
-                new Point(xText, yText), 
-                m_TextSize + new Padding(TextPadding),
+                new Point(xText, yText),
+                m_TextSize + new Padding(Style.Signal.TextPadding),
                 m_Signal.Name, 
                 Style.Common.Font, 
                 Style.Signal.FontSize, 
@@ -66,7 +66,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             float xStart = m_Column.Body.Middle + GetXFromCenterRelative(m_Signal.Start);
             float xEnd = m_Column.Body.Middle + GetXFromCenterRelative(m_Signal.End);
-            float xRight = m_Column.Body.Right + ArrowCapHeight;
+            float xRight = m_Column.Body.Right + Style.Signal.ArrowCapSize;
 
             float yTop = m_Row.Body.Bottom;
             float yBottom = m_EndRow.Body.Bottom;
@@ -87,8 +87,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 new Point(xRight, yBottom),
                 new Point(xEnd, yBottom),
                 Style.Signal.Width,
-                ArrowCapHeight,
-                ArrowCapHeight,
+                Style.Signal.ArrowCapSize,
+                Style.Signal.ArrowCapSize,
                 Style.Signal.LineColor,
                 Style.Common.LineStyle);
         }

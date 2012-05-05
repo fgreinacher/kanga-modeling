@@ -8,9 +8,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal abstract class SignalVisualBase : Visual
     {
-        public const float TextPadding = 6;
-        public const int ArrowCapHeight = 8;
-
         protected readonly ISignal m_Signal;
         protected readonly Row m_Row;
         protected Size m_TextSize;

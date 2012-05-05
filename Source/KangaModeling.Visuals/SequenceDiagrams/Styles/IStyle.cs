@@ -9,7 +9,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
     public interface ICommonProperties
     {
         Font Font { get; }
+
         LineStyle LineStyle { get; }
+
+        Padding GridPadding { get; }
     }
 
     public interface IDebugProperties
@@ -31,7 +34,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
 
         Color XCrossColor { get; }
 
-        float XCrossWidth { get; }
+        float XCrossLineWidth { get; }
+
+        Size XCrossSize { get; }
     }
 
     public interface IGuardExpressionProperties
@@ -56,6 +61,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
 
         Color FrameColor { get; }
 
+        float FramePadding { get; }
+
         Color TextColor { get; }
 
         float TextFrameWidth { get; }
@@ -75,6 +82,10 @@ namespace KangaModeling.Visuals.SequenceDiagrams.Styles
         float Width { get; }
 
         Color LineColor { get; }
+
+        float TextPadding { get; }
+
+        float ArrowCapSize { get; }
     }
 
     public interface IStyle

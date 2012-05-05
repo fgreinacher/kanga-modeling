@@ -8,7 +8,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal class RootFragmentVisual : FragmentVisual
     {
-
         public RootFragmentVisual(IStyle style, ICombinedFragment fragment, GridLayout gridLayout)
             : base(style, fragment, gridLayout)
         {
@@ -27,7 +26,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         protected override void LayoutCore(IGraphicContext graphicContext)
         {
             base.LayoutCore(graphicContext);
-            this.GridLayout.AllocateBetween(LeftColumn, RightColumn, this.Width + 3 * FramePadding);
+            
+            GridLayout.AllocateBetween(LeftColumn, RightColumn, Width + 3 * Style.Fragment.FramePadding);
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)

@@ -25,7 +25,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             base.LayoutCore(graphicContext);
 
             ColumnSection columnSection = m_Signal.End.Orientation == Orientation.Left ? m_EndColumn.LeftGap : m_EndColumn.RightGap;
-            float width = m_TextSize.Width + TextPadding * 2;
+            float width = m_TextSize.Width + Style.Signal.TextPadding * 2;
 
             if (m_EndColumnNeighbor == null)
             {
@@ -36,19 +36,19 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                 columnSection.Allocate(width / 2);
                 m_EndColumnNeighbor.Allocate(width / 2);
             }
-            m_Row.Body.Allocate(m_TextSize.Height + TextPadding * 2);
+            m_Row.Body.Allocate(m_TextSize.Height + Style.Signal.TextPadding * 2);
         }
 
         protected override void DrawText(IGraphicContext graphicContext)
         {
             float xText = m_Signal.End.Orientation == Orientation.Right
-                              ? m_EndColumn.Body.Right + TextPadding
-                              : m_EndColumn.Body.Left - TextPadding - m_TextSize.Width;
+                              ? m_EndColumn.Body.Right + Style.Signal.TextPadding
+                              : m_EndColumn.Body.Left - Style.Signal.TextPadding - m_TextSize.Width;
 
-            float yText = m_Row.Body.Bottom - TextPadding - m_TextSize.Height;
+            float yText = m_Row.Body.Bottom - Style.Signal.TextPadding - m_TextSize.Height;
             graphicContext.DrawText(
                 new Point(xText, yText),
-                m_TextSize + new Padding(TextPadding),
+                m_TextSize + new Padding(Style.Signal.TextPadding),
                 m_Signal.Name,
                 Style.Common.Font,
                 Style.Signal.FontSize,
@@ -74,8 +74,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                         start,
                         end,
                         Style.Signal.Width,
-                        ArrowCapHeight,
-                        ArrowCapHeight,
+                        Style.Signal.ArrowCapSize,
+                        Style.Signal.ArrowCapSize,
                         Style.Signal.LineColor,
                         Style.Common.LineStyle);
                     break;
@@ -85,8 +85,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                         start,
                         end,
                         Style.Signal.Width,
-                        ArrowCapHeight,
-                        ArrowCapHeight,
+                        Style.Signal.ArrowCapSize,
+                        Style.Signal.ArrowCapSize,
                         Style.Signal.LineColor,
                         Style.Common.LineStyle);
                     break;

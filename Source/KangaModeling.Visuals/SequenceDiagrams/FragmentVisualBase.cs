@@ -8,22 +8,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 {
     internal abstract class FragmentVisualBase : Visual
     {
-        public const float FramePadding = 10;
         private readonly IArea m_Area;
         private readonly ICombinedFragment m_Fragment;
         private readonly GridLayout m_GridLayout;
-        public float BottomOffset { get; protected set; }
-
-        public GridLayout GridLayout
-        {
-            get { return m_GridLayout; }
-        }
-
         private readonly Padding m_PaddingDepth;
 
         private Size m_TextSize;
         private Padding m_InnerPadding;
-
 
         protected FragmentVisualBase(IStyle style, ICombinedFragment fragment, GridLayout gridLayout)
             : base(style)
@@ -46,10 +37,20 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                     bottomDepth);
         }
 
+        public float BottomOffset { get; protected set; }
+
         public Row TopRow { get; set; }
+
         protected Row BottomRow { get; set; }
+
         protected Column LeftColumn { get; set; }
+
         protected Column RightColumn { get; set; }
+
+        protected GridLayout GridLayout
+        {
+            get { return m_GridLayout; }
+        }
 
         protected IArea Area
         {
@@ -74,9 +75,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             m_TextSize = graphicContext.MeasureText(m_Fragment.Title, Style.Common.Font, Style.Fragment.FontSize);
 
-            m_InnerPadding = m_PaddingDepth * FramePadding;
+            m_InnerPadding = m_PaddingDepth * Style.Fragment.FramePadding;
 
-            Width = m_TextSize.Width + FramePadding;
+            Width = m_TextSize.Width + Style.Fragment.FramePadding;
 
             var firstChild = Children.FirstOrDefault() as OperandVisualBase;
             var firstChildBottomOffset = firstChild != null ? firstChild.BottomOffset : 0;
@@ -92,7 +93,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         protected override void DrawCore(IGraphicContext graphicContext)
         {
-            float yStart = TopRow.TopGap.Bottom - BottomOffset - 4 ;
+            float yStart = TopRow.TopGap.Bottom - BottomOffset - 4;
             float yEnd = BottomRow.BottomGap.Top + m_InnerPadding.Bottom;
 
             float xStart = LeftColumn.Body.Left - m_InnerPadding.Left;
@@ -123,17 +124,17 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
         private void DrawText(IGraphicContext graphicContext)
         {
-            Size textArea = m_TextSize + new Padding(FramePadding / 2);
+            Size textArea = m_TextSize + new Padding(Style.Fragment.FramePadding / 2);
             graphicContext.DrawText(Location, textArea, m_Fragment.Title, Style.Common.Font, Style.Fragment.FontSize, Style.Fragment.TextColor, HorizontalAlignment.Center, VerticalAlignment.Middle);
         }
 
         private void DrawTextFrame(float xStart, float yStart, IGraphicContext graphicContext)
         {
-            var textFramePoint1 = new Point(xStart, yStart + m_TextSize.Height + FramePadding / 2);
-            var textFramePoint2 = new Point(xStart + m_TextSize.Width, yStart + m_TextSize.Height + FramePadding / 2);
-            var textFramePoint3 = new Point(xStart + m_TextSize.Width + FramePadding, yStart);
+            var textFramePoint1 = new Point(xStart, yStart + m_TextSize.Height + Style.Fragment.FramePadding / 2);
+            var textFramePoint2 = new Point(xStart + m_TextSize.Width, yStart + m_TextSize.Height + Style.Fragment.FramePadding / 2);
+            var textFramePoint3 = new Point(xStart + m_TextSize.Width + Style.Fragment.FramePadding, yStart);
 
-            graphicContext.FillPolygon( new[] {Location, textFramePoint1, textFramePoint2, textFramePoint3, Location}, Color.SemiTransparent);
+            graphicContext.FillPolygon(new[] { Location, textFramePoint1, textFramePoint2, textFramePoint3, Location }, Color.SemiTransparent);
 
             graphicContext.DrawLine(textFramePoint1, textFramePoint2, Style.Fragment.TextFrameWidth, Style.Fragment.TextFrameColor, Style.Common.LineStyle);
             graphicContext.DrawLine(textFramePoint2, textFramePoint3, Style.Fragment.TextFrameWidth, Style.Fragment.TextFrameColor, Style.Common.LineStyle);

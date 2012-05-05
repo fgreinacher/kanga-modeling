@@ -14,7 +14,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             m_Column = column;
             m_Row = row;
-            Size = new Size(16, 16);
         }
 
         protected override void LayoutCore(IGraphicContext graphicContext)
@@ -23,7 +22,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             m_Column.Allocate(Width);
             m_Row.Body.Allocate(Height);
-            m_Row.TopGap.Allocate(16);
+            m_Row.TopGap.Allocate(Style.Lifeline.XCrossSize.Height);
+
+            Size = Style.Lifeline.XCrossSize;
         }
 
         protected override void DrawCore(IGraphicContext graphicContext)
@@ -40,8 +41,8 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             var leftBottom = new Point(x - hWidth, y + hHeight);
             var rightBottom = new Point(x + hWidth, y + hHeight);
 
-            graphicContext.DrawLine(leftTop, rightBottom, Style.Lifeline.XCrossWidth, Style.Lifeline.XCrossColor, Style.Common.LineStyle);
-            graphicContext.DrawLine(rightTop, leftBottom, Style.Lifeline.XCrossWidth, Style.Lifeline.XCrossColor, Style.Common.LineStyle);
+            graphicContext.DrawLine(leftTop, rightBottom, Style.Lifeline.XCrossLineWidth, Style.Lifeline.XCrossColor, Style.Common.LineStyle);
+            graphicContext.DrawLine(rightTop, leftBottom, Style.Lifeline.XCrossLineWidth, Style.Lifeline.XCrossColor, Style.Common.LineStyle);
 
             base.DrawCore(graphicContext);
         }
