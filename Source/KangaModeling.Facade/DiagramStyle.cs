@@ -11,5 +11,6 @@ namespace KangaModeling.Facade
 	public enum DiagramStyle
 	{
 		Sketchy,
+        Classic,
 	}
 }

@@ -14,12 +14,15 @@ namespace KangaModeling.GuiRunner
         public GuiRunnerForm()
         {
             m_LastTitle = "noname";
-            InitializeComponent();
-        }
 
+            InitializeComponent();
+
+            styleComboBox.DataSource = Enum.GetValues(typeof(DiagramStyle));
+        }
+        
         private void Compile()
         {
-            var diagramArguments = new DiagramArguments(inputTextBox.Text, DiagramType.Sequence, DiagramStyle.Sketchy);
+            var diagramArguments = new DiagramArguments(inputTextBox.Text, DiagramType.Sequence, (DiagramStyle)styleComboBox.SelectedItem);
             var diagramResult = DiagramFactory.Create(diagramArguments);
             ProcessResult(diagramResult);
         }
@@ -210,6 +213,11 @@ namespace KangaModeling.GuiRunner
             }
 
             outputPictureBox.Image.Save(saveFileDialog.FileName);
+        }
+
+        private void styleComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            Compile();
         }
     }
 }

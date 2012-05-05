@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GuiRunnerForm));
             this.compileButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.buttonNesteAdtivities = new System.Windows.Forms.Button();
             this.buttonBigSample = new System.Windows.Forms.Button();
             this.buttonSample5 = new System.Windows.Forms.Button();
@@ -50,7 +51,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.outputImagePanel = new System.Windows.Forms.Panel();
             this.outputPictureBox = new System.Windows.Forms.PictureBox();
-            this.buttonSave = new System.Windows.Forms.Button();
+            this.styleComboBox = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inputAndOutputSplitContainer)).BeginInit();
             this.inputAndOutputSplitContainer.Panel1.SuspendLayout();
@@ -77,6 +78,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.styleComboBox);
             this.panel1.Controls.Add(this.buttonSave);
             this.panel1.Controls.Add(this.buttonNesteAdtivities);
             this.panel1.Controls.Add(this.buttonBigSample);
@@ -90,6 +92,18 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(79, 409);
             this.panel1.TabIndex = 5;
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.buttonSave.Image = global::KangaModeling.GuiRunner.Properties.Resources.Save_icon1;
+            this.buttonSave.Location = new System.Drawing.Point(4, 298);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(69, 57);
+            this.buttonSave.TabIndex = 7;
+            this.buttonSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // buttonNesteAdtivities
             // 
@@ -169,9 +183,9 @@
             // 
             // inputAndOutputSplitContainer
             // 
-            this.inputAndOutputSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.inputAndOutputSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.inputAndOutputSplitContainer.Location = new System.Drawing.Point(99, 9);
             this.inputAndOutputSplitContainer.Name = "inputAndOutputSplitContainer";
             // 
@@ -278,17 +292,15 @@
             this.outputPictureBox.TabIndex = 3;
             this.outputPictureBox.TabStop = false;
             // 
-            // buttonSave
+            // styleComboBox
             // 
-            this.buttonSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.buttonSave.Image = global::KangaModeling.GuiRunner.Properties.Resources.Save_icon1;
-            this.buttonSave.Location = new System.Drawing.Point(4, 298);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(69, 57);
-            this.buttonSave.TabIndex = 7;
-            this.buttonSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            this.styleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.styleComboBox.FormattingEnabled = true;
+            this.styleComboBox.Location = new System.Drawing.Point(4, 271);
+            this.styleComboBox.Name = "styleComboBox";
+            this.styleComboBox.Size = new System.Drawing.Size(69, 21);
+            this.styleComboBox.TabIndex = 8;
+            this.styleComboBox.SelectedValueChanged += new System.EventHandler(this.styleComboBox_SelectedValueChanged);
             // 
             // GuiRunnerForm
             // 
@@ -339,6 +351,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.Button buttonNesteAdtivities;
         private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.ComboBox styleComboBox;
 	}
 }
 

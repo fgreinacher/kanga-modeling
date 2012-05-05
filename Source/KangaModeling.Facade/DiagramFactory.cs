@@ -10,71 +10,86 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Facade
 {
-	/// <summary>
-	/// Represents a factory that creates a diagram from a specified set of arguments.
-	/// </summary>
-	public class DiagramFactory
-	{
-		public static DiagramResult Create(DiagramArguments arguments)
-		{
-			switch (arguments.Type)
-			{
-				case DiagramType.Sequence:
-					return CreateSequenceDiagram(arguments);
+    /// <summary>
+    /// Represents a factory that creates a diagram from a specified set of arguments.
+    /// </summary>
+    public class DiagramFactory
+    {
+        public static DiagramResult Create(DiagramArguments arguments)
+        {
+            switch (arguments.Type)
+            {
+                case DiagramType.Sequence:
+                    return CreateSequenceDiagram(arguments);
 
-				default:
-					throw new ArgumentException("", "arguments");
-			}
-		}
+                default:
+                    throw new ArgumentException("", "arguments");
+            }
+        }
 
-		private static DiagramResult CreateSequenceDiagram(DiagramArguments arguments)
-		{
-		    ModelErrorsCollection modelErrors = new ModelErrorsCollection();
-			ISequenceDiagram sequenceDiagram = DiagramCreator.CreateFrom(arguments.Text, modelErrors);
+        private static DiagramResult CreateSequenceDiagram(DiagramArguments arguments)
+        {
+            ModelErrorsCollection modelErrors = new ModelErrorsCollection();
+            ISequenceDiagram sequenceDiagram = DiagramCreator.CreateFrom(arguments.Text, modelErrors);
 
-			var diagramErrors = new List<DiagramError>();
-			foreach (ModelError modelError in modelErrors)
-			{
-				diagramErrors.Add(new DiagramError(modelError.Message, modelError.Token.Line, modelError.Token.Start, modelError.Token.Length, modelError.Token.Value));
-			}
+            var diagramErrors = new List<DiagramError>();
+            foreach (ModelError modelError in modelErrors)
+            {
+                diagramErrors.Add(new DiagramError(modelError.Message, modelError.Token.Line, modelError.Token.Start, modelError.Token.Length, modelError.Token.Value));
+            }
 
-			return new DiagramResult(
-				arguments,
-				GenerateBitmap(sequenceDiagram),
-				diagramErrors.ToArray(),
+            return new DiagramResult(
+                arguments,
+                GenerateBitmap(arguments.Style, sequenceDiagram),
+                diagramErrors.ToArray(),
                 sequenceDiagram.Root.Title);
-		}
+        }
 
-		private static Bitmap GenerateBitmap(ISequenceDiagram sd)
-		{
-			var sequenceDiagramVisual = new SequenceDiagramVisual(new SketchyStyle(), sd);
+        private static Bitmap GenerateBitmap(DiagramStyle diagramStyle, ISequenceDiagram sequenceDiagram)
+        {
+            IStyle style;
+            switch (diagramStyle)
+            {
+                case DiagramStyle.Sketchy:
+                    style = new SketchyStyle();
+                    break;
 
-			using (var measureBitmap = new Bitmap(1, 1))
-			using (var measureGraphics = System.Drawing.Graphics.FromImage(measureBitmap))
-			{
-				var graphicContext = new GdiPlusGraphicContext(measureGraphics);
+                case DiagramStyle.Classic:
+                    style = new ClassicStyle();
+                    break;
 
-				sequenceDiagramVisual.Layout(graphicContext);
+                default:
+                    throw new ArgumentOutOfRangeException("style");
+            }
 
-				var renderBitmap = new Bitmap(
-					(int)Math.Ceiling(sequenceDiagramVisual.Width + 1),
-					(int)Math.Ceiling(sequenceDiagramVisual.Height + 1));
+            var sequenceDiagramVisual = new SequenceDiagramVisual(style, sequenceDiagram);
 
-				using (var renderGraphics = System.Drawing.Graphics.FromImage(renderBitmap))
-				{
-					renderGraphics.Clear(Color.White);
-					renderGraphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-					renderGraphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
-				    renderGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            using (var measureBitmap = new Bitmap(1, 1))
+            using (var measureGraphics = System.Drawing.Graphics.FromImage(measureBitmap))
+            {
+                var graphicContext = new GdiPlusGraphicContext(measureGraphics);
 
-					graphicContext = new GdiPlusGraphicContext(renderGraphics);
+                sequenceDiagramVisual.Layout(graphicContext);
 
-					sequenceDiagramVisual.Draw(graphicContext);
+                var renderBitmap = new Bitmap(
+                    (int)Math.Ceiling(sequenceDiagramVisual.Width + 1),
+                    (int)Math.Ceiling(sequenceDiagramVisual.Height + 1));
 
-				}
+                using (var renderGraphics = System.Drawing.Graphics.FromImage(renderBitmap))
+                {
+                    renderGraphics.Clear(Color.White);
+                    renderGraphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                    renderGraphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                    renderGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-				return renderBitmap;
-			}
-		}
-	}
+                    graphicContext = new GdiPlusGraphicContext(renderGraphics);
+
+                    sequenceDiagramVisual.Draw(graphicContext);
+
+                }
+
+                return renderBitmap;
+            }
+        }
+    }
 }
