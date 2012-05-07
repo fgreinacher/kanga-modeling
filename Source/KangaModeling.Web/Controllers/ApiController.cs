@@ -95,7 +95,7 @@ namespace KangaModeling.Web.Controllers
         // GET: /Api/Js
         public ActionResult Js()
         {
-            string jsPath = Server.MapPath("/Scripts/kanga.js");
+            string jsPath = Server.MapPath("~/Scripts/kanga.js");
             string js = System.IO.File.ReadAllText(jsPath);
 
             js = js.Replace("_KANGA_API_BASE_URI_", Url.Action(string.Empty, "api"));
