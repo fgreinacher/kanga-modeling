@@ -15,13 +15,14 @@ namespace KangaModeling.Web.Controllers
         private const string c_StyleDefault = c_StyleSketchy;
 
         private const string c_StyleSketchy = "sketchy";
-        private const string c_StyleStraight = "straight";
+        private const string c_StyleClassic = "classic";
 
         private static Dictionary<string, DiagramStyle> s_StyleMappings = new Dictionary<string, DiagramStyle>()
         {
             { c_StyleSketchy, DiagramStyle.Sketchy },
+            { c_StyleClassic, DiagramStyle.Classic },
         };
-        
+
         private const string c_TypeSequence = "sequence";
 
         private static Dictionary<string, DiagramType> s_TypeMappings = new Dictionary<string, DiagramType>()
@@ -29,6 +30,8 @@ namespace KangaModeling.Web.Controllers
             { c_TypeSequence, DiagramType.Sequence },
         };
 
+        //
+        // GET: /Api/Get
         public ActionResult Get(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -45,28 +48,13 @@ namespace KangaModeling.Web.Controllers
             return new FileStreamResult(new MemoryStream(buffer), "image/png");
         }
 
-        public ActionResult CreateGet(string text, string type, string style = c_StyleDefault)
-        {
-            return CreateDiagramCore(text, type, style,
-                result =>
-                {
-                    using (MemoryStream temp = new MemoryStream())
-                    {
-                        result.Image.Save(temp, ImageFormat.Png);
-                        byte[] imageData = temp.GetBuffer();
-
-                        return new FileStreamResult(new MemoryStream(imageData), "image/png");
-                    }
-                });
-        }
-
         //
-        // GET: /Api/
-        public ActionResult Create(string text, string type, string style = c_StyleDefault)
+        // GET: /Api/Create
+        public ActionResult Create(string source, string type, string style = c_StyleDefault)
         {
-            text = Server.UrlDecode(text);
+            source = Server.UrlDecode(source);
 
-            return CreateDiagramCore(text, type, style,
+            return CreateDiagramCore(source, type, style,
              result =>
              {
                  using (MemoryStream temp = new MemoryStream())
@@ -83,12 +71,36 @@ namespace KangaModeling.Web.Controllers
                          JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                          Data = new
                          {
-                             uri = Url.Action("get", "api", new { Id = id }),
-                             errors = result.Errors.ToArray()
+                             source = source,
+                             errors = result.Errors.Select(error =>
+                                new
+                                {
+                                    message = error.Message,
+                                    token = new
+                                    {
+                                        line = error.TokenLine,
+                                        start = error.TokenStart,
+                                        end = error.TokenStart + error.TokenLength,
+                                        value = error.TokenValue,
+                                    }
+                                }),
+                             diagram = Url.Action("get", "api", new { Id = id }),
                          }
                      };
                  }
              });
+        }
+
+        //
+        // GET: /Api/Js
+        public ActionResult Js()
+        {
+            string jsPath = Server.MapPath("/Scripts/kanga.js");
+            string js = System.IO.File.ReadAllText(jsPath);
+
+            js = js.Replace("_KANGA_API_BASE_URI_", Url.Action(string.Empty, "api"));
+
+            return new JavaScriptResult() { Script = js };
         }
 
         private ActionResult CreateDiagramCore(string text, string type, string style, Func<DiagramResult, ActionResult> resultHandler)
@@ -113,10 +125,6 @@ namespace KangaModeling.Web.Controllers
             }
         }
 
-        public ActionResult Js()
-        {
-            return File(System.IO.File.ReadAllBytes(Server.MapPath("/Scripts/kanga.api.js")), "text/javascript");
-        }
 
         private void AddImageDataToCache(string id, byte[] imageData)
         {
