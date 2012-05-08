@@ -108,13 +108,13 @@ namespace KangaModeling.Web.Controllers
             DiagramType diagramType;
             if (type == null || !s_TypeMappings.TryGetValue(type, out diagramType))
             {
-                return new HttpStatusCodeResult(400);
+                return new HttpStatusCodeResult(400, string.Format("Invalid argument value for type: '{0}'.", type));
             }
 
             DiagramStyle diagramStyle;
             if (style == null || !s_StyleMappings.TryGetValue(style, out diagramStyle))
             {
-                return new HttpStatusCodeResult(400);
+                return new HttpStatusCodeResult(400, string.Format("Invalid argument value for style: '{0}'.", style));
             }
 
             var arguments = new DiagramArguments(text, diagramType, diagramStyle);
