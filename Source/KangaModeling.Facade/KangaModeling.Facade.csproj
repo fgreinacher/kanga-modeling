@@ -69,4 +69,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterBuild">
+    <Costura.EmbedTask />
+  </Target>
+  <UsingTask TaskName="Costura.EmbedTask" AssemblyFile="$(SolutionDir)packages\Costura\Costura.dll" />
 </Project>
