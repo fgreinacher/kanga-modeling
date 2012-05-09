@@ -1,2 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<publishData />
+<publishData>
+  <publishProfile publishUrl="https://eweb704.discountasp.net:8172/MsDeploy.axd" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="kangamodeling.org/test" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="True" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="True" profileName="Profile1" publishMethod="MSDeploy" replaceMatchingFiles="True" userName="kangamodeli" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAHBXZB5KXWUiciP4mESyd1wAAAAACAAAAAAAQZgAAAAEAACAAAAAQzqxLZyyVCaSq+ZhNPbywVAaqC6FYAOKdpwrvh4jZtQAAAAAOgAAAAAIAACAAAAB6cVfVPr0NvA/TLlXK1dxlJC1oNqFjyJKRYP6HafN3wiAAAADne5irCySwc5bPZLVA2fKKg2vgxhTIPGmuFGQCShqwP0AAAABDS6KWdgXs6uSXkLb2hULC5NYKyu4twnwaDSJwAsSoTRiRFuIbE8Soz2m7SX2jq6Wtier59JQjt1BFuB0uVWq7" SelectedForPublish="True" />
+</publishData>

@@ -1,5 +1,5 @@
 ﻿@{
-  ViewBag.Title = "Index";
+  ViewBag.Title = "Home";
   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2 class="title">
@@ -20,7 +20,7 @@
 <h2>
   kangamodelling.org</h2>
 <p>
-  <a href="http://kangamodelling.org">kangamodelling.org</a> is a web service which
+  <a href="http://kangamodeling.org">kangamodeling.org</a> is a web service which
   generates and returns a diagram image based on code snippet you posted to the URL
   using POST or GET.
 </p>
@@ -55,7 +55,17 @@
 <p>
   For optimal result, place this code at the very end of your page. A sequence deiagram
   will appair in place of your markup code.</p>
-<img src="@Url.Content("~/Content/Images/sdhello.png")" alt="Sample sequence diagram" />
+<pre class="kanga" data-kanga-type="sequence" data-kanga-style="sketchy">
+title Hello
+Alice->Bob: Hi!
+Bob-->Alice: Hey!
+</pre>
+<pre class="kanga" data-kanga-type="sequence" data-kanga-style="classic">
+title Hello
+stmt
+Alice--->Bob: Hi!
+Bob-->Alice: Hey!
+</pre>
 <p>
   You can download sample html here <a href="sample.htm" target="_blank">sample.htm</a>.</p>
 <hr />
@@ -67,20 +77,24 @@
   For more comfortable editing with syntax check and error hints we recommend to use
   Kanga Modeling UI available for download at <a href="http://kangamodeling.codeplex.com/releases">
     kangamodeling.codeplex.com/releases</a>.</p>
-
 <script language="javascript" type="text/javascript">
   function Compile() {
 
     var text = $('#SourceCode').val();
-    
-    KANGA.createDiagram(text, 'sequence', 'sketchy', function (result) {
 
-      $('#DiagramImage').attr("src", result.uri);
+    var arguments = {
+      source: text,
+      type: 'sequence',
+      style: 'sketchy'
+    };
+
+    _kanga.client.createDiagram(arguments, function (result) {
+
+      $('#DiagramImage').attr("src", result.diagram);
 
     });
   }
 </script>
-
 <table>
   <tr>
     <td valign="top">

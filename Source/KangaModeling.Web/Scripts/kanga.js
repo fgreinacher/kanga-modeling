@@ -1,58 +1,101 @@
 ﻿/// <reference path="jquery-1.5.1.js" />
 
-kangaApi = function (apiBaseUri) {
+kanga = function (apiBaseUri) {
 
   var _apiBaseUri = apiBaseUri;
 
-  this.createDiagram = function (text, type, style, callback) {
+  var _client = function () {
 
-    $.getJSON(_apiBaseUri + '/create', { text: encodeURI(text), type: type, style: style }, function (result) {
+    this.arguments = function (source, type, style) {
 
-      callback(result);
+      return { source: encodeURI(source), type: type, style: style };
 
-    });
+    }
+
+    this.createDiagram = function (arguments, callback) {
+
+      $.getJSON(
+        _apiBaseUri + '/create', arguments, function (result) {
+
+          callback(result);
+
+        });
+    }
+
   }
 
-  this.replaceElementsByDiagrams = function () {
+  var _highlighter = function (client) {
 
-    var sourceElements = getSourceElements();
-    for (i = 0; i < sourceElements.length; i++) {
+    var _client = client;
 
-      convertCodeToDiagram(sourceElements[i]);
+    this.replaceAll = function () {
+
+      $('pre.kanga').each(function (i, element) {
+
+        replace(element);
+
+      });
+
+    }
+
+    var replace = function (element) {
+
+      var source = $(element).text();
+      var type = $(element).data('kanga-type');
+      var style = $(element).data('kanga-style');
+
+      var arguments = _client.arguments(source, type, style);
+
+      _client.createDiagram(arguments, function (result) {
+
+        var information = '';
+        information += 'Source:\r\n';
+        information += result.source;
+
+        if (result.errors.length > 0) {
+
+          information += '\r\n';
+          information += 'Errors:\r\n';
+
+          $(result.errors).each(function (index, error) {
+
+            information += error.message;
+            information += '(';
+            information += 'line ' + error.token.line;
+            information += ', start ' + error.token.start;
+            information += ', end ' + error.token.end;
+            information += ', value ' + error.token.value;
+            information += ')';
+            information += '\r\n';
+
+          });
+
+        } else {
+
+          information += '\r\n';
+          information += 'No errors';
+
+        }
+
+
+        var img = $('<img></img>')
+          .attr('src', result.diagram)
+          .attr('title', information)
+          .attr('alt', information)
+          .css('display', 'block');
+
+        $(element).after(img);
+        $(element).hide();
+
+      });
 
     }
 
   }
 
-  var convertCodeToDiagram = function (element) {
+  this.client = new _client();
+  this.highlighter = new _highlighter(this.client);
 
-    var text = element.childNodes[0].data;
-
-    createDiagram(text, 'sequence', 'sketchy', function (result) {
-
-      element.innerHTML = '';
-      var img = document.createElement('img');
-      img.setAttribute('src', result.uri);
-      img.setAttribute('alt', text);
-      element.appendChild(img);
-
-    });
-
-  }
-
-  var getSourceElements = function () {
-
-    var classname = 'kanga.sd';
-    var result = [];
-    var els = document.getElementsByTagName('pre');
-    for (var i = 0, j = els.length; i < j; i++) {
-      if (els[i].className == classname) {
-        result.push(els[i]);
-      }
-    }
-    return result;
-
-  }
 }
 
-var KANGA = new kangaApi('/api');
+var _kanga = new kanga('_KANGA_API_BASE_URI_');
