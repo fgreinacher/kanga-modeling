@@ -174,4 +174,16 @@ C-->B : result
 deactivate C
 end
 
+# Dispose
+A->B
+activate B
+B-->A
+deactivate B
+dispose B
+A->C
+activate C
+C-->A
+deactivate C
+
+
 #end

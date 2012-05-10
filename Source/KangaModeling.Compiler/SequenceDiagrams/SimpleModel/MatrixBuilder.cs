@@ -71,9 +71,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
                 return;
             }
 
-
-            
-
             var endPin = new OpenPin(target, startPin.Orientation, targetToken);
             target.State.OpenPins.Push(endPin);
             int currentLevel = target.State.GetLevel(startPin.Orientation);
