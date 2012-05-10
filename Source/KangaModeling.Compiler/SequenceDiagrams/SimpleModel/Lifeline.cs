@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -8,6 +9,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
     internal class Lifeline : ILifeline
     {
         private readonly Matrix m_Matrix;
+        private Row m_EndRow;
 
         public Lifeline(Matrix matrix, string id, string name, int index)
         {
@@ -32,5 +34,21 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         public virtual int Index { get; private set; }
 
         #endregion
+
+        public void SetEnd(Row endRow)
+        {
+            State.IsDisposed = endRow != null;
+            m_EndRow = endRow;
+        }
+
+        public int EndRowIndex
+        {
+            get
+            {
+                return m_EndRow == null 
+                    ? int.MaxValue 
+                    : m_EndRow.Index;
+            }
+        }
     }
 }

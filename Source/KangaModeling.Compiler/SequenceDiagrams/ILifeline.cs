@@ -8,5 +8,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         string Id { get; }
         int Index { get; }
         IEnumerable<IPin> Pins { get; }
+        int EndRowIndex { get; }
     }
 }

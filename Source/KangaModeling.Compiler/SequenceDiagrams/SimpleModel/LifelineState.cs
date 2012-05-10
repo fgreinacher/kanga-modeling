@@ -39,5 +39,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
             m_LevelsByOrientation[(int)orientation]--;
         }
+
+        public bool IsDisposed { get; set; }
     }
 }

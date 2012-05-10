@@ -23,8 +23,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             {
                 Column column = m_GridLayout.Columns[lifeline.Index];
                 Row startRow = m_GridLayout.HeaderRow;
-                //TODO Must be modified after Dispose was introduces
-                Row endRow = m_GridLayout.FooterRow;
+                Row endRow = lifeline.EndRowIndex >= m_GridLayout.Rows.Count ? m_GridLayout.FooterRow : m_GridLayout.Rows[lifeline.EndRowIndex];
                 AddChild(new LifelineVisual(Style, lifeline, column, startRow, endRow, m_GridLayout));
             }
         }

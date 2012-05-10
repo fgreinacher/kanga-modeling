@@ -58,9 +58,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         public void Activate(Token targetToken)
         {
             Lifeline target;
-            if (!TryGetColumnById(targetToken.Value, out target))
+            if (!TryGetLifeline(targetToken, out target))
             {
-                AddError(targetToken, "No such Lifeline");
                 return;
             }
 
@@ -87,9 +86,8 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         public void Deactivate(Token targetToken)
         {
             Lifeline target;
-            if (!TryGetColumnById(targetToken.Value, out target))
+            if (!TryGetLifeline(targetToken, out target))
             {
-                AddError(targetToken, "No such Lifeline");
                 return;
             }
             Deactivate(target, targetToken, true);
@@ -146,8 +144,16 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             DetectUnclosedCombinedFragments();
         }
 
-        public void Dispose(Token target)
+        public void Dispose(Token targetToken)
         {
+            Lifeline target;
+            if (!TryGetLifeline(targetToken, out target))
+            {
+                return;
+            }
+
+            Row endRow = m_Matrix.CreateRow();
+            target.SetEnd(endRow);
         }
 
         #endregion
@@ -220,24 +226,34 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             }
         }
 
-        private bool TryGetColumnById(string name, out Lifeline lifeline)
+        private bool TryGetLifeline(Token token, out Lifeline lifeline)
         {
-            return m_Matrix.Lifelines.TryGetValue(name, out lifeline);
+            if (!m_Matrix.Lifelines.TryGetValue(token.Value, out lifeline))
+            {
+                AddError(token, "No such Lifeline");
+                return false;
+            }
+
+            if (lifeline.State.IsDisposed)
+            {
+                AddError(token, "Can not use disposed Lifeline.");
+                return false;
+            }
+
+            return true;
         }
 
         private void AddSignal(Token sourceToken, Token targetToken, Signal signal)
         {
             Lifeline source;
-            if (!TryGetColumnById(sourceToken.Value, out source))
+            if (!TryGetLifeline(sourceToken, out source))
             {
-                AddError(sourceToken, "No such Lifeline");
                 return;
             }
 
             Lifeline target;
-            if (!TryGetColumnById(targetToken.Value, out target))
+            if (!TryGetLifeline(targetToken, out target))
             {
-                AddError(targetToken, "No such Lifeline");
                 return;
             }
 
