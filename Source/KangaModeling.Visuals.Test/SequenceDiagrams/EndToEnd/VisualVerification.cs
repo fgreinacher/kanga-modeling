@@ -12,11 +12,14 @@ namespace KangaModeling.Visuals.Test.SequenceDiagrams.EndToEnd
     [TestFixture]
     public class VisualVerification
     {
-        [Test]
+        [TestCase(DiagramStyle.Classic)]
+        [TestCase(DiagramStyle.Sketchy)]
         [Explicit]
-        public void GenerateVerificationDiagrams()
+        public void GenerateVerificationDiagrams(DiagramStyle diagramStyle)
         {
-            const string htmlFileName = "VisualVerificationDiagrams.html";
+            string directory = diagramStyle.ToString();
+            string htmlFileName = string.Format("{0}\\VisualVerificationDiagrams.html", directory);
+            Directory.CreateDirectory(directory);
 
             using (var reader = File.OpenText(@"SequenceDiagrams\EndToEnd\TestCaseSources.txt"))
             {
@@ -37,7 +40,7 @@ namespace KangaModeling.Visuals.Test.SequenceDiagrams.EndToEnd
                     writer.RenderBeginTag(HtmlTextWriterTag.Table);
                     foreach (var testCase in GetTestCases(reader))
                     {
-                        Write(testCase.Item1, testCase.Item2, writer);
+                        Write(testCase.Item1, testCase.Item2, writer, diagramStyle);
                     }
                     writer.RenderEndTag();
                     writer.RenderEndTag();
@@ -47,7 +50,7 @@ namespace KangaModeling.Visuals.Test.SequenceDiagrams.EndToEnd
             System.Diagnostics.Process.Start(htmlFileName);
         }
 
-        private void Write(string source, string testCaseName, HtmlTextWriter writer)
+        private void Write(string source, string testCaseName, HtmlTextWriter writer, DiagramStyle diagramStyle)
         {
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
@@ -70,7 +73,7 @@ namespace KangaModeling.Visuals.Test.SequenceDiagrams.EndToEnd
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
-            string fileName = GenetareImage(source, testCaseName);
+            string fileName = GenetareImage(source, testCaseName, diagramStyle);
             writer.AddAttribute(HtmlTextWriterAttribute.Src, fileName);
             writer.AddAttribute(HtmlTextWriterAttribute.Alt, testCaseName);
             writer.RenderBeginTag(HtmlTextWriterTag.Img);
@@ -80,14 +83,14 @@ namespace KangaModeling.Visuals.Test.SequenceDiagrams.EndToEnd
             writer.RenderEndTag();
         }
 
-        private string GenetareImage(string source, string testCaseName)
+        private string GenetareImage(string source, string testCaseName, DiagramStyle diagramStyle)
         {
-            var arguments = new DiagramArguments(source, DiagramType.Sequence, DiagramStyle.Sketchy);
+            var arguments = new DiagramArguments(source, DiagramType.Sequence, diagramStyle);
 			var result = DiagramFactory.Create(arguments);
             using (result)
             {
                 string filename = testCaseName + ".png";
-                result.Image.Save(filename, ImageFormat.Png);
+                result.Image.Save(diagramStyle + "\\" + filename, ImageFormat.Png);
                 return filename;
             }
         }
