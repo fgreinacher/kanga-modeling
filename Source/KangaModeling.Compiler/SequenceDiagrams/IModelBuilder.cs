@@ -17,5 +17,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         void End(Token endToken);
         void Flush();
         void Dispose(Token target);
+        void AddCreateSignal(Token source, Token target, Token name);
     }
 }

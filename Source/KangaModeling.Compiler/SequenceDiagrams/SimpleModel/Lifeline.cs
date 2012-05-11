@@ -10,6 +10,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
     {
         private readonly Matrix m_Matrix;
         private Row m_EndRow;
+        private Row m_StartRow;
 
         public Lifeline(Matrix matrix, string id, string name, int index)
         {
@@ -48,6 +49,22 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
                 return m_EndRow == null 
                     ? int.MaxValue 
                     : m_EndRow.Index;
+            }
+        }
+
+        public void SetStart(Row startRow)
+        {
+            State.IsCreated = startRow != null;
+            m_StartRow = startRow;
+        }
+
+        public int StartRowIndex
+        {
+            get
+            {
+                return m_StartRow == null
+                    ? int.MaxValue
+                    : m_StartRow.Index;
             }
         }
     }

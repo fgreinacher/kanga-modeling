@@ -6,8 +6,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams
     {
         public const string CallKeyword = "->";
         public const string BackCallKeyword = "<-";
+
+        public const string CreateKeyword1 = "+>";
+        public const string CreateKeyword2 = ">>";
+
         public const string ReturnKeyword = "-->";
         public const string BackReturnKeyword = "<--";
+
         public const string ColonKeyowrd = ":";
 
         private readonly string m_Signal;
@@ -68,6 +73,11 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
                 case BackReturnKeyword:
                     yield return new ReturnSignalStatement(signalKeyword, target, source, signalName);
+                    break;
+
+                case CreateKeyword1:
+                case CreateKeyword2:
+                    yield return new CreateSignalStatement(signalKeyword, source, target, signalName);
                     break;
 
                 default:

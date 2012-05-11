@@ -62,6 +62,7 @@
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\LoopStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\ElseStatementParser.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\AltStatement.cs" />
+    <Compile Include="SequenceDiagrams\Parsing\_Statements\CreateSignalStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\DisposeStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\LoopStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\ElseStatement.cs" />

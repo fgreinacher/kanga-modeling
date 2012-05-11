@@ -16,6 +16,8 @@
                 case SignalStatementParser.ReturnKeyword:
                 case SignalStatementParser.BackCallKeyword:
                 case SignalStatementParser.BackReturnKeyword:
+                case SignalStatementParser.CreateKeyword1:
+                case SignalStatementParser.CreateKeyword2:
                     return new SignalStatementParser(keyword);
 
                 case ActivateStatementParser.ActivateKeyword:

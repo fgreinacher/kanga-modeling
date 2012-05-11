@@ -22,7 +22,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             foreach (ILifeline lifeline in m_Lifelines)
             {
                 Column column = m_GridLayout.Columns[lifeline.Index];
-                Row startRow = m_GridLayout.HeaderRow;
+                Row startRow = lifeline.StartRowIndex >= m_GridLayout.Rows.Count ? m_GridLayout.HeaderRow : m_GridLayout.Rows[lifeline.StartRowIndex];
                 Row endRow = lifeline.EndRowIndex >= m_GridLayout.Rows.Count ? m_GridLayout.FooterRow : m_GridLayout.Rows[lifeline.EndRowIndex];
                 AddChild(new LifelineVisual(Style, lifeline, column, startRow, endRow, m_GridLayout));
             }

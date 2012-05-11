@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
@@ -151,6 +152,17 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
             Row endRow = m_Matrix.CreateRow();
             target.SetEnd(endRow);
+        }
+
+        public void AddCreateSignal(Token sourceToken, Token targetToken, Token name)
+        {
+            AddCallSignal(sourceToken, targetToken, name);
+            Lifeline target;
+            if (!TryGetLifeline(targetToken, out target))
+            {
+                return;
+            }
+            target.SetStart(m_Matrix.LastRow);
         }
 
         #endregion

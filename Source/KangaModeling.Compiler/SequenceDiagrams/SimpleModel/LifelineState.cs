@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 {
@@ -41,5 +42,6 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         }
 
         public bool IsDisposed { get; set; }
+        public bool IsCreated { get; set; }
     }
 }
