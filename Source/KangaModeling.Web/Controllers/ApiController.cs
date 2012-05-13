@@ -7,15 +7,27 @@ using KangaModeling.Facade;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Web.Caching;
+using System.Web.UI;
 
 namespace KangaModeling.Web.Controllers
 {
     public class ApiController : Controller
     {
-        private const string c_StyleDefault = c_StyleSketchy;
+#if DEBUG1
+        private const int c_JsCacheDuration = 0;
+        private const int c_DiagramResultCacheDuration = 0;
+        private const int c_DiagramImageCacheDuration = 0;
+#else 
+        private const int c_JsCacheDuration = 60 * 60 * 24;
+        private const int c_DiagramResultCacheDuration = 60 * 60 * 24;
+        private const int c_DiagramImageCacheDuration = 60 * 60 * 23;
+#endif
 
+        private const string c_StyleDefault = c_StyleSketchy;
         private const string c_StyleSketchy = "sketchy";
         private const string c_StyleClassic = "classic";
+
+        private const string c_TypeSequence = "sequence";
 
         private static Dictionary<string, DiagramStyle> s_StyleMappings = new Dictionary<string, DiagramStyle>()
         {
@@ -23,26 +35,39 @@ namespace KangaModeling.Web.Controllers
             { c_StyleClassic, DiagramStyle.Classic },
         };
 
-        private const string c_TypeSequence = "sequence";
-
         private static Dictionary<string, DiagramType> s_TypeMappings = new Dictionary<string, DiagramType>()
         {
             { c_TypeSequence, DiagramType.Sequence },
         };
 
         //
-        // GET: /Api/Get
+        // GET: /Api
+        public ActionResult Index()
+        {
+            return RedirectToAction("help");
+        }
+
+        //
+        // GET: /Api/Help        
+        public ActionResult Help()
+        {
+            return View();
+        }
+
+        //
+        // GET: /Api/Get        
+        [OutputCache(Duration = c_DiagramResultCacheDuration, VaryByParam = "*")]
         public ActionResult Get(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
-                return new HttpNotFoundResult();
+                return new HttpStatusCodeResult(400, "Missing parameter 'id'.");
             }
 
             var buffer = HttpContext.Cache.Get(id) as byte[];
             if (buffer == null)
             {
-                return new HttpNotFoundResult();
+                return new HttpStatusCodeResult(400, string.Format("Invalid value '{0}' for parameter 'id'.", id));
             }
 
             return new FileStreamResult(new MemoryStream(buffer), "image/png");
@@ -50,49 +75,37 @@ namespace KangaModeling.Web.Controllers
 
         //
         // GET: /Api/Create
+        [OutputCache(Duration = c_DiagramResultCacheDuration, VaryByParam = "*")]
         public ActionResult Create(string source, string type, string style = c_StyleDefault)
         {
-            source = Server.UrlDecode(source);
+            var diagramSource = Server.UrlDecode(source);
 
-            return CreateDiagramCore(source, type, style,
-             result =>
-             {
-                 using (MemoryStream temp = new MemoryStream())
-                 {
-                     var id = Guid.NewGuid().ToString();
+            DiagramType diagramType;
+            if (type == null || !s_TypeMappings.TryGetValue(type, out diagramType))
+            {
+                return new HttpStatusCodeResult(400, string.Format("Invalid value '{0}' for parameter 'type'.", type));
+            }
 
-                     result.Image.Save(temp, ImageFormat.Png);
-                     byte[] imageData = temp.GetBuffer();
+            DiagramStyle diagramStyle;
+            if (style == null || !s_StyleMappings.TryGetValue(style, out diagramStyle))
+            {
+                return new HttpStatusCodeResult(400, string.Format("Invalid value '{0}' for parameter 'style'.", style));
+            }
 
-                     AddImageDataToCache(id, imageData);
+            var diagramArguments = new DiagramArguments(diagramSource, diagramType, diagramStyle);
+            using (var diagramResult = DiagramFactory.Create(diagramArguments))
+            {
+                var id = CreateImageId();
 
-                     return new JsonResult
-                     {
-                         JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-                         Data = new
-                         {
-                             source = source,
-                             errors = result.Errors.Select(error =>
-                                new
-                                {
-                                    message = error.Message,
-                                    token = new
-                                    {
-                                        line = error.TokenLine,
-                                        start = error.TokenStart,
-                                        end = error.TokenStart + error.TokenLength,
-                                        value = error.TokenValue,
-                                    }
-                                }),
-                             diagram = Url.Action("get", "api", new { Id = id }),
-                         }
-                     };
-                 }
-             });
+                SaveImage(diagramResult, id);
+
+                return CreateResult(diagramResult, id);
+            }
         }
 
         //
         // GET: /Api/Js
+        [OutputCache(Duration = c_JsCacheDuration)]
         public ActionResult Js()
         {
             string jsPath = Server.MapPath("~/Scripts/kanga.js");
@@ -103,32 +116,56 @@ namespace KangaModeling.Web.Controllers
             return new JavaScriptResult() { Script = js };
         }
 
-        private ActionResult CreateDiagramCore(string text, string type, string style, Func<DiagramResult, ActionResult> resultHandler)
+        private static string CreateImageId()
         {
-            DiagramType diagramType;
-            if (type == null || !s_TypeMappings.TryGetValue(type, out diagramType))
-            {
-                return new HttpStatusCodeResult(400, string.Format("Invalid argument value for type: '{0}'.", type));
-            }
+            return Guid.NewGuid().ToString();
+        }
 
-            DiagramStyle diagramStyle;
-            if (style == null || !s_StyleMappings.TryGetValue(style, out diagramStyle))
+        private void SaveImage(DiagramResult result, string imageId)
+        {
+            using (var imageStream = new MemoryStream())
             {
-                return new HttpStatusCodeResult(400, string.Format("Invalid argument value for style: '{0}'.", style));
-            }
+                result.Image.Save(imageStream, ImageFormat.Png);
 
-            var arguments = new DiagramArguments(text, diagramType, diagramStyle);
-
-            using (var result = DiagramFactory.Create(arguments))
-            {
-                return resultHandler(result);
+                HttpContext.Cache.Add(
+                    imageId,
+                    imageStream.GetBuffer(),
+                    null,
+                    Cache.NoAbsoluteExpiration,
+                    TimeSpan.FromMinutes(c_DiagramImageCacheDuration),
+                    CacheItemPriority.Default,
+                    null);
             }
         }
 
-
-        private void AddImageDataToCache(string id, byte[] imageData)
+        private ActionResult CreateResult(DiagramResult result, string id)
         {
-            HttpContext.Cache.Add(id, imageData, null, Cache.NoAbsoluteExpiration, TimeSpan.FromMinutes(5), CacheItemPriority.Default, null);
+            if(Request.AcceptTypes.Any(acceptType => acceptType.Contains("json")))
+            {
+                return new JsonResult
+                {
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    Data = new
+                    {
+                        source = result.Arguments.Text,
+                        errors = result.Errors.Select(error =>
+                           new
+                           {
+                               message = error.Message,
+                               token = new
+                               {
+                                   line = error.TokenLine,
+                                   start = error.TokenStart,
+                                   end = error.TokenStart + error.TokenLength,
+                                   value = error.TokenValue,
+                               }
+                           }),
+                        diagram = Url.Action("get", "api", new { Id = id }),
+                    }
+                };
+            }
+
+            return RedirectToAction("get", new { id = id });            
         }
     }
 }
