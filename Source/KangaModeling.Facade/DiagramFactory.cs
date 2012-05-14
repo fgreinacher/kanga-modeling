@@ -40,15 +40,15 @@ namespace KangaModeling.Facade
 
             return new DiagramResult(
                 arguments,
-                GenerateBitmap(arguments.Style, sequenceDiagram),
+                GenerateBitmap(arguments, sequenceDiagram),
                 diagramErrors.ToArray(),
                 sequenceDiagram.Root.Title);
         }
 
-        private static Bitmap GenerateBitmap(DiagramStyle diagramStyle, ISequenceDiagram sequenceDiagram)
+        private static Bitmap GenerateBitmap(DiagramArguments arguments, ISequenceDiagram sequenceDiagram)
         {
             IStyle style;
-            switch (diagramStyle)
+            switch (arguments.Style)
             {
                 case DiagramStyle.Sketchy:
                     style = new SketchyStyle();
@@ -60,6 +60,11 @@ namespace KangaModeling.Facade
 
                 default:
                     throw new ArgumentOutOfRangeException("style");
+            }
+
+            if (arguments.Debug)
+            {
+                style = new DebugStyle(style);
             }
 
             var sequenceDiagramVisual = new SequenceDiagramVisual(style, sequenceDiagram);

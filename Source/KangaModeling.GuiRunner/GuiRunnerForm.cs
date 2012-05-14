@@ -22,7 +22,7 @@ namespace KangaModeling.GuiRunner
         
         private void Compile()
         {
-            var diagramArguments = new DiagramArguments(inputTextBox.Text, DiagramType.Sequence, (DiagramStyle)styleComboBox.SelectedItem);
+            var diagramArguments = new DiagramArguments(inputTextBox.Text, DiagramType.Sequence, (DiagramStyle)styleComboBox.SelectedItem, debugCheckBox.Checked);
             var diagramResult = DiagramFactory.Create(diagramArguments);
             ProcessResult(diagramResult);
         }
@@ -216,6 +216,11 @@ namespace KangaModeling.GuiRunner
         }
 
         private void styleComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            Compile();
+        }
+
+        private void debugCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             Compile();
         }

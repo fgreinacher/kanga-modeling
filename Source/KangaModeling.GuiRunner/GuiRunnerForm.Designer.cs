@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GuiRunnerForm));
             this.compileButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.styleComboBox = new System.Windows.Forms.ComboBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonNesteAdtivities = new System.Windows.Forms.Button();
             this.buttonBigSample = new System.Windows.Forms.Button();
@@ -51,7 +52,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.outputImagePanel = new System.Windows.Forms.Panel();
             this.outputPictureBox = new System.Windows.Forms.PictureBox();
-            this.styleComboBox = new System.Windows.Forms.ComboBox();
+            this.debugCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inputAndOutputSplitContainer)).BeginInit();
             this.inputAndOutputSplitContainer.Panel1.SuspendLayout();
@@ -78,6 +79,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.debugCheckBox);
             this.panel1.Controls.Add(this.styleComboBox);
             this.panel1.Controls.Add(this.buttonSave);
             this.panel1.Controls.Add(this.buttonNesteAdtivities);
@@ -92,6 +94,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(79, 409);
             this.panel1.TabIndex = 5;
+            // 
+            // styleComboBox
+            // 
+            this.styleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.styleComboBox.FormattingEnabled = true;
+            this.styleComboBox.Location = new System.Drawing.Point(4, 271);
+            this.styleComboBox.Name = "styleComboBox";
+            this.styleComboBox.Size = new System.Drawing.Size(69, 21);
+            this.styleComboBox.TabIndex = 8;
+            this.styleComboBox.SelectedValueChanged += new System.EventHandler(this.styleComboBox_SelectedValueChanged);
             // 
             // buttonSave
             // 
@@ -183,9 +195,9 @@
             // 
             // inputAndOutputSplitContainer
             // 
-            this.inputAndOutputSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.inputAndOutputSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.inputAndOutputSplitContainer.Location = new System.Drawing.Point(99, 9);
             this.inputAndOutputSplitContainer.Name = "inputAndOutputSplitContainer";
             // 
@@ -292,15 +304,16 @@
             this.outputPictureBox.TabIndex = 3;
             this.outputPictureBox.TabStop = false;
             // 
-            // styleComboBox
+            // debugCheckBox
             // 
-            this.styleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.styleComboBox.FormattingEnabled = true;
-            this.styleComboBox.Location = new System.Drawing.Point(4, 271);
-            this.styleComboBox.Name = "styleComboBox";
-            this.styleComboBox.Size = new System.Drawing.Size(69, 21);
-            this.styleComboBox.TabIndex = 8;
-            this.styleComboBox.SelectedValueChanged += new System.EventHandler(this.styleComboBox_SelectedValueChanged);
+            this.debugCheckBox.AutoSize = true;
+            this.debugCheckBox.Location = new System.Drawing.Point(4, 248);
+            this.debugCheckBox.Name = "debugCheckBox";
+            this.debugCheckBox.Size = new System.Drawing.Size(57, 17);
+            this.debugCheckBox.TabIndex = 9;
+            this.debugCheckBox.Text = "Debug";
+            this.debugCheckBox.UseVisualStyleBackColor = true;
+            this.debugCheckBox.CheckedChanged += new System.EventHandler(this.debugCheckBox_CheckedChanged);
             // 
             // GuiRunnerForm
             // 
@@ -313,6 +326,7 @@
             this.Name = "GuiRunnerForm";
             this.Text = "KangaModeling GuiRunner";
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.inputAndOutputSplitContainer.Panel1.ResumeLayout(false);
             this.inputAndOutputSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.inputAndOutputSplitContainer)).EndInit();
@@ -352,6 +366,7 @@
         private System.Windows.Forms.Button buttonNesteAdtivities;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.ComboBox styleComboBox;
+        private System.Windows.Forms.CheckBox debugCheckBox;
 	}
 }
 
