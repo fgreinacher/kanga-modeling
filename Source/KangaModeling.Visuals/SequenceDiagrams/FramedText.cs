@@ -29,10 +29,9 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         {
             base.LayoutCore(graphicContext);
 
-            //TODO Line thickness mesurement must be provided by graphic context
             Size = m_TextVisual.Size;
-            //TODO Constant to padding
-            m_Column.Allocate(Size.Width + 5);
+
+            m_Column.Body.Allocate(Size.Width);
             m_Row.Body.Allocate(Size.Height);
         }
 
