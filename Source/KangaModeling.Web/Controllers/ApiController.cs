@@ -147,7 +147,7 @@ namespace KangaModeling.Web.Controllers
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                     Data = new
                     {
-                        source = result.Arguments.Text,
+                        source = result.Arguments.Source,
                         errors = result.Errors.Select(error =>
                            new
                            {

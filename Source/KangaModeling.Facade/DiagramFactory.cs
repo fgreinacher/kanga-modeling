@@ -30,7 +30,7 @@ namespace KangaModeling.Facade
         private static DiagramResult CreateSequenceDiagram(DiagramArguments arguments)
         {
             ModelErrorsCollection modelErrors = new ModelErrorsCollection();
-            ISequenceDiagram sequenceDiagram = DiagramCreator.CreateFrom(arguments.Text, modelErrors);
+            ISequenceDiagram sequenceDiagram = DiagramCreator.CreateFrom(arguments.Source, modelErrors);
 
             var diagramErrors = new List<DiagramError>();
             foreach (ModelError modelError in modelErrors)

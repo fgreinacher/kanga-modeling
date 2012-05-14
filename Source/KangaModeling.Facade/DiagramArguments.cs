@@ -10,17 +10,20 @@ namespace KangaModeling.Facade
 	/// </summary>
 	public class DiagramArguments
 	{
-		public DiagramArguments(string text, DiagramType type, DiagramStyle style)
+		public DiagramArguments(string source, DiagramType type, DiagramStyle style, bool debug = false)
 		{
-			Text = text;
+			Source = source;
 			Type = type;
 			Style = style;
+            Debug = debug;
 		}
 
-		public string Text { get; private set; }
+		public string Source { get; private set; }
 
 		public DiagramType Type { get; private set; }
 
-		public DiagramStyle Style { get; private set; }
+        public DiagramStyle Style { get; private set; }
+
+        public bool Debug { get; private set; }
 	}
 }
