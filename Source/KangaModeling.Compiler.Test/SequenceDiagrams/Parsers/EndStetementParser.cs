@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.Parsers
 {
     [TestFixture]
-    class EndStetementParser
+    class EndStetementParserTests
     {
         [TestCase("end Some unexpected argument", typeof(UnexpectedArgumentStatement))]
         [TestCase("end", typeof(EndStatement))]

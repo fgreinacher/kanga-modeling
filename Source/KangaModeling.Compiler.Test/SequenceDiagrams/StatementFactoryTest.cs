@@ -3,7 +3,7 @@ using KangaModeling.Compiler.SequenceDiagrams;
 using NUnit.Framework;
 using Type = System.Type;
 
-namespace KangaModeling.Compiler.Test.SequenceDiagrams
+namespace KangaModeling.Compiler.Test.SequenceDiagrams.Statements
 {
     [TestFixture]
     public class StatementFactoryTest

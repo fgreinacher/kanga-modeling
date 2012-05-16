@@ -5,7 +5,7 @@ using System;
 namespace KangaModeling.Compiler.Test.SequenceDiagrams
 {
     [TestFixture]
-    public class TokenTest
+    public class Tokens
     {
         [TestCase(0, null, ExpectedException = typeof(ArgumentNullException))]
         [TestCase(0, "some text", ExpectedException = typeof(ArgumentOutOfRangeException))]

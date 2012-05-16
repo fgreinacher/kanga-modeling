@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.Parsers
 {
     [TestFixture]
-    class OptStetementParser
+    class OptStatementParserTests
     {
         [TestCase("opt Some Guard Expression", typeof(OptStatement))]
         [TestCase("opt", typeof(MissingArgumentStatement))]

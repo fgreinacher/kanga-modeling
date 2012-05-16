@@ -2,7 +2,7 @@
 using Moq;
 using NUnit.Framework;
 
-namespace KangaModeling.Compiler.Test.SequenceDiagrams
+namespace KangaModeling.Compiler.Test.SequenceDiagrams.Statements
 {
     [TestFixture]
     public class SimleParticipantStatementTest

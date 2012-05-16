@@ -6,7 +6,7 @@ using KangaModeling.Compiler.Test.SequenceDiagrams.Helper;
 using System.Linq;
 using Type = System.Type;
 
-namespace KangaModeling.Compiler.Test.SequenceDiagrams
+namespace KangaModeling.Compiler.Test.SequenceDiagrams.Parsers
 {
     [TestFixture]
     public class ActivateStatementParserTest

@@ -1,7 +1,7 @@
 ﻿using KangaModeling.Compiler.SequenceDiagrams;
 using NUnit.Framework;
 
-namespace KangaModeling.Compiler.Test.SequenceDiagrams
+namespace KangaModeling.Compiler.Test.SequenceDiagrams.Statements
 {
     [TestFixture]
     public class UnknownStatementTest

@@ -4,7 +4,7 @@ using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace KangaModeling.Compiler.Test.SequenceDiagrams
+namespace KangaModeling.Compiler.Test.SequenceDiagrams.Parsers
 {
     [TestFixture]
     public class ParserTest

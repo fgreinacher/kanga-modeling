@@ -5,7 +5,7 @@ using NUnit.Framework;
 using KangaModeling.Compiler.Test.SequenceDiagrams.Helper;
 using Type = System.Type;
 
-namespace KangaModeling.Compiler.Test.SequenceDiagrams
+namespace KangaModeling.Compiler.Test.SequenceDiagrams.Parsers
 {
     [TestFixture]
     public class ParticipantStatementParserTest

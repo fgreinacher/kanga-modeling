@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace KangaModeling.Compiler.Test.SequenceDiagrams
 {
     [TestFixture]
-    public class ScannerTest
+    public class Scanners
     {
         [TestCase("")]
         [TestCase("a")]
