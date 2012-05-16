@@ -7,22 +7,19 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
     [TestFixture]
     public class EnsureParticipantStatementTest
     {
-        [TestCase("A", true)]
-        [TestCase("A", false)]
-        public void Test(string name, bool found)
+
+        [TestCase("A Participant")]
+        public void Ensuring_a_participant_must_tell_the_builder(string name)
         {
             var nameToken = new Token(0, name.Length, name);
-            ParticipantStatement target = new EnsureParticipantStatement(nameToken);
+            var target = new EnsureParticipantStatement(nameToken);
             var builderMock = new Mock<IModelBuilder>(MockBehavior.Strict);
             builderMock.Setup(builder => builder.EnsureParticipant(nameToken));
-            if (!found)
-            {
-                builderMock.Setup(builder => builder.CreateParticipant(nameToken, nameToken));
-            }
 
             target.Build(builderMock.Object);
 
             builderMock.VerifyAll();
         }
+
     }
 }
