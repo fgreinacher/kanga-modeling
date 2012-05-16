@@ -13,7 +13,7 @@
 
         public override void Build(IModelBuilder builder)
         {
-            builder.EnsureParticipant(Id);
+            builder.CreateParticipant(Id, Name, false);
         }
     }
 }

@@ -20,14 +20,9 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         #region IModelBuilder Members
 
-        public virtual void CreateParticipant(Token id, Token name)
+        public virtual void CreateParticipant(Token id, Token name, bool ensureParticipantExists = true)
         {
-            CreateParticipant(id, name, true);
-        }
-
-        public virtual void EnsureParticipant(Token id)
-        {
-            CreateParticipant(id, id, false);
+            CreateParticipantCore(id, name, ensureParticipantExists);
         }
 
         public void AddCallSignal(Token source, Token target, Token name)
@@ -172,7 +167,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             return m_Matrix.Lifelines.Contains(name);
         }
 
-        private void CreateParticipant(Token id, Token name, bool errorIfExists)
+        private void CreateParticipantCore(Token id, Token name, bool errorIfExists)
         {
             if (HasParticipant(id.Value))
             {

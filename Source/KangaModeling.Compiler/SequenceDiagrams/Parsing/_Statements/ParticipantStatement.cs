@@ -19,7 +19,7 @@
 
         public override void Build(IModelBuilder builder)
         {
-            builder.CreateParticipant(Id, Name);
+            builder.CreateParticipant(Id, Name, true);
         }
     }
 }
