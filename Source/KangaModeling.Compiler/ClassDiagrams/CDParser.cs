@@ -67,6 +67,18 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 Target = target;
             }
 
+            public string SourceRole
+            {
+                get;
+                private set;
+            }
+
+            public string TargetRole
+            {
+                get;
+                private set;
+            }
+
             public AssociationKind Kind
             {
                 get;

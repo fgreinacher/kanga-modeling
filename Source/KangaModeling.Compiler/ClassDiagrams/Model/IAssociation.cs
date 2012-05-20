@@ -21,6 +21,8 @@ namespace KangaModeling.Compiler.ClassDiagrams.Model
     /// </summary>
     interface IAssociation
     {
+        string SourceRole { get; }
+        string TargetRole { get; }
         AssociationKind Kind { get; }
         IClass Source { get; }
         IClass Target { get; }
