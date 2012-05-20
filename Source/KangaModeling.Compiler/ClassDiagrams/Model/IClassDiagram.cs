@@ -11,6 +11,11 @@ namespace KangaModeling.Compiler.ClassDiagrams.Model
     /// </summary>
     interface IClassDiagram
     {
+        
+        IEnumerable<IClass> Classes { get; }
+
+        IEnumerable<IAssociation> Associations { get; }
+    
     }
 
 }

@@ -38,6 +38,14 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         }
 
         [Test]
+        public void t02_Check_Simple_Classes_Multiline()
+        {
+            var source = "[" + Environment.NewLine + "ClassName" + Environment.NewLine + "]";
+            var expectedTokens = new Token[] { new Token(0, 1, "["), new Token(1, 9, "ClassName"), new Token(2, 1, "]"), };
+            checkTokens(source, expectedTokens);
+        }
+
+        [Test]
         public void t02_Check_Simple_Classes_Whitespace()
         {
             var source = "  [  ClassName  ]  ";
@@ -51,6 +59,19 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             var source = " 0IdentifiersMustStartWithALetter  ";
             var expectedTokens = new Token[] { /* TODO currently invalid tokens are just ignored. */ };
             checkTokens(source, expectedTokens);
+        }
+
+        [TestCase(",", TestName = "comma operator")]
+        [TestCase("-", TestName="undirected association")]
+        [TestCase("->", TestName = "directed association")]
+        [TestCase("<>->", TestName = "UML aggregation")]
+        [TestCase("+->", TestName = "UML aggregation 2")]
+        [TestCase("++->", TestName = "UML composition")]
+        [Test]
+        public void t04_Check_Token(String assoc)
+        {
+            var expectedTokens = new Token[] { new Token(0, assoc.Length, assoc), };
+            checkTokens(assoc, expectedTokens);
         }
 
         private void checkTokens(string source, Token[] expectedTokens)

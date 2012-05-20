@@ -37,13 +37,43 @@ namespace KangaModeling.Compiler.ClassDiagrams
             {
                 if (source[0] == '[')
                 {
-                    tokens.Add(new SequenceDiagrams.Token(0, ++_charIndex, "["));
+                    tokens.Add(new SequenceDiagrams.Token(_lineIndex, ++_charIndex, "["));
+                    source = source.Remove(0, 1);
+                }
+                else if (source[0] == ',')
+                {
+                    tokens.Add(new SequenceDiagrams.Token(_lineIndex, ++_charIndex, ","));
                     source = source.Remove(0, 1);
                 }
                 else if (source[0] == ']')
                 {
-                    tokens.Add(new SequenceDiagrams.Token(0, ++_charIndex, "]"));
+                    tokens.Add(new SequenceDiagrams.Token(_lineIndex, ++_charIndex, "]"));
                     source = source.Remove(0, 1);
+                }
+                else if (source.StartsWith("->"))
+                {
+                    tokens.Add(new SequenceDiagrams.Token(_lineIndex, _charIndex += 2, "->"));
+                    source = source.Remove(0, 2);
+                }
+                else if (source.StartsWith("-"))
+                {
+                    tokens.Add(new SequenceDiagrams.Token(_lineIndex, _charIndex += 1, "-"));
+                    source = source.Remove(0, 1);
+                }
+                else if (source.StartsWith("<>->"))
+                {
+                    tokens.Add(new SequenceDiagrams.Token(_lineIndex, _charIndex += 4, "<>->"));
+                    source = source.Remove(0, 4);
+                }
+                else if (source.StartsWith("+->"))
+                {
+                    tokens.Add(new SequenceDiagrams.Token(_lineIndex, _charIndex += 3, "+->"));
+                    source = source.Remove(0, 3);
+                }
+                else if (source.StartsWith("++->"))
+                {
+                    tokens.Add(new SequenceDiagrams.Token(_lineIndex, _charIndex += 4, "++->"));
+                    source = source.Remove(0, 4);
                 }
                 else
                 {
@@ -52,18 +82,30 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     var match = Regex.Match(source, "^([A-Za-z][A-Za-z0-9]*)");
                     if (match.Captures.Count == 0)
                     {
-                        // no match -> error. Remove all non-ws characters up to the first ws.
+                        // no match -> error. 
+                        // Remove all non-ws characters up to the first ws and continue scanning.
+                        // when there is no newline, create one token with anything and stop.
+                        
                         // TODO cannot flag a token "invalid"
-                        int i = source.IndexOf(" "); // TODO tab? newline?
-                        source = source.Remove(0, i);
-                        _charIndex += i;
+                        int i = source.IndexOfAny(new char[] { ' ', '\n', '\t' }); // TODO win/lin?
+                        if (i >= 0)
+                        {
+                            source = source.Remove(0, i);
+                            _charIndex += i;
+                        }
+                        else
+                        {
+                            // no newline. stop.
+                            tokens.Add(new Token(_lineIndex, _charIndex + source.Length, source));
+                            break;
+                        }
                     }
                     else
                     {
                         var id = match.Captures[0].Value;
                         _charIndex += id.Length;
                         source = source.Remove(0, id.Length);
-                        tokens.Add(new SequenceDiagrams.Token(0, _charIndex, id));
+                        tokens.Add(new SequenceDiagrams.Token(_lineIndex, _charIndex, id));
                     }
                 }
 
@@ -76,14 +118,41 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         private void TrimStart(ref string source)
         {
-            var lenOrig = source.Length;
-            source = source.TrimStart();
-            var trimmedCount = lenOrig - source.Length;
+            var match = Regex.Match(source, @"^(\s+)");
+            if (match.Captures.Count > 0)
+            {
+                var wsString = match.Captures[0].Value;
 
-            _charIndex += trimmedCount;
+                // correct line count
+                var nlCount = wsString.Where(c => c == '\n').Count(); // TODO win/lin correct? Env.NL is a String...
+                _lineIndex += nlCount;
+                if (nlCount > 0)
+                    _charIndex = 0;
+
+                // correct char count in one line
+                int lioNewLine = wsString.LastIndexOf(Environment.NewLine);
+                if (lioNewLine >= 0)
+                {
+                    var lastWS = wsString.Substring(lioNewLine + Environment.NewLine.Length);
+                    var count = lastWS.Length;
+                    _charIndex += count;
+                }
+                else
+                {
+                    _charIndex += wsString.Length;
+                }
+
+                source = source.Substring(wsString.Length);
+            }
+
+            //var lenOrig = source.Length;
+            //source = source.TrimStart();
+            //var trimmedCount = lenOrig - source.Length;
+            //_charIndex += trimmedCount;
         }
 
         private int _charIndex;
+        private int _lineIndex;
 
     }
 }

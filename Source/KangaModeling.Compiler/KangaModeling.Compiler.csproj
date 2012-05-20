@@ -47,6 +47,7 @@
     </Compile>
     <Compile Include="ClassDiagrams\CDParser.cs" />
     <Compile Include="ClassDiagrams\CDScanner.cs" />
+    <Compile Include="ClassDiagrams\Model\IAssociation.cs" />
     <Compile Include="ClassDiagrams\Model\IClass.cs" />
     <Compile Include="ClassDiagrams\Model\IClassDiagram.cs" />
     <Compile Include="GlobalSuppressions.cs" />
