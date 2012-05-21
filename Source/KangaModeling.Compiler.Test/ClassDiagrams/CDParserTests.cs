@@ -27,15 +27,28 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             if (int.TryParse(value, out dummy)) tt = CDTokenType.Number;
             if (value.Equals("*")) tt = CDTokenType.Star;
             if (value.Equals("..")) tt = CDTokenType.DotDot;
+            if (value.Equals(":")) tt = CDTokenType.Colon;
             return new CDToken(0, value.Length, tt, value);
         }
 
-        public static TokenStream createClassTokenStream(string className)
+        public static TokenStream createClassTokenStream(string className, TokenStream fields = null)
         {
-            return new TokenStream()
-            {
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken(className), TestHelpers.createToken(CDTokenType.Bracket_Close),
-            };
+            var f = combineStreams(new TokenStream() { TestHelpers.createToken(CDTokenType.Pipe) }, fields);
+
+            var ts = combineStreams(
+                new TokenStream() { TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken(className) },
+                fields == null ? null : f,
+                new TokenStream() { TestHelpers.createToken(CDTokenType.Bracket_Close), }
+            );
+            return ts;
+        }
+
+        public static TokenStream createFieldTokenStream(string name, string type = null)
+        {
+            var stream = new TokenStream() { TestHelpers.createToken(name) };
+            if (type != null)
+                stream = combineStreams(stream, new TokenStream() { TestHelpers.createToken(CDTokenType.Colon), TestHelpers.createToken(type) });
+            return stream;
         }
 
         public static TokenStream createAssociationTokenStream(string sourceFrom, string sourceTo, string targetFrom, string targetTo)
@@ -57,6 +70,13 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             tokens.AddRange(createClassTokenStream("b"));
 
             return tokens;
+        }
+
+        public static TokenStream combineStreams(params TokenStream[] streams)
+        {
+            var combinedStream = new TokenStream();
+            foreach (var singleStream in streams) if(singleStream != null) combinedStream.AddRange(singleStream);
+            return combinedStream;
         }
     }
 
@@ -177,7 +197,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a]<>->[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Aggregation_Alternative()
         {
-            var tokens = CombineStreams(
+            var tokens = TestHelpers.combineStreams(
                 TestHelpers.createClassTokenStream("a"),
                 new TokenStream() { 
                     TestHelpers.createToken(CDTokenType.Angle_Open), TestHelpers.createToken(CDTokenType.Angle_Close), TestHelpers.createToken(CDTokenType.Dash), TestHelpers.createToken(CDTokenType.Angle_Close),
@@ -256,13 +276,6 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.AreEqual(expectedKind, actualKind, debugMsg);
         }
 
-        private static TokenStream CombineStreams(params TokenStream[] streams)
-        {
-            var combinedStream = new TokenStream();
-            foreach (var singleStream in streams) combinedStream.AddRange(singleStream);
-            return combinedStream;
-        }
-
         private IAssociation t08_check(IClassDiagram cd)
         {
             Assert.IsNotNull(cd, "parsing failed");
@@ -305,6 +318,83 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.AreEqual(AssociationKind.Directed, assocs[0].Kind, "wrong association kind");
             Assert.AreEqual("associationName", assocs[0].TargetRole, "unexpected target role");
         }
+
+        [Test]
+        public void t10_Parse_Field()
+        {
+            var tokens = new TokenStream() { TestHelpers.createToken("fieldName") };
+            var field = new CDParser(tokens).parseField();
+            Assert.IsNotNull(field, "should have parsed correctly");
+            Assert.AreEqual("fieldName", field.Name, "name wrong");
+        }
+
+        [Test]
+        public void t10_Parse_Field_With_Type()
+        {
+            var tokens = new TokenStream() { TestHelpers.createToken("fieldName2"), TestHelpers.createToken(":"), TestHelpers.createToken("int"), };
+            var field = new CDParser(tokens).parseField();
+            Assert.IsNotNull(field, "should have parsed correctly");
+            Assert.AreEqual("fieldName2", field.Name, "name wrong");
+            Assert.AreEqual("int", field.Type, "type wrong");
+        }
+
+        [Test]
+        public void t11_Parse_Class_With_Field()
+        {
+            var tokens = TestHelpers.createClassTokenStream("className", TestHelpers.createFieldTokenStream("fieldName", "fieldType"));
+            
+            var c = new CDParser(tokens).parseClass();
+
+            Assert.IsNotNull(c, "failed to parse the class");
+            Assert.AreEqual("className", c.Name, "name wrong");
+            Assert.IsNotNull(c.Fields, "fields MUST NOT be null");
+            var l = c.Fields.ToList();
+            Assert.AreEqual(1, l.Count, "There should be exactly one field");
+            var f = l[0];
+            Assert.AreEqual("fieldName", f.Name, "field name wrong");
+            Assert.AreEqual("fieldType", f.Type, "field type wrong");
+        }
+
+        [Test]
+        public void t11_Parse_Class_With_Multiple_Fields()
+        {
+            var tokens = TestHelpers.createClassTokenStream("className", 
+                TestHelpers.combineStreams(
+                    TestHelpers.createFieldTokenStream("fieldName", "fieldType"),
+                    new TokenStream() { TestHelpers.createToken(CDTokenType.Comma) }, // TODO single-token streams.
+                    TestHelpers.createFieldTokenStream("fieldName2", "fieldType2")
+                )
+            );
+
+            var c = new CDParser(tokens).parseClass();
+
+            Assert.IsNotNull(c, "failed to parse the class");
+            Assert.AreEqual("className", c.Name, "name wrong");
+            Assert.IsNotNull(c.Fields, "fields MUST NOT be null");
+            var l = c.Fields.ToList();
+            Assert.AreEqual(2, l.Count, "There should be exactly one field");
+            var f = l[0];
+            Assert.AreEqual("fieldName", f.Name, "field name wrong");
+            Assert.AreEqual("fieldType", f.Type, "field type wrong");
+            f = l[1];
+            Assert.AreEqual("fieldName2", f.Name, "2nd field name wrong");
+            Assert.AreEqual("fieldType2", f.Type, "2nd field type wrong");
+        }
+
+        [Test]
+        public void t11_Parse_Class_With_Multiple_Fields_Missing_Comma()
+        {
+            var tokens = TestHelpers.createClassTokenStream("className",
+                TestHelpers.combineStreams(
+                    TestHelpers.createFieldTokenStream("fieldName", "fieldType"),
+                    TestHelpers.createFieldTokenStream("fieldName2", "fieldType2")
+                )
+            );
+
+            var c = new CDParser(tokens).parseClass();
+            Assert.IsNull(c, "invalid tokenstream -> must not parse");
+        }
+
 
     }
 

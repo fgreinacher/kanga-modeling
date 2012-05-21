@@ -65,6 +65,8 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             checkTokens(source, expectedTokens);
         }
 
+        [TestCase("|", CDTokenType.Pipe, TestName = "pipe")]
+        [TestCase(":", CDTokenType.Colon, TestName = "colon")]
         [TestCase(",", CDTokenType.Comma, TestName = "comma")]
         [TestCase("-", CDTokenType.Dash, TestName="dash")]
         [TestCase("<", CDTokenType.Angle_Open, TestName = "angle open")]

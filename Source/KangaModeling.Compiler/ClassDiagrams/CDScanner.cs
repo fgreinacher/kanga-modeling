@@ -50,6 +50,16 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Star));
                     source = source.Remove(0, 1);
                 }
+                else if (source[0] == ':')
+                {
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Colon));
+                    source = source.Remove(0, 1);
+                }
+                else if (source[0] == '|')
+                {
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Pipe));
+                    source = source.Remove(0, 1);
+                }
                 else if (source[0] == ',')
                 {
                     tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Comma));

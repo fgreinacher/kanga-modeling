@@ -45,10 +45,26 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         private class Class : Model.IClass
         {
+            private List<IField> _fields;
             public Class(string name)
             {
                 // TODO null check?
                 Name = name;
+                _fields = new List<IField>(2);
+            }
+
+            public void Add(IField field)
+            {
+                if (field == null) throw new ArgumentNullException("field");
+                _fields.Add(field);
+            }
+
+            public IEnumerable<IField> Fields
+            {
+                get
+                {
+                    return _fields;
+                }
             }
 
             public string Name
@@ -56,6 +72,17 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 get;
                 private set;
             }
+        }
+
+        private class Field : Model.IField
+        {
+            public Field(string name, string type)
+            {
+                Name = name;
+                Type = type;
+            }
+            public string Name { get; private set; }
+            public string Type { get; private set; }
         }
 
         private class Association : Model.IAssociation
@@ -120,6 +147,8 @@ namespace KangaModeling.Compiler.ClassDiagrams
             _tokens = tokens;
         }
 
+        #region productions
+
         // assoc [ "," assoc ]* 
         public Model.IClassDiagram parseClassDiagram()
         {
@@ -145,6 +174,77 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             return cd;
         }
+
+        // "[" ID "]"
+        public Model.IClass parseClass()
+        {
+            if (checkAndRemoveLiteral("["))
+            {
+                // TODO error
+                return null;
+            }
+
+            // TODO must be identifier!
+            // TODO what if there is no token?
+            //if (_tokens[0].TokenType != CDTokenType.Identifier)
+            //{
+            //    // error: expected identifier.
+            //    return null;
+            //}
+            var c = new Class(_tokens[0].Value);
+            _tokens.RemoveAt(0);
+
+            // fields
+            if (_tokens.Count >= 1 && _tokens[0].TokenType == CDTokenType.Pipe)
+            {
+                _tokens.RemoveRange(0, 1);
+                // TODO there can be 0 fields! "[a||method()]"
+                IField field = null;
+                do
+                {
+                    field = parseField();
+                    if(field != null)
+                        c.Add(field); // TODO c == null?!
+
+                    // remove "," if present
+                    if (_tokens.Count > 1 && _tokens[0].TokenType == CDTokenType.Comma)
+                        _tokens.RemoveRange(0, 1);
+                    else
+                        break;
+
+                } while (field != null);
+
+            }
+
+            if (checkAndRemoveLiteral("]"))
+            {
+                // TODO error
+                return null;
+            }
+
+            return c;
+        }
+
+        // ID [ ":" ID ]
+        public Model.IField parseField()
+        {
+            String name = null, type = null;
+            // TODO no field? "[classname|]"
+            if (_tokens.Count > 0 && _tokens[0].TokenType == CDTokenType.Identifier)
+            {
+                name = _tokens[0].Value;
+                _tokens.RemoveRange(0, 1);
+            }
+            if (_tokens.Count >= 2 && _tokens[0].TokenType == CDTokenType.Colon && _tokens[1].TokenType == CDTokenType.Identifier)
+            {
+                type = _tokens[1].Value;
+                _tokens.RemoveRange(0, 2);
+            }
+
+            return name != null ? new Field(name, type) : null;
+        }
+
+        #endregion
 
         // class [ assoc class ]
         private void parseClassOrAssociation(ClassDiagram cd)
@@ -223,6 +323,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             return assocInfo;
         }
 
+        // TODO make public, provide specific tests.
         private Multiplicity parseMultiplicity()
         {
             Multiplicity m = null;
@@ -263,35 +364,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             return m;
         }
-
-        // "[" ID "]"
-        public Model.IClass parseClass()
-        {
-            if (checkAndRemoveLiteral("["))
-            {
-                // TODO error
-                return null;
-            }
-
-            // TODO must be identifier!
-            // TODO what if there is no token?
-            //if (_tokens[0].TokenType != CDTokenType.Identifier)
-            //{
-            //    // error: expected identifier.
-            //    return null;
-            //}
-            var c = new Class(_tokens[0].Value);
-            _tokens.RemoveAt(0);
-
-            if (checkAndRemoveLiteral("]"))
-            {
-                // TODO error
-                return null;
-            }
-
-            return c;
-        }
-
+        
         private bool checkAndRemoveLiteral(String token)
         {
             if (_tokens.Count == 0)
