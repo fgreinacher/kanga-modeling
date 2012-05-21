@@ -12,7 +12,7 @@ using KangaModeling.Compiler.ClassDiagrams.Model;
 namespace KangaModeling.Compiler.Test.ClassDiagrams
 {
 
-    public static class TestHelpers
+    static class TestHelpers
     {
         public static CDToken createToken(CDTokenType type)
         {
@@ -29,13 +29,42 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             if (value.Equals("..")) tt = CDTokenType.DotDot;
             return new CDToken(0, value.Length, tt, value);
         }
+
+        public static TokenStream createClassTokenStream(string className)
+        {
+            return new TokenStream()
+            {
+                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken(className), TestHelpers.createToken(CDTokenType.Bracket_Close),
+            };
+        }
+
+        public static TokenStream createAssociationTokenStream(string sourceFrom, string sourceTo, string targetFrom, string targetTo)
+        {
+            var tokens = new TokenStream();
+
+            tokens.AddRange(createClassTokenStream("a"));
+
+            tokens.AddRange(new[] { TestHelpers.createToken(sourceFrom), });
+            if (sourceTo != null)
+                tokens.AddRange(new[] { TestHelpers.createToken(".."), TestHelpers.createToken(sourceTo) });
+
+            tokens.AddRange(new[] { TestHelpers.createToken(CDTokenType.Dash), });
+
+            tokens.AddRange(new[] { TestHelpers.createToken(targetFrom), });
+            if (targetTo != null)
+                tokens.AddRange(new[] { TestHelpers.createToken(".."), TestHelpers.createToken(targetTo) });
+
+            tokens.AddRange(createClassTokenStream("b"));
+
+            return tokens;
+        }
     }
 
     /// <summary>
     /// Tests for tokenizing a string with the class diagram scanner.
     /// </summary>
     [TestFixture]
-    public class t01_ParserTests
+    class t01_ParserTests
     {
 
         [Test, ExpectedException(typeof(ArgumentNullException))]
@@ -80,12 +109,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.IsNull(clazz, "invalid");
         }
 
-        [Test]
+        [Test(Description="[a]")]
         public void t06_Parse_ClassDiagram_Containing_One_Class()
         {
-            var tokens = new TokenStream() { 
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("a"), TestHelpers.createToken(CDTokenType.Bracket_Close),
-            };
+            var tokens = TestHelpers.createClassTokenStream("a");
+
             var parser = new CDParser(tokens);
             var cd = parser.parseClassDiagram();
             Assert.IsNotNull(cd, "parsing failed");
@@ -95,7 +123,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.AreEqual("a", classes[0].Name, "unexpected class name");
         }
 
-        [Test]
+        [Test, Description("[a],[b]")]
         public void t06_Parse_ClassDiagram_Containing_Two_Classes()
         {
             var tokens = new TokenStream() { 
@@ -113,7 +141,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.AreEqual("b", classes[1].Name, "unexpected class name");
         }
 
-        [Test]
+        [Test, Description("[a]->[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Directed()
         {
             var tokens = new TokenStream() { 
@@ -124,7 +152,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Directed);
         }
 
-        [Test]
+        [Test, Description("[a]-[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Undirected()
         {
             var tokens = new TokenStream() { 
@@ -135,7 +163,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Undirected);
         }
 
-        [Test]
+        [Test, Description("[a]+->[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Aggregation()
         {
             var tokens = new TokenStream() { 
@@ -146,18 +174,20 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Aggregation);
         }
 
-        [Test]
-        public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Aggregation2()
+        [Test, Description("[a]<>->[b]")]
+        public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Aggregation_Alternative()
         {
-            var tokens = new TokenStream() { 
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("a"), TestHelpers.createToken(CDTokenType.Bracket_Close),
-                TestHelpers.createToken(CDTokenType.Angle_Open), TestHelpers.createToken(CDTokenType.Angle_Close), TestHelpers.createToken(CDTokenType.Dash), TestHelpers.createToken(CDTokenType.Angle_Close),
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("b"), TestHelpers.createToken(CDTokenType.Bracket_Close),
-            };
+            var tokens = CombineStreams(
+                TestHelpers.createClassTokenStream("a"),
+                new TokenStream() { 
+                    TestHelpers.createToken(CDTokenType.Angle_Open), TestHelpers.createToken(CDTokenType.Angle_Close), TestHelpers.createToken(CDTokenType.Dash), TestHelpers.createToken(CDTokenType.Angle_Close),
+                },
+                TestHelpers.createClassTokenStream("b")
+            );
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Aggregation);
         }
 
-        [Test]
+        [Test, Description("[a]++->[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Composition()
         {
             var tokens = new TokenStream() { 
@@ -186,8 +216,6 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.AreEqual(expectedKind, assocs[0].Kind, "wrong association kind");
         }
 
-        //[TestCase("0-", TestName = "0-")] TODO
-        //[TestCase("-1", TestName = "-1")]
         [TestCase("0", null, "0", null, TestName = "0-0")]
         [TestCase("0", null, "1", null, TestName = "0-1")]
         [TestCase("0", null, "0", "1", TestName = "0-0..1")]
@@ -199,7 +227,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t08_Parse_ClassDiagram_Containing_Two_Associated_Classes_With_Multiplicities_Numbers(string sourceFrom, string sourceTo, string targetFrom, string targetTo)
         {
-            var tokens = createAssociationTokenStream(sourceFrom, sourceTo, targetFrom, targetTo);
+            var tokens = TestHelpers.createAssociationTokenStream(sourceFrom, sourceTo, targetFrom, targetTo);
 
             var parser = new CDParser(tokens);
             var cd = parser.parseClassDiagram();
@@ -214,43 +242,25 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.AreEqual(targetFrom, assoc.TargetMultiplicity.From, "target wrong value");
         }
 
-        private void checkMultiplicityKind(Multiplicity.Kind actualKind, string s, string debugMsg)
+        private void checkMultiplicityKind(MultiplicityKind actualKind, string s, string debugMsg)
         {
-            Multiplicity.Kind expectedKind = Multiplicity.Kind.None;
+            MultiplicityKind expectedKind = MultiplicityKind.None;
             int dummy;
             if (s == null)
-                expectedKind = Multiplicity.Kind.None;
+                expectedKind = MultiplicityKind.None;
             else if (int.TryParse(s, out dummy))
-                expectedKind = Multiplicity.Kind.SingleNumber;
+                expectedKind = MultiplicityKind.SingleNumber;
             else if (s.Equals("*"))
-                expectedKind = Multiplicity.Kind.Star;
+                expectedKind = MultiplicityKind.Star;
 
             Assert.AreEqual(expectedKind, actualKind, debugMsg);
         }
 
-        private TokenStream createAssociationTokenStream(string sourceFrom, string sourceTo, string targetFrom, string targetTo)
+        private static TokenStream CombineStreams(params TokenStream[] streams)
         {
-            var tokens = new TokenStream();
-            
-            tokens.AddRange(createClassTokenStream("a"));
-            tokens.AddRange(new[] { TestHelpers.createToken(sourceFrom), });
-            if (sourceTo != null)
-                tokens.AddRange(new[] { TestHelpers.createToken(".."), TestHelpers.createToken(sourceTo) });
-            tokens.AddRange(new[] { TestHelpers.createToken(CDTokenType.Dash), });
-            tokens.AddRange(new[] { TestHelpers.createToken(targetFrom), });
-            if (targetTo != null)
-                tokens.AddRange(new[] { TestHelpers.createToken(".."), TestHelpers.createToken(targetTo) });
-            tokens.AddRange(createClassTokenStream("b"));
-
-            return tokens;
-        }
-
-        private TokenStream createClassTokenStream(string className)
-        {
-            return new TokenStream()
-            {
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken(className), TestHelpers.createToken(CDTokenType.Bracket_Close),
-            };
+            var combinedStream = new TokenStream();
+            foreach (var singleStream in streams) combinedStream.AddRange(singleStream);
+            return combinedStream;
         }
 
         private IAssociation t08_check(IClassDiagram cd)
@@ -295,8 +305,6 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.AreEqual(AssociationKind.Directed, assocs[0].Kind, "wrong association kind");
             Assert.AreEqual("associationName", assocs[0].TargetRole, "unexpected target role");
         }
-
-
 
     }
 

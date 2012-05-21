@@ -231,11 +231,11 @@ namespace KangaModeling.Compiler.ClassDiagrams
             {
                 if (_tokens[2].TokenType == CDTokenType.Number)
                 {
-                    m = new Multiplicity(Multiplicity.Kind.SingleNumber, _tokens[0].Value, Multiplicity.Kind.SingleNumber, _tokens[2].Value);
+                    m = new Multiplicity(MultiplicityKind.SingleNumber, _tokens[0].Value, MultiplicityKind.SingleNumber, _tokens[2].Value);
                 }
                 else if (_tokens[2].TokenType == CDTokenType.Star)
                 {
-                    m = new Multiplicity(Multiplicity.Kind.SingleNumber, _tokens[0].Value, Multiplicity.Kind.Star, null);
+                    m = new Multiplicity(MultiplicityKind.SingleNumber, _tokens[0].Value, MultiplicityKind.Star, null);
                 }
                 else
                 {
@@ -246,17 +246,17 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             if (_tokens.Count >= 1)
             {
-                Multiplicity.Kind kind = Multiplicity.Kind.None;
+                MultiplicityKind kind = MultiplicityKind.None;
                 if (_tokens[0].TokenType == CDTokenType.Number)
-                    kind = Multiplicity.Kind.SingleNumber;
+                    kind = MultiplicityKind.SingleNumber;
                 else if (_tokens[0].TokenType == CDTokenType.Star)
-                    kind = Multiplicity.Kind.Star;
+                    kind = MultiplicityKind.Star;
                 //else
                 //    ; // TODO?!
 
-                if (kind != Multiplicity.Kind.None)
+                if (kind != MultiplicityKind.None)
                 {
-                    m = new Multiplicity(kind, _tokens[0].Value, Multiplicity.Kind.None, null);
+                    m = new Multiplicity(kind, _tokens[0].Value, MultiplicityKind.None, null);
                     _tokens.RemoveRange(0, 1);
                 }
             }
