@@ -33,7 +33,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Check_Simple_Classes()
         {
             var source = "[ClassName]";
-            var expectedTokens = new Token[]{ new Token(0, 1, "["), new Token(0, 10, "ClassName"), new Token(0, 11, "]"), };
+            var expectedTokens = new CDToken[] { new CDToken(0, 1, CDTokenType.Bracket_Open), new CDToken(0, 10, CDTokenType.Identifier, "ClassName"), new CDToken(0, 11, CDTokenType.Bracket_Close), };
             checkTokens(source, expectedTokens);
         }
 
@@ -41,7 +41,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Check_Simple_Classes_Multiline()
         {
             var source = "[" + Environment.NewLine + "ClassName" + Environment.NewLine + "]";
-            var expectedTokens = new Token[] { new Token(0, 1, "["), new Token(1, 9, "ClassName"), new Token(2, 1, "]"), };
+            var expectedTokens = new CDToken[] { 
+                new CDToken(0, 1, CDTokenType.Bracket_Open), 
+                new CDToken(1, 9, CDTokenType.Identifier, "ClassName"), 
+                new CDToken(2, 1, CDTokenType.Bracket_Close), 
+            };
             checkTokens(source, expectedTokens);
         }
 
@@ -49,7 +53,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Check_Simple_Classes_Whitespace()
         {
             var source = "  [  ClassName  ]  ";
-            var expectedTokens = new Token[] { new Token(0, 3, "["), new Token(0, 14, "ClassName"), new Token(0, 17, "]"), };
+            var expectedTokens = new CDToken[] { new CDToken(0, 3, CDTokenType.Bracket_Open), new CDToken(0, 14, CDTokenType.Identifier, "ClassName"), new CDToken(0, 17, CDTokenType.Bracket_Close), };
             checkTokens(source, expectedTokens);
         }
 
@@ -57,27 +61,34 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t03_Check_Invalid_Identifier()
         {
             var source = " 0IdentifiersMustStartWithALetter  ";
-            var expectedTokens = new Token[] { /* TODO currently invalid tokens are just ignored. */ };
+            var expectedTokens = new CDToken[] { /* TODO currently invalid tokens are just ignored. */ };
             checkTokens(source, expectedTokens);
         }
 
-        [TestCase(",", TestName = "comma operator")]
-        [TestCase("-", TestName="undirected association")]
-        [TestCase("->", TestName = "directed association")]
-        [TestCase("<>->", TestName = "UML aggregation")]
-        [TestCase("+->", TestName = "UML aggregation 2")]
-        [TestCase("++->", TestName = "UML composition")]
+        [TestCase(",", CDTokenType.Comma, TestName = "comma")]
+        [TestCase("-", CDTokenType.Dash, TestName="dash")]
+        [TestCase("<", CDTokenType.Angle_Open, TestName = "angle open")]
+        [TestCase(">", CDTokenType.Angle_Close, TestName = "angle close")]
+        [TestCase("+", CDTokenType.Plus, TestName = "plus")]
+        [TestCase("#", CDTokenType.Hash, TestName = "hash")]
+        [TestCase("[", CDTokenType.Bracket_Open, TestName = "bracket open")]
+        [TestCase("]", CDTokenType.Bracket_Close, TestName = "bracket close")]
+        [TestCase("*", CDTokenType.Star, TestName = "star")]
+        [TestCase("..", CDTokenType.DotDot, TestName = "dot dot")]
+        [TestCase("0", CDTokenType.Number, TestName = "Number")]
+        [TestCase("1", CDTokenType.Number, TestName = "Number")]
+        [TestCase("12234", CDTokenType.Number, TestName = "Number")]
         [Test]
-        public void t04_Check_Token(String assoc)
+        public void t04_Check_Token(String assoc, CDTokenType expectedTType)
         {
-            var expectedTokens = new Token[] { new Token(0, assoc.Length, assoc), };
+            var expectedTokens = new CDToken[] { new CDToken(0, assoc.Length, expectedTType, assoc), };
             checkTokens(assoc, expectedTokens);
         }
 
-        private void checkTokens(string source, Token[] expectedTokens)
+        private void checkTokens(string source, CDToken[] expectedTokens)
         {
             var scanner = new CDScanner();
-            var tokens = new List<Token>(scanner.parse(source));
+            var tokens = new List<CDToken>(scanner.parse(source));
             CollectionAssert.AreEqual(expectedTokens, tokens, "token unexpected");
         }
 

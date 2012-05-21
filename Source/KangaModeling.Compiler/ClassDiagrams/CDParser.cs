@@ -29,13 +29,13 @@ namespace KangaModeling.Compiler.ClassDiagrams
             }
 
             public void AddClass(IClass @class) {
-                // TODO null check needed?
+                if (@class == null) throw new ArgumentNullException("@class");
                 _classes.Add(@class);
             }
 
             public void Add(IAssociation assoc)
             {
-                // TODO null check needed?
+                if (assoc == null) throw new ArgumentNullException("assoc");
                 _assocs.Add(assoc);
             }
 
@@ -60,11 +60,25 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         private class Association : Model.IAssociation
         {
-            public Association(AssociationKind kind, IClass source, IClass target)
+            public Association(AssocInfo info, IClass source, IClass target)
             {
-                Kind = kind;
+                Kind = info.Kind;
                 Source = source; 
                 Target = target;
+                SourceMultiplicity = info.SourceMult;
+                TargetMultiplicity = info.TargetMult;
+            }
+
+            public Multiplicity SourceMultiplicity
+            {
+                get;
+                private set;
+            }
+
+            public Multiplicity TargetMultiplicity
+            {
+                get;
+                private set;
             }
 
             public string SourceRole
@@ -113,53 +127,141 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             while (_tokens.Count > 0)
             {
-                // class
-                var c = parseClass();
-                // TODO what if c == null?
-                cd.AddClass(c);
+                parseClassOrAssociation(cd);
 
-
-                // assoc token (lookahead)
-                // TODO _tokens.Count == 0?
-                if (_tokens.Count > 0 && isAssociation(_tokens[0].Value))
+                // either no more tokens OR comma, otherwise error
+                if (_tokens.Count > 0)
                 {
-                    var kind = getKind(_tokens[0].Value);
+                    if (_tokens[0].TokenType != CDTokenType.Comma)
+                    {
+                        // error, expected comma
+                        return null;
+                    }
+
+                    // consume comma
                     _tokens.RemoveAt(0);
-                    var c2 = parseClass();
-                    // TODO c2 == null?
-                    cd.AddClass(c2);
-
-                    cd.Add(new Association(kind, c, c2));
-                }
-
-                // at the end, there needs to be a comma
-                if (_tokens.Count > 0 && checkAndRemoveLiteral(","))
-                {
-                    // TODO error
-                    return null;
                 }
             }
 
             return cd;
         }
 
-        // TODO TokenKind!!!
-        private bool isAssociation(string value)
+        // class [ assoc class ]
+        private void parseClassOrAssociation(ClassDiagram cd)
         {
-            return "->".Equals(value) || "-".Equals(value) || "<>->".Equals(value) || "++->".Equals(value) || "+->".Equals(value);
+            // class
+            var c = parseClass();
+            // TODO what if c == null?
+            cd.AddClass(c);
+
+            // either there is an association afterwards or not
+            // if there is none, then either this is the end of input
+            // or a comma follows.
+            var assoc = parseAssociation();
+            if (assoc != null)
+            {
+                // assoc did parse, must be followed by class
+                var c2 = parseClass();
+                cd.AddClass(c2);
+
+                cd.Add(new Association(assoc, c, c2));
+            }
         }
 
-        private AssociationKind getKind(string value)
+        private class AssocInfo
         {
-            AssociationKind kind = AssociationKind.Undirected;
-            switch(value) {
-                case "->": kind = AssociationKind.Directed; break;
-                case "-": kind = AssociationKind.Undirected; break;
-                case "+->": kind = AssociationKind.Aggregation; break;
-                case "++->": kind = AssociationKind.Composition; break;
-                case "<>->": kind = AssociationKind.Aggregation; break;
+            public AssocInfo(AssociationKind k)
+            {
+                Kind = k;
             }
-            return kind;
+            public AssociationKind Kind;
+            public Multiplicity SourceMult;
+            public Multiplicity TargetMult;
+        }
+
+        // simple ones: "->" "<>->" "+->" "++->"
+        private AssocInfo parseAssociation()
+        {
+            var sourceMult = parseMultiplicity();
+            AssocInfo assocInfo = null;
+
+            // TODO checks!!!
+            if (_tokens.Count >= 2 && _tokens[0].TokenType == CDTokenType.Dash && _tokens[1].TokenType == CDTokenType.Angle_Close)
+            {
+                _tokens.RemoveRange(0, 2);
+                assocInfo = new AssocInfo(AssociationKind.Directed);
+            }
+            if (_tokens.Count >= 4 && _tokens[0].TokenType == CDTokenType.Angle_Open && _tokens[1].TokenType == CDTokenType.Angle_Close && _tokens[2].TokenType == CDTokenType.Dash && _tokens[3].TokenType == CDTokenType.Angle_Close)
+            {
+                _tokens.RemoveRange(0, 4);
+                assocInfo = new AssocInfo(AssociationKind.Aggregation);
+            }
+            if (_tokens.Count >= 3 && _tokens[0].TokenType == CDTokenType.Plus && _tokens[1].TokenType == CDTokenType.Dash && _tokens[2].TokenType == CDTokenType.Angle_Close)
+            {
+                _tokens.RemoveRange(0, 3);
+                assocInfo = new AssocInfo(AssociationKind.Aggregation);
+            }
+            if (_tokens.Count >= 4 && _tokens[0].TokenType == CDTokenType.Plus && _tokens[1].TokenType == CDTokenType.Plus && _tokens[2].TokenType == CDTokenType.Dash && _tokens[3].TokenType == CDTokenType.Angle_Close)
+            {
+                _tokens.RemoveRange(0, 4);
+                assocInfo = new AssocInfo(AssociationKind.Composition);
+            }
+            if (_tokens.Count >= 1 && _tokens[0].TokenType == CDTokenType.Dash)
+            {
+                _tokens.RemoveRange(0, 1);
+                assocInfo = new AssocInfo(AssociationKind.Undirected);
+            }
+
+            var targetMult = parseMultiplicity();
+
+            if (assocInfo != null)
+            {
+                assocInfo.SourceMult = sourceMult;
+                assocInfo.TargetMult = targetMult;
+            }
+
+            return assocInfo;
+        }
+
+        private Multiplicity parseMultiplicity()
+        {
+            Multiplicity m = null;
+            
+            if (_tokens.Count >= 3 && _tokens[0].TokenType == CDTokenType.Number && _tokens[1].TokenType == CDTokenType.DotDot)
+            {
+                if (_tokens[2].TokenType == CDTokenType.Number)
+                {
+                    m = new Multiplicity(Multiplicity.Kind.SingleNumber, _tokens[0].Value, Multiplicity.Kind.SingleNumber, _tokens[2].Value);
+                }
+                else if (_tokens[2].TokenType == CDTokenType.Star)
+                {
+                    m = new Multiplicity(Multiplicity.Kind.SingleNumber, _tokens[0].Value, Multiplicity.Kind.Star, null);
+                }
+                else
+                {
+                    // TODO ??
+                }
+                _tokens.RemoveRange(0, 3);
+            }
+
+            if (_tokens.Count >= 1)
+            {
+                Multiplicity.Kind kind = Multiplicity.Kind.None;
+                if (_tokens[0].TokenType == CDTokenType.Number)
+                    kind = Multiplicity.Kind.SingleNumber;
+                else if (_tokens[0].TokenType == CDTokenType.Star)
+                    kind = Multiplicity.Kind.Star;
+                //else
+                //    ; // TODO?!
+
+                if (kind != Multiplicity.Kind.None)
+                {
+                    m = new Multiplicity(kind, _tokens[0].Value, Multiplicity.Kind.None, null);
+                    _tokens.RemoveRange(0, 1);
+                }
+            }
+
+            return m;
         }
 
         // "[" ID "]"
@@ -172,6 +274,12 @@ namespace KangaModeling.Compiler.ClassDiagrams
             }
 
             // TODO must be identifier!
+            // TODO what if there is no token?
+            //if (_tokens[0].TokenType != CDTokenType.Identifier)
+            //{
+            //    // error: expected identifier.
+            //    return null;
+            //}
             var c = new Class(_tokens[0].Value);
             _tokens.RemoveAt(0);
 
