@@ -10,9 +10,11 @@ namespace KangaModeling.Web.Controllers
     {
         //
         // GET: /Home/
+
         public ActionResult Index()
         {
             return View();
         }
+
     }
 }

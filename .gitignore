@@ -5,3 +5,4 @@ bin
 obj
 TestResult.xml
 *.VisualState.xml
+*.Publish.xml

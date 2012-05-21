@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BCA39FA7-B2F4-4F61-A2D1-6EB2A7EBB442}</ProjectGuid>
+    <ProjectGuid>{1C35A339-CFE6-40D7-BAA5-B718963E5292}</ProjectGuid>
     <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -77,7 +77,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -85,18 +84,58 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Images\kangalogo.png" />
-    <Content Include="Content\Images\sdhello.png" />
-    <Content Include="Content\Stylesheets\SyntaxHighlighter.css" />
+    <Content Include="Content\Images\Logo.png" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shCore.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shCoreDefault.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shCoreDjango.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shCoreEclipse.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shCoreEmacs.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shCoreFadeToGrey.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shCoreMDUltra.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shCoreMidnight.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shCoreRDark.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shThemeDefault.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shThemeDjango.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shThemeEclipse.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shThemeEmacs.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shThemeFadeToGrey.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shThemeMDUltra.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shThemeMidnight.css" />
+    <Content Include="Content\Stylesheets\SyntaxHighlighter\shThemeRDark.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Stylesheets\Site.css" />
-    <Content Include="Scripts\clipboard.swf" />
-    <Content Include="Scripts\jquery-1.5.1-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.5.1.js" />
-    <Content Include="Scripts\jquery-1.5.1.min.js" />
-    <Content Include="Scripts\kanga.js" />
-    <Content Include="Scripts\shBrushXml.js" />
-    <Content Include="Scripts\shCore.js" />
+    <Content Include="Scripts\JQuery\jquery-1.5.1-vsdoc.js" />
+    <Content Include="Scripts\JQuery\jquery-1.5.1.js" />
+    <Content Include="Scripts\JQuery\jquery-1.5.1.min.js" />
+    <Content Include="Scripts\JQuery\jquery.waitforimages.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shAutoloader.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushAppleScript.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushAS3.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushBash.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushColdFusion.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushCpp.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushCSharp.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushCss.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushDelphi.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushDiff.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushErlang.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushGroovy.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushJava.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushJavaFX.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushJScript.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushPerl.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushPhp.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushPlain.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushPowerShell.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushPython.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushRuby.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushSass.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushScala.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushSql.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushVb.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shBrushXml.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shCore.js" />
+    <Content Include="Scripts\SyntaxHighlighter\shLegacy.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -109,20 +148,12 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Api\Help.cshtml" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\KangaModeling.Facade\KangaModeling.Facade.csproj">
-      <Project>{B8B9203B-7981-4392-A866-06E3CE56F986}</Project>
-      <Name>KangaModeling.Facade</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -141,7 +172,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>51151</DevelopmentServerPort>
+          <DevelopmentServerPort>53298</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

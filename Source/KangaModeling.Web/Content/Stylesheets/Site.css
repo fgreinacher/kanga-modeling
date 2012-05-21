@@ -2,10 +2,13 @@ body
 {
   background-color: #eeeeee;
 }
-
 body, td, div, .p, a
 {
-  font-family: arial,sans-serif;
+  font-family: Calibri,Helvetica,serif;
+}
+textarea, pre, tt
+{
+  font-family: Consolas, "Courier New" , Courier, monospace;
 }
 div, td
 {
@@ -93,7 +96,6 @@ div.n
 }
 tt
 {
-  font-weight: bolder;
   color: Blue;
 }
 
