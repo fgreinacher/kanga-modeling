@@ -6,7 +6,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal abstract class FragmentVisualBase : Visual
+    internal abstract class FragmentVisualBase : SDVisualBase
     {
         private readonly IArea m_Area;
         private readonly ICombinedFragment m_Fragment;

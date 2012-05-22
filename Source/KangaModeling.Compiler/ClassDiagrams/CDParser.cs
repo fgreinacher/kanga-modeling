@@ -7,6 +7,20 @@ using KangaModeling.Compiler.SequenceDiagrams;
 
 namespace KangaModeling.Compiler.ClassDiagrams
 {
+
+    public static class DiagramCreator
+    {
+        /// <summary>
+        /// Conveniently parse a string to a sequence diagram.
+        /// </summary>
+        /// <param name="text">The text to parse.</param>
+        /// <returns>A sequence diagram parsed from the text. Never null.</returns>
+        public static IClassDiagram CreateFrom(string text)
+        {
+            return new CDParser(new CDScanner().parse(text)).parseClassDiagram();
+        }
+
+    }
     
     /// <summary>
     /// LL(k) recursive descent parser for class diagram strings.
@@ -156,7 +170,8 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             while (_tokens.Count > 0)
             {
-                parseClassOrAssociation(cd);
+                if (!parseClassOrAssociation(cd))
+                    return null;
 
                 // either no more tokens OR comma, otherwise error
                 if (!_tokens.TryConsume(CDTokenType.Comma))
@@ -250,11 +265,15 @@ namespace KangaModeling.Compiler.ClassDiagrams
         #endregion
 
         // class [ assoc class ]
-        private void parseClassOrAssociation(ClassDiagram cd)
+        private bool parseClassOrAssociation(ClassDiagram cd)
         {
             // class
             var c = parseClass();
-            // TODO what if c == null?
+            if (c == null)
+            {
+                // error must have been flagged by class parsing
+                return false;
+            }
             cd.AddClass(c);
 
             // either there is an association afterwards or not
@@ -269,6 +288,8 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
                 cd.Add(new Association(assoc, c, c2));
             }
+
+            return true;
         }
 
         private class AssocInfo

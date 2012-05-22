@@ -6,11 +6,11 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    public class Visual : Visuals.Visual
+    public class SDVisualBase : Visuals.Visual
     {
         private readonly IStyle m_Style;
 
-        public Visual(IStyle style)
+        public SDVisualBase(IStyle style)
         {
             m_Style = style;
         }

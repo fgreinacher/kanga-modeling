@@ -11,5 +11,6 @@ namespace KangaModeling.Facade
 	public enum DiagramType
 	{
 		Sequence,
+        Class,
 	}
 }

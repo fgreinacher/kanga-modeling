@@ -9,7 +9,7 @@ namespace KangaModeling.Compiler.ClassDiagrams.Model
     /// <summary>
     /// Represents the complete CD.
     /// </summary>
-    interface IClassDiagram
+    public interface IClassDiagram
     {
         
         IEnumerable<IClass> Classes { get; }

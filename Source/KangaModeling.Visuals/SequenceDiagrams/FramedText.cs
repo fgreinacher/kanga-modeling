@@ -4,7 +4,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class FramedText : Visual
+    internal class FramedText : SDVisualBase
     {
         private readonly Column m_Column;
         private readonly Row m_Row;

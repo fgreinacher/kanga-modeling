@@ -42,6 +42,8 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="ClassDiagrams\ClassDiagramVisual.cs" />
+    <Compile Include="ClassDiagrams\ClassVisual.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\ActivityVisual.cs" />
     <Compile Include="SequenceDiagrams\Column.cs" />
@@ -68,7 +70,7 @@
     <Compile Include="SequenceDiagrams\SignalsLayer.cs" />
     <Compile Include="SequenceDiagrams\Styles\SketchyStyle.cs" />
     <Compile Include="SequenceDiagrams\TextVisual.cs" />
-    <Compile Include="SequenceDiagrams\Visual.cs" />
+    <Compile Include="SequenceDiagrams\SDVisualBase.cs" />
     <Compile Include="SequenceDiagrams\XCross.cs" />
     <Compile Include="Visual.cs" />
   </ItemGroup>

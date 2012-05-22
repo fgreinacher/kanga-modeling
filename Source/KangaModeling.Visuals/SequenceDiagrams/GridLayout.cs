@@ -8,7 +8,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class GridLayout : Visual
+    internal class GridLayout : SDVisualBase
     {
         public GridLayout(IStyle style, int lifelineCount, int rowCount)
             : base(style)

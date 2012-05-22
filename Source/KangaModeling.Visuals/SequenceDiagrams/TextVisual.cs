@@ -4,7 +4,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class TextVisual : Visual
+    internal class TextVisual : SDVisualBase
     {
         public const float MinWidth = 40;
         private readonly Column m_Column;

@@ -7,7 +7,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    public class SequenceDiagramVisual : Visual
+    public class SequenceDiagramVisual : SDVisualBase
     {
         private readonly GridLayout m_GridLayout;
         private readonly ISequenceDiagram m_SequenceDiagram;

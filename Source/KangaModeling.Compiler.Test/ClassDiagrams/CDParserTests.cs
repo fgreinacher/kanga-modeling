@@ -106,18 +106,24 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Parse_Simple_Class_Missing_Start_Bracket()
         {
             var tokens = new TokenStream() { TestHelpers.createToken("ClassName"), TestHelpers.createToken(CDTokenType.Bracket_Close), };
-            var parser = new CDParser(tokens);
-            var clazz = parser.parseClass(); // TODO error handling?
+            var clazz = new CDParser(tokens).parseClass(); // TODO error handling?
             Assert.IsNull(clazz, "invalid");
+
+            tokens = new TokenStream() { TestHelpers.createToken("ClassName"), TestHelpers.createToken(CDTokenType.Bracket_Close), };
+            var cd = new CDParser(tokens).parseClassDiagram(); // TODO error handling?
+            Assert.IsNull(cd, "invalid");
         }
 
         [Test(Description = "[ClassName")]
         public void t03_Parse_Simple_Class_Missing_End_Bracket()
         {
             var tokens = new TokenStream() { TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("ClassName"), };
-            var parser = new CDParser(tokens);
-            var clazz = parser.parseClass(); // TODO error handling?
+            var clazz = new CDParser(tokens).parseClass(); // TODO error handling?
             Assert.IsNull(clazz, "invalid");
+
+            tokens = new TokenStream() { TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("ClassName"), };
+            var cd = new CDParser(tokens).parseClassDiagram(); // TODO error handling?
+            Assert.IsNull(cd, "invalid");
         }
 
         [Test(Description = "")]

@@ -9,7 +9,7 @@ namespace KangaModeling.Compiler.ClassDiagrams.Model
     /// <summary>
     /// Represents one field of an IClass instance.
     /// </summary>
-    interface IField
+    public interface IField
     {
         string Name { get; }
         string Type { get; }
@@ -18,7 +18,7 @@ namespace KangaModeling.Compiler.ClassDiagrams.Model
     /// <summary>
     /// Represents a class in the CD model.
     /// </summary>
-    interface IClass
+    public interface IClass
     {
         /// <summary>
         /// The name of the class.

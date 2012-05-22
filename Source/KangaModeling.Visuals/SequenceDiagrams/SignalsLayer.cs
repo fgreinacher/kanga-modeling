@@ -4,7 +4,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class SignalsLayer : Visual
+    internal class SignalsLayer : SDVisualBase
     {
         private readonly GridLayout m_GridLayout;
         private readonly IEnumerable<ISignal> m_Signals;

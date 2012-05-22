@@ -57,7 +57,7 @@ namespace KangaModeling.Compiler.ClassDiagrams.Model
     /// Associates two IClass instances.
     /// Also used for undirected associations, then of course, Source/Target does not make that much sense.
     /// </summary>
-    interface IAssociation
+    public interface IAssociation
     {
         string SourceRole { get; }
         Multiplicity SourceMultiplicity { get; }

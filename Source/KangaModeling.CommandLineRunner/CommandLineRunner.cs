@@ -27,7 +27,7 @@ namespace CommandLineRunner
 
 		internal void Run(Options opts)
 		{
-			var arguments = new DiagramArguments(opts.Model, DiagramType.Sequence, DiagramStyle.Sketchy);
+			var arguments = new DiagramArguments(opts.Model, DiagramType.Class, DiagramStyle.Sketchy);
 			var result = DiagramFactory.Create(arguments);
 			using (result)
 			{
