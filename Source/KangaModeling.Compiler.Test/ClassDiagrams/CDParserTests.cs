@@ -395,6 +395,20 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.IsNull(c, "invalid tokenstream -> must not parse");
         }
 
+        [Test]
+        public void t11_Junk_At_End()
+        {
+            var tokens = TestHelpers.combineStreams(
+                TestHelpers.createClassTokenStream("className"),
+                new TokenStream() { TestHelpers.createToken("JunkAtEnd") }
+            );
+
+            var cd = new CDParser(tokens).parseClassDiagram();
+            Assert.IsNull(cd, "invalid tokenstream -> must not parse to class diagram");
+            var c = new CDParser(tokens).parseClass();
+            Assert.IsNull(c, "invalid tokenstream -> must not parse to class");
+        }
+
 
     }
 

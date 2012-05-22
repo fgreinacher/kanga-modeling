@@ -9,7 +9,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 {
     
     /// <summary>
-    /// LL(1) recursive descent parser for class diagram strings.
+    /// LL(k) recursive descent parser for class diagram strings.
     /// </summary>
     class CDParser
     {
@@ -159,17 +159,14 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 parseClassOrAssociation(cd);
 
                 // either no more tokens OR comma, otherwise error
-                if (_tokens.Count > 0)
-                {
-                    if (_tokens[0].TokenType != CDTokenType.Comma)
-                    {
-                        // error, expected comma
-                        return null;
-                    }
+                if (!_tokens.TryConsume(CDTokenType.Comma))
+                    break;
+            }
 
-                    // consume comma
-                    _tokens.RemoveAt(0);
-                }
+            if (_tokens.Count > 0)
+            {
+                // TODO ERROR - junk at end
+                return null;
             }
 
             return cd;
@@ -178,7 +175,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         // "[" ID "]"
         public Model.IClass parseClass()
         {
-            if (checkAndRemoveLiteral("["))
+            if (!_tokens.TryConsume(CDTokenType.Bracket_Open))
             {
                 // TODO error
                 return null;
@@ -191,13 +188,17 @@ namespace KangaModeling.Compiler.ClassDiagrams
             //    // error: expected identifier.
             //    return null;
             //}
-            var c = new Class(_tokens[0].Value);
-            _tokens.RemoveAt(0);
+            CDToken token = null;
+            if (!_tokens.TryConsume(CDTokenType.Identifier, out token))
+            {
+                // error
+                return null;
+            }
+            var c = new Class(token.Value);
 
             // fields
-            if (_tokens.Count >= 1 && _tokens[0].TokenType == CDTokenType.Pipe)
+            if(_tokens.TryConsume(CDTokenType.Pipe))
             {
-                _tokens.RemoveRange(0, 1);
                 // TODO there can be 0 fields! "[a||method()]"
                 IField field = null;
                 do
@@ -207,16 +208,14 @@ namespace KangaModeling.Compiler.ClassDiagrams
                         c.Add(field); // TODO c == null?!
 
                     // remove "," if present
-                    if (_tokens.Count > 1 && _tokens[0].TokenType == CDTokenType.Comma)
-                        _tokens.RemoveRange(0, 1);
-                    else
+                    if(!_tokens.TryConsume(CDTokenType.Comma))
                         break;
 
                 } while (field != null);
 
             }
 
-            if (checkAndRemoveLiteral("]"))
+            if (!_tokens.TryConsume(CDTokenType.Bracket_Close))
             {
                 // TODO error
                 return null;
@@ -229,16 +228,20 @@ namespace KangaModeling.Compiler.ClassDiagrams
         public Model.IField parseField()
         {
             String name = null, type = null;
+            CDToken token = null;
+
             // TODO no field? "[classname|]"
-            if (_tokens.Count > 0 && _tokens[0].TokenType == CDTokenType.Identifier)
+            if(_tokens.TryConsume(CDTokenType.Identifier, out token))
+                name = token.Value;
+
+            if (_tokens.TryConsume(CDTokenType.Colon))
             {
-                name = _tokens[0].Value;
-                _tokens.RemoveRange(0, 1);
-            }
-            if (_tokens.Count >= 2 && _tokens[0].TokenType == CDTokenType.Colon && _tokens[1].TokenType == CDTokenType.Identifier)
-            {
-                type = _tokens[1].Value;
-                _tokens.RemoveRange(0, 2);
+                if (_tokens.TryConsume(CDTokenType.Identifier, out token))
+                    type = token.Value;
+                else
+                {
+                    // TODO error!
+                }
             }
 
             return name != null ? new Field(name, type) : null;
@@ -286,30 +289,27 @@ namespace KangaModeling.Compiler.ClassDiagrams
             AssocInfo assocInfo = null;
 
             // TODO checks!!!
-            if (_tokens.Count >= 2 && _tokens[0].TokenType == CDTokenType.Dash && _tokens[1].TokenType == CDTokenType.Angle_Close)
+            if(_tokens.TryConsume(CDTokenType.Dash))
             {
-                _tokens.RemoveRange(0, 2);
-                assocInfo = new AssocInfo(AssociationKind.Directed);
+                if(_tokens.TryConsume(CDTokenType.Angle_Close))
+                    assocInfo = new AssocInfo(AssociationKind.Directed);
+                else
+                    assocInfo = new AssocInfo(AssociationKind.Undirected);
             }
-            if (_tokens.Count >= 4 && _tokens[0].TokenType == CDTokenType.Angle_Open && _tokens[1].TokenType == CDTokenType.Angle_Close && _tokens[2].TokenType == CDTokenType.Dash && _tokens[3].TokenType == CDTokenType.Angle_Close)
+            if(_tokens.TryConsume(CDTokenType.Angle_Open, CDTokenType.Angle_Close, CDTokenType.Dash, CDTokenType.Angle_Close))
             {
-                _tokens.RemoveRange(0, 4);
                 assocInfo = new AssocInfo(AssociationKind.Aggregation);
             }
-            if (_tokens.Count >= 3 && _tokens[0].TokenType == CDTokenType.Plus && _tokens[1].TokenType == CDTokenType.Dash && _tokens[2].TokenType == CDTokenType.Angle_Close)
+            if (_tokens.TryConsume(CDTokenType.Plus))
             {
-                _tokens.RemoveRange(0, 3);
-                assocInfo = new AssocInfo(AssociationKind.Aggregation);
-            }
-            if (_tokens.Count >= 4 && _tokens[0].TokenType == CDTokenType.Plus && _tokens[1].TokenType == CDTokenType.Plus && _tokens[2].TokenType == CDTokenType.Dash && _tokens[3].TokenType == CDTokenType.Angle_Close)
-            {
-                _tokens.RemoveRange(0, 4);
-                assocInfo = new AssocInfo(AssociationKind.Composition);
-            }
-            if (_tokens.Count >= 1 && _tokens[0].TokenType == CDTokenType.Dash)
-            {
-                _tokens.RemoveRange(0, 1);
-                assocInfo = new AssocInfo(AssociationKind.Undirected);
+                if(_tokens.TryConsume(CDTokenType.Dash, CDTokenType.Angle_Close))
+                {
+                    assocInfo = new AssocInfo(AssociationKind.Aggregation);
+                }
+                if(_tokens.TryConsume(CDTokenType.Plus, CDTokenType.Dash, CDTokenType.Angle_Close))
+                {
+                    assocInfo = new AssocInfo(AssociationKind.Composition);
+                }
             }
 
             var targetMult = parseMultiplicity();
@@ -328,50 +328,37 @@ namespace KangaModeling.Compiler.ClassDiagrams
         {
             Multiplicity m = null;
             
-            if (_tokens.Count >= 3 && _tokens[0].TokenType == CDTokenType.Number && _tokens[1].TokenType == CDTokenType.DotDot)
+            CDToken token1, token2;
+            if (_tokens.TryConsume(CDTokenType.Number, out token1))
             {
-                if (_tokens[2].TokenType == CDTokenType.Number)
+                if (_tokens.TryConsume(CDTokenType.DotDot))
                 {
-                    m = new Multiplicity(MultiplicityKind.SingleNumber, _tokens[0].Value, MultiplicityKind.SingleNumber, _tokens[2].Value);
-                }
-                else if (_tokens[2].TokenType == CDTokenType.Star)
-                {
-                    m = new Multiplicity(MultiplicityKind.SingleNumber, _tokens[0].Value, MultiplicityKind.Star, null);
+                    if (_tokens.TryConsume(CDTokenType.Number, out token2))
+                    {
+                        m = new Multiplicity(MultiplicityKind.SingleNumber, token1.Value, MultiplicityKind.SingleNumber, token2.Value);
+                    }
+                    else if (_tokens.TryConsume(CDTokenType.Star))
+                    {
+                        m = new Multiplicity(MultiplicityKind.SingleNumber, token1.Value, MultiplicityKind.Star, null);
+                    }
+                    else
+                    {
+                        // TODO ??
+                    }
                 }
                 else
                 {
-                    // TODO ??
+                    m = new Multiplicity(MultiplicityKind.SingleNumber, token1.Value, MultiplicityKind.None, null);
                 }
-                _tokens.RemoveRange(0, 3);
             }
-
-            if (_tokens.Count >= 1)
+            else
             {
-                MultiplicityKind kind = MultiplicityKind.None;
-                if (_tokens[0].TokenType == CDTokenType.Number)
-                    kind = MultiplicityKind.SingleNumber;
-                else if (_tokens[0].TokenType == CDTokenType.Star)
-                    kind = MultiplicityKind.Star;
-                //else
-                //    ; // TODO?!
-
-                if (kind != MultiplicityKind.None)
-                {
-                    m = new Multiplicity(kind, _tokens[0].Value, MultiplicityKind.None, null);
-                    _tokens.RemoveRange(0, 1);
-                }
+                CDToken token;
+                if (_tokens.TryConsume(CDTokenType.Star, out token))
+                    m = new Multiplicity(MultiplicityKind.Star, token.Value, MultiplicityKind.None, null);
             }
 
             return m;
-        }
-        
-        private bool checkAndRemoveLiteral(String token)
-        {
-            if (_tokens.Count == 0)
-                return true;
-            var t = _tokens[0]; 
-            _tokens.RemoveAt(0);
-            return !t.Value.Equals(token);
         }
 
         private readonly TokenStream _tokens;
