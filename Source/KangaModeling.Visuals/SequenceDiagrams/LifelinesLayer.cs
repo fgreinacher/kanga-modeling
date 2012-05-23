@@ -4,7 +4,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class LifelinesLayer : Visual
+    internal class LifelinesLayer : SDVisualBase
     {
         private readonly GridLayout m_GridLayout;
         private readonly IEnumerable<ILifeline> m_Lifelines;

@@ -5,7 +5,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class LifelineVisual : Visual
+    internal class LifelineVisual : SDVisualBase
     {
         private readonly Column m_Column;
         private readonly Row m_EndRow;

@@ -3,7 +3,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal abstract class OperandVisualBase : Visual
+    internal abstract class OperandVisualBase : SDVisualBase
     {
         private readonly GridLayout m_GridLayout;
 

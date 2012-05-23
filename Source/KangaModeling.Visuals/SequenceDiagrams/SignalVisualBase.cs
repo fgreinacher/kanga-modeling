@@ -6,7 +6,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal abstract class SignalVisualBase : Visual
+    internal abstract class SignalVisualBase : SDVisualBase
     {
         protected readonly ISignal m_Signal;
         protected readonly Row m_Row;

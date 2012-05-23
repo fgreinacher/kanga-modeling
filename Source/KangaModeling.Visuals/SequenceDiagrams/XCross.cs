@@ -4,7 +4,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class XCross : Visual
+    internal class XCross : SDVisualBase
     {
         private readonly Column m_Column;
         private readonly Row m_Row;

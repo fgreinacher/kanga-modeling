@@ -5,7 +5,7 @@ using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
 {
-    internal class ActivityVisual : Visual
+    internal class ActivityVisual : SDVisualBase
     {
         private readonly IActivity m_Activity;
         private readonly Column m_Column;
