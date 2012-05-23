@@ -108,6 +108,7 @@
     <Content Include="Scripts\JQuery\jquery-1.5.1.js" />
     <Content Include="Scripts\JQuery\jquery-1.5.1.min.js" />
     <Content Include="Scripts\JQuery\jquery.waitforimages.js" />
+    <Content Include="Scripts\index.js" />
     <Content Include="Scripts\SyntaxHighlighter\shAutoloader.js" />
     <Content Include="Scripts\SyntaxHighlighter\shBrushAppleScript.js" />
     <Content Include="Scripts\SyntaxHighlighter\shBrushAS3.js" />
@@ -148,7 +149,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

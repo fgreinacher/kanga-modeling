@@ -45,13 +45,6 @@ namespace KangaModeling.Web.Controllers
         }
 
         //
-        // GET: /Api/Sample        
-        public ActionResult Sample()
-        {
-            return View();
-        }
-
-        //
         // GET: /Api/Get        
         public ActionResult Get(string id)
         {

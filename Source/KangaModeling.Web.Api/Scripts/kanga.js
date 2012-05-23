@@ -12,7 +12,11 @@ kanga = function (apiBaseUri) {
 
       arguments = { source: encodeURI(arguments.source), type: arguments.type, style: arguments.style };
 
-      jQuery.get(_apiBaseUri + '/create', arguments, callback, 'json');
+      jQuery.get(_apiBaseUri + '/create', arguments, function (result) {
+
+        callback(result);
+
+      }, 'json');
 
     }
 
@@ -23,7 +27,7 @@ kanga = function (apiBaseUri) {
     var _client = client;
     var _this = this;
 
-    _this.replaceAll = function () {
+    this.replaceAll = function () {
 
       jQuery('pre.kanga').each(function (i, element) {
 
@@ -33,7 +37,7 @@ kanga = function (apiBaseUri) {
 
     }
 
-    _this.replace = function (element) {
+    this.replace = function (element) {
 
       var source = jQuery(element).text();
       var type = jQuery(element).data('kanga-type');
