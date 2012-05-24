@@ -17,6 +17,11 @@ namespace KangaModeling.Compiler.ClassDiagrams.Model
         /// </summary>
         IEnumerable<IField> Fields { get; }
 
+        /// <summary>
+        /// The methods contained in this class.
+        /// </summary>
+        IEnumerable<IMethod> Methods { get; }
+
     }
 
 }

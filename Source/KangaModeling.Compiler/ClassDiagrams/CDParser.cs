@@ -57,11 +57,13 @@ namespace KangaModeling.Compiler.ClassDiagrams
         private class Class : IClass
         {
             private readonly List<IField> _fields;
+            private readonly List<IMethod> _methods;
             public Class(string name)
             {
                 // TODO null check?
                 Name = name;
                 _fields = new List<IField>(2);
+                _methods = new List<IMethod>(2);
             }
 
             public void Add(IField field)
@@ -70,19 +72,24 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 _fields.Add(field);
             }
 
-            public IEnumerable<IField> Fields
+            public void Add(IMethod method)
             {
-                get
-                {
-                    return _fields;
-                }
+                if (method == null) throw new ArgumentNullException("method");
+                _methods.Add(method);
             }
 
-            public string Name
+            public IEnumerable<IField> Fields
             {
-                get;
-                private set;
+                get { return _fields; }
             }
+
+            public IEnumerable<IMethod> Methods
+            {
+                get { return _methods; }
+            }
+
+
+            public string Name { get; private set; }
         }
 
         private class Field : IField
@@ -230,7 +237,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             if(_tokens.TryConsume(TokenType.Pipe))
             {
                 // TODO there can be 0 fields! "[a||method()]"
-                IField field = null;
+                IField field;
                 do
                 {
                     field = ParseField();
@@ -242,6 +249,24 @@ namespace KangaModeling.Compiler.ClassDiagrams
                         break;
 
                 } while (field != null);
+
+            }
+
+            // methods
+            if (_tokens.TryConsume(TokenType.Pipe))
+            {
+                IMethod m;
+                do
+                {
+                    m = ParseMethod();
+                    if (m != null)
+                        c.Add(m); // TODO c == null?!
+
+                    // remove "," if present
+                    if (!_tokens.TryConsume(TokenType.Comma))
+                        break;
+
+                } while (m != null);
 
             }
 
@@ -310,7 +335,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             {
                 if (!_tokens.TryConsume(TokenType.Identifier, out token))
                     break; // no identifier -> finished
-                var paramName = token.Value;
+                var paramType = token.Value;
 
                 if (!_tokens.TryConsume(TokenType.Identifier, out token))
                 {
@@ -318,7 +343,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     break;
                 }
 
-                mp.Add(new MethodParameter(paramName, token.Value));
+                mp.Add(new MethodParameter(token.Value, paramType));
             } while (true);
 
             // (mandatory) )

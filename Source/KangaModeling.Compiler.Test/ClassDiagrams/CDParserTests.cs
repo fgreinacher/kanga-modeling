@@ -380,7 +380,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t14_Parse_Method_Parameter()
         {
-            var parameterStream = new TokenStream {"parameter".Token(), "type".Token()};
+            var parameterStream = new TokenStream {"type".Token(), "parameter".Token()};
             var tokens = TokenStreamBuilder.Method("methodName", "+", parameterStream);
             
             var m = new CDParser(tokens).ParseMethod();
@@ -403,6 +403,24 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
 
             Assert.IsNotNull(m, "method parse error");
             Assert.AreEqual("returntype", m.ReturnType);
+        }
+
+        [Test]
+        public void t14_Parse_Class_With_Method()
+        {
+            // [className||-methodName(paramType paramName)]
+            var tokens = TokenStreamBuilder.Class(
+                "className",
+                methods: TokenStreamBuilder.Method(
+                    "methodName",
+                    "-",
+                    new TokenStream { "paramType".Token(), "paramName".Token() }
+                )
+            );
+
+            var c = new CDParser(tokens).ParseClass();
+
+            Assert.IsNotNull(c, "class parse error");
         }
 
 

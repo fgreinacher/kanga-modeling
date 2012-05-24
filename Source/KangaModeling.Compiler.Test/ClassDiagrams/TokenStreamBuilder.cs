@@ -29,15 +29,17 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             return new CDToken(0, 10, tokenType);
         }
 
-        public static TokenStream Class(string className, TokenStream fields = null)
+        public static TokenStream Class(string className, TokenStream fields = null, TokenStream methods = null)
         {
             var f = CombineTokenStreams(new TokenStream { TokenType.Pipe.Token() }, fields);
+            var m = CombineTokenStreams(new TokenStream { TokenType.Pipe.Token() }, methods);
 
             var ts = CombineTokenStreams(
                 new TokenStream { TokenType.BracketOpen.Token(), className.Token() },
-                fields == null ? null : f,
+                fields == null ? (methods != null? new TokenStream { TokenType.Pipe.Token() } : null) : f,
+                methods == null ? null : m,
                 new TokenStream { TokenType.BracketClose.Token(), }
-                );
+            );
             return ts;
         }
 

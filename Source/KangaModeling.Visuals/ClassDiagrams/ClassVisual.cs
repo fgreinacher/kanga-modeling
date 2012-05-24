@@ -20,6 +20,7 @@ namespace KangaModeling.Visuals.ClassDiagrams
         private ClassNameVisualInfo _classnameInfo;
         private CompartmentVisualInfo _classnameCompartment;
         private CompartmentVisualInfo _fieldsCompartment;
+        private CompartmentVisualInfo _methodsCompartment;
 
         public ClassVisual(IClass cd)
         {
@@ -57,12 +58,11 @@ namespace KangaModeling.Visuals.ClassDiagrams
             {
                 var text = GenerateFieldText(field);
                 var fieldTextSize = graphicContext.MeasureText(text, Font.Handwritten, 12);
-                _fieldInfos[field] = new FieldVisualInfo
-                                         {
-                                             TextSize = fieldTextSize,
-                                             FieldText = text,
-                                             TextPosition = new Point(10f, yCursor)
-                                         };
+                _fieldInfos[field] = new FieldVisualInfo {
+                    TextSize = fieldTextSize,
+                    FieldText = text,
+                    TextPosition = new Point(10f, yCursor)
+                };
                 yCursor += fieldTextSize.Height;
 
                 maxFieldWidth = Math.Max(maxFieldWidth, fieldTextSize.Width + 10f);
@@ -70,12 +70,39 @@ namespace KangaModeling.Visuals.ClassDiagrams
 
             // TODO extension method on Size?
             _classnameCompartment.Size = new Size(maxFieldWidth, _classnameCompartment.Size.Height);
-            _fieldsCompartment = new CompartmentVisualInfo
-                                     {
-                                         Location = new Point(0f, _classnameCompartment.Size.Height),
-                                         Size = new Size(maxFieldWidth, yCursor - _classnameCompartment.Size.Height)
-                                     };
+            _fieldsCompartment = new CompartmentVisualInfo {
+                Location = new Point(0f, _classnameCompartment.Size.Height),
+                Size = new Size(maxFieldWidth, yCursor - _classnameCompartment.Size.Height)
+            };
         }
+
+        //private void LayoutMethodsCompartment(IGraphicContext graphicContext)
+        //{
+        //    float yCursor = _methodsCompartment.Size.Height;
+        //    float maxFieldWidth = _methodsCompartment.Size.Width;
+        //    foreach (var method in _class.)
+        //    {
+        //        var text = GenerateFieldText(field);
+        //        var fieldTextSize = graphicContext.MeasureText(text, Font.Handwritten, 12);
+        //        _fieldInfos[field] = new FieldVisualInfo
+        //        {
+        //            TextSize = fieldTextSize,
+        //            FieldText = text,
+        //            TextPosition = new Point(10f, yCursor)
+        //        };
+        //        yCursor += fieldTextSize.Height;
+
+        //        maxFieldWidth = Math.Max(maxFieldWidth, fieldTextSize.Width + 10f);
+        //    }
+
+        //    // TODO extension method on Size?
+        //    _classnameCompartment.Size = new Size(maxFieldWidth, _classnameCompartment.Size.Height);
+        //    _fieldsCompartment = new CompartmentVisualInfo
+        //    {
+        //        Location = new Point(0f, _classnameCompartment.Size.Height),
+        //        Size = new Size(maxFieldWidth, yCursor - _classnameCompartment.Size.Height)
+        //    };
+        //}
 
         private void LayoutClassnameCompartment(IGraphicContext graphicContext)
         {
