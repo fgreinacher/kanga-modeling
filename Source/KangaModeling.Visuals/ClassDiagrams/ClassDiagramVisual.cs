@@ -7,21 +7,20 @@ namespace KangaModeling.Visuals.ClassDiagrams
 {
     public sealed class ClassDiagramVisual : Visual
     {
-        private readonly IClassDiagram m_CD;
+        private readonly IClassDiagram _mCd;
 
         // TODO Styles are not bound to Sequence Diagrams!
         public ClassDiagramVisual(IClassDiagram cd)
-            : base()
         {
             if (cd == null) throw new ArgumentNullException("cd");
             if (cd.Classes.Count() != 1) throw new ArgumentException("currently, only single class allowed");
-            m_CD = cd;
+            _mCd = cd;
             Initialize();
         }
 
         private void Initialize()
         {
-            foreach (var @class in m_CD.Classes)
+            foreach (var @class in _mCd.Classes)
                 AddChild(new ClassVisual(@class));
         }
 
