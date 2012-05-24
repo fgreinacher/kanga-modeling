@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using KangaModeling.Compiler.ClassDiagrams.Model;
-using KangaModeling.Compiler.SequenceDiagrams;
 
 namespace KangaModeling.Compiler.ClassDiagrams
 {
@@ -17,7 +14,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
         public static IClassDiagram CreateFrom(string text)
         {
-            return new CDParser(new CDScanner().parse(text)).parseClassDiagram();
+            return new CDParser(new CDScanner().Parse(text)).ParseClassDiagram();
         }
 
     }
@@ -30,7 +27,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         #region model implementing classes
 
-        private class ClassDiagram : Model.IClassDiagram
+        private class ClassDiagram : IClassDiagram
         {
             public IEnumerable<IClass> Classes
             {
@@ -53,13 +50,13 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 _assocs.Add(assoc);
             }
 
-            private List<IClass> _classes = new List<IClass>();
-            private List<IAssociation> _assocs = new List<IAssociation>();
+            private readonly List<IClass> _classes = new List<IClass>();
+            private readonly List<IAssociation> _assocs = new List<IAssociation>();
         }
 
-        private class Class : Model.IClass
+        private class Class : IClass
         {
-            private List<IField> _fields;
+            private readonly List<IField> _fields;
             public Class(string name)
             {
                 // TODO null check?
@@ -101,7 +98,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             public VisibilityModifier Visibility { get; private set; }
         }
 
-        private class Association : Model.IAssociation
+        private class Association : IAssociation
         {
             public Association(AssocInfo info, IClass source, IClass target)
             {
@@ -166,13 +163,13 @@ namespace KangaModeling.Compiler.ClassDiagrams
         #region productions
 
         // assoc [ "," assoc ]* 
-        public Model.IClassDiagram parseClassDiagram()
+        public IClassDiagram ParseClassDiagram()
         {
             var cd = new ClassDiagram();
 
             while (_tokens.Count > 0)
             {
-                if (!parseClassOrAssociation(cd))
+                if (!ParseClassOrAssociation(cd))
                     return null;
 
                 // either no more tokens OR comma, otherwise error
@@ -190,7 +187,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         }
 
         // "[" ID "]"
-        public Model.IClass parseClass()
+        public IClass ParseClass()
         {
             if (!_tokens.TryConsume(CDTokenType.Bracket_Open))
             {
@@ -205,7 +202,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             //    // error: expected identifier.
             //    return null;
             //}
-            CDToken token = null;
+            CDToken token;
             if (!_tokens.TryConsume(CDTokenType.Identifier, out token))
             {
                 // error
@@ -220,7 +217,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 IField field = null;
                 do
                 {
-                    field = parseField();
+                    field = ParseField();
                     if(field != null)
                         c.Add(field); // TODO c == null?!
 
@@ -242,7 +239,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         }
 
         // ID [ ":" ID ]
-        public IField parseField()
+        public IField ParseField()
         {
             String name = null, type = null;
             CDToken token = null;
@@ -267,10 +264,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             {
                 if (_tokens.TryConsume(CDTokenType.Identifier, out token))
                     type = token.Value;
-                else
-                {
-                    // TODO error!
-                }
+                // TODO else ERROR
             }
 
             return name != null ? new Field(name, type, vm) : null;
@@ -279,10 +273,10 @@ namespace KangaModeling.Compiler.ClassDiagrams
         #endregion
 
         // class [ assoc class ]
-        private bool parseClassOrAssociation(ClassDiagram cd)
+        private bool ParseClassOrAssociation(ClassDiagram cd)
         {
             // class
-            var c = parseClass();
+            var c = ParseClass();
             if (c == null)
             {
                 // error must have been flagged by class parsing
@@ -293,11 +287,11 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // either there is an association afterwards or not
             // if there is none, then either this is the end of input
             // or a comma follows.
-            var assoc = parseAssociation();
+            var assoc = ParseAssociation();
             if (assoc != null)
             {
                 // assoc did parse, must be followed by class
-                var c2 = parseClass();
+                var c2 = ParseClass();
                 cd.AddClass(c2);
 
                 cd.Add(new Association(assoc, c, c2));
@@ -318,9 +312,9 @@ namespace KangaModeling.Compiler.ClassDiagrams
         }
 
         // simple ones: "->" "<>->" "+->" "++->"
-        private AssocInfo parseAssociation()
+        private AssocInfo ParseAssociation()
         {
-            var sourceMult = parseMultiplicity();
+            var sourceMult = ParseMultiplicity();
             AssocInfo assocInfo = null;
 
             // TODO checks!!!
@@ -347,7 +341,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 }
             }
 
-            var targetMult = parseMultiplicity();
+            var targetMult = ParseMultiplicity();
 
             if (assocInfo != null)
             {
@@ -359,15 +353,16 @@ namespace KangaModeling.Compiler.ClassDiagrams
         }
 
         // TODO make public, provide specific tests.
-        private Multiplicity parseMultiplicity()
+        private Multiplicity ParseMultiplicity()
         {
             Multiplicity m = null;
-            
-            CDToken token1, token2;
+
+            CDToken token1;
             if (_tokens.TryConsume(CDTokenType.Number, out token1))
             {
                 if (_tokens.TryConsume(CDTokenType.DotDot))
                 {
+                    CDToken token2;
                     if (_tokens.TryConsume(CDTokenType.Number, out token2))
                     {
                         m = new Multiplicity(MultiplicityKind.SingleNumber, token1.Value, MultiplicityKind.SingleNumber, token2.Value);
@@ -376,10 +371,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     {
                         m = new Multiplicity(MultiplicityKind.SingleNumber, token1.Value, MultiplicityKind.Star, null);
                     }
-                    else
-                    {
-                        // TODO ??
-                    }
+                    // TODO else
                 }
                 else
                 {

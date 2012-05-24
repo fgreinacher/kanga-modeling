@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="ClassDiagrams\CDScannerTests.cs" />
     <Compile Include="ClassDiagrams\CDParserTests.cs" />
+    <Compile Include="ClassDiagrams\TokenStreamBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\EndToEnd\Serailization\SequenceDiagramSerializer.cs" />
     <Compile Include="SequenceDiagrams\EndToEnd\TestCaseGenerator.cs" />

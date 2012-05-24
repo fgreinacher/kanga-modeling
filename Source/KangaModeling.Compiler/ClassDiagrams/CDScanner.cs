@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using KangaModeling.Compiler.SequenceDiagrams;
 
 namespace KangaModeling.Compiler.ClassDiagrams
 {
@@ -26,10 +24,8 @@ namespace KangaModeling.Compiler.ClassDiagrams
         public bool TryConsume(params CDTokenType[] tokenTypes)
         {
             if (Count < tokenTypes.Length) return false;
-
-            for (int i = 0; i < tokenTypes.Length; i++)
-                if (this[i].TokenType != tokenTypes[i])
-                    return false;
+            if (tokenTypes.Where((t, i) => this[i].TokenType != t).Any())
+                return false;
 
             RemoveRange(0, tokenTypes.Length);
 
@@ -95,7 +91,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
     class CDScanner
     {
 
-        public TokenStream parse(string source)
+        public TokenStream Parse(string source)
         {
             if (source == null) throw new ArgumentNullException("source");
 
@@ -151,6 +147,11 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Angle_Open));
                     source = source.Remove(0, 1);
                 }
+                else if (source.StartsWith("~"))
+                {
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Tilde));
+                    source = source.Remove(0, 1);
+                }
                 else if (source.StartsWith(">"))
                 {
                     tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Angle_Close));
@@ -191,7 +192,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                             // when there is no newline, create one token with anything and stop.
 
                             // TODO cannot flag a token "invalid"
-                            int i = source.IndexOfAny(new char[] { ' ', '\n', '\t' }); // TODO win/lin?
+                            int i = source.IndexOfAny(new[] { ' ', '\n', '\t' }); // TODO win/lin?
                             if (i >= 0)
                             {
                                 source = source.Remove(0, i);
@@ -229,13 +230,13 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 var wsString = match.Captures[0].Value;
 
                 // correct line count
-                var nlCount = wsString.Where(c => c == '\n').Count(); // TODO win/lin correct? Env.NL is a String...
+                var nlCount = wsString.Count(c => c == '\n'); // TODO win/lin correct? Env.NL is a String...
                 _lineIndex += nlCount;
                 if (nlCount > 0)
                     _charIndex = 0;
 
                 // correct char count in one line
-                int lioNewLine = wsString.LastIndexOf(Environment.NewLine);
+                int lioNewLine = wsString.LastIndexOf(Environment.NewLine, StringComparison.Ordinal);
                 if (lioNewLine >= 0)
                 {
                     var lastWS = wsString.Substring(lioNewLine + Environment.NewLine.Length);
@@ -249,11 +250,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
                 source = source.Substring(wsString.Length);
             }
-
-            //var lenOrig = source.Length;
-            //source = source.TrimStart();
-            //var trimmedCount = lenOrig - source.Length;
-            //_charIndex += trimmedCount;
         }
 
         private int _charIndex;

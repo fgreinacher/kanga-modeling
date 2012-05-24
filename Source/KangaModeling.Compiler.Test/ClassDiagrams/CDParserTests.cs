@@ -1,154 +1,73 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using KangaModeling.Compiler.ClassDiagrams;
-using KangaModeling.Compiler.SequenceDiagrams;
-using Moq;
 using KangaModeling.Compiler.ClassDiagrams.Model;
-
 
 namespace KangaModeling.Compiler.Test.ClassDiagrams
 {
-
-    static class TestHelpers
-    {
-        public static CDToken createToken(CDTokenType type)
-        {
-            // constant 10 is arbitrary and just to make the CDToken happy.
-            return new CDToken(0, 10, type);
-        }
-
-        public static CDToken createToken(string value)
-        {
-            var tt = CDTokenType.Identifier;
-            int dummy;
-            if (int.TryParse(value, out dummy)) tt = CDTokenType.Number;
-            if (value.Equals("*")) tt = CDTokenType.Star;
-            if (value.Equals("..")) tt = CDTokenType.DotDot;
-            if (value.Equals(":")) tt = CDTokenType.Colon;
-            if(value.Equals("+")) tt = CDTokenType.Plus;
-            if (value.Equals("-")) tt = CDTokenType.Dash;
-            if (value.Equals("#")) tt = CDTokenType.Hash;
-            if (value.Equals("~")) tt = CDTokenType.Tilde;
-
-            return new CDToken(0, value.Length, tt, value);
-        }
-
-        public static TokenStream createClassTokenStream(string className, TokenStream fields = null)
-        {
-            var f = combineStreams(new TokenStream() { TestHelpers.createToken(CDTokenType.Pipe) }, fields);
-
-            var ts = combineStreams(
-                new TokenStream() { TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken(className) },
-                fields == null ? null : f,
-                new TokenStream() { TestHelpers.createToken(CDTokenType.Bracket_Close), }
-            );
-            return ts;
-        }
-
-        public static TokenStream createFieldTokenStream(string name, string type = null, string accessModifier = null)
-        {
-            var stream = new TokenStream() { createToken(name) };
-            if (type != null)
-                stream = combineStreams(stream, new TokenStream { createToken(CDTokenType.Colon), createToken(type) });
-            if(accessModifier != null)
-                stream = combineStreams(new TokenStream { createToken(accessModifier )}, stream);
-            return stream;
-        }
-
-        public static TokenStream createAssociationTokenStream(string sourceFrom, string sourceTo, string targetFrom, string targetTo)
-        {
-            var tokens = new TokenStream();
-
-            tokens.AddRange(createClassTokenStream("a"));
-
-            tokens.AddRange(new[] { TestHelpers.createToken(sourceFrom), });
-            if (sourceTo != null)
-                tokens.AddRange(new[] { TestHelpers.createToken(".."), TestHelpers.createToken(sourceTo) });
-
-            tokens.AddRange(new[] { TestHelpers.createToken(CDTokenType.Dash), });
-
-            tokens.AddRange(new[] { TestHelpers.createToken(targetFrom), });
-            if (targetTo != null)
-                tokens.AddRange(new[] { TestHelpers.createToken(".."), TestHelpers.createToken(targetTo) });
-
-            tokens.AddRange(createClassTokenStream("b"));
-
-            return tokens;
-        }
-
-        public static TokenStream combineStreams(params TokenStream[] streams)
-        {
-            var combinedStream = new TokenStream();
-            foreach (var singleStream in streams) if(singleStream != null) combinedStream.AddRange(singleStream);
-            return combinedStream;
-        }
-    }
-
     /// <summary>
     /// Tests for tokenizing a string with the class diagram scanner.
     /// </summary>
     [TestFixture]
-    class t01_ParserTests
+    class T01ParserTests
     {
 
         [Test, ExpectedException(typeof(ArgumentNullException))]
         public void t00_Ctor_Throws_On_Null_Argument()
         {
-            var parser = new CDParser(null);
+            new CDParser(null);
         }
 
         [Test(Description="[ClassName]")]
         public void t01_Parse_Simple_Class()
         {
-            var tokens = new TokenStream(){ TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("ClassName"), TestHelpers.createToken(CDTokenType.Bracket_Close), };
+            var tokens = new TokenStream { CDTokenType.Bracket_Open.Token(), "ClassName".Token(), CDTokenType.Bracket_Close.Token(), };
             var parser = new CDParser(tokens);
-            var clazz = parser.parseClass();
+            var clazz = parser.ParseClass();
             Assert.AreEqual("ClassName", clazz.Name);
         }
 
         [Test(Description = "ClassName]")]
         public void t02_Parse_Simple_Class_Missing_Start_Bracket()
         {
-            var tokens = new TokenStream() { TestHelpers.createToken("ClassName"), TestHelpers.createToken(CDTokenType.Bracket_Close), };
-            var clazz = new CDParser(tokens).parseClass(); // TODO error handling?
+            var tokens = new TokenStream { "ClassName".Token(), CDTokenType.Bracket_Close.Token(), };
+            var clazz = new CDParser(tokens).ParseClass(); // TODO error handling?
             Assert.IsNull(clazz, "invalid");
 
-            tokens = new TokenStream() { TestHelpers.createToken("ClassName"), TestHelpers.createToken(CDTokenType.Bracket_Close), };
-            var cd = new CDParser(tokens).parseClassDiagram(); // TODO error handling?
+            tokens = new TokenStream { "ClassName".Token(), CDTokenType.Bracket_Close.Token(), };
+            var cd = new CDParser(tokens).ParseClassDiagram(); // TODO error handling?
             Assert.IsNull(cd, "invalid");
         }
 
         [Test(Description = "[ClassName")]
         public void t03_Parse_Simple_Class_Missing_End_Bracket()
         {
-            var tokens = new TokenStream() { TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("ClassName"), };
-            var clazz = new CDParser(tokens).parseClass(); // TODO error handling?
+            var tokens = new TokenStream { CDTokenType.Bracket_Open.Token(), "ClassName".Token(), };
+            var clazz = new CDParser(tokens).ParseClass(); // TODO error handling?
             Assert.IsNull(clazz, "invalid");
 
-            tokens = new TokenStream() { TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("ClassName"), };
-            var cd = new CDParser(tokens).parseClassDiagram(); // TODO error handling?
+            tokens = new TokenStream { CDTokenType.Bracket_Open.Token(), "ClassName".Token(), };
+            var cd = new CDParser(tokens).ParseClassDiagram(); // TODO error handling?
             Assert.IsNull(cd, "invalid");
         }
 
         [Test(Description = "")]
         public void t04_Parse_Simple_Class_No_Tokens()
         {
-            var tokens = new TokenStream() { };
+            var tokens = new TokenStream();
             var parser = new CDParser(tokens);
-            var clazz = parser.parseClass(); // TODO error handling?
+            var clazz = parser.ParseClass(); // TODO error handling?
             Assert.IsNull(clazz, "invalid");
         }
 
         [Test(Description="[a]")]
         public void t06_Parse_ClassDiagram_Containing_One_Class()
         {
-            var tokens = TestHelpers.createClassTokenStream("a");
+            var tokens = TokenStreamBuilder.Class("a");
 
             var parser = new CDParser(tokens);
-            var cd = parser.parseClassDiagram();
+            var cd = parser.ParseClassDiagram();
             Assert.IsNotNull(cd, "parsing failed");
 
             var classes = cd.Classes.ToList();
@@ -159,13 +78,13 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a],[b]")]
         public void t06_Parse_ClassDiagram_Containing_Two_Classes()
         {
-            var tokens = new TokenStream() { 
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("a"), TestHelpers.createToken(CDTokenType.Bracket_Close),
-                TestHelpers.createToken(CDTokenType.Comma),
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("b"), TestHelpers.createToken(CDTokenType.Bracket_Close),
+            var tokens = new TokenStream { 
+                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.Comma.Token(),
+                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
             };
             var parser = new CDParser(tokens);
-            var cd = parser.parseClassDiagram();
+            var cd = parser.ParseClassDiagram();
             Assert.IsNotNull(cd, "parsing failed");
 
             var classes = cd.Classes.ToList();
@@ -177,10 +96,10 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a]->[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Directed()
         {
-            var tokens = new TokenStream() { 
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("a"), TestHelpers.createToken(CDTokenType.Bracket_Close),
-                TestHelpers.createToken(CDTokenType.Dash), TestHelpers.createToken(CDTokenType.Angle_Close),
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("b"), TestHelpers.createToken(CDTokenType.Bracket_Close),
+            var tokens = new TokenStream { 
+                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.Dash.Token(), CDTokenType.Angle_Close.Token(),
+                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
             };
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Directed);
         }
@@ -188,10 +107,10 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a]-[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Undirected()
         {
-            var tokens = new TokenStream() { 
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("a"), TestHelpers.createToken(CDTokenType.Bracket_Close),
-                TestHelpers.createToken(CDTokenType.Dash),
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("b"), TestHelpers.createToken(CDTokenType.Bracket_Close),
+            var tokens = new TokenStream { 
+                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.Dash.Token(),
+                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
             };
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Undirected);
         }
@@ -199,10 +118,10 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a]+->[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Aggregation()
         {
-            var tokens = new TokenStream() { 
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("a"), TestHelpers.createToken(CDTokenType.Bracket_Close),
-                TestHelpers.createToken(CDTokenType.Plus), TestHelpers.createToken(CDTokenType.Dash), TestHelpers.createToken(CDTokenType.Angle_Close),
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("b"), TestHelpers.createToken(CDTokenType.Bracket_Close),
+            var tokens = new TokenStream { 
+                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.Plus.Token(), CDTokenType.Dash.Token(), CDTokenType.Angle_Close.Token(),
+                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
             };
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Aggregation);
         }
@@ -210,12 +129,10 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a]<>->[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Aggregation_Alternative()
         {
-            var tokens = TestHelpers.combineStreams(
-                TestHelpers.createClassTokenStream("a"),
-                new TokenStream() { 
-                    TestHelpers.createToken(CDTokenType.Angle_Open), TestHelpers.createToken(CDTokenType.Angle_Close), TestHelpers.createToken(CDTokenType.Dash), TestHelpers.createToken(CDTokenType.Angle_Close),
-                },
-                TestHelpers.createClassTokenStream("b")
+            var tokens = TokenStreamBuilder.CombineTokenStreams(
+                TokenStreamBuilder.Class("a"),
+                new TokenStream {  CDTokenType.Angle_Open.Token(), CDTokenType.Angle_Close.Token(), CDTokenType.Dash.Token(), CDTokenType.Angle_Close.Token(), },
+                TokenStreamBuilder.Class("b")
             );
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Aggregation);
         }
@@ -223,10 +140,10 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a]++->[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Composition()
         {
-            var tokens = new TokenStream() { 
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("a"), TestHelpers.createToken(CDTokenType.Bracket_Close),
-                TestHelpers.createToken(CDTokenType.Plus), TestHelpers.createToken(CDTokenType.Plus), TestHelpers.createToken(CDTokenType.Dash), TestHelpers.createToken(CDTokenType.Angle_Close),
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("b"), TestHelpers.createToken(CDTokenType.Bracket_Close),
+            var tokens = new TokenStream { 
+                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.Plus.Token(), CDTokenType.Plus.Token(), CDTokenType.Dash.Token(), CDTokenType.Angle_Close.Token(),
+                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
             };
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Composition);
         }
@@ -234,7 +151,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         private void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(TokenStream tokens, AssociationKind expectedKind)
         {
             var parser = new CDParser(tokens);
-            var cd = parser.parseClassDiagram();
+            var cd = parser.ParseClassDiagram();
             Assert.IsNotNull(cd, "parsing failed");
 
             var classes = cd.Classes.ToList();
@@ -260,10 +177,10 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t08_Parse_ClassDiagram_Containing_Two_Associated_Classes_With_Multiplicities_Numbers(string sourceFrom, string sourceTo, string targetFrom, string targetTo)
         {
-            var tokens = TestHelpers.createAssociationTokenStream(sourceFrom, sourceTo, targetFrom, targetTo);
+            var tokens = TokenStreamBuilder.Association(sourceFrom, sourceTo, targetFrom, targetTo);
 
             var parser = new CDParser(tokens);
-            var cd = parser.parseClassDiagram();
+            var cd = parser.ParseClassDiagram();
             var assoc = t08_check(cd);
 
             checkMultiplicityKind(assoc.SourceMultiplicity.FromKind, sourceFrom, "source from");
@@ -309,14 +226,14 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test(Description="[a] -associationName >[b]"), Ignore("not implemented")]
         public void t09_Parse_ClassDiagram_Containing_Two_Associated_Classes_With_Roles()
         {
-            var tokens = new TokenStream() { 
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("a"), TestHelpers.createToken(CDTokenType.Bracket_Close),
-                TestHelpers.createToken("-"), TestHelpers.createToken("associationName"), TestHelpers.createToken(">"),
-                TestHelpers.createToken(CDTokenType.Bracket_Open), TestHelpers.createToken("b"), TestHelpers.createToken(CDTokenType.Bracket_Close),
+            var tokens = new TokenStream { 
+                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
+                "-".Token(), "associationName".Token(), ">".Token(),
+                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
             };
 
             var parser = new CDParser(tokens);
-            var cd = parser.parseClassDiagram();
+            var cd = parser.ParseClassDiagram();
             Assert.IsNotNull(cd, "parsing failed");
 
             var classes = cd.Classes.ToList();
@@ -335,8 +252,8 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t10_Parse_Field()
         {
-            var tokens = new TokenStream() { TestHelpers.createToken("fieldName") };
-            var field = new CDParser(tokens).parseField();
+            var tokens = new TokenStream { "fieldName".Token() };
+            var field = new CDParser(tokens).ParseField();
             Assert.IsNotNull(field, "should have parsed correctly");
             Assert.AreEqual("fieldName", field.Name, "name wrong");
         }
@@ -344,8 +261,8 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t10_Parse_Field_With_Type()
         {
-            var tokens = new TokenStream() { TestHelpers.createToken("fieldName2"), TestHelpers.createToken(":"), TestHelpers.createToken("int"), };
-            var field = new CDParser(tokens).parseField();
+            var tokens = new TokenStream { "fieldName2".Token(), ":".Token(), "int".Token(), };
+            var field = new CDParser(tokens).ParseField();
             Assert.IsNotNull(field, "should have parsed correctly");
             Assert.AreEqual("fieldName2", field.Name, "name wrong");
             Assert.AreEqual("int", field.Type, "type wrong");
@@ -354,9 +271,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t11_Parse_Class_With_Field()
         {
-            var tokens = TestHelpers.createClassTokenStream("className", TestHelpers.createFieldTokenStream("fieldName", "fieldType"));
+            var tokens = TokenStreamBuilder.Class("className", TokenStreamBuilder.Field("fieldName", "fieldType"));
             
-            var c = new CDParser(tokens).parseClass();
+            var c = new CDParser(tokens).ParseClass();
 
             Assert.IsNotNull(c, "failed to parse the class");
             Assert.AreEqual("className", c.Name, "name wrong");
@@ -371,15 +288,15 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t11_Parse_Class_With_Multiple_Fields()
         {
-            var tokens = TestHelpers.createClassTokenStream("className", 
-                TestHelpers.combineStreams(
-                    TestHelpers.createFieldTokenStream("fieldName", "fieldType"),
-                    new TokenStream() { TestHelpers.createToken(CDTokenType.Comma) }, // TODO single-token streams.
-                    TestHelpers.createFieldTokenStream("fieldName2", "fieldType2")
+            var tokens = TokenStreamBuilder.Class("className", 
+                TokenStreamBuilder.CombineTokenStreams(
+                    TokenStreamBuilder.Field("fieldName", "fieldType"),
+                    new TokenStream { CDTokenType.Comma.Token() }, // TODO single-token streams.
+                    TokenStreamBuilder.Field("fieldName2", "fieldType2")
                 )
             );
 
-            var c = new CDParser(tokens).parseClass();
+            var c = new CDParser(tokens).ParseClass();
 
             Assert.IsNotNull(c, "failed to parse the class");
             Assert.AreEqual("className", c.Name, "name wrong");
@@ -397,28 +314,28 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t11_Parse_Class_With_Multiple_Fields_Missing_Comma()
         {
-            var tokens = TestHelpers.createClassTokenStream("className",
-                TestHelpers.combineStreams(
-                    TestHelpers.createFieldTokenStream("fieldName", "fieldType"),
-                    TestHelpers.createFieldTokenStream("fieldName2", "fieldType2")
+            var tokens = TokenStreamBuilder.Class("className",
+                TokenStreamBuilder.CombineTokenStreams(
+                    TokenStreamBuilder.Field("fieldName", "fieldType"),
+                    TokenStreamBuilder.Field("fieldName2", "fieldType2")
                 )
             );
 
-            var c = new CDParser(tokens).parseClass();
+            var c = new CDParser(tokens).ParseClass();
             Assert.IsNull(c, "invalid tokenstream -> must not parse");
         }
 
         [Test]
         public void t12_Junk_At_End()
         {
-            var tokens = TestHelpers.combineStreams(
-                TestHelpers.createClassTokenStream("className"),
-                new TokenStream() { TestHelpers.createToken("JunkAtEnd") }
+            var tokens = TokenStreamBuilder.CombineTokenStreams(
+                TokenStreamBuilder.Class("className"),
+                new TokenStream { "JunkAtEnd".Token() }
             );
 
-            var cd = new CDParser(tokens).parseClassDiagram();
+            var cd = new CDParser(tokens).ParseClassDiagram();
             Assert.IsNull(cd, "invalid tokenstream -> must not parse to class diagram");
-            var c = new CDParser(tokens).parseClass();
+            var c = new CDParser(tokens).ParseClass();
             Assert.IsNull(c, "invalid tokenstream -> must not parse to class");
         }
 
@@ -429,9 +346,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t13_Parse_Field_With_AccessModifier(String vm, VisibilityModifier expectedVm)
         {
-            var tokens = TestHelpers.createFieldTokenStream("fieldName", "fieldType", vm);
+            var tokens = TokenStreamBuilder.Field("fieldName", "fieldType", vm);
 
-            var f = new CDParser(tokens).parseField();
+            var f = new CDParser(tokens).ParseField();
 
             Assert.IsNotNull(f, "field parsing failed");
             Assert.AreEqual("fieldName", f.Name);
