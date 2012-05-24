@@ -1,15 +1,18 @@
-﻿using KangaModeling.Compiler.ClassDiagrams.Model;
-using KangaModeling.Graphics.Primitives;
-using System;
+﻿using System;
 using System.Linq;
+using KangaModeling.Compiler.ClassDiagrams.Model;
+using KangaModeling.Graphics.Primitives;
 
 namespace KangaModeling.Visuals.ClassDiagrams
 {
+    /// <summary>
+    /// A ClassDiagramVisual is able to visualize IClassDiagram instances.
+    /// </summary>
     public sealed class ClassDiagramVisual : Visual
     {
+        /// <summary> the diagram to visualize. </summary>
         private readonly IClassDiagram _mCd;
 
-        // TODO Styles are not bound to Sequence Diagrams!
         public ClassDiagramVisual(IClassDiagram cd)
         {
             if (cd == null) throw new ArgumentNullException("cd");
