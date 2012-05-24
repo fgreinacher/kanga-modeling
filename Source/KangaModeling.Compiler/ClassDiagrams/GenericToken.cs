@@ -8,10 +8,10 @@ namespace KangaModeling.Compiler.ClassDiagrams
         Unknown,
         Identifier,
         Number,
-        Bracket_Open,
-        Bracket_Close,
-        Angle_Open,
-        Angle_Close,
+        BracketOpen,
+        BracketClose,
+        AngleOpen,
+        AngleClose,
         Dash,
         Plus,
         Hash,
@@ -57,10 +57,10 @@ namespace KangaModeling.Compiler.ClassDiagrams
         private static string typeToString(CDTokenType ttype)
         {
             switch(ttype) {
-                case CDTokenType.Angle_Close: return ">";
-                case CDTokenType.Angle_Open: return "<";
-                case CDTokenType.Bracket_Close: return "]";
-                case CDTokenType.Bracket_Open: return "[";
+                case CDTokenType.AngleClose: return ">";
+                case CDTokenType.AngleOpen: return "<";
+                case CDTokenType.BracketClose: return "]";
+                case CDTokenType.BracketOpen: return "[";
                 case CDTokenType.Comma: return ",";
                 case CDTokenType.Dash: return "-";
                 case CDTokenType.Hash: return "#";

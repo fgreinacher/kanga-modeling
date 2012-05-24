@@ -34,9 +34,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             var f = CombineTokenStreams(new TokenStream { CDTokenType.Pipe.Token() }, fields);
 
             var ts = CombineTokenStreams(
-                new TokenStream { CDTokenType.Bracket_Open.Token(), className.Token() },
+                new TokenStream { CDTokenType.BracketOpen.Token(), className.Token() },
                 fields == null ? null : f,
-                new TokenStream { CDTokenType.Bracket_Close.Token(), }
+                new TokenStream { CDTokenType.BracketClose.Token(), }
                 );
             return ts;
         }

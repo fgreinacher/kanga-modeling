@@ -104,7 +104,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             {
                 if (source[0] == '[')
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Bracket_Open));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.BracketOpen));
                     source = source.Remove(0, 1);
                 }
                 else if (source.StartsWith("..")) // TODO "..." ?
@@ -144,7 +144,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 }
                 else if (source[0] == ']')
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Bracket_Close));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.BracketClose));
                     source = source.Remove(0, 1);
                 }
                 else if (source.StartsWith("-"))
@@ -154,7 +154,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 }
                 else if (source.StartsWith("<"))
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Angle_Open));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.AngleOpen));
                     source = source.Remove(0, 1);
                 }
                 else if (source.StartsWith("~"))
@@ -164,7 +164,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 }
                 else if (source.StartsWith(">"))
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Angle_Close));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.AngleClose));
                     source = source.Remove(0, 1);
                 }
                 else if (source.StartsWith("+"))

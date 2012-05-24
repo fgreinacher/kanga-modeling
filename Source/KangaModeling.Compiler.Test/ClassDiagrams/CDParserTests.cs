@@ -22,7 +22,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test(Description="[ClassName]")]
         public void t01_Parse_Simple_Class()
         {
-            var tokens = new TokenStream { CDTokenType.Bracket_Open.Token(), "ClassName".Token(), CDTokenType.Bracket_Close.Token(), };
+            var tokens = new TokenStream { CDTokenType.BracketOpen.Token(), "ClassName".Token(), CDTokenType.BracketClose.Token(), };
             var parser = new CDParser(tokens);
             var clazz = parser.ParseClass();
             Assert.AreEqual("ClassName", clazz.Name);
@@ -31,11 +31,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test(Description = "ClassName]")]
         public void t02_Parse_Simple_Class_Missing_Start_Bracket()
         {
-            var tokens = new TokenStream { "ClassName".Token(), CDTokenType.Bracket_Close.Token(), };
+            var tokens = new TokenStream { "ClassName".Token(), CDTokenType.BracketClose.Token(), };
             var clazz = new CDParser(tokens).ParseClass(); // TODO error handling?
             Assert.IsNull(clazz, "invalid");
 
-            tokens = new TokenStream { "ClassName".Token(), CDTokenType.Bracket_Close.Token(), };
+            tokens = new TokenStream { "ClassName".Token(), CDTokenType.BracketClose.Token(), };
             var cd = new CDParser(tokens).ParseClassDiagram(); // TODO error handling?
             Assert.IsNull(cd, "invalid");
         }
@@ -43,11 +43,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test(Description = "[ClassName")]
         public void t03_Parse_Simple_Class_Missing_End_Bracket()
         {
-            var tokens = new TokenStream { CDTokenType.Bracket_Open.Token(), "ClassName".Token(), };
+            var tokens = new TokenStream { CDTokenType.BracketOpen.Token(), "ClassName".Token(), };
             var clazz = new CDParser(tokens).ParseClass(); // TODO error handling?
             Assert.IsNull(clazz, "invalid");
 
-            tokens = new TokenStream { CDTokenType.Bracket_Open.Token(), "ClassName".Token(), };
+            tokens = new TokenStream { CDTokenType.BracketOpen.Token(), "ClassName".Token(), };
             var cd = new CDParser(tokens).ParseClassDiagram(); // TODO error handling?
             Assert.IsNull(cd, "invalid");
         }
@@ -79,9 +79,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t06_Parse_ClassDiagram_Containing_Two_Classes()
         {
             var tokens = new TokenStream { 
-                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.BracketOpen.Token(), "a".Token(), CDTokenType.BracketClose.Token(),
                 CDTokenType.Comma.Token(),
-                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.BracketOpen.Token(), "b".Token(), CDTokenType.BracketClose.Token(),
             };
             var parser = new CDParser(tokens);
             var cd = parser.ParseClassDiagram();
@@ -97,9 +97,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Directed()
         {
             var tokens = new TokenStream { 
-                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
-                CDTokenType.Dash.Token(), CDTokenType.Angle_Close.Token(),
-                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.BracketOpen.Token(), "a".Token(), CDTokenType.BracketClose.Token(),
+                CDTokenType.Dash.Token(), CDTokenType.AngleClose.Token(),
+                CDTokenType.BracketOpen.Token(), "b".Token(), CDTokenType.BracketClose.Token(),
             };
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Directed);
         }
@@ -108,9 +108,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Undirected()
         {
             var tokens = new TokenStream { 
-                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.BracketOpen.Token(), "a".Token(), CDTokenType.BracketClose.Token(),
                 CDTokenType.Dash.Token(),
-                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.BracketOpen.Token(), "b".Token(), CDTokenType.BracketClose.Token(),
             };
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Undirected);
         }
@@ -119,9 +119,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Aggregation()
         {
             var tokens = new TokenStream { 
-                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
-                CDTokenType.Plus.Token(), CDTokenType.Dash.Token(), CDTokenType.Angle_Close.Token(),
-                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.BracketOpen.Token(), "a".Token(), CDTokenType.BracketClose.Token(),
+                CDTokenType.Plus.Token(), CDTokenType.Dash.Token(), CDTokenType.AngleClose.Token(),
+                CDTokenType.BracketOpen.Token(), "b".Token(), CDTokenType.BracketClose.Token(),
             };
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Aggregation);
         }
@@ -131,7 +131,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         {
             var tokens = TokenStreamBuilder.CombineTokenStreams(
                 TokenStreamBuilder.Class("a"),
-                new TokenStream {  CDTokenType.Angle_Open.Token(), CDTokenType.Angle_Close.Token(), CDTokenType.Dash.Token(), CDTokenType.Angle_Close.Token(), },
+                new TokenStream {  CDTokenType.AngleOpen.Token(), CDTokenType.AngleClose.Token(), CDTokenType.Dash.Token(), CDTokenType.AngleClose.Token(), },
                 TokenStreamBuilder.Class("b")
             );
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Aggregation);
@@ -141,9 +141,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Composition()
         {
             var tokens = new TokenStream { 
-                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
-                CDTokenType.Plus.Token(), CDTokenType.Plus.Token(), CDTokenType.Dash.Token(), CDTokenType.Angle_Close.Token(),
-                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.BracketOpen.Token(), "a".Token(), CDTokenType.BracketClose.Token(),
+                CDTokenType.Plus.Token(), CDTokenType.Plus.Token(), CDTokenType.Dash.Token(), CDTokenType.AngleClose.Token(),
+                CDTokenType.BracketOpen.Token(), "b".Token(), CDTokenType.BracketClose.Token(),
             };
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Composition);
         }
@@ -227,9 +227,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t09_Parse_ClassDiagram_Containing_Two_Associated_Classes_With_Roles()
         {
             var tokens = new TokenStream { 
-                CDTokenType.Bracket_Open.Token(), "a".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.BracketOpen.Token(), "a".Token(), CDTokenType.BracketClose.Token(),
                 "-".Token(), "associationName".Token(), ">".Token(),
-                CDTokenType.Bracket_Open.Token(), "b".Token(), CDTokenType.Bracket_Close.Token(),
+                CDTokenType.BracketOpen.Token(), "b".Token(), CDTokenType.BracketClose.Token(),
             };
 
             var parser = new CDParser(tokens);

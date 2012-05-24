@@ -189,7 +189,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         // "[" ID "]"
         public IClass ParseClass()
         {
-            if (!_tokens.TryConsume(CDTokenType.Bracket_Open))
+            if (!_tokens.TryConsume(CDTokenType.BracketOpen))
             {
                 // TODO error
                 return null;
@@ -229,7 +229,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             }
 
-            if (!_tokens.TryConsume(CDTokenType.Bracket_Close))
+            if (!_tokens.TryConsume(CDTokenType.BracketClose))
             {
                 // TODO error
                 return null;
@@ -320,22 +320,22 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // TODO checks!!!
             if(_tokens.TryConsume(CDTokenType.Dash))
             {
-                if(_tokens.TryConsume(CDTokenType.Angle_Close))
+                if(_tokens.TryConsume(CDTokenType.AngleClose))
                     assocInfo = new AssocInfo(AssociationKind.Directed);
                 else
                     assocInfo = new AssocInfo(AssociationKind.Undirected);
             }
-            if(_tokens.TryConsume(CDTokenType.Angle_Open, CDTokenType.Angle_Close, CDTokenType.Dash, CDTokenType.Angle_Close))
+            if(_tokens.TryConsume(CDTokenType.AngleOpen, CDTokenType.AngleClose, CDTokenType.Dash, CDTokenType.AngleClose))
             {
                 assocInfo = new AssocInfo(AssociationKind.Aggregation);
             }
             if (_tokens.TryConsume(CDTokenType.Plus))
             {
-                if(_tokens.TryConsume(CDTokenType.Dash, CDTokenType.Angle_Close))
+                if(_tokens.TryConsume(CDTokenType.Dash, CDTokenType.AngleClose))
                 {
                     assocInfo = new AssocInfo(AssociationKind.Aggregation);
                 }
-                if(_tokens.TryConsume(CDTokenType.Plus, CDTokenType.Dash, CDTokenType.Angle_Close))
+                if(_tokens.TryConsume(CDTokenType.Plus, CDTokenType.Dash, CDTokenType.AngleClose))
                 {
                     assocInfo = new AssocInfo(AssociationKind.Composition);
                 }

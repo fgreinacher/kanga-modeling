@@ -30,7 +30,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Check_Simple_Classes()
         {
             const string source = "[ClassName]";
-            var expectedTokens = new[] { new CDToken(0, 1, CDTokenType.Bracket_Open), new CDToken(0, 10, CDTokenType.Identifier, "ClassName"), new CDToken(0, 11, CDTokenType.Bracket_Close)};
+            var expectedTokens = new[] { new CDToken(0, 1, CDTokenType.BracketOpen), new CDToken(0, 10, CDTokenType.Identifier, "ClassName"), new CDToken(0, 11, CDTokenType.BracketClose)};
             checkTokens(source, expectedTokens);
         }
 
@@ -39,9 +39,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         {
             var source = "[" + Environment.NewLine + "ClassName" + Environment.NewLine + "]";
             var expectedTokens = new[] { 
-                new CDToken(0, 1, CDTokenType.Bracket_Open), 
+                new CDToken(0, 1, CDTokenType.BracketOpen), 
                 new CDToken(1, 9, CDTokenType.Identifier, "ClassName"), 
-                new CDToken(2, 1, CDTokenType.Bracket_Close), 
+                new CDToken(2, 1, CDTokenType.BracketClose), 
             };
             checkTokens(source, expectedTokens);
         }
@@ -50,7 +50,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Check_Simple_Classes_Whitespace()
         {
             const string source = "  [  ClassName  ]  ";
-            var expectedTokens = new[] { new CDToken(0, 3, CDTokenType.Bracket_Open), new CDToken(0, 14, CDTokenType.Identifier, "ClassName"), new CDToken(0, 17, CDTokenType.Bracket_Close), };
+            var expectedTokens = new[] { new CDToken(0, 3, CDTokenType.BracketOpen), new CDToken(0, 14, CDTokenType.Identifier, "ClassName"), new CDToken(0, 17, CDTokenType.BracketClose), };
             checkTokens(source, expectedTokens);
         }
 
@@ -66,12 +66,12 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [TestCase(":", CDTokenType.Colon, TestName = "colon")]
         [TestCase(",", CDTokenType.Comma, TestName = "comma")]
         [TestCase("-", CDTokenType.Dash, TestName="dash")]
-        [TestCase("<", CDTokenType.Angle_Open, TestName = "angle open")]
-        [TestCase(">", CDTokenType.Angle_Close, TestName = "angle close")]
+        [TestCase("<", CDTokenType.AngleOpen, TestName = "angle open")]
+        [TestCase(">", CDTokenType.AngleClose, TestName = "angle close")]
         [TestCase("+", CDTokenType.Plus, TestName = "plus")]
         [TestCase("#", CDTokenType.Hash, TestName = "hash")]
-        [TestCase("[", CDTokenType.Bracket_Open, TestName = "bracket open")]
-        [TestCase("]", CDTokenType.Bracket_Close, TestName = "bracket close")]
+        [TestCase("[", CDTokenType.BracketOpen, TestName = "bracket open")]
+        [TestCase("]", CDTokenType.BracketClose, TestName = "bracket close")]
         [TestCase("(", CDTokenType.ParenthesisOpen, TestName = "parenthesis open")]
         [TestCase(")", CDTokenType.ParenthesisClose, TestName = "parenthesis close")]
         [TestCase("~", CDTokenType.Tilde, TestName = "tilde")]
