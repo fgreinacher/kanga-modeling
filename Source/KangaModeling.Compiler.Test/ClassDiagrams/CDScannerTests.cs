@@ -10,7 +10,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
     /// Tests for tokenizing a string with the class diagram scanner.
     /// </summary>
     [TestFixture]
-    public class t00_ScannerTests
+    public class T00ScannerTests
     {
 
         [Test]
@@ -72,6 +72,8 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [TestCase("#", CDTokenType.Hash, TestName = "hash")]
         [TestCase("[", CDTokenType.Bracket_Open, TestName = "bracket open")]
         [TestCase("]", CDTokenType.Bracket_Close, TestName = "bracket close")]
+        [TestCase("(", CDTokenType.ParenthesisOpen, TestName = "parenthesis open")]
+        [TestCase(")", CDTokenType.ParenthesisClose, TestName = "parenthesis close")]
         [TestCase("~", CDTokenType.Tilde, TestName = "tilde")]
         [TestCase("*", CDTokenType.Star, TestName = "star")]
         [TestCase("..", CDTokenType.DotDot, TestName = "dot dot")]

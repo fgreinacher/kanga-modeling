@@ -100,7 +100,7 @@ namespace KangaModeling.Visuals.ClassDiagrams
             };
         }
 
-        private String GenerateFieldText(IField field)
+        private static String GenerateFieldText(IField field)
         {
             if (field == null) throw new ArgumentNullException("field");
             var sb = new StringBuilder();

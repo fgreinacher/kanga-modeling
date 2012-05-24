@@ -356,6 +356,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.AreEqual(expectedVm, f.Visibility, "wrong visibility modifier");
         }
 
+
     }
 
 }
