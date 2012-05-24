@@ -30,7 +30,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Check_Simple_Classes()
         {
             const string source = "[ClassName]";
-            var expectedTokens = new[] { new CDToken(0, 1, CDTokenType.BracketOpen), new CDToken(0, 10, CDTokenType.Identifier, "ClassName"), new CDToken(0, 11, CDTokenType.BracketClose)};
+            var expectedTokens = new[] { new CDToken(0, 1, TokenType.BracketOpen), new CDToken(0, 10, TokenType.Identifier, "ClassName"), new CDToken(0, 11, TokenType.BracketClose)};
             checkTokens(source, expectedTokens);
         }
 
@@ -39,9 +39,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         {
             var source = "[" + Environment.NewLine + "ClassName" + Environment.NewLine + "]";
             var expectedTokens = new[] { 
-                new CDToken(0, 1, CDTokenType.BracketOpen), 
-                new CDToken(1, 9, CDTokenType.Identifier, "ClassName"), 
-                new CDToken(2, 1, CDTokenType.BracketClose), 
+                new CDToken(0, 1, TokenType.BracketOpen), 
+                new CDToken(1, 9, TokenType.Identifier, "ClassName"), 
+                new CDToken(2, 1, TokenType.BracketClose), 
             };
             checkTokens(source, expectedTokens);
         }
@@ -50,7 +50,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Check_Simple_Classes_Whitespace()
         {
             const string source = "  [  ClassName  ]  ";
-            var expectedTokens = new[] { new CDToken(0, 3, CDTokenType.BracketOpen), new CDToken(0, 14, CDTokenType.Identifier, "ClassName"), new CDToken(0, 17, CDTokenType.BracketClose), };
+            var expectedTokens = new[] { new CDToken(0, 3, TokenType.BracketOpen), new CDToken(0, 14, TokenType.Identifier, "ClassName"), new CDToken(0, 17, TokenType.BracketClose), };
             checkTokens(source, expectedTokens);
         }
 
@@ -62,26 +62,26 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             checkTokens(source, expectedTokens);
         }
 
-        [TestCase("|", CDTokenType.Pipe, TestName = "pipe")]
-        [TestCase(":", CDTokenType.Colon, TestName = "colon")]
-        [TestCase(",", CDTokenType.Comma, TestName = "comma")]
-        [TestCase("-", CDTokenType.Dash, TestName="dash")]
-        [TestCase("<", CDTokenType.AngleOpen, TestName = "angle open")]
-        [TestCase(">", CDTokenType.AngleClose, TestName = "angle close")]
-        [TestCase("+", CDTokenType.Plus, TestName = "plus")]
-        [TestCase("#", CDTokenType.Hash, TestName = "hash")]
-        [TestCase("[", CDTokenType.BracketOpen, TestName = "bracket open")]
-        [TestCase("]", CDTokenType.BracketClose, TestName = "bracket close")]
-        [TestCase("(", CDTokenType.ParenthesisOpen, TestName = "parenthesis open")]
-        [TestCase(")", CDTokenType.ParenthesisClose, TestName = "parenthesis close")]
-        [TestCase("~", CDTokenType.Tilde, TestName = "tilde")]
-        [TestCase("*", CDTokenType.Star, TestName = "star")]
-        [TestCase("..", CDTokenType.DotDot, TestName = "dot dot")]
-        [TestCase("0", CDTokenType.Number, TestName = "Number")]
-        [TestCase("1", CDTokenType.Number, TestName = "Number")]
-        [TestCase("12234", CDTokenType.Number, TestName = "Number")]
+        [TestCase("|", TokenType.Pipe, TestName = "pipe")]
+        [TestCase(":", TokenType.Colon, TestName = "colon")]
+        [TestCase(",", TokenType.Comma, TestName = "comma")]
+        [TestCase("-", TokenType.Dash, TestName="dash")]
+        [TestCase("<", TokenType.AngleOpen, TestName = "angle open")]
+        [TestCase(">", TokenType.AngleClose, TestName = "angle close")]
+        [TestCase("+", TokenType.Plus, TestName = "plus")]
+        [TestCase("#", TokenType.Hash, TestName = "hash")]
+        [TestCase("[", TokenType.BracketOpen, TestName = "bracket open")]
+        [TestCase("]", TokenType.BracketClose, TestName = "bracket close")]
+        [TestCase("(", TokenType.ParenthesisOpen, TestName = "parenthesis open")]
+        [TestCase(")", TokenType.ParenthesisClose, TestName = "parenthesis close")]
+        [TestCase("~", TokenType.Tilde, TestName = "tilde")]
+        [TestCase("*", TokenType.Star, TestName = "star")]
+        [TestCase("..", TokenType.DotDot, TestName = "dot dot")]
+        [TestCase("0", TokenType.Number, TestName = "Number")]
+        [TestCase("1", TokenType.Number, TestName = "Number")]
+        [TestCase("12234", TokenType.Number, TestName = "Number")]
         [Test]
-        public void t04_Check_Token(String assoc, CDTokenType expectedTType)
+        public void t04_Check_Token(String assoc, TokenType expectedTType)
         {
             var expectedTokens = new[] { new CDToken(0, assoc.Length, expectedTType, assoc)};
             checkTokens(assoc, expectedTokens);

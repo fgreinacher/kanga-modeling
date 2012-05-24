@@ -21,7 +21,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         /// </summary>
         /// <param name="tokenTypes">Token types to consume.</param>
         /// <returns><c>true</c> if tokens were consumed, otherwise <c>false</c> (wrong type, too few tokens in stream)</returns>
-        public bool TryConsume(params CDTokenType[] tokenTypes)
+        public bool TryConsume(params TokenType[] tokenTypes)
         {
             if (Count < tokenTypes.Length) return false;
             if (tokenTypes.Where((t, i) => this[i].TokenType != t).Any())
@@ -39,7 +39,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         /// <param name="type">Token type to consume</param>
         /// <param name="token">The consumed token (if types match)</param>
         /// <returns><c>true</c> if tokens were consumed, otherwise <c>false</c> (wrong type, too few tokens in stream)</returns>
-        public bool TryConsume(CDTokenType type, out CDToken token)
+        public bool TryConsume(TokenType type, out CDToken token)
         {
             token = null;
 
@@ -62,7 +62,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         /// <param name="tokens">The consumed tokens (if types match)</param>
         /// <param name="tokenTypes">Token types to consume</param>
         /// <returns><c>true</c> if tokens were consumed, otherwise <c>false</c> (wrong type, too few tokens in stream)</returns>
-        public bool TryConsume(out List<CDToken> tokens, params CDTokenType[] tokenTypes )
+        public bool TryConsume(out List<CDToken> tokens, params TokenType[] tokenTypes )
         {
             tokens = null;
             if (Count < tokenTypes.Length)
@@ -104,77 +104,77 @@ namespace KangaModeling.Compiler.ClassDiagrams
             {
                 if (source[0] == '[')
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.BracketOpen));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.BracketOpen));
                     source = source.Remove(0, 1);
                 }
                 else if (source.StartsWith("..")) // TODO "..." ?
                 {
-                    tokens.Add(new CDToken(_lineIndex, _charIndex+=2, CDTokenType.DotDot));
+                    tokens.Add(new CDToken(_lineIndex, _charIndex+=2, TokenType.DotDot));
                     source = source.Remove(0, 2);
                 }
                 else if (source[0] == '*')
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Star));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Star));
                     source = source.Remove(0, 1);
                 }
                 else if (source[0] == ':')
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Colon));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Colon));
                     source = source.Remove(0, 1);
                 }
                 else if (source[0] == '|')
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Pipe));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Pipe));
                     source = source.Remove(0, 1);
                 }
                 else if (source[0] == '(')
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.ParenthesisOpen));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.ParenthesisOpen));
                     source = source.Remove(0, 1);
                 }
                 else if (source[0] == ')')
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.ParenthesisClose));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.ParenthesisClose));
                     source = source.Remove(0, 1);
                 }
                 else if (source[0] == ',')
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Comma));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Comma));
                     source = source.Remove(0, 1);
                 }
                 else if (source[0] == ']')
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.BracketClose));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.BracketClose));
                     source = source.Remove(0, 1);
                 }
                 else if (source.StartsWith("-"))
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Dash));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Dash));
                     source = source.Remove(0, 1);
                 }
                 else if (source.StartsWith("<"))
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.AngleOpen));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.AngleOpen));
                     source = source.Remove(0, 1);
                 }
                 else if (source.StartsWith("~"))
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Tilde));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Tilde));
                     source = source.Remove(0, 1);
                 }
                 else if (source.StartsWith(">"))
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.AngleClose));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.AngleClose));
                     source = source.Remove(0, 1);
                 }
                 else if (source.StartsWith("+"))
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Plus));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Plus));
                     source = source.Remove(0, 1);
                 }
                 else if (source.StartsWith("#"))
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, CDTokenType.Hash));
+                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Hash));
                     source = source.Remove(0, 1);
                 }
                 else
@@ -188,7 +188,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                         var numberString = match.Captures[0].Value;
                         _charIndex += numberString.Length;
                         source = source.Remove(0, numberString.Length);
-                        tokens.Add(new CDToken(_lineIndex, _charIndex, CDTokenType.Number, numberString));
+                        tokens.Add(new CDToken(_lineIndex, _charIndex, TokenType.Number, numberString));
                     }
                     else
                     {
@@ -211,7 +211,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                             else
                             {
                                 // no newline. stop.
-                                tokens.Add(new CDToken(_lineIndex, _charIndex + source.Length, CDTokenType.Unknown, source));
+                                tokens.Add(new CDToken(_lineIndex, _charIndex + source.Length, TokenType.Unknown, source));
                                 break;
                             }
                         }
@@ -220,7 +220,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                             var id = match.Captures[0].Value;
                             _charIndex += id.Length;
                             source = source.Remove(0, id.Length);
-                            tokens.Add(new CDToken(_lineIndex, _charIndex, CDTokenType.Identifier, id));
+                            tokens.Add(new CDToken(_lineIndex, _charIndex, TokenType.Identifier, id));
                         }
                     }
                 }

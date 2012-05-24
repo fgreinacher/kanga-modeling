@@ -9,21 +9,21 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
     {
         public static CDToken Token(this string value)
         {
-            var tt = CDTokenType.Identifier;
+            var tt = TokenType.Identifier;
             int dummy;
-            if (int.TryParse(value, out dummy)) tt = CDTokenType.Number;
-            if (value.Equals("*")) tt = CDTokenType.Star;
-            if (value.Equals("..")) tt = CDTokenType.DotDot;
-            if (value.Equals(":")) tt = CDTokenType.Colon;
-            if (value.Equals("+")) tt = CDTokenType.Plus;
-            if (value.Equals("-")) tt = CDTokenType.Dash;
-            if (value.Equals("#")) tt = CDTokenType.Hash;
-            if (value.Equals("~")) tt = CDTokenType.Tilde;
+            if (int.TryParse(value, out dummy)) tt = TokenType.Number;
+            if (value.Equals("*")) tt = TokenType.Star;
+            if (value.Equals("..")) tt = TokenType.DotDot;
+            if (value.Equals(":")) tt = TokenType.Colon;
+            if (value.Equals("+")) tt = TokenType.Plus;
+            if (value.Equals("-")) tt = TokenType.Dash;
+            if (value.Equals("#")) tt = TokenType.Hash;
+            if (value.Equals("~")) tt = TokenType.Tilde;
 
             return new CDToken(0, value.Length, tt, value);
         }
 
-        public static CDToken Token(this CDTokenType tokenType)
+        public static CDToken Token(this TokenType tokenType)
         {
             // constant 10 is arbitrary and just to make the CDToken happy.
             return new CDToken(0, 10, tokenType);
@@ -31,12 +31,12 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
 
         public static TokenStream Class(string className, TokenStream fields = null)
         {
-            var f = CombineTokenStreams(new TokenStream { CDTokenType.Pipe.Token() }, fields);
+            var f = CombineTokenStreams(new TokenStream { TokenType.Pipe.Token() }, fields);
 
             var ts = CombineTokenStreams(
-                new TokenStream { CDTokenType.BracketOpen.Token(), className.Token() },
+                new TokenStream { TokenType.BracketOpen.Token(), className.Token() },
                 fields == null ? null : f,
-                new TokenStream { CDTokenType.BracketClose.Token(), }
+                new TokenStream { TokenType.BracketClose.Token(), }
                 );
             return ts;
         }
@@ -45,7 +45,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         {
             var stream = new TokenStream { name.Token() };
             if (type != null)
-                stream = CombineTokenStreams(stream, new TokenStream { CDTokenType.Colon.Token(), type.Token() });
+                stream = CombineTokenStreams(stream, new TokenStream { TokenType.Colon.Token(), type.Token() });
             if(accessModifier != null)
                 stream = CombineTokenStreams(new TokenStream { accessModifier.Token()}, stream);
             return stream;
@@ -61,7 +61,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             if (sourceTo != null)
                 tokens.AddRange(new[] { "..".Token(), sourceTo.Token() });
 
-            tokens.AddRange(new[] { CDTokenType.Dash.Token()});
+            tokens.AddRange(new[] { TokenType.Dash.Token()});
 
             tokens.AddRange(new[] { targetFrom.Token()});
             if (targetTo != null)
