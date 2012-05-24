@@ -88,15 +88,17 @@ namespace KangaModeling.Compiler.ClassDiagrams
             }
         }
 
-        private class Field : Model.IField
+        private class Field : IField
         {
-            public Field(string name, string type)
+            public Field(string name, string type, VisibilityModifier visibilityModifier = VisibilityModifier.Public)
             {
                 Name = name;
                 Type = type;
+                Visibility = visibilityModifier;
             }
             public string Name { get; private set; }
             public string Type { get; private set; }
+            public VisibilityModifier Visibility { get; private set; }
         }
 
         private class Association : Model.IAssociation
@@ -240,14 +242,26 @@ namespace KangaModeling.Compiler.ClassDiagrams
         }
 
         // ID [ ":" ID ]
-        public Model.IField parseField()
+        public IField parseField()
         {
             String name = null, type = null;
             CDToken token = null;
+            var vm = VisibilityModifier.Public;
+
+            // handle visibility modifiers (OPTIONAL)
+            if(_tokens.TryConsume(CDTokenType.Plus))
+                vm = VisibilityModifier.Public;
+            else if (_tokens.TryConsume(CDTokenType.Dash))
+                vm = VisibilityModifier.Private;
+            else if (_tokens.TryConsume(CDTokenType.Hash))
+                vm = VisibilityModifier.Protected;
+            else if (_tokens.TryConsume(CDTokenType.Tilde))
+                vm = VisibilityModifier.Internal;
 
             // TODO no field? "[classname|]"
             if(_tokens.TryConsume(CDTokenType.Identifier, out token))
                 name = token.Value;
+            // TODO else error
 
             if (_tokens.TryConsume(CDTokenType.Colon))
             {
@@ -259,7 +273,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 }
             }
 
-            return name != null ? new Field(name, type) : null;
+            return name != null ? new Field(name, type, vm) : null;
         }
 
         #endregion

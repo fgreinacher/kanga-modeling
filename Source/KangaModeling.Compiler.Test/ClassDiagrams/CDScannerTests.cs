@@ -75,6 +75,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [TestCase("#", CDTokenType.Hash, TestName = "hash")]
         [TestCase("[", CDTokenType.Bracket_Open, TestName = "bracket open")]
         [TestCase("]", CDTokenType.Bracket_Close, TestName = "bracket close")]
+        [TestCase("~", CDTokenType.Tilde, TestName = "tilde")]
         [TestCase("*", CDTokenType.Star, TestName = "star")]
         [TestCase("..", CDTokenType.DotDot, TestName = "dot dot")]
         [TestCase("0", CDTokenType.Number, TestName = "Number")]

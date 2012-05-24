@@ -20,6 +20,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         DotDot,
         Colon,
         Pipe,
+        Tilde
     }
 
     public sealed class CDToken : GenericToken<CDTokenType>
@@ -66,6 +67,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 case CDTokenType.DotDot: return "..";
                 case CDTokenType.Colon: return ":";
                 case CDTokenType.Pipe: return "|";
+                case CDTokenType.Tilde: return "~";
 
                 case CDTokenType.Unknown: throw new ArgumentException("must provide value for UNKNOWN tokentype");
                 case CDTokenType.Identifier: throw new ArgumentException("must provide value for IDENTIFIER tokentype");

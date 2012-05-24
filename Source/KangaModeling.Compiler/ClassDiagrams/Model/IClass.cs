@@ -7,12 +7,24 @@ namespace KangaModeling.Compiler.ClassDiagrams.Model
 {
 
     /// <summary>
+    /// The visilibity of a member
+    /// </summary>
+    public enum VisibilityModifier
+    {
+        Public,
+        Internal,
+        Private,
+        Protected
+    }
+
+    /// <summary>
     /// Represents one field of an IClass instance.
     /// </summary>
     public interface IField
     {
         string Name { get; }
         string Type { get; }
+        VisibilityModifier Visibility { get; }
     }
 
     /// <summary>

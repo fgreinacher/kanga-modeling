@@ -28,6 +28,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             if (value.Equals("*")) tt = CDTokenType.Star;
             if (value.Equals("..")) tt = CDTokenType.DotDot;
             if (value.Equals(":")) tt = CDTokenType.Colon;
+            if(value.Equals("+")) tt = CDTokenType.Plus;
+            if (value.Equals("-")) tt = CDTokenType.Dash;
+            if (value.Equals("#")) tt = CDTokenType.Hash;
+            if (value.Equals("~")) tt = CDTokenType.Tilde;
+
             return new CDToken(0, value.Length, tt, value);
         }
 
@@ -43,11 +48,13 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             return ts;
         }
 
-        public static TokenStream createFieldTokenStream(string name, string type = null)
+        public static TokenStream createFieldTokenStream(string name, string type = null, string accessModifier = null)
         {
-            var stream = new TokenStream() { TestHelpers.createToken(name) };
+            var stream = new TokenStream() { createToken(name) };
             if (type != null)
-                stream = combineStreams(stream, new TokenStream() { TestHelpers.createToken(CDTokenType.Colon), TestHelpers.createToken(type) });
+                stream = combineStreams(stream, new TokenStream { createToken(CDTokenType.Colon), createToken(type) });
+            if(accessModifier != null)
+                stream = combineStreams(new TokenStream { createToken(accessModifier )}, stream);
             return stream;
         }
 
@@ -402,7 +409,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         }
 
         [Test]
-        public void t11_Junk_At_End()
+        public void t12_Junk_At_End()
         {
             var tokens = TestHelpers.combineStreams(
                 TestHelpers.createClassTokenStream("className"),
@@ -415,6 +422,22 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.IsNull(c, "invalid tokenstream -> must not parse to class");
         }
 
+        [TestCase("+", VisibilityModifier.Public, TestName = "+ for Public")]
+        [TestCase("-", VisibilityModifier.Private, TestName = "+ for Private")]
+        [TestCase("#", VisibilityModifier.Protected, TestName = "+ for Protected")]
+        [TestCase("~", VisibilityModifier.Internal, TestName = "~ for Internal")]
+        [Test]
+        public void t13_Parse_Field_With_AccessModifier(String vm, VisibilityModifier expectedVm)
+        {
+            var tokens = TestHelpers.createFieldTokenStream("fieldName", "fieldType", vm);
+
+            var f = new CDParser(tokens).parseField();
+
+            Assert.IsNotNull(f, "field parsing failed");
+            Assert.AreEqual("fieldName", f.Name);
+            Assert.AreEqual("fieldType", f.Type);
+            Assert.AreEqual(expectedVm, f.Visibility, "wrong visibility modifier");
+        }
 
     }
 
