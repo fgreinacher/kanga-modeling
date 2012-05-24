@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using KangaModeling.Compiler.ClassDiagrams;
@@ -356,6 +357,62 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.AreEqual(expectedVm, f.Visibility, "wrong visibility modifier");
         }
 
+        [Test]
+        public void t14_Parse_Method()
+        {
+            var tokens = TokenStreamBuilder.Method("methodName");
+            var m = new CDParser(tokens).ParseMethod();
+            AssertMethod(m, VisibilityModifier.Public, "methodName", "void");
+        }
+
+        [TestCase("+", VisibilityModifier.Public, TestName = "+ for Public")]
+        [TestCase("-", VisibilityModifier.Private, TestName = "+ for Private")]
+        [TestCase("#", VisibilityModifier.Protected, TestName = "+ for Protected")]
+        [TestCase("~", VisibilityModifier.Internal, TestName = "~ for Internal")]
+        [Test]
+        public void t14_Parse_Method_VisibilityModifier(string modifier, VisibilityModifier expectedVisibility)
+        {
+            var tokens = TokenStreamBuilder.Method("methodName", modifier);
+            var m = new CDParser(tokens).ParseMethod();
+            Assert.AreEqual(expectedVisibility, m.Visibility, "unexpected visibility");
+        }
+
+        [Test]
+        public void t14_Parse_Method_Parameter()
+        {
+            var parameterStream = new TokenStream {"parameter".Token(), "type".Token()};
+            var tokens = TokenStreamBuilder.Method("methodName", "+", parameterStream);
+            
+            var m = new CDParser(tokens).ParseMethod();
+            
+            Assert.IsNotNull(m, "method parse error");
+            var parameters = new List<MethodParameter>(m.Parameters);
+            Assert.AreEqual(1, parameters.Count, "wrong parameter count");
+            Assert.AreEqual("parameter", parameters[0].Name, "wrong name");
+            Assert.AreEqual("type", parameters[0].Type, "wrong type");
+        }
+
+        [Test]
+        public void t14_Parse_Method_ReturnType()
+        {
+            var tokens = TokenStreamBuilder.CombineTokenStreams(
+                TokenStreamBuilder.Method("methodName"),
+                new TokenStream {TokenType.Colon.Token(), "returntype".Token()}
+            );
+            var m = new CDParser(tokens).ParseMethod();
+
+            Assert.IsNotNull(m, "method parse error");
+            Assert.AreEqual("returntype", m.ReturnType);
+        }
+
+
+        private void AssertMethod(IMethod m, VisibilityModifier expectedVisibility, string expectedName, string expectedReturnType)
+        {
+            Assert.IsNotNull(m, "unexpected null");
+            Assert.AreEqual(expectedVisibility, m.Visibility, "unexpected method visiblity");
+            Assert.AreEqual(expectedName, m.Name, "unexpected method name");
+            Assert.AreEqual(expectedReturnType, m.ReturnType, "unexpected return type");
+        }
 
     }
 

@@ -72,11 +72,22 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             return tokens;
         }
 
+        public static TokenStream Method(string name, string visibilityModifier = "+", TokenStream parameterStream = null)
+        {
+            var stream = CombineTokenStreams(
+                new TokenStream {visibilityModifier.Token(), name.Token(), TokenType.ParenthesisOpen.Token()},
+                parameterStream,
+                new TokenStream {TokenType.ParenthesisClose.Token()}
+            );
+            return stream;
+        }
+
         public static TokenStream CombineTokenStreams(params TokenStream[] streams)
         {
             var combinedStream = new TokenStream();
             foreach (var singleStream in streams) if(singleStream != null) combinedStream.AddRange(singleStream);
             return combinedStream;
         }
+
     }
 }

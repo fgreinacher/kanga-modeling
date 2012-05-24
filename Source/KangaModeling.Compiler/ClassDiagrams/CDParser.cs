@@ -152,6 +152,22 @@ namespace KangaModeling.Compiler.ClassDiagrams
             }
         }
 
+        private class Method : IMethod
+        {
+            public Method(string name, string returnType, IEnumerable<MethodParameter> parameters, VisibilityModifier visibility)
+            {
+                Name = name;
+                ReturnType = returnType;
+                Parameters = parameters;
+                Visibility = visibility;
+            }
+
+            public string Name { get; private set; }
+            public string ReturnType { get; private set; }
+            public IEnumerable<MethodParameter> Parameters { get; private set; }
+            public VisibilityModifier Visibility { get; private set; }
+        }
+
         #endregion
 
         public CDParser(TokenStream tokens)
@@ -242,18 +258,11 @@ namespace KangaModeling.Compiler.ClassDiagrams
         public IField ParseField()
         {
             String name = null, type = null;
-            CDToken token = null;
-            var vm = VisibilityModifier.Public;
+            CDToken token;
+            VisibilityModifier vm;
 
             // handle visibility modifiers (OPTIONAL)
-            if(_tokens.TryConsume(TokenType.Plus))
-                vm = VisibilityModifier.Public;
-            else if (_tokens.TryConsume(TokenType.Dash))
-                vm = VisibilityModifier.Private;
-            else if (_tokens.TryConsume(TokenType.Hash))
-                vm = VisibilityModifier.Protected;
-            else if (_tokens.TryConsume(TokenType.Tilde))
-                vm = VisibilityModifier.Internal;
+            TryConsumeVisibilityModifier(out vm);
 
             // TODO no field? "[classname|]"
             if(_tokens.TryConsume(TokenType.Identifier, out token))
@@ -270,7 +279,89 @@ namespace KangaModeling.Compiler.ClassDiagrams
             return name != null ? new Field(name, type, vm) : null;
         }
 
+        public IMethod ParseMethod()
+        {
+            var vis = VisibilityModifier.Public;
+            var name = string.Empty;
+            string rettype = "void";
+            CDToken token;
+
+            // (optional) visibility
+            TryConsumeVisibilityModifier(out vis);
+
+            // (mandatory) name
+            if(!_tokens.TryConsume(TokenType.Identifier, out token))
+            {
+                // TODO ERROR
+                return null;
+            }
+            name = token.Value;
+
+            // (mandatory) (
+            if(!_tokens.TryConsume(TokenType.ParenthesisOpen))
+            {
+                // TODO error
+                return null;
+            }
+
+            // method parameters
+            var mp = new List<MethodParameter>();
+            do
+            {
+                if (!_tokens.TryConsume(TokenType.Identifier, out token))
+                    break; // no identifier -> finished
+                var paramName = token.Value;
+
+                if (!_tokens.TryConsume(TokenType.Identifier, out token))
+                {
+                    // TODO error; after method parameter name, the type!
+                    break;
+                }
+
+                mp.Add(new MethodParameter(paramName, token.Value));
+            } while (true);
+
+            // (mandatory) )
+            if (!_tokens.TryConsume(TokenType.ParenthesisClose))
+            {
+                // TODO error
+                return null;
+            }
+
+            // (optional) return type
+            if(_tokens.TryConsume(TokenType.Colon))
+            {
+                // now return type MUST follow
+                if(!_tokens.TryConsume(TokenType.Identifier, out token))
+                {
+                    // TODO error!
+                    return null;
+                }
+
+                rettype = token.Value;
+            }
+
+            return new Method(name, rettype, mp, vis);
+        }
+
         #endregion
+
+        private bool TryConsumeVisibilityModifier(out VisibilityModifier mod)
+        {
+            mod = VisibilityModifier.Public;
+            if (_tokens.TryConsume(TokenType.Plus))
+                mod = VisibilityModifier.Public;
+            else if (_tokens.TryConsume(TokenType.Dash))
+                mod = VisibilityModifier.Private;
+            else if (_tokens.TryConsume(TokenType.Hash))
+                mod = VisibilityModifier.Protected;
+            else if (_tokens.TryConsume(TokenType.Tilde))
+                mod = VisibilityModifier.Internal;
+            else
+                return false;
+
+            return true;
+        }
 
         // class [ assoc class ]
         private bool ParseClassOrAssociation(ClassDiagram cd)
