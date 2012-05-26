@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using KangaModeling.Compiler.ClassDiagrams.Model;
 
 namespace KangaModeling.Compiler.ClassDiagrams
@@ -54,6 +57,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             private readonly List<IAssociation> _assocs = new List<IAssociation>();
         }
 
+        [DebuggerDisplay("Class {Name}")]
         private class Class : IClass
         {
             private readonly List<IField> _fields;
@@ -88,6 +92,10 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 get { return _methods; }
             }
 
+            public string DisplayText
+            {
+                get { return Name; }
+            }
 
             public string Name { get; private set; }
         }
@@ -103,8 +111,22 @@ namespace KangaModeling.Compiler.ClassDiagrams
             public string Name { get; private set; }
             public string Type { get; private set; }
             public VisibilityModifier Visibility { get; private set; }
+
+            public string DisplayText
+            {
+                get
+                {
+                    var sb = new StringBuilder();
+                    sb.Append(Visibility.GetDisplayText());
+                    sb.Append(string.Format("{0}", this.Name));
+                    if (Type != null)
+                        sb.Append(string.Format(": {0}", this.Type));
+                    return sb.ToString();
+                }
+            }
         }
 
+        [DebuggerDisplay("Association Source:{Source.Name} Target:{Target.Name}")]
         private class Association : IAssociation
         {
             public Association(AssocInfo info, IClass source, IClass target)
@@ -173,6 +195,30 @@ namespace KangaModeling.Compiler.ClassDiagrams
             public string ReturnType { get; private set; }
             public IEnumerable<MethodParameter> Parameters { get; private set; }
             public VisibilityModifier Visibility { get; private set; }
+
+            public string DisplayText
+            {
+                get {
+                    var methodNameBuilder = new StringBuilder();
+
+                    methodNameBuilder.Append(Visibility.GetDisplayText());
+                    methodNameBuilder.Append(Name);
+                    methodNameBuilder.Append("(");
+                    foreach (var parameter in Parameters)
+                    {
+                        methodNameBuilder.Append(parameter.Type + " " + parameter.Name);
+                        methodNameBuilder.Append(", ");
+                    }
+                    if (Parameters.Any())
+                        methodNameBuilder.Remove(methodNameBuilder.Length - 2, 2);
+
+                    // TODO return type
+
+                    methodNameBuilder.Append(")");
+
+                    return methodNameBuilder.ToString();
+                }
+            }
         }
 
         #endregion

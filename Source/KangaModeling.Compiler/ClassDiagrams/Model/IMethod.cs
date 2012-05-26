@@ -2,7 +2,12 @@ using System.Collections.Generic;
 
 namespace KangaModeling.Compiler.ClassDiagrams.Model
 {
-    public interface IMethod
+    public interface IDisplayable
+    {
+        string DisplayText { get; }
+    }
+
+    public interface IMethod : IDisplayable
     {
         string Name { get; }
         string ReturnType { get; }

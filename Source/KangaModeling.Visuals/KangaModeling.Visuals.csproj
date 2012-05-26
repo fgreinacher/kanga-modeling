@@ -42,8 +42,12 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="ClassDiagrams\AssociationVisual.cs" />
     <Compile Include="ClassDiagrams\ClassDiagramVisual.cs" />
     <Compile Include="ClassDiagrams\ClassVisual.cs" />
+    <Compile Include="ClassDiagrams\CompartmentVisual.cs" />
+    <Compile Include="ClassDiagrams\PaddedTextVisual.cs" />
+    <Compile Include="ClassDiagrams\SizeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\ActivityVisual.cs" />
     <Compile Include="SequenceDiagrams\Column.cs" />

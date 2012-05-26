@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using KangaModeling.Compiler.ClassDiagrams.Model;
 using KangaModeling.Graphics.Primitives;
@@ -13,18 +14,41 @@ namespace KangaModeling.Visuals.ClassDiagrams
         /// <summary> the diagram to visualize. </summary>
         private readonly IClassDiagram _mCd;
 
+        private readonly Dictionary<IClass, ClassVisual> _classVisuals;
+        private readonly Dictionary<IAssociation, AssociationVisual> _associationVisuals;
+
         public ClassDiagramVisual(IClassDiagram cd)
         {
             if (cd == null) throw new ArgumentNullException("cd");
-            if (cd.Classes.Count() != 1) throw new ArgumentException("currently, only single class allowed");
+            //if (cd.Classes.Count() != 1) throw new ArgumentException("currently, only single class allowed");
             _mCd = cd;
+            _classVisuals = new Dictionary<IClass, ClassVisual>();
+            _associationVisuals = new Dictionary<IAssociation, AssociationVisual>();
+
             Initialize();
         }
 
         private void Initialize()
         {
             foreach (var @class in _mCd.Classes)
-                AddChild(new ClassVisual(@class));
+            {
+                var cv = new ClassVisual(@class);
+                _classVisuals[@class] = cv;
+                AddChild(cv);
+            }
+
+            foreach(var assoc in _mCd.Associations)
+            {
+                var assocVisual = new AssociationVisual(assoc, this);
+                _associationVisuals[assoc] = assocVisual;
+                AddChild(assocVisual);
+            }
+        }
+
+        public ClassVisual GetClassVisual(IClass iClass)
+        {
+            if (iClass == null) throw new ArgumentNullException("iClass");
+            return _classVisuals[iClass];
         }
 
         protected override void LayoutCore(Graphics.IGraphicContext graphicContext)
@@ -33,13 +57,20 @@ namespace KangaModeling.Visuals.ClassDiagrams
             base.LayoutCore(graphicContext);
 
             // 2. arrange classes somehow (this is the VERY hard part)
-            var children = Children.ToList();
+            float xCursor = 0f;
+            foreach(var classVisual in Children.Where(v => v is ClassVisual))
+            {
+                classVisual.Location = new Point(xCursor, 0f);
+                xCursor += classVisual.Size.Width + 100f;
+            }
+
+            // need to re-layout the associations.
+            // layouting has done for all children before, but associations
+            // need the Location be set for the classes, and these have been set just now.
+            _associationVisuals.ForEach(kvp => kvp.Value.Layout(graphicContext));
 
             Location = new Point(0f, 0f);
-            Size = new Size(children[0].Size.Width + 20f, children[0].Size.Height + 20f);
-
-            // need to set the Location of each child here!
-            children[0].Location = new Point(10f, 10f);
+            Size = new Size(xCursor, 100f);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace KangaModeling.Compiler.ClassDiagrams.Model
     /// <summary>
     /// Represents a class in the CD model.
     /// </summary>
-    public interface IClass
+    public interface IClass : IDisplayable
     {
         /// <summary>
         /// The name of the class.
