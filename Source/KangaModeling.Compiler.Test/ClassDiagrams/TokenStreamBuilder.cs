@@ -1,3 +1,4 @@
+using System;
 using KangaModeling.Compiler.ClassDiagrams;
 
 namespace KangaModeling.Compiler.Test.ClassDiagrams
@@ -53,25 +54,32 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             return stream;
         }
 
-        public static TokenStream Association(string sourceFrom, string sourceTo, string targetFrom, string targetTo)
+        public static TokenStream Association(string sourceFrom, string sourceTo, string association, string targetFrom, string targetTo)
         {
             var tokens = new TokenStream();
-
-            tokens.AddRange(Class("a"));
 
             tokens.AddRange(new[] { sourceFrom.Token()});
             if (sourceTo != null)
                 tokens.AddRange(new[] { "..".Token(), sourceTo.Token() });
 
-            tokens.AddRange(new[] { TokenType.Dash.Token()});
+            tokens.AddRange(PureAssociation(association));
 
             tokens.AddRange(new[] { targetFrom.Token()});
             if (targetTo != null)
                 tokens.AddRange(new[] { "..".Token(), targetTo.Token() });
 
-            tokens.AddRange(Class("b"));
-
             return tokens;
+        }
+
+        public static TokenStream PureAssociation(string association)
+        {
+            switch(association)
+            {
+                case "-":
+                    return new TokenStream {TokenType.Dash.Token()};
+            }
+
+            throw new ArgumentException("unexpected association: " + association);
         }
 
         public static TokenStream Method(string name, string visibilityModifier = "+", TokenStream parameterStream = null)

@@ -449,15 +449,25 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // either there is an association afterwards or not
             // if there is none, then either this is the end of input
             // or a comma follows.
-            var assoc = ParseAssociation();
-            if (assoc != null)
+            var sourceClass = c;
+            do
             {
+                var assoc = ParseAssociation();
+                if (assoc == null)
+                    break;
+
                 // assoc did parse, must be followed by class
-                var c2 = ParseClass();
+                var c2 = ParseClass(); // TODO what if this returns null?
+                if(c2 == null)
+                {
+                    // TODO parse error!
+                    return false;
+                }
                 cd.AddClass(c2);
 
-                cd.Add(new Association(assoc, c, c2));
-            }
+                cd.Add(new Association(assoc, sourceClass, c2));
+                sourceClass = c2;
+            } while (true);
 
             return true;
         }

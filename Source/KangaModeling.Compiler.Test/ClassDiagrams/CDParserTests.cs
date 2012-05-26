@@ -178,7 +178,20 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t08_Parse_ClassDiagram_Containing_Two_Associated_Classes_With_Multiplicities_Numbers(string sourceFrom, string sourceTo, string targetFrom, string targetTo)
         {
-            var tokens = TokenStreamBuilder.Association(sourceFrom, sourceTo, targetFrom, targetTo);
+            var tokens = new TokenStream();
+            tokens.AddRange(TokenStreamBuilder.Class("a"));
+
+            tokens.AddRange(new[] { sourceFrom.Token() });
+            if (sourceTo != null)
+                tokens.AddRange(new[] { "..".Token(), sourceTo.Token() });
+
+            tokens.AddRange(new[] { TokenType.Dash.Token() });
+
+            tokens.AddRange(new[] { targetFrom.Token() });
+            if (targetTo != null)
+                tokens.AddRange(new[] { "..".Token(), targetTo.Token() });
+
+            tokens.AddRange(TokenStreamBuilder.Class("b"));
 
             var parser = new CDParser(tokens);
             var cd = parser.ParseClassDiagram();
@@ -421,6 +434,40 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             var c = new CDParser(tokens).ParseClass();
 
             Assert.IsNotNull(c, "class parse error");
+        }
+
+        [Test]
+        public void t15_Parse_Three_Associated_Classes()
+        {
+            // [a]-[b]-[c]
+            var tokens = TokenStreamBuilder.CombineTokenStreams(
+                TokenStreamBuilder.Class("a"),
+                TokenStreamBuilder.PureAssociation("-"),
+                TokenStreamBuilder.Class("b"),
+                TokenStreamBuilder.PureAssociation("-"),
+                TokenStreamBuilder.Class("c")
+            );
+
+            var cd = new CDParser(tokens).ParseClassDiagram();
+
+            Assert.IsNotNull(cd, "class diagram1 parse error");
+            Assert.AreEqual(3, cd.Classes.Count(), "wrong class count");
+            Assert.AreEqual(2, cd.Associations.Count(), "wrong association count");
+            // TODO more tests...
+        }
+
+        // TODO more invalid parses!
+        [Test, Description("[a]-")]
+        public void t16_Parse_Association_Target_Incorect()
+        {
+            var tokens = TokenStreamBuilder.CombineTokenStreams(
+                TokenStreamBuilder.Class("a"),
+                TokenStreamBuilder.PureAssociation("-")
+            );
+
+            var cd = new CDParser(tokens).ParseClassDiagram();
+
+            Assert.IsNull(cd, "class diagram1 parse error");
         }
 
 
