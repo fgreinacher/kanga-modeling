@@ -46,7 +46,7 @@
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
     <Compile Include="ClassDiagrams\CDParser.cs" />
-    <Compile Include="ClassDiagrams\CDScanner.cs" />
+    <Compile Include="ClassDiagrams\GenericScanner.cs" />
     <Compile Include="ClassDiagrams\ClassDiagramToken.cs" />
     <Compile Include="ClassDiagrams\ClassDiagramTokenStream.cs" />
     <Compile Include="Toolbox\EnumerableExtensions.cs" />

@@ -10,7 +10,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
     /// <summary>
     /// A scanner for class diagrams.
     /// </summary>
-    class CDScanner : Scanner
+    class CDScanner : GenericScanner
     {
         private readonly HashSet<string> _keywords;
         private readonly List<ScannerRule> _rules;
@@ -37,14 +37,14 @@ namespace KangaModeling.Compiler.ClassDiagrams
     /// <summary>
     /// Scans user input into a TokenStream.
     /// </summary>
-    abstract class Scanner
+    abstract class GenericScanner
     {
         private const int LongestKeywordNotComputed = -1;
 
         private int _longestKeyword = LongestKeywordNotComputed;
         private readonly ScannerState _scannerState;
 
-        protected Scanner()
+        protected GenericScanner()
         {
             _scannerState = new ScannerState();
         }
