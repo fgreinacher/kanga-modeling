@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using KangaModeling.Compiler.ClassDiagrams;
 using KangaModeling.Compiler.ClassDiagrams.Model;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
 
 namespace KangaModeling.Visuals.ClassDiagrams
 {
-    public static class EnumerableExtensions
-    {
-        public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
-        {
-            foreach (T item in enumeration)
-                action(item);
-        }
-    }
 
     /// <summary>
     /// A ClassVisual instance is able to visualize an instance of IClass.

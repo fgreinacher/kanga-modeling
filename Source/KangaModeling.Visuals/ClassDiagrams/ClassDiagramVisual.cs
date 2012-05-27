@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using KangaModeling.Compiler.ClassDiagrams;
 using KangaModeling.Compiler.ClassDiagrams.Model;
 using KangaModeling.Graphics.Primitives;
 
@@ -20,8 +21,8 @@ namespace KangaModeling.Visuals.ClassDiagrams
         public ClassDiagramVisual(IClassDiagram cd)
         {
             if (cd == null) throw new ArgumentNullException("cd");
-            //if (cd.Classes.Count() != 1) throw new ArgumentException("currently, only single class allowed");
             _mCd = cd;
+
             _classVisuals = new Dictionary<IClass, ClassVisual>();
             _associationVisuals = new Dictionary<IAssociation, AssociationVisual>();
 
@@ -58,7 +59,7 @@ namespace KangaModeling.Visuals.ClassDiagrams
 
             // 2. arrange classes somehow (this is the VERY hard part)
             float xCursor = 0f;
-            foreach(var classVisual in Children.Where(v => v is ClassVisual))
+            foreach(var classVisual in _classVisuals.Values)
             {
                 classVisual.Location = new Point(xCursor, 0f);
                 xCursor += classVisual.Size.Width + 100f;

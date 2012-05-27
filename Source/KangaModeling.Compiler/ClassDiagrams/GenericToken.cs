@@ -25,10 +25,66 @@ namespace KangaModeling.Compiler.ClassDiagrams
         ParenthesisClose,
     }
 
+    public static class TokenTypeExtensions
+    {
+        public static string ToDisplayString(this TokenType ttype)
+        {
+            switch (ttype)
+            {
+                case TokenType.AngleClose: return ">";
+                case TokenType.AngleOpen: return "<";
+                case TokenType.BracketClose: return "]";
+                case TokenType.BracketOpen: return "[";
+                case TokenType.Comma: return ",";
+                case TokenType.Dash: return "-";
+                case TokenType.Hash: return "#";
+                case TokenType.Plus: return "+";
+                case TokenType.Star: return "*";
+                case TokenType.DotDot: return "..";
+                case TokenType.Colon: return ":";
+                case TokenType.Pipe: return "|";
+                case TokenType.Tilde: return "~";
+                case TokenType.ParenthesisOpen: return "(";
+                case TokenType.ParenthesisClose: return ")";
+
+                case TokenType.Unknown: throw new ArgumentException("must provide value for UNKNOWN tokentype");
+                case TokenType.Identifier: throw new ArgumentException("must provide value for IDENTIFIER tokentype");
+            }
+
+            throw new ArgumentException("Unknown CD token type: " + ttype.ToString());
+        }
+
+        public static TokenType FromDisplayString(this string displayString)
+        {
+            switch (displayString)
+            {
+                case ">": return TokenType.AngleClose;
+                case "<": return TokenType.AngleOpen;
+                case "]": return TokenType.BracketClose;
+                case "[": return TokenType.BracketOpen;
+                case ")": return TokenType.ParenthesisClose;
+                case "(": return TokenType.ParenthesisOpen;
+
+                case ",": return TokenType.Comma;
+                case "-": return TokenType.Dash;
+                case "#": return TokenType.Hash;
+                case "+": return TokenType.Plus;
+                case "*": return TokenType.Star;
+                case "..": return TokenType.DotDot;
+                case ":": return TokenType.Colon;
+                case "|": return TokenType.Pipe;
+                case "~": return TokenType.Tilde;
+
+                // TODO numbers?
+                default: return TokenType.Identifier;
+            }
+        }
+    }
+
     public sealed class CDToken : GenericToken<TokenType>
     {
         public CDToken(int line, int end, TokenType tokenType, string value = null)
-            : base(line, end, value ?? typeToString(tokenType), tokenType)
+            : base(line, end, value ?? tokenType.ToDisplayString(), tokenType)
         {
         }
 
@@ -52,32 +108,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 result = (result * 397) ^ (Value != null ? Value.GetHashCode() : 0);
                 return result;
             }
-        }
-
-        private static string typeToString(TokenType ttype)
-        {
-            switch(ttype) {
-                case ClassDiagrams.TokenType.AngleClose: return ">";
-                case ClassDiagrams.TokenType.AngleOpen: return "<";
-                case ClassDiagrams.TokenType.BracketClose: return "]";
-                case ClassDiagrams.TokenType.BracketOpen: return "[";
-                case ClassDiagrams.TokenType.Comma: return ",";
-                case ClassDiagrams.TokenType.Dash: return "-";
-                case ClassDiagrams.TokenType.Hash: return "#";
-                case ClassDiagrams.TokenType.Plus: return "+";
-                case ClassDiagrams.TokenType.Star: return "*";
-                case ClassDiagrams.TokenType.DotDot: return "..";
-                case ClassDiagrams.TokenType.Colon: return ":";
-                case ClassDiagrams.TokenType.Pipe: return "|";
-                case ClassDiagrams.TokenType.Tilde: return "~";
-                case ClassDiagrams.TokenType.ParenthesisOpen: return "(";
-                case ClassDiagrams.TokenType.ParenthesisClose: return ")";
-
-                case ClassDiagrams.TokenType.Unknown: throw new ArgumentException("must provide value for UNKNOWN tokentype");
-                case ClassDiagrams.TokenType.Identifier: throw new ArgumentException("must provide value for IDENTIFIER tokentype");
-            }
-
-            throw new ArgumentException("Unknown CD token type: " + ttype.ToString());
         }
 
     }

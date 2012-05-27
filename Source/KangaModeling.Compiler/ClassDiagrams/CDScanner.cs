@@ -6,83 +6,22 @@ using System.Text.RegularExpressions;
 namespace KangaModeling.Compiler.ClassDiagrams
 {
 
-    
-    /// <summary>
-    /// A stream of tokens; result of the scanner, input to the parser.
-    /// </summary>
-    /// TODO must not implement List;
-    /// TODO must be lazy: cache some Tokens, call into scanner for more ( -> ANTLR )
-    class TokenStream : List<CDToken>
+    public static class HashSetExtensions
     {
-        
-        /// <summary>
-        /// Consume tokens of a specific type.
-        /// If a token type does not match, nothing is consumed.
-        /// </summary>
-        /// <param name="tokenTypes">Token types to consume.</param>
-        /// <returns><c>true</c> if tokens were consumed, otherwise <c>false</c> (wrong type, too few tokens in stream)</returns>
-        public bool TryConsume(params TokenType[] tokenTypes)
+        public static void AddRange<T>(this HashSet<T> @this, params T[] items)
         {
-            if (Count < tokenTypes.Length) return false;
-            if (tokenTypes.Where((t, i) => this[i].TokenType != t).Any())
-                return false;
-
-            RemoveRange(0, tokenTypes.Length);
-
-            return true;
+            if (@this == null) throw new NullReferenceException("@this");
+            items.ForEach(item => @this.Add(item));
         }
+    }
 
-        /// <summary>
-        /// Consume token of a specific type.
-        /// Does nothing if token type does not match.
-        /// </summary>
-        /// <param name="type">Token type to consume</param>
-        /// <param name="token">The consumed token (if types match)</param>
-        /// <returns><c>true</c> if tokens were consumed, otherwise <c>false</c> (wrong type, too few tokens in stream)</returns>
-        public bool TryConsume(TokenType type, out CDToken token)
+    public static class EnumerableExtensions
+    {
+        public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
         {
-            token = null;
-
-            if (Count == 0) return false;
-            token = this[0];
-
-            if (token.TokenType == type)
-            {
-                RemoveAt(0);
-                return true;
-            }
-
-            return false;
+            foreach (T item in enumeration)
+                action(item);
         }
-
-        /// <summary>
-        /// Consume token of a specific type.
-        /// Does nothing if token type does not match.
-        /// </summary>
-        /// <param name="tokens">The consumed tokens (if types match)</param>
-        /// <param name="tokenTypes">Token types to consume</param>
-        /// <returns><c>true</c> if tokens were consumed, otherwise <c>false</c> (wrong type, too few tokens in stream)</returns>
-        public bool TryConsume(out List<CDToken> tokens, params TokenType[] tokenTypes )
-        {
-            tokens = null;
-            if (Count < tokenTypes.Length)
-                return false;
-
-            tokens = new List<CDToken>(2);
-
-            for (int i = 0; i < tokenTypes.Length; i++)
-            {
-                if (this[i].TokenType != tokenTypes[i]) 
-                {
-                    tokens = null;
-                    return false;
-                }
-                tokens.Add(this[i]);
-            }
-
-            return true;
-        }
-
     }
 
     /// <summary>
@@ -90,6 +29,17 @@ namespace KangaModeling.Compiler.ClassDiagrams
     /// </summary>
     class CDScanner
     {
+        private readonly HashSet<String> _keywords;
+        private readonly int _longestKeyword;
+
+        public CDScanner()
+        {
+            _keywords = new HashSet<string>();
+         
+            // TODO "..." input?
+            _keywords.AddRange(new[] {"[", "..", "*", ":", "|", "(", ")", ",", "[", "]", "<", ">", "-", "~", "+", "#"});
+            _longestKeyword = _keywords.Select(kw => kw.Length).Max();
+        }
 
         public TokenStream Parse(string source)
         {
@@ -97,91 +47,29 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             var tokens = new TokenStream();
 
-            // TODO multi-line!
             TrimStart(ref source);
-
-            while (source.Length > 0)
+            while (source.Length >= 1)
             {
-                if (source[0] == '[')
+                // check for keywords.
+                var keywordFound = false;
+                for (var keywordLength = 1; keywordLength <= _longestKeyword && source.Length >= keywordLength; keywordLength++ )
                 {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.BracketOpen));
-                    source = source.Remove(0, 1);
+                    var sourceSubstring = source.Substring(0, keywordLength);
+                    if(_keywords.Contains(sourceSubstring))
+                    {
+                        var tokenType = source.Substring(0, keywordLength).FromDisplayString();
+                        tokens.Add(new CDToken(_lineIndex, _charIndex += keywordLength, tokenType));
+                        source = source.Remove(0, keywordLength);
+                        keywordFound = true;
+                    }
                 }
-                else if (source.StartsWith("..")) // TODO "..." ?
-                {
-                    tokens.Add(new CDToken(_lineIndex, _charIndex+=2, TokenType.DotDot));
-                    source = source.Remove(0, 2);
-                }
-                else if (source[0] == '*')
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Star));
-                    source = source.Remove(0, 1);
-                }
-                else if (source[0] == ':')
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Colon));
-                    source = source.Remove(0, 1);
-                }
-                else if (source[0] == '|')
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Pipe));
-                    source = source.Remove(0, 1);
-                }
-                else if (source[0] == '(')
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.ParenthesisOpen));
-                    source = source.Remove(0, 1);
-                }
-                else if (source[0] == ')')
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.ParenthesisClose));
-                    source = source.Remove(0, 1);
-                }
-                else if (source[0] == ',')
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Comma));
-                    source = source.Remove(0, 1);
-                }
-                else if (source[0] == ']')
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.BracketClose));
-                    source = source.Remove(0, 1);
-                }
-                else if (source.StartsWith("-"))
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Dash));
-                    source = source.Remove(0, 1);
-                }
-                else if (source.StartsWith("<"))
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.AngleOpen));
-                    source = source.Remove(0, 1);
-                }
-                else if (source.StartsWith("~"))
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Tilde));
-                    source = source.Remove(0, 1);
-                }
-                else if (source.StartsWith(">"))
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.AngleClose));
-                    source = source.Remove(0, 1);
-                }
-                else if (source.StartsWith("+"))
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Plus));
-                    source = source.Remove(0, 1);
-                }
-                else if (source.StartsWith("#"))
-                {
-                    tokens.Add(new CDToken(_lineIndex, ++_charIndex, TokenType.Hash));
-                    source = source.Remove(0, 1);
-                }
-                else
+
+                // no keyword found? => check additional rules.
+                if(!keywordFound)
                 {
                     // maybe a number?
                     // note: "0adsf" must be invalid! (\b matches word boundary)
-                    var match = Regex.Match(source, @"^([0-9]+)\b"); // TODO "00"
+                    var match = Regex.Match(source, @"^([0-9]+)\b");
                     if (match.Captures.Count > 0)
                     {
                         // found a number
@@ -210,7 +98,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                             }
                             else
                             {
-                                // no newline. stop.
+                                // no whitespace. stop.
                                 tokens.Add(new CDToken(_lineIndex, _charIndex + source.Length, TokenType.Unknown, source));
                                 break;
                             }
@@ -228,12 +116,18 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 TrimStart(ref source);
             }
 
-
             return tokens;
         }
 
+        /// <summary>
+        /// Trims the start of the given string, but makes sure the _charIndex and _lineIndex
+        /// members are adapted suitably.
+        /// </summary>
+        /// <param name="source">String to trim. Must not be null.</param>
         private void TrimStart(ref string source)
         {
+            if (source == null) throw new ArgumentNullException("source");
+
             var match = Regex.Match(source, @"^(\s+)");
             if (match.Captures.Count > 0)
             {

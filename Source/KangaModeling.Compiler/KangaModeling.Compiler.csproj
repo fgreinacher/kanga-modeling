@@ -55,6 +55,7 @@
     <Compile Include="ClassDiagrams\Model\IMethod.cs" />
     <Compile Include="ClassDiagrams\Model\Multiplicity.cs" />
     <Compile Include="ClassDiagrams\Model\VisibilityModifier.cs" />
+    <Compile Include="ClassDiagrams\TokenStream.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\AreaContainer.cs" />
