@@ -77,10 +77,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [TestCase("~", TokenType.Tilde, TestName = "tilde")]
         [TestCase("*", TokenType.Star, TestName = "star")]
         [TestCase("..", TokenType.DotDot, TestName = "dot dot")]
-        [TestCase("0", TokenType.Number, TestName = "Number")]
-        [TestCase("1", TokenType.Number, TestName = "Number")]
-        [TestCase("12234", TokenType.Number, TestName = "Number")]
-        [Test]
+        [TestCase("0", TokenType.Number, TestName = "Number 0")]
+        [TestCase("1", TokenType.Number, TestName = "Number 1")]
+        [TestCase("12234", TokenType.Number, TestName = "Number 12234")]
         public void t04_Check_Token(String assoc, TokenType expectedTType)
         {
             var expectedTokens = new[] { new CDToken(0, assoc.Length, expectedTType, assoc)};
