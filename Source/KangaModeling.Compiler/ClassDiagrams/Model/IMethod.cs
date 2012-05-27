@@ -2,6 +2,8 @@ using System.Collections.Generic;
 
 namespace KangaModeling.Compiler.ClassDiagrams.Model
 {
+
+    // TODO how to test implementing classes?
     public interface IDisplayable
     {
         string DisplayText { get; }

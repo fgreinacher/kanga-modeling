@@ -5,7 +5,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 {
     class ClassDiagramTokenStream : GenericTokenStream
     {
-        new ClassDiagramToken this[int i]
+        public new ClassDiagramToken this[int i]
         {
             get { return (ClassDiagramToken) base[i]; }
         }

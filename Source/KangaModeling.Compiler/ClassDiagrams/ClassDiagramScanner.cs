@@ -8,13 +8,14 @@ namespace KangaModeling.Compiler.ClassDiagrams
     /// </summary>
     class ClassDiagramScanner : GenericScanner
     {
+        public static readonly string[] ClassDiagramKeywords = new[] { "[", "..", "*", ":", "|", "(", ")", ",", "[", "]", "<", ">", "-", "~", "+", "#" };
         private readonly HashSet<string> _keywords;
         private readonly List<ScannerRule> _rules;
 
         public ClassDiagramScanner()
         {
             _keywords = new HashSet<string>();
-            _keywords.AddRange(new[] { "[", "..", "*", ":", "|", "(", ")", ",", "[", "]", "<", ">", "-", "~", "+", "#" });
+            _keywords.AddRange(ClassDiagramKeywords);
             _rules = new List<ScannerRule> {ScannerRules.MatchNumbers, ScannerRules.MatchIdentifier};
         }
 

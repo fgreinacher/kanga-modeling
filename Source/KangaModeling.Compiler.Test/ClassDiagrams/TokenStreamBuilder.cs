@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using KangaModeling.Compiler.Toolbox;
 using KangaModeling.Compiler.ClassDiagrams;
 
 namespace KangaModeling.Compiler.Test.ClassDiagrams
@@ -10,18 +12,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
     {
         public static ClassDiagramToken Token(this string value)
         {
-            var tt = TokenType.Identifier;
-            int dummy;
-            if (int.TryParse(value, out dummy)) tt = TokenType.Number;
-            if (value.Equals("*")) tt = TokenType.Star;
-            if (value.Equals("..")) tt = TokenType.DotDot;
-            if (value.Equals(":")) tt = TokenType.Colon;
-            if (value.Equals("+")) tt = TokenType.Plus;
-            if (value.Equals("-")) tt = TokenType.Dash;
-            if (value.Equals("#")) tt = TokenType.Hash;
-            if (value.Equals("~")) tt = TokenType.Tilde;
-
-            return new ClassDiagramToken(0, value.Length, tt, value);
+            return new ClassDiagramToken(0, value.Length, value.FromDisplayString(), value);
         }
 
         public static ClassDiagramToken Token(this TokenType tokenType)
@@ -99,5 +90,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             return combinedStream;
         }
 
+        public static ClassDiagramTokenStream FromStrings(params string[] tokens)
+        {
+            var s = new ClassDiagramTokenStream();
+            tokens.ForEach(t => s.Add(t.Token()));
+            return s;
+        }
     }
 }

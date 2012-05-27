@@ -28,6 +28,29 @@ namespace KangaModeling.Compiler.ClassDiagrams
     class ClassDiagramParser
     {
 
+        private readonly ClassDiagramTokenStream _genericTokens;
+        private readonly ErrorCallback _errorCallback;
+
+        #region types used for error handling
+
+        public enum ErrorReturnCode
+        {
+
+            /// <summary>
+            /// Stops parsing on the first error.
+            /// </summary>
+            StopParsing,
+
+            ///// <summary>
+            ///// Tries to continue parsing by inserting/deleting tokens.
+            ///// </summary>
+            //TryContinueByModification,
+        }
+
+        public delegate ErrorReturnCode ErrorCallback(TokenType expected, ClassDiagramToken actualToken);
+
+        #endregion
+
         #region model implementing classes
 
         private class ClassDiagram : IClassDiagram
@@ -215,9 +238,10 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     if (Parameters.Any())
                         methodNameBuilder.Remove(methodNameBuilder.Length - 2, 2);
 
-                    // TODO return type
-
                     methodNameBuilder.Append(")");
+
+                    if (null != ReturnType)
+                        methodNameBuilder.Append(string.Format(" : {0}", ReturnType));
 
                     return methodNameBuilder.ToString();
                 }
@@ -226,10 +250,11 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         #endregion
 
-        public ClassDiagramParser(ClassDiagramTokenStream genericTokens)
+        public ClassDiagramParser(ClassDiagramTokenStream genericTokens, ErrorCallback errorCallback = null)
         {
             if (genericTokens == null) throw new ArgumentNullException("genericTokens");
             _genericTokens = genericTokens;
+            _errorCallback = errorCallback;
         }
 
         #region productions
@@ -251,11 +276,18 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             if (_genericTokens.Count > 0)
             {
-                // TODO ERROR - junk at end
+                FireError();
                 return null;
             }
 
             return cd;
+        }
+
+        // TODO there's no TokenType for junk...
+        private void FireError(TokenType expected = TokenType.Unknown)
+        {
+            if(_errorCallback != null)
+                _errorCallback(expected, _genericTokens.Count > 0 ? _genericTokens[0] : null);
         }
 
         // "[" ID "]"
@@ -263,21 +295,14 @@ namespace KangaModeling.Compiler.ClassDiagrams
         {
             if (!_genericTokens.TryConsume(TokenType.BracketOpen))
             {
-                // TODO error
+                FireError(TokenType.BracketOpen);
                 return null;
             }
 
-            // TODO must be identifier!
-            // TODO what if there is no token?
-            //if (_genericTokens[0].TokenType != TokenType.Identifier)
-            //{
-            //    // error: expected identifier.
-            //    return null;
-            //}
             ClassDiagramToken token;
             if (!_genericTokens.TryConsume(TokenType.Identifier, out token))
             {
-                // error
+                FireError(TokenType.Identifier);
                 return null;
             }
             var c = new Class(token.Value);
@@ -321,7 +346,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             if (!_genericTokens.TryConsume(TokenType.BracketClose))
             {
-                // TODO error
+                FireError(TokenType.BracketClose);
                 return null;
             }
 
@@ -339,9 +364,15 @@ namespace KangaModeling.Compiler.ClassDiagrams
             TryConsumeVisibilityModifier(out vm);
 
             // TODO no field? "[classname|]"
-            if(_genericTokens.TryConsume(TokenType.Identifier, out token))
+            if (_genericTokens.TryConsume(TokenType.Identifier, out token))
+            {
                 name = token.Value;
-            // TODO else error
+            }
+            else
+            {
+                FireError(TokenType.Identifier);
+                return null;
+            }
 
             if (_genericTokens.TryConsume(TokenType.Colon))
             {
@@ -455,10 +486,9 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     break;
 
                 // assoc did parse, must be followed by class
-                var c2 = ParseClass(); // TODO what if this returns null?
+                var c2 = ParseClass();
                 if(c2 == null)
                 {
-                    // TODO parse error!
                     return false;
                 }
                 cd.AddClass(c2);
@@ -488,7 +518,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
             var sourceMult = ParseMultiplicity();
             AssocInfo assocInfo = null;
 
-            // TODO checks!!!
             if(_genericTokens.TryConsume(TokenType.Dash))
             {
                 assocInfo = new AssocInfo(_genericTokens.TryConsume(TokenType.AngleClose) ? AssociationKind.Directed : AssociationKind.Undirected);
@@ -555,8 +584,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             return m;
         }
-
-        private readonly ClassDiagramTokenStream _genericTokens;
 
     }
 

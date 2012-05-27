@@ -56,6 +56,10 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         public static TokenType FromDisplayString(this string displayString)
         {
+            int dummy;
+            if (int.TryParse(displayString, out dummy))
+                return TokenType.Number;
+
             switch (displayString)
             {
                 case ">": return TokenType.AngleClose;
@@ -75,7 +79,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 case "|": return TokenType.Pipe;
                 case "~": return TokenType.Tilde;
 
-                // TODO numbers?
                 default: return TokenType.Identifier;
             }
         }
