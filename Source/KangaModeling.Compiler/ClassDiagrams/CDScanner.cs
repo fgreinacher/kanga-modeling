@@ -3,28 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using KangaModeling.Compiler.Toolbox;
 
 namespace KangaModeling.Compiler.ClassDiagrams
 {
-
-    public static class HashSetExtensions
-    {
-        public static void AddRange<T>(this HashSet<T> @this, params T[] items)
-        {
-            if (@this == null) throw new NullReferenceException("@this");
-            items.ForEach(item => @this.Add(item));
-        }
-    }
-
-    public static class EnumerableExtensions
-    {
-        public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
-        {
-            foreach (T item in enumeration)
-                action(item);
-        }
-    }
-
     /// <summary>
     /// A scanner for class diagrams.
     /// </summary>

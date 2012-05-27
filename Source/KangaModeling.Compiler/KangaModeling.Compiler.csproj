@@ -47,6 +47,8 @@
     </Compile>
     <Compile Include="ClassDiagrams\CDParser.cs" />
     <Compile Include="ClassDiagrams\CDScanner.cs" />
+    <Compile Include="Toolbox\EnumerableExtensions.cs" />
+    <Compile Include="Toolbox\HashSetExtensions.cs" />
     <Compile Include="ClassDiagrams\Model\IAssociation.cs" />
     <Compile Include="ClassDiagrams\Model\IClass.cs" />
     <Compile Include="ClassDiagrams\Model\IClassDiagram.cs" />
@@ -90,7 +92,6 @@
     <Compile Include="SequenceDiagrams\Parsing\_Parsers\DeactivateStatementParser.cs" />
     <Compile Include="SequenceDiagrams\ModelError.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\EnsureParticipantStatement.cs" />
-    <Compile Include="SequenceDiagrams\Parsing\IEnumerableExtensions.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\MissingArgumentStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\ParticipantStatement.cs" />
     <Compile Include="SequenceDiagrams\Parsing\_Statements\ReturnSignalStatement.cs" />

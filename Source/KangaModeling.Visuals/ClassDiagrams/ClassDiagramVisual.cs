@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using KangaModeling.Compiler.ClassDiagrams;
 using KangaModeling.Compiler.ClassDiagrams.Model;
+using KangaModeling.Compiler.Toolbox;
 using KangaModeling.Graphics.Primitives;
 
 namespace KangaModeling.Visuals.ClassDiagrams
