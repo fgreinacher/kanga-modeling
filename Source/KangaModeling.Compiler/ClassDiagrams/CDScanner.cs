@@ -68,7 +68,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     if (Keywords.Contains(sourceSubstring))
                     {
                         var tokenType = source.Substring(0, keywordLength).FromDisplayString();
-                        tokens.Add(new CDToken(_scannerState.LineIndex, _scannerState.AdvanceCharIndex(keywordLength),
+                        tokens.Add(new ClassDiagramToken(_scannerState.LineIndex, _scannerState.AdvanceCharIndex(keywordLength),
                                                tokenType));
                         source = source.Remove(0, keywordLength);
                         keywordFound = true;
@@ -106,7 +106,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                         else
                         {
                             // no whitespace. stop.
-                            tokens.Add(new CDToken(_scannerState.LineIndex, _scannerState.CharIndex + source.Length,
+                            tokens.Add(new ClassDiagramToken(_scannerState.LineIndex, _scannerState.CharIndex + source.Length,
                                                    TokenType.Unknown,
                                                    source));
                             break;
@@ -132,14 +132,14 @@ namespace KangaModeling.Compiler.ClassDiagrams
             public static readonly RuleMatchInfo Fail;
 #pragma warning restore 649
 
-            public RuleMatchInfo(CDToken token)
+            public RuleMatchInfo(ClassDiagramToken token)
             {
                 Token = token;
                 IsSuccess = true;
             }
 
             public readonly bool IsSuccess;
-            public readonly CDToken Token;
+            public readonly ClassDiagramToken Token;
         }
 
         #endregion
@@ -159,7 +159,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     scannerState.AdvanceCharIndex(id.Length);
 
                     return new RuleMatchInfo(
-                        new CDToken(scannerState.LineIndex, scannerState.CharIndex, TokenType.Identifier, id));
+                        new ClassDiagramToken(scannerState.LineIndex, scannerState.CharIndex, TokenType.Identifier, id));
                 }
 
                 return RuleMatchInfo.Fail;
@@ -177,7 +177,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     scannerState.AdvanceCharIndex(numberString.Length);
 
                     return new RuleMatchInfo(
-                        new CDToken(scannerState.LineIndex, scannerState.CharIndex, TokenType.Number, numberString));
+                        new ClassDiagramToken(scannerState.LineIndex, scannerState.CharIndex, TokenType.Number, numberString));
                 }
 
                 return RuleMatchInfo.Fail;

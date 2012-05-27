@@ -223,10 +223,10 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         #endregion
 
-        public CDParser(ClassDiagramTokenStream tokens)
+        public CDParser(ClassDiagramTokenStream genericTokens)
         {
-            if (tokens == null) throw new ArgumentNullException("tokens");
-            _tokens = tokens;
+            if (genericTokens == null) throw new ArgumentNullException("genericTokens");
+            _genericTokens = genericTokens;
         }
 
         #region productions
@@ -236,17 +236,17 @@ namespace KangaModeling.Compiler.ClassDiagrams
         {
             var cd = new ClassDiagram();
 
-            while (_tokens.Count > 0)
+            while (_genericTokens.Count > 0)
             {
                 if (!ParseClassOrAssociation(cd))
                     return null;
 
-                // either no more tokens OR comma, otherwise error
-                if (!_tokens.TryConsume(TokenType.Comma))
+                // either no more genericTokens OR comma, otherwise error
+                if (!_genericTokens.TryConsume(TokenType.Comma))
                     break;
             }
 
-            if (_tokens.Count > 0)
+            if (_genericTokens.Count > 0)
             {
                 // TODO ERROR - junk at end
                 return null;
@@ -258,7 +258,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         // "[" ID "]"
         public IClass ParseClass()
         {
-            if (!_tokens.TryConsume(TokenType.BracketOpen))
+            if (!_genericTokens.TryConsume(TokenType.BracketOpen))
             {
                 // TODO error
                 return null;
@@ -266,13 +266,13 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             // TODO must be identifier!
             // TODO what if there is no token?
-            //if (_tokens[0].TokenType != TokenType.Identifier)
+            //if (_genericTokens[0].TokenType != TokenType.Identifier)
             //{
             //    // error: expected identifier.
             //    return null;
             //}
-            CDToken token;
-            if (!_tokens.TryConsume(TokenType.Identifier, out token))
+            ClassDiagramToken token;
+            if (!_genericTokens.TryConsume(TokenType.Identifier, out token))
             {
                 // error
                 return null;
@@ -280,7 +280,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             var c = new Class(token.Value);
 
             // fields
-            if(_tokens.TryConsume(TokenType.Pipe))
+            if(_genericTokens.TryConsume(TokenType.Pipe))
             {
                 // TODO there can be 0 fields! "[a||method()]"
                 IField field;
@@ -291,7 +291,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                         c.Add(field); // TODO c == null?!
 
                     // remove "," if present
-                    if(!_tokens.TryConsume(TokenType.Comma))
+                    if(!_genericTokens.TryConsume(TokenType.Comma))
                         break;
 
                 } while (field != null);
@@ -299,7 +299,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             }
 
             // methods
-            if (_tokens.TryConsume(TokenType.Pipe))
+            if (_genericTokens.TryConsume(TokenType.Pipe))
             {
                 IMethod m;
                 do
@@ -309,14 +309,14 @@ namespace KangaModeling.Compiler.ClassDiagrams
                         c.Add(m); // TODO c == null?!
 
                     // remove "," if present
-                    if (!_tokens.TryConsume(TokenType.Comma))
+                    if (!_genericTokens.TryConsume(TokenType.Comma))
                         break;
 
                 } while (m != null);
 
             }
 
-            if (!_tokens.TryConsume(TokenType.BracketClose))
+            if (!_genericTokens.TryConsume(TokenType.BracketClose))
             {
                 // TODO error
                 return null;
@@ -329,20 +329,20 @@ namespace KangaModeling.Compiler.ClassDiagrams
         public IField ParseField()
         {
             String name = null, type = null;
-            CDToken token;
+            ClassDiagramToken token;
             VisibilityModifier vm;
 
             // handle visibility modifiers (OPTIONAL)
             TryConsumeVisibilityModifier(out vm);
 
             // TODO no field? "[classname|]"
-            if(_tokens.TryConsume(TokenType.Identifier, out token))
+            if(_genericTokens.TryConsume(TokenType.Identifier, out token))
                 name = token.Value;
             // TODO else error
 
-            if (_tokens.TryConsume(TokenType.Colon))
+            if (_genericTokens.TryConsume(TokenType.Colon))
             {
-                if (_tokens.TryConsume(TokenType.Identifier, out token))
+                if (_genericTokens.TryConsume(TokenType.Identifier, out token))
                     type = token.Value;
                 // TODO else ERROR
             }
@@ -355,13 +355,13 @@ namespace KangaModeling.Compiler.ClassDiagrams
             var vis = VisibilityModifier.Public;
             var name = string.Empty;
             string rettype = "void";
-            CDToken token;
+            ClassDiagramToken token;
 
             // (optional) visibility
             TryConsumeVisibilityModifier(out vis);
 
             // (mandatory) name
-            if(!_tokens.TryConsume(TokenType.Identifier, out token))
+            if(!_genericTokens.TryConsume(TokenType.Identifier, out token))
             {
                 // TODO ERROR
                 return null;
@@ -369,7 +369,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             name = token.Value;
 
             // (mandatory) (
-            if(!_tokens.TryConsume(TokenType.ParenthesisOpen))
+            if(!_genericTokens.TryConsume(TokenType.ParenthesisOpen))
             {
                 // TODO error
                 return null;
@@ -379,11 +379,11 @@ namespace KangaModeling.Compiler.ClassDiagrams
             var mp = new List<MethodParameter>();
             do
             {
-                if (!_tokens.TryConsume(TokenType.Identifier, out token))
+                if (!_genericTokens.TryConsume(TokenType.Identifier, out token))
                     break; // no identifier -> finished
                 var paramType = token.Value;
 
-                if (!_tokens.TryConsume(TokenType.Identifier, out token))
+                if (!_genericTokens.TryConsume(TokenType.Identifier, out token))
                 {
                     // TODO error; after method parameter name, the type!
                     break;
@@ -393,17 +393,17 @@ namespace KangaModeling.Compiler.ClassDiagrams
             } while (true);
 
             // (mandatory) )
-            if (!_tokens.TryConsume(TokenType.ParenthesisClose))
+            if (!_genericTokens.TryConsume(TokenType.ParenthesisClose))
             {
                 // TODO error
                 return null;
             }
 
             // (optional) return type
-            if(_tokens.TryConsume(TokenType.Colon))
+            if(_genericTokens.TryConsume(TokenType.Colon))
             {
                 // now return type MUST follow
-                if(!_tokens.TryConsume(TokenType.Identifier, out token))
+                if(!_genericTokens.TryConsume(TokenType.Identifier, out token))
                 {
                     // TODO error!
                     return null;
@@ -420,13 +420,13 @@ namespace KangaModeling.Compiler.ClassDiagrams
         private bool TryConsumeVisibilityModifier(out VisibilityModifier mod)
         {
             mod = VisibilityModifier.Public;
-            if (_tokens.TryConsume(TokenType.Plus))
+            if (_genericTokens.TryConsume(TokenType.Plus))
                 mod = VisibilityModifier.Public;
-            else if (_tokens.TryConsume(TokenType.Dash))
+            else if (_genericTokens.TryConsume(TokenType.Dash))
                 mod = VisibilityModifier.Private;
-            else if (_tokens.TryConsume(TokenType.Hash))
+            else if (_genericTokens.TryConsume(TokenType.Hash))
                 mod = VisibilityModifier.Protected;
-            else if (_tokens.TryConsume(TokenType.Tilde))
+            else if (_genericTokens.TryConsume(TokenType.Tilde))
                 mod = VisibilityModifier.Internal;
             else
                 return false;
@@ -490,24 +490,24 @@ namespace KangaModeling.Compiler.ClassDiagrams
             AssocInfo assocInfo = null;
 
             // TODO checks!!!
-            if(_tokens.TryConsume(TokenType.Dash))
+            if(_genericTokens.TryConsume(TokenType.Dash))
             {
-                if(_tokens.TryConsume(TokenType.AngleClose))
+                if(_genericTokens.TryConsume(TokenType.AngleClose))
                     assocInfo = new AssocInfo(AssociationKind.Directed);
                 else
                     assocInfo = new AssocInfo(AssociationKind.Undirected);
             }
-            if(_tokens.TryConsume(TokenType.AngleOpen, TokenType.AngleClose, TokenType.Dash, TokenType.AngleClose))
+            if(_genericTokens.TryConsume(TokenType.AngleOpen, TokenType.AngleClose, TokenType.Dash, TokenType.AngleClose))
             {
                 assocInfo = new AssocInfo(AssociationKind.Aggregation);
             }
-            if (_tokens.TryConsume(TokenType.Plus))
+            if (_genericTokens.TryConsume(TokenType.Plus))
             {
-                if(_tokens.TryConsume(TokenType.Dash, TokenType.AngleClose))
+                if(_genericTokens.TryConsume(TokenType.Dash, TokenType.AngleClose))
                 {
                     assocInfo = new AssocInfo(AssociationKind.Aggregation);
                 }
-                if(_tokens.TryConsume(TokenType.Plus, TokenType.Dash, TokenType.AngleClose))
+                if(_genericTokens.TryConsume(TokenType.Plus, TokenType.Dash, TokenType.AngleClose))
                 {
                     assocInfo = new AssocInfo(AssociationKind.Composition);
                 }
@@ -529,17 +529,17 @@ namespace KangaModeling.Compiler.ClassDiagrams
         {
             Multiplicity m = null;
 
-            CDToken token1;
-            if (_tokens.TryConsume(TokenType.Number, out token1))
+            ClassDiagramToken token1;
+            if (_genericTokens.TryConsume(TokenType.Number, out token1))
             {
-                if (_tokens.TryConsume(TokenType.DotDot))
+                if (_genericTokens.TryConsume(TokenType.DotDot))
                 {
-                    CDToken token2;
-                    if (_tokens.TryConsume(TokenType.Number, out token2))
+                    ClassDiagramToken token2;
+                    if (_genericTokens.TryConsume(TokenType.Number, out token2))
                     {
                         m = new Multiplicity(MultiplicityKind.SingleNumber, token1.Value, MultiplicityKind.SingleNumber, token2.Value);
                     }
-                    else if (_tokens.TryConsume(TokenType.Star))
+                    else if (_genericTokens.TryConsume(TokenType.Star))
                     {
                         m = new Multiplicity(MultiplicityKind.SingleNumber, token1.Value, MultiplicityKind.Star, null);
                     }
@@ -552,15 +552,15 @@ namespace KangaModeling.Compiler.ClassDiagrams
             }
             else
             {
-                CDToken token;
-                if (_tokens.TryConsume(TokenType.Star, out token))
+                ClassDiagramToken token;
+                if (_genericTokens.TryConsume(TokenType.Star, out token))
                     m = new Multiplicity(MultiplicityKind.Star, token.Value, MultiplicityKind.None, null);
             }
 
             return m;
         }
 
-        private readonly ClassDiagramTokenStream _tokens;
+        private readonly ClassDiagramTokenStream _genericTokens;
 
     }
 

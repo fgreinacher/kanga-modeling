@@ -31,7 +31,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Check_Simple_Classes()
         {
             const string source = "[ClassName]";
-            var expectedTokens = new[] { new CDToken(0, 1, TokenType.BracketOpen), new CDToken(0, 10, TokenType.Identifier, "ClassName"), new CDToken(0, 11, TokenType.BracketClose)};
+            var expectedTokens = new[] { new ClassDiagramToken(0, 1, TokenType.BracketOpen), new ClassDiagramToken(0, 10, TokenType.Identifier, "ClassName"), new ClassDiagramToken(0, 11, TokenType.BracketClose)};
             checkTokens(source, expectedTokens);
         }
 
@@ -40,9 +40,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         {
             var source = "[" + Environment.NewLine + "ClassName" + Environment.NewLine + "]";
             var expectedTokens = new[] { 
-                new CDToken(0, 1, TokenType.BracketOpen), 
-                new CDToken(1, 9, TokenType.Identifier, "ClassName"), 
-                new CDToken(2, 1, TokenType.BracketClose), 
+                new ClassDiagramToken(0, 1, TokenType.BracketOpen), 
+                new ClassDiagramToken(1, 9, TokenType.Identifier, "ClassName"), 
+                new ClassDiagramToken(2, 1, TokenType.BracketClose), 
             };
             checkTokens(source, expectedTokens);
         }
@@ -51,7 +51,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Check_Simple_Classes_Whitespace()
         {
             const string source = "  [  ClassName  ]  ";
-            var expectedTokens = new[] { new CDToken(0, 3, TokenType.BracketOpen), new CDToken(0, 14, TokenType.Identifier, "ClassName"), new CDToken(0, 17, TokenType.BracketClose), };
+            var expectedTokens = new[] { new ClassDiagramToken(0, 3, TokenType.BracketOpen), new ClassDiagramToken(0, 14, TokenType.Identifier, "ClassName"), new ClassDiagramToken(0, 17, TokenType.BracketClose), };
             checkTokens(source, expectedTokens);
         }
 
@@ -59,7 +59,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t03_Check_Invalid_Identifier()
         {
             const string source = " 0IdentifiersMustStartWithALetter  ";
-            var expectedTokens = new CDToken[] { /* TODO currently invalid tokens are just ignored. */ };
+            var expectedTokens = new ClassDiagramToken[] { /* TODO currently invalid tokens are just ignored. */ };
             checkTokens(source, expectedTokens);
         }
 
@@ -83,11 +83,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [TestCase("12234", TokenType.Number, TestName = "Number 12234")]
         public void t04_Check_Token(String assoc, TokenType expectedTType)
         {
-            var expectedTokens = new[] { new CDToken(0, assoc.Length, expectedTType, assoc)};
+            var expectedTokens = new[] { new ClassDiagramToken(0, assoc.Length, expectedTType, assoc)};
             checkTokens(assoc, expectedTokens);
         }
 
-        private void checkTokens(string source, IEnumerable<CDToken> expectedTokens)
+        private void checkTokens(string source, IEnumerable<ClassDiagramToken> expectedTokens)
         {
             var scanner = new CDScanner();
             var tokens = scanner.Parse(source).ToList();

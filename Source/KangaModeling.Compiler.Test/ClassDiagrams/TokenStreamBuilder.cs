@@ -8,7 +8,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
     /// </summary>
     static class TokenStreamBuilder
     {
-        public static CDToken Token(this string value)
+        public static ClassDiagramToken Token(this string value)
         {
             var tt = TokenType.Identifier;
             int dummy;
@@ -21,13 +21,13 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             if (value.Equals("#")) tt = TokenType.Hash;
             if (value.Equals("~")) tt = TokenType.Tilde;
 
-            return new CDToken(0, value.Length, tt, value);
+            return new ClassDiagramToken(0, value.Length, tt, value);
         }
 
-        public static CDToken Token(this TokenType tokenType)
+        public static ClassDiagramToken Token(this TokenType tokenType)
         {
             // constant 10 is arbitrary and just to make the CDToken happy.
-            return new CDToken(0, 10, tokenType);
+            return new ClassDiagramToken(0, 10, tokenType);
         }
 
         public static ClassDiagramTokenStream Class(string className, ClassDiagramTokenStream fields = null, ClassDiagramTokenStream methods = null)
@@ -54,7 +54,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             return stream;
         }
 
-        public static TokenStream Association(string sourceFrom, string sourceTo, string association, string targetFrom, string targetTo)
+        public static ClassDiagramTokenStream Association(string sourceFrom, string sourceTo, string association, string targetFrom, string targetTo)
         {
             var tokens = new ClassDiagramTokenStream();
 

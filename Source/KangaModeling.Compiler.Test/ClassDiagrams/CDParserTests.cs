@@ -148,9 +148,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Composition);
         }
 
-        private void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(ClassDiagramTokenStream tokens, AssociationKind expectedKind)
+        private void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(ClassDiagramTokenStream genericTokens, AssociationKind expectedKind)
         {
-            var parser = new CDParser(tokens);
+            var parser = new CDParser(genericTokens);
             var cd = parser.ParseClassDiagram();
             Assert.IsNotNull(cd, "parsing failed");
 

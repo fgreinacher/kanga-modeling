@@ -3,12 +3,11 @@ using System.Linq;
 
 namespace KangaModeling.Compiler.ClassDiagrams
 {
-    // IDEA: classify a TokenStream to a subclass! needs to run once through all tokens.
-    class ClassDiagramTokenStream : TokenStream
+    class ClassDiagramTokenStream : GenericTokenStream
     {
-        new CDToken this[int i]
+        new ClassDiagramToken this[int i]
         {
-            get { return (CDToken) base[i]; }
+            get { return (ClassDiagramToken) base[i]; }
         }
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         /// <param name="type">Token type to consume</param>
         /// <param name="token">The consumed token (if types match)</param>
         /// <returns><c>true</c> if tokens were consumed, otherwise <c>false</c> (wrong type, too few tokens in stream)</returns>
-        public bool TryConsume(TokenType type, out CDToken token)
+        public bool TryConsume(TokenType type, out ClassDiagramToken token)
         {
             token = null;
 
@@ -79,14 +78,4 @@ namespace KangaModeling.Compiler.ClassDiagrams
             return true;
         }
     }
-
-    /// <summary>
-    /// A stream of tokens; result of the scanner, input to the parser.
-    /// </summary>
-    /// TODO must not implement List;
-    /// TODO must be lazy: cache some Tokens, call into scanner for more ( -> ANTLR )
-    class TokenStream : List<GenericToken>
-    {
-    }
-
 }

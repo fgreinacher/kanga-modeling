@@ -47,6 +47,8 @@
     </Compile>
     <Compile Include="ClassDiagrams\CDParser.cs" />
     <Compile Include="ClassDiagrams\CDScanner.cs" />
+    <Compile Include="ClassDiagrams\ClassDiagramToken.cs" />
+    <Compile Include="ClassDiagrams\ClassDiagramTokenStream.cs" />
     <Compile Include="Toolbox\EnumerableExtensions.cs" />
     <Compile Include="Toolbox\HashSetExtensions.cs" />
     <Compile Include="ClassDiagrams\Model\IAssociation.cs" />
@@ -57,7 +59,7 @@
     <Compile Include="ClassDiagrams\Model\IMethod.cs" />
     <Compile Include="ClassDiagrams\Model\Multiplicity.cs" />
     <Compile Include="ClassDiagrams\Model\VisibilityModifier.cs" />
-    <Compile Include="ClassDiagrams\TokenStream.cs" />
+    <Compile Include="ClassDiagrams\GenericTokenStream.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SequenceDiagrams\AreaContainer.cs" />
