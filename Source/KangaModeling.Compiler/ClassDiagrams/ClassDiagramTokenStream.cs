@@ -30,7 +30,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         // make resharper happy by making a more specialized version for single-token consumes.
         public bool TryConsume(TokenType tokenType)
         {
-            if(this[0].TokenType != tokenType)
+            if(Count == 0 || this[0].TokenType != tokenType)
                 return false;
 
             RemoveRange(0, 1);
