@@ -17,13 +17,13 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t00_Check_Constructing()
         {
-            new CDScanner();
+            new ClassDiagramScanner();
         }
 
         [Test, ExpectedException(typeof(ArgumentNullException))]
         public void t01_Throws_On_Null_Argument()
         {
-            var scanner = new CDScanner();
+            var scanner = new ClassDiagramScanner();
             scanner.Parse(null);
         }
 
@@ -89,7 +89,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
 
         private void checkTokens(string source, IEnumerable<ClassDiagramToken> expectedTokens)
         {
-            var scanner = new CDScanner();
+            var scanner = new ClassDiagramScanner();
             var tokens = scanner.Parse(source).ToList();
             CollectionAssert.AreEqual(expectedTokens, tokens, "token unexpected");
         }

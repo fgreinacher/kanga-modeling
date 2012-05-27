@@ -45,7 +45,8 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
-    <Compile Include="ClassDiagrams\CDParser.cs" />
+    <Compile Include="ClassDiagrams\ClassDiagramParser.cs" />
+    <Compile Include="ClassDiagrams\ClassDiagramScanner.cs" />
     <Compile Include="ClassDiagrams\GenericScanner.cs" />
     <Compile Include="ClassDiagrams\ClassDiagramToken.cs" />
     <Compile Include="ClassDiagrams\ClassDiagramTokenStream.cs" />

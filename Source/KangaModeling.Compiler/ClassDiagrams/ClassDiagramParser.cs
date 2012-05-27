@@ -17,7 +17,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
         public static IClassDiagram CreateFrom(string text)
         {
-            return new CDParser(new CDScanner().Parse(text)).ParseClassDiagram();
+            return new ClassDiagramParser(new ClassDiagramScanner().Parse(text)).ParseClassDiagram();
         }
 
     }
@@ -25,7 +25,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
     /// <summary>
     /// LL(k) recursive descent parser for class diagram strings.
     /// </summary>
-    class CDParser
+    class ClassDiagramParser
     {
 
         #region model implementing classes
@@ -223,7 +223,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         #endregion
 
-        public CDParser(ClassDiagramTokenStream genericTokens)
+        public ClassDiagramParser(ClassDiagramTokenStream genericTokens)
         {
             if (genericTokens == null) throw new ArgumentNullException("genericTokens");
             _genericTokens = genericTokens;
