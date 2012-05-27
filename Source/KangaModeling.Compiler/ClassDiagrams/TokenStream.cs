@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace KangaModeling.Compiler.ClassDiagrams
 {
-    /// <summary>
-    /// A stream of tokens; result of the scanner, input to the parser.
-    /// </summary>
-    /// TODO must not implement List;
-    /// TODO must be lazy: cache some Tokens, call into scanner for more ( -> ANTLR )
-    class TokenStream : List<CDToken>
+    // IDEA: classify a TokenStream to a subclass! needs to run once through all tokens.
+    class ClassDiagramTokenStream : TokenStream
     {
-        
+        new CDToken this[int i]
+        {
+            get { return (CDToken) base[i]; }
+        }
+
         /// <summary>
         /// Consume tokens of a specific type.
         /// If a token type does not match, nothing is consumed.
@@ -58,17 +58,17 @@ namespace KangaModeling.Compiler.ClassDiagrams
         /// <param name="tokens">The consumed tokens (if types match)</param>
         /// <param name="tokenTypes">Token types to consume</param>
         /// <returns><c>true</c> if tokens were consumed, otherwise <c>false</c> (wrong type, too few tokens in stream)</returns>
-        public bool TryConsume(out List<CDToken> tokens, params TokenType[] tokenTypes )
+        public bool TryConsume(out List<GenericToken> tokens, params TokenType[] tokenTypes)
         {
             tokens = null;
             if (Count < tokenTypes.Length)
                 return false;
 
-            tokens = new List<CDToken>(2);
+            tokens = new List<GenericToken>(2);
 
             for (int i = 0; i < tokenTypes.Length; i++)
             {
-                if (this[i].TokenType != tokenTypes[i]) 
+                if (this[i].TokenType != tokenTypes[i])
                 {
                     tokens = null;
                     return false;
@@ -78,6 +78,15 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             return true;
         }
-
     }
+
+    /// <summary>
+    /// A stream of tokens; result of the scanner, input to the parser.
+    /// </summary>
+    /// TODO must not implement List;
+    /// TODO must be lazy: cache some Tokens, call into scanner for more ( -> ANTLR )
+    class TokenStream : List<GenericToken>
+    {
+    }
+
 }

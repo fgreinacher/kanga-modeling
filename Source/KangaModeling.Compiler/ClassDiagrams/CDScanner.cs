@@ -67,11 +67,11 @@ namespace KangaModeling.Compiler.ClassDiagrams
             _scannerState = new ScannerState();
         }
 
-        public TokenStream Parse(string source)
+        public ClassDiagramTokenStream Parse(string source)
         {
             if (source == null) throw new ArgumentNullException("source");
 
-            var tokens = new TokenStream();
+            var tokens = new ClassDiagramTokenStream();
 
             TrimStart(ref source);
             while (source.Length >= 1)

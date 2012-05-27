@@ -223,7 +223,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         #endregion
 
-        public CDParser(TokenStream tokens)
+        public CDParser(ClassDiagramTokenStream tokens)
         {
             if (tokens == null) throw new ArgumentNullException("tokens");
             _tokens = tokens;
@@ -560,7 +560,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             return m;
         }
 
-        private readonly TokenStream _tokens;
+        private readonly ClassDiagramTokenStream _tokens;
 
     }
 

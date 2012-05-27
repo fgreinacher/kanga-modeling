@@ -30,33 +30,33 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             return new CDToken(0, 10, tokenType);
         }
 
-        public static TokenStream Class(string className, TokenStream fields = null, TokenStream methods = null)
+        public static ClassDiagramTokenStream Class(string className, ClassDiagramTokenStream fields = null, ClassDiagramTokenStream methods = null)
         {
-            var f = CombineTokenStreams(new TokenStream { TokenType.Pipe.Token() }, fields);
-            var m = CombineTokenStreams(new TokenStream { TokenType.Pipe.Token() }, methods);
+            var f = CombineTokenStreams(new ClassDiagramTokenStream { TokenType.Pipe.Token() }, fields);
+            var m = CombineTokenStreams(new ClassDiagramTokenStream { TokenType.Pipe.Token() }, methods);
 
             var ts = CombineTokenStreams(
-                new TokenStream { TokenType.BracketOpen.Token(), className.Token() },
-                fields == null ? (methods != null? new TokenStream { TokenType.Pipe.Token() } : null) : f,
+                new ClassDiagramTokenStream { TokenType.BracketOpen.Token(), className.Token() },
+                fields == null ? (methods != null ? new ClassDiagramTokenStream { TokenType.Pipe.Token() } : null) : f,
                 methods == null ? null : m,
-                new TokenStream { TokenType.BracketClose.Token(), }
+                new ClassDiagramTokenStream { TokenType.BracketClose.Token(), }
             );
             return ts;
         }
 
-        public static TokenStream Field(string name, string type = null, string accessModifier = null)
+        public static ClassDiagramTokenStream Field(string name, string type = null, string accessModifier = null)
         {
-            var stream = new TokenStream { name.Token() };
+            var stream = new ClassDiagramTokenStream { name.Token() };
             if (type != null)
-                stream = CombineTokenStreams(stream, new TokenStream { TokenType.Colon.Token(), type.Token() });
+                stream = CombineTokenStreams(stream, new ClassDiagramTokenStream { TokenType.Colon.Token(), type.Token() });
             if(accessModifier != null)
-                stream = CombineTokenStreams(new TokenStream { accessModifier.Token()}, stream);
+                stream = CombineTokenStreams(new ClassDiagramTokenStream { accessModifier.Token() }, stream);
             return stream;
         }
 
         public static TokenStream Association(string sourceFrom, string sourceTo, string association, string targetFrom, string targetTo)
         {
-            var tokens = new TokenStream();
+            var tokens = new ClassDiagramTokenStream();
 
             tokens.AddRange(new[] { sourceFrom.Token()});
             if (sourceTo != null)
@@ -71,30 +71,30 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             return tokens;
         }
 
-        public static TokenStream PureAssociation(string association)
+        public static ClassDiagramTokenStream PureAssociation(string association)
         {
             switch(association)
             {
                 case "-":
-                    return new TokenStream {TokenType.Dash.Token()};
+                    return new ClassDiagramTokenStream { TokenType.Dash.Token() };
             }
 
             throw new ArgumentException("unexpected association: " + association);
         }
 
-        public static TokenStream Method(string name, string visibilityModifier = "+", TokenStream parameterStream = null)
+        public static ClassDiagramTokenStream Method(string name, string visibilityModifier = "+", ClassDiagramTokenStream parameterStream = null)
         {
             var stream = CombineTokenStreams(
-                new TokenStream {visibilityModifier.Token(), name.Token(), TokenType.ParenthesisOpen.Token()},
+                new ClassDiagramTokenStream { visibilityModifier.Token(), name.Token(), TokenType.ParenthesisOpen.Token() },
                 parameterStream,
-                new TokenStream {TokenType.ParenthesisClose.Token()}
+                new ClassDiagramTokenStream { TokenType.ParenthesisClose.Token() }
             );
             return stream;
         }
 
-        public static TokenStream CombineTokenStreams(params TokenStream[] streams)
+        public static ClassDiagramTokenStream CombineTokenStreams(params ClassDiagramTokenStream[] streams)
         {
-            var combinedStream = new TokenStream();
+            var combinedStream = new ClassDiagramTokenStream();
             foreach (var singleStream in streams) if(singleStream != null) combinedStream.AddRange(singleStream);
             return combinedStream;
         }

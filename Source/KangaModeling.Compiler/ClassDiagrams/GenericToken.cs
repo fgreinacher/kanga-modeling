@@ -81,12 +81,15 @@ namespace KangaModeling.Compiler.ClassDiagrams
         }
     }
 
-    public sealed class CDToken : GenericToken<TokenType>
+    public sealed class CDToken : GenericToken
     {
         public CDToken(int line, int end, TokenType tokenType, string value = null)
-            : base(line, end, value ?? tokenType.ToDisplayString(), tokenType)
+            : base(line, end, value ?? tokenType.ToDisplayString())
         {
+            TokenType = tokenType;
         }
+
+        public TokenType TokenType { get; private set; }
 
         public override bool Equals(object obj)
         {
@@ -113,13 +116,13 @@ namespace KangaModeling.Compiler.ClassDiagrams
     }
 
     [DebuggerDisplay("'{Value}' at Col {Start}")]
-    public abstract class GenericToken<TType>
+    public abstract class GenericToken
     {
         private readonly int m_Line;
         private readonly int m_Start;
         private readonly string m_Value;
 
-        public GenericToken(int line, int end, string value, TType type)
+        protected GenericToken(int line, int end, string value)
         {
             if (value == null) throw new ArgumentNullException("value");
             if (value.Length > end) throw new ArgumentOutOfRangeException("end", end, "End is less then length.");
@@ -127,13 +130,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
             m_Start = end - value.Length;
             m_Line = line;
             m_Value = value;
-            TokenType = type;
-        }
-
-        public TType TokenType
-        {
-            get;
-            private set;
         }
 
         public int Line
@@ -171,7 +167,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             return string.Format("[Ln {0} Col {1}] '{2}' ", Line, Start, Value);
         }
 
-        public bool Equals(GenericToken<TType> other)
+        public bool Equals(GenericToken other)
         {
             return
                 other.m_Start == m_Start &&
@@ -180,4 +176,5 @@ namespace KangaModeling.Compiler.ClassDiagrams
         }
 
     }
+
 }

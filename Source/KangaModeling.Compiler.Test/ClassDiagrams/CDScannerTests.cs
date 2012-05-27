@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using NUnit.Framework;
 using KangaModeling.Compiler.ClassDiagrams;
@@ -89,7 +90,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         private void checkTokens(string source, IEnumerable<CDToken> expectedTokens)
         {
             var scanner = new CDScanner();
-            var tokens = new List<CDToken>(scanner.Parse(source));
+            var tokens = scanner.Parse(source).ToList();
             CollectionAssert.AreEqual(expectedTokens, tokens, "token unexpected");
         }
 

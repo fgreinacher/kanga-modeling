@@ -23,7 +23,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test(Description="[ClassName]")]
         public void t01_Parse_Simple_Class()
         {
-            var tokens = new TokenStream { TokenType.BracketOpen.Token(), "ClassName".Token(), TokenType.BracketClose.Token(), };
+            var tokens = new ClassDiagramTokenStream { TokenType.BracketOpen.Token(), "ClassName".Token(), TokenType.BracketClose.Token(), };
             var parser = new CDParser(tokens);
             var clazz = parser.ParseClass();
             Assert.AreEqual("ClassName", clazz.Name);
@@ -32,11 +32,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test(Description = "ClassName]")]
         public void t02_Parse_Simple_Class_Missing_Start_Bracket()
         {
-            var tokens = new TokenStream { "ClassName".Token(), TokenType.BracketClose.Token(), };
+            var tokens = new ClassDiagramTokenStream { "ClassName".Token(), TokenType.BracketClose.Token(), };
             var clazz = new CDParser(tokens).ParseClass(); // TODO error handling?
             Assert.IsNull(clazz, "invalid");
 
-            tokens = new TokenStream { "ClassName".Token(), TokenType.BracketClose.Token(), };
+            tokens = new ClassDiagramTokenStream { "ClassName".Token(), TokenType.BracketClose.Token(), };
             var cd = new CDParser(tokens).ParseClassDiagram(); // TODO error handling?
             Assert.IsNull(cd, "invalid");
         }
@@ -44,11 +44,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test(Description = "[ClassName")]
         public void t03_Parse_Simple_Class_Missing_End_Bracket()
         {
-            var tokens = new TokenStream { TokenType.BracketOpen.Token(), "ClassName".Token(), };
+            var tokens = new ClassDiagramTokenStream { TokenType.BracketOpen.Token(), "ClassName".Token(), };
             var clazz = new CDParser(tokens).ParseClass(); // TODO error handling?
             Assert.IsNull(clazz, "invalid");
 
-            tokens = new TokenStream { TokenType.BracketOpen.Token(), "ClassName".Token(), };
+            tokens = new ClassDiagramTokenStream { TokenType.BracketOpen.Token(), "ClassName".Token(), };
             var cd = new CDParser(tokens).ParseClassDiagram(); // TODO error handling?
             Assert.IsNull(cd, "invalid");
         }
@@ -56,8 +56,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test(Description = "")]
         public void t04_Parse_Simple_Class_No_Tokens()
         {
-            var tokens = new TokenStream();
-            var parser = new CDParser(tokens);
+            var parser = new CDParser(new ClassDiagramTokenStream());
             var clazz = parser.ParseClass(); // TODO error handling?
             Assert.IsNull(clazz, "invalid");
         }
@@ -79,7 +78,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a],[b]")]
         public void t06_Parse_ClassDiagram_Containing_Two_Classes()
         {
-            var tokens = new TokenStream { 
+            var tokens = new ClassDiagramTokenStream { 
                 TokenType.BracketOpen.Token(), "a".Token(), TokenType.BracketClose.Token(),
                 TokenType.Comma.Token(),
                 TokenType.BracketOpen.Token(), "b".Token(), TokenType.BracketClose.Token(),
@@ -97,7 +96,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a]->[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Directed()
         {
-            var tokens = new TokenStream { 
+            var tokens = new ClassDiagramTokenStream { 
                 TokenType.BracketOpen.Token(), "a".Token(), TokenType.BracketClose.Token(),
                 TokenType.Dash.Token(), TokenType.AngleClose.Token(),
                 TokenType.BracketOpen.Token(), "b".Token(), TokenType.BracketClose.Token(),
@@ -108,7 +107,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a]-[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Undirected()
         {
-            var tokens = new TokenStream { 
+            var tokens = new ClassDiagramTokenStream { 
                 TokenType.BracketOpen.Token(), "a".Token(), TokenType.BracketClose.Token(),
                 TokenType.Dash.Token(),
                 TokenType.BracketOpen.Token(), "b".Token(), TokenType.BracketClose.Token(),
@@ -119,7 +118,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a]+->[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Aggregation()
         {
-            var tokens = new TokenStream { 
+            var tokens = new ClassDiagramTokenStream { 
                 TokenType.BracketOpen.Token(), "a".Token(), TokenType.BracketClose.Token(),
                 TokenType.Plus.Token(), TokenType.Dash.Token(), TokenType.AngleClose.Token(),
                 TokenType.BracketOpen.Token(), "b".Token(), TokenType.BracketClose.Token(),
@@ -132,7 +131,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         {
             var tokens = TokenStreamBuilder.CombineTokenStreams(
                 TokenStreamBuilder.Class("a"),
-                new TokenStream {  TokenType.AngleOpen.Token(), TokenType.AngleClose.Token(), TokenType.Dash.Token(), TokenType.AngleClose.Token(), },
+                new ClassDiagramTokenStream { TokenType.AngleOpen.Token(), TokenType.AngleClose.Token(), TokenType.Dash.Token(), TokenType.AngleClose.Token(), },
                 TokenStreamBuilder.Class("b")
             );
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Aggregation);
@@ -141,7 +140,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, Description("[a]++->[b]")]
         public void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes_Composition()
         {
-            var tokens = new TokenStream { 
+            var tokens = new ClassDiagramTokenStream { 
                 TokenType.BracketOpen.Token(), "a".Token(), TokenType.BracketClose.Token(),
                 TokenType.Plus.Token(), TokenType.Plus.Token(), TokenType.Dash.Token(), TokenType.AngleClose.Token(),
                 TokenType.BracketOpen.Token(), "b".Token(), TokenType.BracketClose.Token(),
@@ -149,7 +148,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(tokens, AssociationKind.Composition);
         }
 
-        private void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(TokenStream tokens, AssociationKind expectedKind)
+        private void t07_Parse_ClassDiagram_Containing_Two_Associated_Classes(ClassDiagramTokenStream tokens, AssociationKind expectedKind)
         {
             var parser = new CDParser(tokens);
             var cd = parser.ParseClassDiagram();
@@ -178,7 +177,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t08_Parse_ClassDiagram_Containing_Two_Associated_Classes_With_Multiplicities_Numbers(string sourceFrom, string sourceTo, string targetFrom, string targetTo)
         {
-            var tokens = new TokenStream();
+            var tokens = new ClassDiagramTokenStream();
             tokens.AddRange(TokenStreamBuilder.Class("a"));
 
             tokens.AddRange(new[] { sourceFrom.Token() });
@@ -240,7 +239,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test(Description="[a] -associationName >[b]"), Ignore("not implemented")]
         public void t09_Parse_ClassDiagram_Containing_Two_Associated_Classes_With_Roles()
         {
-            var tokens = new TokenStream { 
+            var tokens = new ClassDiagramTokenStream { 
                 TokenType.BracketOpen.Token(), "a".Token(), TokenType.BracketClose.Token(),
                 "-".Token(), "associationName".Token(), ">".Token(),
                 TokenType.BracketOpen.Token(), "b".Token(), TokenType.BracketClose.Token(),
@@ -266,7 +265,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t10_Parse_Field()
         {
-            var tokens = new TokenStream { "fieldName".Token() };
+            var tokens = new ClassDiagramTokenStream { "fieldName".Token() };
             var field = new CDParser(tokens).ParseField();
             Assert.IsNotNull(field, "should have parsed correctly");
             Assert.AreEqual("fieldName", field.Name, "name wrong");
@@ -275,7 +274,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t10_Parse_Field_With_Type()
         {
-            var tokens = new TokenStream { "fieldName2".Token(), ":".Token(), "int".Token(), };
+            var tokens = new ClassDiagramTokenStream { "fieldName2".Token(), ":".Token(), "int".Token(), };
             var field = new CDParser(tokens).ParseField();
             Assert.IsNotNull(field, "should have parsed correctly");
             Assert.AreEqual("fieldName2", field.Name, "name wrong");
@@ -305,7 +304,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             var tokens = TokenStreamBuilder.Class("className", 
                 TokenStreamBuilder.CombineTokenStreams(
                     TokenStreamBuilder.Field("fieldName", "fieldType"),
-                    new TokenStream { TokenType.Comma.Token() }, // TODO single-token streams.
+                    new ClassDiagramTokenStream { TokenType.Comma.Token() }, // TODO single-token streams.
                     TokenStreamBuilder.Field("fieldName2", "fieldType2")
                 )
             );
@@ -344,7 +343,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         {
             var tokens = TokenStreamBuilder.CombineTokenStreams(
                 TokenStreamBuilder.Class("className"),
-                new TokenStream { "JunkAtEnd".Token() }
+                new ClassDiagramTokenStream { "JunkAtEnd".Token() }
             );
 
             var cd = new CDParser(tokens).ParseClassDiagram();
@@ -393,7 +392,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t14_Parse_Method_Parameter()
         {
-            var parameterStream = new TokenStream {"type".Token(), "parameter".Token()};
+            var parameterStream = new ClassDiagramTokenStream { "type".Token(), "parameter".Token() };
             var tokens = TokenStreamBuilder.Method("methodName", "+", parameterStream);
             
             var m = new CDParser(tokens).ParseMethod();
@@ -410,7 +409,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         {
             var tokens = TokenStreamBuilder.CombineTokenStreams(
                 TokenStreamBuilder.Method("methodName"),
-                new TokenStream {TokenType.Colon.Token(), "returntype".Token()}
+                new ClassDiagramTokenStream { TokenType.Colon.Token(), "returntype".Token() }
             );
             var m = new CDParser(tokens).ParseMethod();
 
@@ -427,7 +426,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
                 methods: TokenStreamBuilder.Method(
                     "methodName",
                     "-",
-                    new TokenStream { "paramType".Token(), "paramName".Token() }
+                    new ClassDiagramTokenStream { "paramType".Token(), "paramName".Token() }
                 )
             );
 
