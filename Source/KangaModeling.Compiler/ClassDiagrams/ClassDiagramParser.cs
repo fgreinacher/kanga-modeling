@@ -42,9 +42,9 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 get { return _assocs; }
             }
 
-            public void AddClass(IClass @class) {
-                if (@class == null) throw new ArgumentNullException("@class");
-                _classes.Add(@class);
+            public void AddClass(IClass clazz) {
+                if (clazz == null) throw new ArgumentNullException("clazz");
+                _classes.Add(clazz);
             }
 
             public void Add(IAssociation assoc)
@@ -64,7 +64,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             private readonly List<IMethod> _methods;
             public Class(string name)
             {
-                // TODO null check?
+                if (name == null) throw new ArgumentNullException("name");
                 Name = name;
                 _fields = new List<IField>(2);
                 _methods = new List<IMethod>(2);
@@ -118,9 +118,9 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 {
                     var sb = new StringBuilder();
                     sb.Append(Visibility.GetDisplayText());
-                    sb.Append(string.Format("{0}", this.Name));
+                    sb.Append(string.Format("{0}", Name));
                     if (Type != null)
-                        sb.Append(string.Format(": {0}", this.Type));
+                        sb.Append(string.Format(": {0}", Type));
                     return sb.ToString();
                 }
             }
@@ -136,6 +136,9 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 Target = target;
                 SourceMultiplicity = info.SourceMult;
                 TargetMultiplicity = info.TargetMult;
+
+                TargetRole = string.Empty;
+                SourceRole = string.Empty;
             }
 
             public Multiplicity SourceMultiplicity
@@ -352,8 +355,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         public IMethod ParseMethod()
         {
-            var vis = VisibilityModifier.Public;
-            var name = string.Empty;
+            VisibilityModifier vis;
             string rettype = "void";
             ClassDiagramToken token;
 
@@ -366,7 +368,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 // TODO ERROR
                 return null;
             }
-            name = token.Value;
+            string name = token.Value;
 
             // (mandatory) (
             if(!_genericTokens.TryConsume(TokenType.ParenthesisOpen))
@@ -417,7 +419,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         #endregion
 
-        private bool TryConsumeVisibilityModifier(out VisibilityModifier mod)
+        private void TryConsumeVisibilityModifier(out VisibilityModifier mod)
         {
             mod = VisibilityModifier.Public;
             if (_genericTokens.TryConsume(TokenType.Plus))
@@ -428,10 +430,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 mod = VisibilityModifier.Protected;
             else if (_genericTokens.TryConsume(TokenType.Tilde))
                 mod = VisibilityModifier.Internal;
-            else
-                return false;
-
-            return true;
         }
 
         // class [ assoc class ]
@@ -478,7 +476,8 @@ namespace KangaModeling.Compiler.ClassDiagrams
             {
                 Kind = k;
             }
-            public AssociationKind Kind;
+            public readonly AssociationKind Kind;
+
             public Multiplicity SourceMult;
             public Multiplicity TargetMult;
         }
@@ -492,10 +491,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // TODO checks!!!
             if(_genericTokens.TryConsume(TokenType.Dash))
             {
-                if(_genericTokens.TryConsume(TokenType.AngleClose))
-                    assocInfo = new AssocInfo(AssociationKind.Directed);
-                else
-                    assocInfo = new AssocInfo(AssociationKind.Undirected);
+                assocInfo = new AssocInfo(_genericTokens.TryConsume(TokenType.AngleClose) ? AssociationKind.Directed : AssociationKind.Undirected);
             }
             if(_genericTokens.TryConsume(TokenType.AngleOpen, TokenType.AngleClose, TokenType.Dash, TokenType.AngleClose))
             {

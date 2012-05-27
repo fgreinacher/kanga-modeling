@@ -27,6 +27,17 @@ namespace KangaModeling.Compiler.ClassDiagrams
             return true;
         }
 
+        // make resharper happy by making a more specialized version for single-token consumes.
+        public bool TryConsume(TokenType tokenType)
+        {
+            if(this[0].TokenType != tokenType)
+                return false;
+
+            RemoveRange(0, 1);
+
+            return true;
+        }
+
         /// <summary>
         /// Consume token of a specific type.
         /// Does nothing if token type does not match.
