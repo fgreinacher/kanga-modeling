@@ -403,14 +403,8 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t14_Parse_Class_With_Method()
         {
             // [className||-methodName(paramType paramName)]
-            var tokens = TokenStreamBuilder.Class(
-                "className",
-                methods: TokenStreamBuilder.Method(
-                    "methodName",
-                    "-",
-                    new ClassDiagramTokenStream { "paramType".Token(), "paramName".Token() }
-                )
-            );
+            var tokens = TokenStreamBuilder.FromStrings
+                ("[", "className", "|", "|", "-", "methodName", "(", "paramType", "paramName", ")", "]");
 
             var c = new ClassDiagramParser(tokens).ParseClass();
 

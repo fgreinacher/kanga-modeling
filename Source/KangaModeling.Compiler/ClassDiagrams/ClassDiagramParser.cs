@@ -310,13 +310,12 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // fields
             if(_genericTokens.TryConsume(TokenType.Pipe))
             {
-                // TODO there can be 0 fields! "[a||method()]"
                 IField field;
                 do
                 {
                     field = ParseField();
                     if(field != null)
-                        c.Add(field); // TODO c == null?!
+                        c.Add(field);
 
                     // remove "," if present
                     if(!_genericTokens.TryConsume(TokenType.Comma))
@@ -334,7 +333,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 {
                     m = ParseMethod();
                     if (m != null)
-                        c.Add(m); // TODO c == null?!
+                        c.Add(m);
 
                     // remove "," if present
                     if (!_genericTokens.TryConsume(TokenType.Comma))
@@ -356,7 +355,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         // ID [ ":" ID ]
         public IField ParseField()
         {
-            String name = null, type = null;
+            String name, type = null;
             ClassDiagramToken token;
             VisibilityModifier vm;
 
