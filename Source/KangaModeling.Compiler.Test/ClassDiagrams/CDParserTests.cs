@@ -8,7 +8,7 @@ using KangaModeling.Compiler.ClassDiagrams.Model;
 namespace KangaModeling.Compiler.Test.ClassDiagrams
 {
 
-    public class IntegrationTests
+    public class T02IntegrationTests
     {
 
         [TestCase("[a]", TestName = "[a]")]
@@ -33,25 +33,6 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         {
             return new ClassDiagramParser(classDiagramTokenStream, errorCallback).ParseClassDiagram();
         }
-
-        internal static IClass ParseClass(this ClassDiagramTokenStream classDiagramTokenStream, ClassDiagramParser.ErrorCallback errorCallback = null)
-        {
-            return new ClassDiagramParser(classDiagramTokenStream, errorCallback).ParseClass();
-        }
-
-        internal static IMethod ParseMethod(this ClassDiagramTokenStream classDiagramTokenStream, ClassDiagramParser.ErrorCallback errorCallback = null)
-        {
-            return new ClassDiagramParser(classDiagramTokenStream, errorCallback).ParseMethod();
-        }
-
-        internal static IField ParseField(this ClassDiagramTokenStream classDiagramTokenStream, ClassDiagramParser.ErrorCallback errorCallback = null)
-        {
-            return new ClassDiagramParser(classDiagramTokenStream, errorCallback).ParseField();
-        }
-        internal static Multiplicity ParseMultiplicity(this ClassDiagramTokenStream classDiagramTokenStream, ClassDiagramParser.ErrorCallback errorCallback = null)
-        {
-            return new ClassDiagramParser(classDiagramTokenStream, errorCallback).ParseMultiplicity();
-        }
     }
 
     /// <summary>
@@ -67,19 +48,10 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             new ClassDiagramParser(null);
         }
 
-        [Test(Description="[ClassName]")]
-        public void t01_Parse_Simple_Class()
-        {
-            var tokens = new ClassDiagramTokenStream { TokenType.BracketOpen.Token(), "ClassName".Token(), TokenType.BracketClose.Token(), };
-            var parser = new ClassDiagramParser(tokens);
-            var clazz = parser.ParseClass();
-            Assert.AreEqual("ClassName", clazz.Name);
-        }
-
         [Test(Description="[a]")]
         public void t06_Parse_ClassDiagram_Containing_One_Class()
         {
-            var tokens = TokenStreamBuilder.Class("a");
+            var tokens = TokenStreamBuilder.FromStrings("[", "a", "]");
 
             var parser = new ClassDiagramParser(tokens);
             var cd = parser.ParseClassDiagram();
@@ -278,32 +250,14 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         }
 
         [Test]
-        public void t10_Parse_Field()
-        {
-            var tokens = new ClassDiagramTokenStream { "fieldName".Token() };
-            var field = new ClassDiagramParser(tokens).ParseField();
-            Assert.IsNotNull(field, "should have parsed correctly");
-            Assert.AreEqual("fieldName", field.Name, "name wrong");
-        }
-
-        [Test]
-        public void t10_Parse_Field_With_Type()
-        {
-            var tokens = new ClassDiagramTokenStream { "fieldName2".Token(), ":".Token(), "int".Token(), };
-            var field = new ClassDiagramParser(tokens).ParseField();
-            Assert.IsNotNull(field, "should have parsed correctly");
-            Assert.AreEqual("fieldName2", field.Name, "name wrong");
-            Assert.AreEqual("int", field.Type, "type wrong");
-        }
-
-        [Test]
         public void t11_Parse_Class_With_Field()
         {
             var tokens = TokenStreamBuilder.Class("className", TokenStreamBuilder.Field("fieldName", "fieldType"));
             
-            var c = new ClassDiagramParser(tokens).ParseClass();
+            var classDiagram = new ClassDiagramParser(tokens).ParseClassDiagram();
+            var c = classDiagram.Classes.ToList()[0];
 
-            Assert.IsNotNull(c, "failed to parse the class");
+            Assert.IsNotNull(classDiagram, "failed to parse the class");
             Assert.AreEqual("className", c.Name, "name wrong");
             Assert.IsNotNull(c.Fields, "fields MUST NOT be null");
             var l = c.Fields.ToList();
@@ -324,9 +278,10 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
                 )
             );
 
-            var c = new ClassDiagramParser(tokens).ParseClass();
+            var classDiagram = new ClassDiagramParser(tokens).ParseClassDiagram();
+            var c = classDiagram.Classes.ToList()[0];
 
-            Assert.IsNotNull(c, "failed to parse the class");
+            Assert.IsNotNull(classDiagram, "failed to parse the class");
             Assert.AreEqual("className", c.Name, "name wrong");
             Assert.IsNotNull(c.Fields, "fields MUST NOT be null");
             var l = c.Fields.ToList();
@@ -344,24 +299,17 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [TestCase("#", VisibilityModifier.Protected, TestName = "+ for Protected")]
         [TestCase("~", VisibilityModifier.Internal, TestName = "~ for Internal")]
         [Test]
-        public void t13_Parse_Field_With_AccessModifier(String vm, VisibilityModifier expectedVm)
+        public void t13_Parse_Field_With_AccessModifier(String modifier, VisibilityModifier expectedVm)
         {
-            var tokens = TokenStreamBuilder.Field("fieldName", "fieldType", vm);
+            var tokens = TokenStreamBuilder.FromStrings("[", "a", "|", modifier, "fieldName", ":", "fieldType", "]");
 
-            var f = new ClassDiagramParser(tokens).ParseField();
+            var classDiagram = new ClassDiagramParser(tokens).ParseClassDiagram();
+            var f = classDiagram.Classes.ToList()[0].Fields.ToList()[0];
 
-            Assert.IsNotNull(f, "field parsing failed");
+            Assert.IsNotNull(classDiagram, "field parsing failed");
             Assert.AreEqual("fieldName", f.Name);
             Assert.AreEqual("fieldType", f.Type);
             Assert.AreEqual(expectedVm, f.Visibility, "wrong visibility modifier");
-        }
-
-        [Test]
-        public void t14_Parse_Method()
-        {
-            var tokens = TokenStreamBuilder.Method("methodName");
-            var m = new ClassDiagramParser(tokens).ParseMethod();
-            AssertMethod(m, VisibilityModifier.Public, "methodName");
         }
 
         [TestCase("+", VisibilityModifier.Public, TestName = "+ for Public")]
@@ -371,51 +319,36 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test]
         public void t14_Parse_Method_VisibilityModifier(string modifier, VisibilityModifier expectedVisibility)
         {
-            var tokens = TokenStreamBuilder.Method("methodName", modifier);
-            var m = new ClassDiagramParser(tokens).ParseMethod();
+            var tokens = TokenStreamBuilder.FromStrings("[", "a", "|", "|", modifier, "methodName", "(", ")", "]");
+            var classDiagram = new ClassDiagramParser(tokens).ParseClassDiagram();
+            var m = classDiagram.Classes.ToList()[0].Methods.ToList()[0];
             Assert.AreEqual(expectedVisibility, m.Visibility, "unexpected visibility");
         }
 
-        [Test]
-        public void t14_Parse_Method_Parameter_WithType()
+        [TestCase("type", TestName = "method parameter with type")]
+        [TestCase("", TestName = "method parameter without type")]
+        public void t14_Parse_Method_Parameter(string parameterType)
         {
-            var parameterStream = new ClassDiagramTokenStream { "type".Token(), "parameter".Token() };
-            var tokens = TokenStreamBuilder.Method("methodName", "+", parameterStream);
-            
-            var m = new ClassDiagramParser(tokens).ParseMethod();
-            
-            Assert.IsNotNull(m, "method parse error");
+            var tokens = TokenStreamBuilder.FromStrings("[", "c", "|", "|", "methodName", "(", parameterType, "parameter", ")", "]");
+
+            var classDiagram = new ClassDiagramParser(tokens).ParseClassDiagram();
+            var m = classDiagram.Classes.ToList()[0].Methods.ToList()[0];
+
+            Assert.IsNotNull(classDiagram, "method parse error");
             var parameters = new List<MethodParameter>(m.Parameters);
             Assert.AreEqual(1, parameters.Count, "wrong parameter count");
             Assert.AreEqual("parameter", parameters[0].Name, "wrong name");
-            Assert.AreEqual("type", parameters[0].Type, "wrong type");
-        }
-
-        [Test]
-        public void t14_Parse_Method_Parameter_WithoutType()
-        {
-            var parameterStream = new ClassDiagramTokenStream { "parameter".Token() };
-            var tokens = TokenStreamBuilder.Method("methodName", "+", parameterStream);
-
-            var m = new ClassDiagramParser(tokens).ParseMethod();
-
-            Assert.IsNotNull(m, "method parse error");
-            var parameters = new List<MethodParameter>(m.Parameters);
-            Assert.AreEqual(1, parameters.Count, "wrong parameter count");
-            Assert.AreEqual("parameter", parameters[0].Name, "wrong name");
-            Assert.AreEqual(string.Empty, parameters[0].Type, "wrong type");
+            Assert.AreEqual(parameterType, parameters[0].Type, "wrong type");
         }
 
         [Test]
         public void t14_Parse_Method_ReturnType()
         {
-            var tokens = TokenStreamBuilder.CombineTokenStreams(
-                TokenStreamBuilder.Method("methodName"),
-                TokenStreamBuilder.FromStrings(":", "returntype")
-            );
-            var m = new ClassDiagramParser(tokens).ParseMethod();
+            var tokens = TokenStreamBuilder.FromStrings("[", "a", "|", "|", "methodName", "(", ")", ":", "returntype","]");
+            var classDiagram = new ClassDiagramParser(tokens).ParseClassDiagram();
+            var m = classDiagram.Classes.ToList()[0].Methods.ToList()[0];
 
-            Assert.IsNotNull(m, "method parse error");
+            Assert.IsNotNull(classDiagram, "method parse error");
             Assert.AreEqual("returntype", m.ReturnType);
         }
 
@@ -423,12 +356,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t14_Parse_Class_With_Method()
         {
             // [className||-methodName(paramType paramName)]
-            var tokens = TokenStreamBuilder.FromStrings
-                ("[", "className", "|", "|", "-", "methodName", "(", "paramType", "paramName", ")", "]");
+            var tokens = TokenStreamBuilder.FromStrings("[", "className", "|", "|", "-", "methodName", "(", "paramType", "paramName", ")", "]");
 
-            var c = new ClassDiagramParser(tokens).ParseClass();
+            var classDiagram = new ClassDiagramParser(tokens).ParseClassDiagram();
 
-            Assert.IsNotNull(c, "class parse error");
+            Assert.IsNotNull(classDiagram, "class parse error");
         }
 
         [Test]
@@ -461,9 +393,10 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
                 TokenStreamBuilder.FromStrings("]")
             );
 
-            var c = new ClassDiagramParser(tokens).ParseClass();
+            var classDiagram = new ClassDiagramParser(tokens).ParseClassDiagram();
+            var c = classDiagram.Classes.ToList()[0];
 
-            Assert.IsNotNull(c, "class parse error");
+            Assert.IsNotNull(classDiagram, "class parse error");
             Assert.AreEqual(0, c.Fields.Count(), "there should be no fields");
             Assert.AreEqual(1, c.Methods.Count(), "there should be one method");
             AssertMethod(c.Methods.ToArray()[0], VisibilityModifier.Public, "methodName");
@@ -493,7 +426,14 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [Test, TestCaseSource("MultiplicityTests")]
         public void t17_Multiplicity(TestData data)
         {
-            var mult = TokenStreamBuilder.FromStrings(data.Arguments).ParseMultiplicity();
+            var tokens = TokenStreamBuilder.CombineTokenStreams(
+                TokenStreamBuilder.FromStrings("[", "a", "]"),
+                TokenStreamBuilder.FromStrings(data.Arguments),
+                TokenStreamBuilder.FromStrings("-",">", "[", "b", "]"));
+            var cd = tokens.ParseClassDiagram();
+            var assocs = cd.Associations.ToList();
+            var mult = assocs[0].SourceMultiplicity;
+
             Assert.IsNotNull(mult, "should have parsed");
         }
 
@@ -556,22 +496,22 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             new TestData(ParseTarget.ClassDiagram, "[", "a", "]", "-"), // missing association target
             new TestData(ParseTarget.ClassDiagram, "[", "classname", "]", "junk"), // junk at end
 
-            new TestData(ParseTarget.Class, "classname"), // no brackets
-            new TestData(ParseTarget.Class, "classname", "]"), // first bracket missing
-            new TestData(ParseTarget.Class, "[", "]" ), // class name missing
-            new TestData(ParseTarget.Class, "[", "classname" ), // last bracket missing
+            // TODO new TestData(ParseTarget.Class, "classname"), // no brackets
+            // TODO new TestData(ParseTarget.Class, "classname", "]"), // first bracket missing
+            // TODO new TestData(ParseTarget.Class, "[", "]" ), // class name missing
+            // TODO new TestData(ParseTarget.Class, "[", "classname" ), // last bracket missing
             // TODO new TestData(ParseTarget.Class, "[", "classname", "|", "]" ), // pipe but no field...
-            new TestData(ParseTarget.Class ), // no tokens...
-            new TestData(ParseTarget.Class, "[", "classname", "|", "field1", "field2", "]"), // comma missing between fields
+            // TODO new TestData(ParseTarget.Class ), // no tokens...
+            // TODO new TestData(ParseTarget.Class, "[", "classname", "|", "field1", "field2", "]"), // comma missing between fields
             
-            new TestData(ParseTarget.Method, ":", "(", ")"), // keyword as method name
-            new TestData(ParseTarget.Method, "(", ")"), // no method name
-            new TestData(ParseTarget.Method, "methodName", ")"), // missing start parenthesis
-            new TestData(ParseTarget.Method, "methodName", "("), // missing end parenthesis
-            new TestData(ParseTarget.Method, "methodName", "(", ")", ":"), // colon but no return type
+            // TODO new TestData(ParseTarget.Method, ":", "(", ")"), // keyword as method name
+            // TODO new TestData(ParseTarget.Method, "(", ")"), // no method name
+            // TODO new TestData(ParseTarget.Method, "methodName", ")"), // missing start parenthesis
+            // TODO new TestData(ParseTarget.Method, "methodName", "("), // missing end parenthesis
+            // TODO new TestData(ParseTarget.Method, "methodName", "(", ")", ":"), // colon but no return type
 
             // TODO new TestData(ParseTarget.Field, "fieldName", ":"), // colon but no type
-            new TestData(ParseTarget.Field, ":"), // keyword as field name
+            // TODO new TestData(ParseTarget.Field, ":"), // keyword as field name
 
             // TODO new TestData(ParseTarget.Multiplicity, "..", "1"), // ".." but no source multiplicity
             // TODO new TestData(ParseTarget.Multiplicity, "1", ".."), // ".." but no target multiplicity
@@ -595,18 +535,6 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             {
                 case ParseTarget.ClassDiagram:
                     callback = ec => tokens.ParseClassDiagram(ec);
-                    break;
-                case ParseTarget.Class:
-                    callback = ec => tokens.ParseClass(ec);
-                    break;
-                case ParseTarget.Method:
-                    callback = ec => tokens.ParseMethod(ec);
-                    break;
-                case ParseTarget.Field:
-                    callback = ec => tokens.ParseField(ec);
-                    break;
-                case ParseTarget.Multiplicity:
-                    callback = ec => tokens.ParseMultiplicity(ec);
                     break;
                 default:
                     throw new ArgumentException("don't know how to handle " + data.Target.ToString());

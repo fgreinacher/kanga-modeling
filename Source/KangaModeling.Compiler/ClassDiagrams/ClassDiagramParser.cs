@@ -372,7 +372,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         }
 
         // "[" ID "]"
-        public IClass ParseClass()
+        private IClass ParseClass()
         {
             if (!_genericTokens.TryConsume(TokenType.BracketOpen))
             {
@@ -434,7 +434,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
         }
 
         // ID [ ":" ID ]
-        public IField ParseField()
+        private IField ParseField()
         {
             String name, type = null;
             ClassDiagramToken token;
@@ -467,7 +467,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             return name != null ? new Field(name, type, vm) : null;
         }
 
-        public IMethod ParseMethod()
+        private IMethod ParseMethod()
         {
             VisibilityModifier vis;
             string rettype = "void";
@@ -639,7 +639,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             return assocInfo;
         }
 
-        public Multiplicity ParseMultiplicity()
+        private Multiplicity ParseMultiplicity()
         {
             Multiplicity m = null;
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using KangaModeling.Compiler.Toolbox;
 using KangaModeling.Compiler.ClassDiagrams;
 
@@ -93,7 +94,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public static ClassDiagramTokenStream FromStrings(params string[] tokens)
         {
             var s = new ClassDiagramTokenStream();
-            tokens.ForEach(t => s.Add(t.Token()));
+            tokens.Where(s1 => s1.Length > 0).ForEach(t => s.Add(t.Token()));
             return s;
         }
     }
