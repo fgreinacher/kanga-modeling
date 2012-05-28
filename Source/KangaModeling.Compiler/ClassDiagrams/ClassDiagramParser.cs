@@ -513,6 +513,10 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 }
 
                 mp.Add(new MethodParameter(paramName, paramType));
+
+                if (!_genericTokens.TryConsume(TokenType.Comma))
+                    break;
+
             } while (true);
 
             // (mandatory) )

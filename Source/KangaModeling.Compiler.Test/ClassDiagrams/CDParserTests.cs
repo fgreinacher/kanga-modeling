@@ -15,6 +15,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         [TestCase("[a|field]", TestName = "[a|field]")]
         [TestCase("[a||method()]", TestName = "[a||method()]")]
         [TestCase("[a]->[b]", TestName = "[a]->[b]")]
+        [TestCase("[a|field : int, field2 : bool]", TestName = "[a|field : int, field2 : bool]")]
+        [TestCase("[a||-method(int a, bool b):DiagramCreationResult]", TestName = "[a||-method(int a, bool b):DiagramCreationResult]")]
+        //[TestCase("", TestName = "")]
         public void T01CheckParseOK(string source)
         {
             var result = DiagramCreator.CreateFrom(source);
