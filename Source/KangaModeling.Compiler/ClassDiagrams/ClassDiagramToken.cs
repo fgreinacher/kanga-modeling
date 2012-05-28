@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 
 namespace KangaModeling.Compiler.ClassDiagrams
 {
@@ -56,8 +57,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         public static TokenType FromDisplayString(this string displayString)
         {
-            int dummy;
-            if (int.TryParse(displayString, out dummy))
+            if(Regex.IsMatch(displayString, @"^\d+$"))
                 return TokenType.Number;
 
             switch (displayString)

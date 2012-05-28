@@ -88,5 +88,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             return true;
         }
+
     }
 }

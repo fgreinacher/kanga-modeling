@@ -32,6 +32,10 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         {
             return new ClassDiagramParser(classDiagramTokenStream, errorCallback).ParseField();
         }
+        internal static Multiplicity ParseMultiplicity(this ClassDiagramTokenStream classDiagramTokenStream, ClassDiagramParser.ErrorCallback errorCallback = null)
+        {
+            return new ClassDiagramParser(classDiagramTokenStream, errorCallback).ParseMultiplicity();
+        }
     }
 
     /// <summary>
@@ -449,10 +453,39 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             AssertMethod(c.Methods.ToArray()[0], VisibilityModifier.Public, "methodName");
         }
 
+        internal class MultiplicityTestData : TestData
+        {
+            public MultiplicityTestData(Multiplicity expected, params string[] args) : base(ParseTarget.Multiplicity, args)
+            {
+                if (expected == null) throw new ArgumentNullException("expected");
+                ExpectedMultiplicity = expected;
+            }
+
+            public Multiplicity ExpectedMultiplicity { get; private set; }
+        }
+
+        private static object[] MultiplicityTests = new[] {
+            new MultiplicityTestData(new Multiplicity(MultiplicityKind.Star, "*", MultiplicityKind.None, string.Empty), "*"),
+            new MultiplicityTestData(new Multiplicity(MultiplicityKind.SingleNumber, "0", MultiplicityKind.None, string.Empty), "0"),
+            new MultiplicityTestData(new Multiplicity(MultiplicityKind.SingleNumber, "1", MultiplicityKind.None, string.Empty), "1"),
+            new MultiplicityTestData(new Multiplicity(MultiplicityKind.SingleNumber, "134534534534523123122342343", MultiplicityKind.None, string.Empty), "134534534534523123122342343"),
+            new MultiplicityTestData(new Multiplicity(MultiplicityKind.SingleNumber, "1", MultiplicityKind.SingleNumber, "2"), "1", "..", "2"),
+            new MultiplicityTestData(new Multiplicity(MultiplicityKind.SingleNumber, "1", MultiplicityKind.Star, string.Empty), "1", "..", "*"),
+            // new TestData(ParseTarget.Multiplicity, "*", "..", "1"), TODO LOGIC ERROR
+        };
+
+        [Test, TestCaseSource("MultiplicityTests")]
+        public void t17_Multiplicity(TestData data)
+        {
+            var mult = TokenStreamBuilder.FromStrings(data.Arguments).ParseMultiplicity();
+            Assert.IsNotNull(mult, "should have parsed");
+        }
+
         #region infrastructure for error testing
 
         internal enum ParseTarget
         {
+            Multiplicity,
             Field,
             Method,
             Class,
@@ -503,7 +536,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
 
         #endregion
 
-        private static object[] ErrorData = new[] {
+        private static object[] ErrorTests = new[] {
             new TestData(ParseTarget.ClassDiagram, "[", "a", "]", "-"), // missing association target
             new TestData(ParseTarget.ClassDiagram, "[", "classname", "]", "junk"), // junk at end
 
@@ -523,9 +556,15 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
 
             new TestData(ParseTarget.Field, "fieldName", ":"), // colon but no type
             new TestData(ParseTarget.Field, ":"), // keyword as field name
+
+            new TestData(ParseTarget.Multiplicity, "..", "1"), // ".." but no source multiplicity
+            new TestData(ParseTarget.Multiplicity, "1", ".."), // ".." but no target multiplicity
+            new TestData(ParseTarget.Multiplicity, "identifier" ), // does not make sense
+
+            // TODO new TestData(ParseTarget.Multiplicity, "2", "..", "1"), // LOGIC ERROR
         };
 
-        [Test, TestCaseSource("ErrorData")]
+        [Test, TestCaseSource("ErrorTests")]
         public void t17_Errors(TestData data)
         {
             var tokens = TokenStreamBuilder.FromStrings(data.Arguments);
@@ -550,6 +589,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
                 case ParseTarget.Field:
                     callback = ec => tokens.ParseField(ec);
                     break;
+                case ParseTarget.Multiplicity:
+                    callback = ec => tokens.ParseMultiplicity(ec);
+                    break;
+                default:
+                    throw new ArgumentException("don't know how to handle " + data.Target.ToString());
             }
             return callback;
         }

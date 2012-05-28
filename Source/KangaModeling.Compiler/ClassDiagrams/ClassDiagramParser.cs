@@ -558,8 +558,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             return assocInfo;
         }
 
-        // TODO make public, provide specific tests.
-        private Multiplicity ParseMultiplicity()
+        public Multiplicity ParseMultiplicity()
         {
             Multiplicity m = null;
 
@@ -577,7 +576,9 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     {
                         m = new Multiplicity(MultiplicityKind.SingleNumber, token1.Value, MultiplicityKind.Star, null);
                     }
-                    // TODO else
+                    else
+                        // TODO more than one TokenType!
+                        FireError(TokenType.Number);
                 }
                 else
                 {
@@ -589,6 +590,8 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 ClassDiagramToken token;
                 if (_genericTokens.TryConsume(TokenType.Star, out token))
                     m = new Multiplicity(MultiplicityKind.Star, token.Value, MultiplicityKind.None, null);
+                else
+                    FireError(TokenType.Star);
             }
 
             return m;
