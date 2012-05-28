@@ -363,7 +363,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // handle visibility modifiers (OPTIONAL)
             TryConsumeVisibilityModifier(out vm);
 
-            // TODO no field? "[classname|]"
             if (_genericTokens.TryConsume(TokenType.Identifier, out token))
             {
                 name = token.Value;
@@ -378,7 +377,11 @@ namespace KangaModeling.Compiler.ClassDiagrams
             {
                 if (_genericTokens.TryConsume(TokenType.Identifier, out token))
                     type = token.Value;
-                // TODO else ERROR
+                else
+                {
+                    FireError(TokenType.Identifier);
+                    return null;
+                }
             }
 
             return name != null ? new Field(name, type, vm) : null;
@@ -396,7 +399,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // (mandatory) name
             if(!_genericTokens.TryConsume(TokenType.Identifier, out token))
             {
-                // TODO ERROR
+                FireError(TokenType.Identifier);
                 return null;
             }
             string name = token.Value;
@@ -404,7 +407,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // (mandatory) (
             if(!_genericTokens.TryConsume(TokenType.ParenthesisOpen))
             {
-                // TODO error
+                FireError(TokenType.ParenthesisOpen);
                 return null;
             }
 
@@ -412,23 +415,30 @@ namespace KangaModeling.Compiler.ClassDiagrams
             var mp = new List<MethodParameter>();
             do
             {
+                // TODO should be done using lookahead...
                 if (!_genericTokens.TryConsume(TokenType.Identifier, out token))
                     break; // no identifier -> finished
                 var paramType = token.Value;
+                string paramName;
 
-                if (!_genericTokens.TryConsume(TokenType.Identifier, out token))
+                if (_genericTokens.TryConsume(TokenType.Identifier, out token))
                 {
-                    // TODO error; after method parameter name, the type!
-                    break;
+                    paramName = token.Value;
+                }
+                else
+                {
+                    // no second identifier -> first one actually is the name, and there's no type.
+                    paramName = paramType;
+                    paramType = string.Empty;
                 }
 
-                mp.Add(new MethodParameter(token.Value, paramType));
+                mp.Add(new MethodParameter(paramName, paramType));
             } while (true);
 
             // (mandatory) )
             if (!_genericTokens.TryConsume(TokenType.ParenthesisClose))
             {
-                // TODO error
+                FireError(TokenType.ParenthesisClose);
                 return null;
             }
 
@@ -438,7 +448,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 // now return type MUST follow
                 if(!_genericTokens.TryConsume(TokenType.Identifier, out token))
                 {
-                    // TODO error!
+                    FireError(TokenType.Identifier);
                     return null;
                 }
 

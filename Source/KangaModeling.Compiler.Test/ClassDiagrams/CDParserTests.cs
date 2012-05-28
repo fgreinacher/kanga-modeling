@@ -357,7 +357,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         }
 
         [Test]
-        public void t14_Parse_Method_Parameter()
+        public void t14_Parse_Method_Parameter_WithType()
         {
             var parameterStream = new ClassDiagramTokenStream { "type".Token(), "parameter".Token() };
             var tokens = TokenStreamBuilder.Method("methodName", "+", parameterStream);
@@ -369,6 +369,21 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             Assert.AreEqual(1, parameters.Count, "wrong parameter count");
             Assert.AreEqual("parameter", parameters[0].Name, "wrong name");
             Assert.AreEqual("type", parameters[0].Type, "wrong type");
+        }
+
+        [Test]
+        public void t14_Parse_Method_Parameter_WithoutType()
+        {
+            var parameterStream = new ClassDiagramTokenStream { "parameter".Token() };
+            var tokens = TokenStreamBuilder.Method("methodName", "+", parameterStream);
+
+            var m = new ClassDiagramParser(tokens).ParseMethod();
+
+            Assert.IsNotNull(m, "method parse error");
+            var parameters = new List<MethodParameter>(m.Parameters);
+            Assert.AreEqual(1, parameters.Count, "wrong parameter count");
+            Assert.AreEqual("parameter", parameters[0].Name, "wrong name");
+            Assert.AreEqual(string.Empty, parameters[0].Type, "wrong type");
         }
 
         [Test]
@@ -469,8 +484,8 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             public override string ToString()
             {
                 if(Arguments.Length > 0)
-                    return Arguments.Aggregate((s1, s2) => s1 + " " + s2);
-                return string.Empty;
+                    return Target.ToString() + ": " + Arguments.Aggregate((s1, s2) => s1 + " " + s2);
+                return Target.ToString() + ": <NO ARGUMENTS>";
             }
         }
 
@@ -495,19 +510,29 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         #endregion
 
         private static object[] ErrorData = new[] {
+            new TestData(ParseTarget.ClassDiagram, "[", "a", "]", "-"), // missing association target
+            new TestData(ParseTarget.ClassDiagram, "[", "classname", "]", "junk"), // junk at end
+
             new TestData(ParseTarget.Class, "classname"), // no brackets
             new TestData(ParseTarget.Class, "classname", "]"), // first bracket missing
             new TestData(ParseTarget.Class, "[", "]" ), // class name missing
             new TestData(ParseTarget.Class, "[", "classname" ), // last bracket missing
             new TestData(ParseTarget.Class, "[", "classname", "|", "]" ), // pipe but no field...
             new TestData(ParseTarget.Class ), // no tokens...
-            new TestData(ParseTarget.ClassDiagram, "[", "classname", "]", "junk"), // junk at end
             new TestData(ParseTarget.Class, "[", "classname", "|", "field1", "field2", "]"), // comma missing between fields
-            new TestData(ParseTarget.ClassDiagram, "[", "a", "]", "-"), // missing association target
+            
+            new TestData(ParseTarget.Method, ":", "(", ")"), // keyword as method name
+            new TestData(ParseTarget.Method, "(", ")"), // no method name
+            new TestData(ParseTarget.Method, "methodName", ")"), // missing start parenthesis
+            new TestData(ParseTarget.Method, "methodName", "("), // missing end parenthesis
+            new TestData(ParseTarget.Method, "methodName", "(", ")", ":"), // colon but no return type
+
+            new TestData(ParseTarget.Field, "fieldName", ":"), // colon but no type
+            new TestData(ParseTarget.Field, ":"), // keyword as field name
         };
 
         [Test, TestCaseSource("ErrorData")]
-        public void t17_Check_Callback_Is_Called_On_Error(TestData data)
+        public void t17_Errors(TestData data)
         {
             var tokens = TokenStreamBuilder.FromStrings(data.Arguments);
             var callback = RetrieveErrorCallback(data, tokens);
