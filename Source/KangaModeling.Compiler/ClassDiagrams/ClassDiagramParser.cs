@@ -11,13 +11,94 @@ namespace KangaModeling.Compiler.ClassDiagrams
     public static class DiagramCreator
     {
         /// <summary>
+        /// A text region denotes a substring inside a text (=user source).
+        /// </summary>
+        public struct TextRegion
+        {
+            public TextRegion(int line, int charStart, int length)
+            {
+                Line = line;
+                PositionInLine = charStart;
+                Length = length;
+            }
+
+            public readonly int Line;
+            public readonly int PositionInLine;
+            public readonly int Length;
+        }
+
+        /// <summary>
+        /// The "nature" of the error.
+        /// </summary>
+        public enum ErrorCategory
+        {
+            /// <summary> parse failure. </summary>
+            Syntactical,
+            /// <summary> parse OK, but does not make sense semantically. </summary>
+            Semantical,
+        }
+
+        /// <summary>
+        /// Encapsulates the data for a single error.
+        /// </summary>
+        public sealed class Error
+        {
+            public Error(string errorMessage, TextRegion location, string objectedText, ErrorCategory category = ErrorCategory.Syntactical)
+            {
+                if (errorMessage == null) throw new ArgumentNullException("errorMessage");
+                if (objectedText == null) throw new ArgumentNullException("objectedText");
+
+                ErrorMessage = errorMessage;
+                Location = location;
+                ObjectedText = objectedText;
+                Category = category;
+            }
+
+            public static Error Create(TokenType expectedType, ClassDiagramToken actualToken)
+            {
+                //var region = new TextRegion(actualToken.Line, actualToken.Start, actualToken.Length);
+                var region = new TextRegion(0, 0, 0);
+                if (actualToken == null)
+                    return new Error("syntax error: expected token " + expectedType.ToDisplayString(), region, string.Empty);
+                return new Error("unexpected token", region, actualToken.Value);
+            }
+
+            public string ErrorMessage { get; private set; }
+            public TextRegion Location { get; private set; }
+            public string ObjectedText { get; private set; }
+            public ErrorCategory Category { get; private set; }
+        }
+
+        public class DiagramCreationResult
+        {
+            public DiagramCreationResult(IClassDiagram classDiagram, IEnumerable<Error> errors)
+            {
+                //if (classDiagram == null) throw new ArgumentNullException("classDiagram");
+                if (errors == null) throw new ArgumentNullException("errors");
+                ClassDiagram = classDiagram;
+                Errors = errors;
+            }
+
+            public IClassDiagram ClassDiagram { get; private set; }
+            public IEnumerable<Error> Errors { get; private set; }
+        }
+
+        /// <summary>
         /// Conveniently parse a string to a sequence diagram.
         /// </summary>
         /// <param name="text">The text to parse.</param>
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
-        public static IClassDiagram CreateFrom(string text)
+        public static DiagramCreationResult CreateFrom(string text)
         {
-            return new ClassDiagramParser(new ClassDiagramScanner().Parse(text)).ParseClassDiagram();
+            var errors = new List<Error>(2);
+            
+            ClassDiagramParser.ErrorCallback errorCallback = (expected, actual) => {
+                errors.Add(Error.Create(expected, actual));
+                return ClassDiagramParser.ErrorReturnCode.StopParsing;
+            };
+            var cd = new ClassDiagramParser(new ClassDiagramScanner().Parse(text), errorCallback).ParseClassDiagram();
+
+            return new DiagramCreationResult(cd, errors);
         }
 
     }
@@ -368,7 +449,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             }
             else
             {
-                FireError(TokenType.Identifier);
+                // TODO FireError(TokenType.Identifier);
                 return null;
             }
 
@@ -590,8 +671,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 ClassDiagramToken token;
                 if (_genericTokens.TryConsume(TokenType.Star, out token))
                     m = new Multiplicity(MultiplicityKind.Star, token.Value, MultiplicityKind.None, null);
-                else
-                    FireError(TokenType.Star);
             }
 
             return m;

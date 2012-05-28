@@ -1,7 +1,7 @@
 ﻿using System;
-using CommandLine;
 using System.Drawing.Imaging;
-using System.Drawing;
+using System.Linq;
+using CommandLine;
 using KangaModeling.Facade;
 
 namespace CommandLineRunner
@@ -29,9 +29,16 @@ namespace CommandLineRunner
 		{
 			var arguments = new DiagramArguments(opts.Model, DiagramType.Class, DiagramStyle.Sketchy);
 			var result = DiagramFactory.Create(arguments);
+            if(result.Errors.Count() != 0)
+            {
+                foreach (var de in result.Errors)
+                    Console.Error.WriteLine(string.Format("{0}: {1}", de.Message, de.TokenValue));
+                return;
+            }
+
 			using (result)
 			{
-				ImageFormat format = ImageFormat.Png;
+				ImageFormat format;
 				switch (opts.Format.ToLowerInvariant())
 				{
 					case "png":

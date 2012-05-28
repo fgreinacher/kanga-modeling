@@ -51,16 +51,22 @@ namespace KangaModeling.Facade
                 sequenceDiagram.Root.Title);
         }
 
+        private static DiagramError ToModelError(Compiler.ClassDiagrams.DiagramCreator.Error error)
+        {
+            return new DiagramError(error.ErrorMessage, error.Location.Line, error.Location.PositionInLine,
+                                    error.Location.Length, error.ObjectedText);
+        }
+
         private static DiagramResult CreateClassDiagram(DiagramArguments arguments)
         {
-            var cd = KangaModeling.Compiler.ClassDiagrams.DiagramCreator.CreateFrom(arguments.Source);
-            
-            // TODO errors
+            var result = Compiler.ClassDiagrams.DiagramCreator.CreateFrom(arguments.Source);
 
+            var hasErrors = result.Errors.Count() != 0;
+            
             return new DiagramResult(
                 arguments,
-                GenerateBitmap(arguments, cd),
-                null,
+                hasErrors ? null : GenerateBitmap(arguments, result.ClassDiagram),
+                result.Errors.Select(ToModelError),
                 "class diagram");
         }
 
