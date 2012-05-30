@@ -20,10 +20,8 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
             
             Assert.NotNull(target.Rows);
             Assert.IsInstanceOf(typeof(RowsCollection), target.Rows);
-            Assert.AreEqual(1, target.Rows.Count);
-            Assert.IsInstanceOf(typeof(IEnumerable<Pin>), target.Rows[0]);
-            Assert.AreEqual(0, target.Rows[0].Count);
-
+            Assert.AreEqual(0, target.Rows.Count);
+            
             Assert.AreEqual(root, target.Root);
             Assert.IsInstanceOf(typeof(RootFragment), target.Root);
         }
@@ -55,11 +53,10 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
             }
 
             Row actual = target.CreateRow();
-            Assert.AreEqual(2, target.Rows.Count);
-            Assert.AreEqual(actual, target.Rows[1]);
+            Assert.AreEqual(1, target.Rows.Count);
+            Assert.AreEqual(actual, target.Rows[0]);
 
             Assert.AreEqual(lifelineCount, target.Rows[0].Count);
-            Assert.AreEqual(lifelineCount, target.Rows[1].Count);
         }
 
         [TestCase(0)]
@@ -68,7 +65,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
         public void LastRowTest(int aditionalRowCount)
         {
             var target = new Matrix(null);
-            Row expected = target.Rows[0];
+            Row expected = null;
             for (int i = 0; i < aditionalRowCount; i++)
             {
                 expected = target.CreateRow();

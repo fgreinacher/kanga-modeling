@@ -37,18 +37,7 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
             Activity actual = target.GetActivity();
             Assert.AreEqual(expected, actual);
         }
-
-        [TestCase(0)]
-        [TestCase(10)]
-        public void LevelTest(int level)
-        {
-            Pin target = CreatePin();
-            Assert.AreEqual(0, target.Level);
-            Activity expected = new Activity(level);
-            target.SetActivity(expected);
-            Assert.AreEqual(level, target.Level);
-        }
-
+        
         [TestCase(0)]
         [TestCase(10)]
         public void LifelineIndexTest(int index)

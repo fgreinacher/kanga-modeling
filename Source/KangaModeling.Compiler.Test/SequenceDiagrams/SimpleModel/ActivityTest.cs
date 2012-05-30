@@ -8,6 +8,20 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
     [TestFixture]
     public class ActivityTest
     {
+        private Mock<Pin> CreatePinMock(Activity activity, MockBehavior mockBehavior = MockBehavior.Strict)
+        {
+            var lifelineMock = new Mock<Lifeline>(null, null, null, 0);
+            lifelineMock.Setup(lifeline => lifeline.Index).Returns(0);
+
+            var startPinMock = new Mock<Pin>(mockBehavior, null, lifelineMock.Object, PinType.None);
+            startPinMock.Setup(pin => pin.Orientation).Returns(Orientation.None);
+
+            if (activity != null)
+                startPinMock.Setup(pin => pin.SetActivity(activity));
+
+            return startPinMock;
+        }
+
         [TestCase(0)]
         [TestCase(10)]
         public void ActivityConstructorTest(int level)
@@ -20,16 +34,13 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
         [TestCase(10)]
         public void ConnectTest(int level)
         {
-            var target = new Activity(level); 
+            var target = new Activity(level);
 
-            var startPinMock = new Mock<Pin>(MockBehavior.Strict);
-            startPinMock.Setup(pin => pin.SetActivity(target));
+            var startPinMock = CreatePinMock(target);
+            var endPinMock = CreatePinMock(target);
 
-            var endPinMock = new Mock<Pin>(MockBehavior.Strict);
-            endPinMock.Setup(pin => pin.SetActivity(target));
-
-            Pin startPin = startPinMock.Object; 
-            Pin endPin = endPinMock.Object; 
+            Pin startPin = startPinMock.Object;
+            Pin endPin = endPinMock.Object;
             target.Connect(startPin, endPin);
 
             Assert.AreEqual(startPin, target.Start);
@@ -45,9 +56,9 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
         {
             var target = new Activity(0);
 
-            var startPinStub = new Mock<Pin>(MockBehavior.Loose);
+            var startPinStub = CreatePinMock(null, MockBehavior.Loose);
 
-            var endPinStub = new Mock<Pin>(MockBehavior.Loose);
+            var endPinStub = CreatePinMock(null, MockBehavior.Loose);
             endPinStub.Setup(pin => pin.RowIndex).Returns(rowIndex);
 
             target.Connect(startPinStub.Object, endPinStub.Object);
@@ -62,10 +73,10 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
         {
             var target = new Activity(0);
 
-            var startPinStub = new Mock<Pin>(MockBehavior.Loose);
+            var startPinStub = CreatePinMock(null, MockBehavior.Loose);
             startPinStub.Setup(pin => pin.RowIndex).Returns(rowIndex);
 
-            var endPinStub = new Mock<Pin>(MockBehavior.Loose);
+            var endPinStub = CreatePinMock(null, MockBehavior.Loose);
 
             target.Connect(startPinStub.Object, endPinStub.Object);
 
@@ -78,23 +89,21 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
         {
             var target = new Activity(0);
 
-            ILifeline lifeline = new Mock<ILifeline>(MockBehavior.Loose).Object;
-            Pin endPin = new Mock<Pin>(MockBehavior.Loose).Object;
+            Pin endPin = CreatePinMock(null, MockBehavior.Loose).Object;
 
-            var startPinStub = new Mock<Pin>(MockBehavior.Loose);
-            startPinStub.Setup(pin => pin.Lifeline).Returns(lifeline);
+            var startPinStub = CreatePinMock(null, MockBehavior.Loose);
 
             Pin startPin = startPinStub.Object;
-            
+
             target.Connect(startPin, endPin);
 
-            Assert.AreEqual(lifeline, target.Lifeline);
+            Assert.AreEqual(startPin.Lifeline, target.Lifeline);
         }
 
         [Test]
         public void OrientationTestLevel0()
         {
-            var target = new Activity(0); 
+            var target = new Activity(0);
             Orientation actual = target.Orientation;
             Assert.AreEqual(Orientation.None, actual);
         }
@@ -112,11 +121,10 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
         {
             var target = new Activity(1);
 
-            var startPinMock = new Mock<Pin>(MockBehavior.Strict);
-            startPinMock.Setup(pin => pin.SetActivity(target));
+            var startPinMock = CreatePinMock(target);
             startPinMock.Setup(pin => pin.Orientation).Returns(Orientation.Left);
 
-            var endPinStub = new Mock<Pin>(MockBehavior.Loose);
+            var endPinStub = CreatePinMock(null, MockBehavior.Loose);
 
             Pin startPin = startPinMock.Object;
             Pin endPin = endPinStub.Object;
@@ -133,10 +141,15 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
         {
             var target = new Activity(0);
 
-            var endPinMock = new Mock<Pin>(MockBehavior.Strict);
-            endPinMock.Setup(pin => pin.SetActivity(target));
+            var startPin = CreatePinMock(target, MockBehavior.Loose).Object;
+            var initialEndPin = CreatePinMock(target, MockBehavior.Loose).Object;
+
+            target.Connect(startPin, initialEndPin);
+
+            var endPinMock = CreatePinMock(target);
 
             Pin endPin = endPinMock.Object;
+
             target.ReconnectEnd(endPin);
 
             Assert.AreEqual(endPin, target.End);

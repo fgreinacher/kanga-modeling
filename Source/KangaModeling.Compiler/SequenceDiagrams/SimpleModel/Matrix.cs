@@ -25,7 +25,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
 
         public Row LastRow
         {
-            get { return Rows[Rows.Count - 1]; }
+            get { return Rows.Count > 0 ? Rows[Rows.Count - 1] : null; }
         }
 
         public Pin this[int lifelineIndex, int rowIndex]
