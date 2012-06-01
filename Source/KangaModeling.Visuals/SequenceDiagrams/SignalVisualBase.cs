@@ -1,7 +1,6 @@
 ﻿using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
-using System;
 using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams

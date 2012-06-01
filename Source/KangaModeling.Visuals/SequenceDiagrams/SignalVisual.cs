@@ -1,7 +1,6 @@
 ﻿using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
-using System;
 using KangaModeling.Visuals.SequenceDiagrams.Styles;
 
 namespace KangaModeling.Visuals.SequenceDiagrams
@@ -25,7 +24,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             base.LayoutCore(graphicContext);
 
             ColumnSection columnSection = m_Signal.End.Orientation == Orientation.Left ? m_EndColumn.LeftGap : m_EndColumn.RightGap;
-            float width = m_TextSize.Width + Style.Signal.TextPadding * 2;
+            float width = m_TextSize.Width;
 
             if (m_EndColumnNeighbor == null)
             {
@@ -42,13 +41,13 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         protected override void DrawText(IGraphicContext graphicContext)
         {
             float xText = m_Signal.End.Orientation == Orientation.Right
-                              ? m_EndColumn.Body.Right + Style.Signal.TextPadding
-                              : m_EndColumn.Body.Left - Style.Signal.TextPadding - m_TextSize.Width;
+                              ? m_EndColumn.Body.Right
+                              : m_EndColumn.Body.Left - m_TextSize.Width;
 
             float yText = m_Row.Body.Bottom - Style.Signal.TextPadding - m_TextSize.Height;
             graphicContext.DrawText(
                 new Point(xText, yText),
-                m_TextSize + new Padding(Style.Signal.TextPadding),
+                m_TextSize,
                 m_Signal.Name,
                 Style.Common.Font,
                 Style.Signal.FontSize,
@@ -69,7 +68,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
 
             switch (m_Signal.SignalType)
             {
-                case Compiler.SequenceDiagrams.SignalType.Call:
+                case SignalType.Call:
                     graphicContext.DrawArrow(
                         start,
                         end,
@@ -80,7 +79,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                         Style.Common.LineStyle);
                     break;
 
-                case Compiler.SequenceDiagrams.SignalType.Return:
+                case SignalType.Return:
                     graphicContext.DrawDashedArrow(
                         start,
                         end,
@@ -89,9 +88,6 @@ namespace KangaModeling.Visuals.SequenceDiagrams
                         Style.Signal.ArrowCapSize,
                         Style.Signal.LineColor,
                         Style.Common.LineStyle);
-                    break;
-
-                default:
                     break;
             }
         }
