@@ -24,7 +24,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
             base.LayoutCore(graphicContext);
 
             ColumnSection columnSection = m_Signal.End.Orientation == Orientation.Left ? m_EndColumn.LeftGap : m_EndColumn.RightGap;
-            float width = m_TextSize.Width;
+            float width = m_TextSize.Width + Style.Signal.TextPadding * 2;
 
             if (m_EndColumnNeighbor == null)
             {
