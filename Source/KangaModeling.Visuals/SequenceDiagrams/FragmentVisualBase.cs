@@ -131,7 +131,7 @@ namespace KangaModeling.Visuals.SequenceDiagrams
         private void DrawTextFrame(float xStart, float yStart, IGraphicContext graphicContext)
         {
             var textFramePoint1 = new Point(xStart, yStart + m_TextSize.Height + Style.Fragment.FramePadding / 2);
-            var textFramePoint2 = new Point(xStart + m_TextSize.Width, yStart + m_TextSize.Height + Style.Fragment.FramePadding / 2);
+            var textFramePoint2 = new Point(xStart + m_TextSize.Width + Style.Fragment.FramePadding / 2, yStart + m_TextSize.Height + Style.Fragment.FramePadding / 2);
             var textFramePoint3 = new Point(xStart + m_TextSize.Width + Style.Fragment.FramePadding, yStart);
 
             graphicContext.FillPolygon(new[] { Location, textFramePoint1, textFramePoint2, textFramePoint3, Location }, Color.SemiTransparent);
