@@ -45,6 +45,13 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams
         [TestCase(" a", "a")]
         [TestCase(" a ", "a")]
         [TestCase("       Hello ", "Hello")]
+        [TestCase("alt two > one", "alt")]
+        [TestCase("alt two < one", "alt")]
+        [TestCase("alt two - one", "alt")]
+        [TestCase("alt two <- one", "<-")]
+        [TestCase("alt two <-- one", "<--")]
+        [TestCase("alt two -> one", "->")]
+        [TestCase("alt two --> one", "-->")]
         public void GetKeyWordTest(string input, string expected)
         {
             Scanner target = new Scanner(input);

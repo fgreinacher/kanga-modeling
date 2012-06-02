@@ -7,13 +7,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 {
     internal class Scanner : IEnumerator<string>
     {
-        public const char EscapeCharacter = '"';
+        private const char EscapeCharacter = '"';
         private readonly IEnumerator<string> m_Lines;
         private readonly Stack<int> m_PositionStack;
 
 
         public Scanner(string text) :
-            this(text.Split(new[] {Environment.NewLine, "\n"}, StringSplitOptions.None))
+            this(text.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.None))
         {
         }
 
@@ -38,7 +38,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
 
         public bool Eol
         {
-            get { return Current == null ? true : Column == Current.Length; }
+            get { return Current == null || Column == Current.Length; }
         }
 
         #region IEnumerator<string> Members
@@ -78,7 +78,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
         public string GetKeyWord()
         {
             string signal = GetSignal();
-            return string.IsNullOrEmpty(signal) ? GetWord() : signal;
+            return MightBeValidSignal(signal) ? signal : GetWord();
         }
 
         public void SkipWhiteSpaces()
@@ -154,7 +154,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             }
         }
 
-        public Token ReadWhile(Func<char, bool> condition)
+        private Token ReadWhile(Func<char, bool> condition)
         {
             return ReadWhile(() => condition(LineText[Column]));
         }
@@ -185,6 +185,12 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             {
                 Column++;
             }
+        }
+
+        private static bool MightBeValidSignal(string potentialSignal)
+        {
+            return potentialSignal != null &&
+                   potentialSignal.Length > 1;
         }
     }
 }
