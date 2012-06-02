@@ -2,32 +2,10 @@
 
 namespace KangaModeling.Compiler.ClassDiagrams.Model
 {
-
-    /// <summary>
-    /// The visilibity of a member
-    /// </summary>
-    public enum VisibilityModifier
-    {
-        Public,
-        Internal,
-        Private,
-        Protected
-    }
-
-    /// <summary>
-    /// Represents one field of an IClass instance.
-    /// </summary>
-    public interface IField
-    {
-        string Name { get; }
-        string Type { get; }
-        VisibilityModifier Visibility { get; }
-    }
-
     /// <summary>
     /// Represents a class in the CD model.
     /// </summary>
-    public interface IClass
+    public interface IClass : IDisplayable
     {
         /// <summary>
         /// The name of the class.
@@ -38,6 +16,11 @@ namespace KangaModeling.Compiler.ClassDiagrams.Model
         /// The fields contained in this class.
         /// </summary>
         IEnumerable<IField> Fields { get; }
+
+        /// <summary>
+        /// The methods contained in this class.
+        /// </summary>
+        IEnumerable<IMethod> Methods { get; }
 
     }
 

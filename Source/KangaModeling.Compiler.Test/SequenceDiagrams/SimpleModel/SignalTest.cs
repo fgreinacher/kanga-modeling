@@ -14,11 +14,17 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
         public void ConnectTest()
         {
             Signal target = CreateSignal();
-            var startPinMock = new Mock<Pin>(MockBehavior.Strict);
+            
+            var lifelineMock = new Mock<Lifeline>(null, null, null, 0);
+            lifelineMock.Setup(lifeline => lifeline.Index).Returns(0);
+
+            var startPinMock = new Mock<Pin>(MockBehavior.Strict, null, lifelineMock.Object, PinType.None);
+            startPinMock.Setup(pin => pin.Orientation).Returns(Orientation.None);
             startPinMock.Setup(pin => pin.SetSignal(target));
             startPinMock.SetupProperty(pin => pin.PinType, PinType.None);
 
-            var endPinMock = new Mock<Pin>(MockBehavior.Strict);
+            var endPinMock = new Mock<Pin>(MockBehavior.Strict, null, lifelineMock.Object, PinType.None);
+            endPinMock.Setup(pin => pin.Orientation).Returns(Orientation.None);
             endPinMock.Setup(pin => pin.SetSignal(target));
             endPinMock.SetupProperty(pin => pin.PinType, PinType.None);
 
@@ -40,12 +46,15 @@ namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
         [TestCase(12)]
         public void RowIndexTest(int rowIndex)
         {
-            Signal target = CreateSignal(); 
+            Signal target = CreateSignal();
 
-            var startPinStub = new Mock<Pin>(MockBehavior.Loose);
+            var lifelineMock = new Mock<Lifeline>(null, null, null, 0);
+            lifelineMock.Setup(lifeline => lifeline.Index).Returns(0);
+
+            var startPinStub = new Mock<Pin>(MockBehavior.Loose, null, lifelineMock.Object, PinType.None);
             startPinStub.Setup(pin => pin.RowIndex).Returns(rowIndex);
 
-            var endPinStub = new Mock<Pin>(MockBehavior.Loose);
+            var endPinStub = new Mock<Pin>(MockBehavior.Loose, null, lifelineMock.Object, PinType.None);
 
             target.Connect(startPinStub.Object, endPinStub.Object);
 

@@ -56,6 +56,17 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             return Length == 0;
         }
 
+        /// <summary>
+        /// Returns a new token with its value set to the trimmed value of this token. 
+        /// </summary>
+        /// <returns></returns>
+        public Token Trim()
+        {
+            string trimmedValue = m_Value.Trim();
+
+            return new Token(m_Line, m_Start + trimmedValue.Length, trimmedValue);
+        }
+
         public override string ToString()
         {
             return string.Format("[Ln {0} Col {1}] '{2}' ", Line, Start, Value);

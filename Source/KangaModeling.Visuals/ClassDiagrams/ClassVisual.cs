@@ -1,62 +1,59 @@
-﻿using KangaModeling.Compiler.ClassDiagrams.Model;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using KangaModeling.Compiler.ClassDiagrams;
+using KangaModeling.Compiler.ClassDiagrams.Model;
+using KangaModeling.Compiler.Toolbox;
+using KangaModeling.Graphics;
 using KangaModeling.Graphics.Primitives;
-using System;
 
 namespace KangaModeling.Visuals.ClassDiagrams
 {
+
+    /// <summary>
+    /// A ClassVisual instance is able to visualize an instance of IClass.
+    /// </summary>
     public sealed class ClassVisual : Visual
     {
-        private readonly IClass _Class;
+        /// <summary>The IClass instance to visualize</summary>
+        private readonly IClass _class;
 
         public ClassVisual(IClass cd)
-            : base()
         {
             if (cd == null) throw new ArgumentNullException("cd");
-            _Class = cd;
-            Initialize();
+            _class = cd;
+
+            AddChild(new CompartmentVisual(Enumerable.Repeat(_class, 1)));
+            AddChild(new CompartmentVisual(_class.Fields));
+            AddChild(new CompartmentVisual(_class.Methods));
         }
 
-        public void Initialize()
+        protected override void DrawCore(IGraphicContext graphicContext)
         {
+            // TODO debug flag graphicContext.FillRectangle(Location, Size, Color.Green);
         }
 
-        protected override void DrawCore(Graphics.IGraphicContext graphicContext)
+        protected override void LayoutCore(IGraphicContext graphicContext)
         {
-            // the class name
-            graphicContext.DrawRectangle(new Point(0, 0), _nameCompartmentSize, Color.Black, LineStyle.Clean);
+            SetCompartmentLocations();
 
-            graphicContext.DrawText(
-                _nameTextPoint,
-                _nameTextSize,
-                _Class.Name,
-                Font.Handwritten,
-                12,
-                Color.Black,
-                HorizontalAlignment.Center,
-                VerticalAlignment.Middle
-            );
+            // the width of individual compartments may not match.
+            // get the widest one and set the widths of all compartments.
+            var maxWidth = Children.Max(v => v.Width);
+            Children.ForEach(v => v.Size = new Size(maxWidth, v.Size.Height));
+
+            Size = new Size(maxWidth, Children.Aggregate(0f, (f, visual) => f + visual.Height));
         }
 
-        protected override void LayoutCore(Graphics.IGraphicContext graphicContext)
+        private void SetCompartmentLocations()
         {
-            Size textSize = graphicContext.MeasureText(_Class.Name, Font.Handwritten, 12);
-
-            // some padding left and right...
-            float leftPadding = 10f, rightPadding = 10f;
-
-            _nameTextSize = textSize;
-            _nameTextPoint = new Point(leftPadding, 4f);
-
-            _nameCompartmentSize = new Size(
-                leftPadding + textSize.Width + rightPadding,
-                4f + textSize.Height + 4f
-            );
-
-            Size = _nameCompartmentSize;
+            float yCursor = 0f;
+            foreach (var compartments in Children)
+            {
+                compartments.Location = new Point(0f, yCursor);
+                yCursor += compartments.Size.Height;
+            }
         }
 
-        private Size _nameCompartmentSize;
-        private Size _nameTextSize;
-        private Point _nameTextPoint;
     }
 }

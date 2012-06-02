@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using KangaModeling.Compiler.Toolbox;
 using KangaModeling.Compiler.ClassDiagrams;
 
 namespace KangaModeling.Compiler.Test.ClassDiagrams
@@ -7,76 +11,91 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
     /// </summary>
     static class TokenStreamBuilder
     {
-        public static CDToken Token(this string value)
+        public static ClassDiagramToken Token(this string value)
         {
-            var tt = CDTokenType.Identifier;
-            int dummy;
-            if (int.TryParse(value, out dummy)) tt = CDTokenType.Number;
-            if (value.Equals("*")) tt = CDTokenType.Star;
-            if (value.Equals("..")) tt = CDTokenType.DotDot;
-            if (value.Equals(":")) tt = CDTokenType.Colon;
-            if (value.Equals("+")) tt = CDTokenType.Plus;
-            if (value.Equals("-")) tt = CDTokenType.Dash;
-            if (value.Equals("#")) tt = CDTokenType.Hash;
-            if (value.Equals("~")) tt = CDTokenType.Tilde;
-
-            return new CDToken(0, value.Length, tt, value);
+            return new ClassDiagramToken(0, value.Length, value.FromDisplayString(), value);
         }
 
-        public static CDToken Token(this CDTokenType tokenType)
+        public static ClassDiagramToken Token(this TokenType tokenType)
         {
             // constant 10 is arbitrary and just to make the CDToken happy.
-            return new CDToken(0, 10, tokenType);
+            return new ClassDiagramToken(0, 10, tokenType);
         }
 
-        public static TokenStream Class(string className, TokenStream fields = null)
+        public static ClassDiagramTokenStream Class(string className, ClassDiagramTokenStream fields = null, ClassDiagramTokenStream methods = null)
         {
-            var f = CombineTokenStreams(new TokenStream { CDTokenType.Pipe.Token() }, fields);
+            var f = CombineTokenStreams(new ClassDiagramTokenStream { TokenType.Pipe.Token() }, fields);
+            var m = CombineTokenStreams(new ClassDiagramTokenStream { TokenType.Pipe.Token() }, methods);
 
             var ts = CombineTokenStreams(
-                new TokenStream { CDTokenType.Bracket_Open.Token(), className.Token() },
-                fields == null ? null : f,
-                new TokenStream { CDTokenType.Bracket_Close.Token(), }
-                );
+                new ClassDiagramTokenStream { TokenType.BracketOpen.Token(), className.Token() },
+                fields == null ? (methods != null ? new ClassDiagramTokenStream { TokenType.Pipe.Token() } : null) : f,
+                methods == null ? null : m,
+                new ClassDiagramTokenStream { TokenType.BracketClose.Token(), }
+            );
             return ts;
         }
 
-        public static TokenStream Field(string name, string type = null, string accessModifier = null)
+        public static ClassDiagramTokenStream Field(string name, string type = null, string accessModifier = null)
         {
-            var stream = new TokenStream { name.Token() };
+            var stream = new ClassDiagramTokenStream { name.Token() };
             if (type != null)
-                stream = CombineTokenStreams(stream, new TokenStream { CDTokenType.Colon.Token(), type.Token() });
+                stream = CombineTokenStreams(stream, new ClassDiagramTokenStream { TokenType.Colon.Token(), type.Token() });
             if(accessModifier != null)
-                stream = CombineTokenStreams(new TokenStream { accessModifier.Token()}, stream);
+                stream = CombineTokenStreams(new ClassDiagramTokenStream { accessModifier.Token() }, stream);
             return stream;
         }
 
-        public static TokenStream Association(string sourceFrom, string sourceTo, string targetFrom, string targetTo)
+        public static ClassDiagramTokenStream Association(string sourceFrom, string sourceTo, string association, string targetFrom, string targetTo)
         {
-            var tokens = new TokenStream();
-
-            tokens.AddRange(Class("a"));
+            var tokens = new ClassDiagramTokenStream();
 
             tokens.AddRange(new[] { sourceFrom.Token()});
             if (sourceTo != null)
                 tokens.AddRange(new[] { "..".Token(), sourceTo.Token() });
 
-            tokens.AddRange(new[] { CDTokenType.Dash.Token()});
+            tokens.AddRange(PureAssociation(association));
 
             tokens.AddRange(new[] { targetFrom.Token()});
             if (targetTo != null)
                 tokens.AddRange(new[] { "..".Token(), targetTo.Token() });
 
-            tokens.AddRange(Class("b"));
-
             return tokens;
         }
 
-        public static TokenStream CombineTokenStreams(params TokenStream[] streams)
+        public static ClassDiagramTokenStream PureAssociation(string association)
         {
-            var combinedStream = new TokenStream();
+            switch(association)
+            {
+                case "-":
+                    return new ClassDiagramTokenStream { TokenType.Dash.Token() };
+            }
+
+            throw new ArgumentException("unexpected association: " + association);
+        }
+
+        public static ClassDiagramTokenStream Method(string name, string visibilityModifier = "+", ClassDiagramTokenStream parameterStream = null)
+        {
+            var stream = CombineTokenStreams(
+                new ClassDiagramTokenStream { visibilityModifier.Token(), name.Token(), TokenType.ParenthesisOpen.Token() },
+                parameterStream,
+                new ClassDiagramTokenStream { TokenType.ParenthesisClose.Token() }
+            );
+            return stream;
+        }
+
+        public static ClassDiagramTokenStream CombineTokenStreams(params ClassDiagramTokenStream[] streams)
+        {
+            var combinedStream = new ClassDiagramTokenStream();
             foreach (var singleStream in streams) if(singleStream != null) combinedStream.AddRange(singleStream);
             return combinedStream;
+        }
+
+        public static ClassDiagramTokenStream FromStrings(params string[] tokens)
+        {
+            var s = new ClassDiagramTokenStream();
+            tokens.Where(s1 => s1.Length > 0).ForEach(t => s.Add(t.Token()));
+            return s;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using NUnit.Framework;
 using KangaModeling.Compiler.ClassDiagrams;
@@ -10,19 +11,19 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
     /// Tests for tokenizing a string with the class diagram scanner.
     /// </summary>
     [TestFixture]
-    public class t00_ScannerTests
+    public class T00ScannerTests
     {
 
         [Test]
         public void t00_Check_Constructing()
         {
-            new CDScanner();
+            new ClassDiagramScanner();
         }
 
         [Test, ExpectedException(typeof(ArgumentNullException))]
         public void t01_Throws_On_Null_Argument()
         {
-            var scanner = new CDScanner();
+            var scanner = new ClassDiagramScanner();
             scanner.Parse(null);
         }
 
@@ -30,7 +31,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Check_Simple_Classes()
         {
             const string source = "[ClassName]";
-            var expectedTokens = new[] { new CDToken(0, 1, CDTokenType.Bracket_Open), new CDToken(0, 10, CDTokenType.Identifier, "ClassName"), new CDToken(0, 11, CDTokenType.Bracket_Close)};
+            var expectedTokens = new[] { new ClassDiagramToken(0, 1, TokenType.BracketOpen), new ClassDiagramToken(0, 10, TokenType.Identifier, "ClassName"), new ClassDiagramToken(0, 11, TokenType.BracketClose)};
             checkTokens(source, expectedTokens);
         }
 
@@ -39,9 +40,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         {
             var source = "[" + Environment.NewLine + "ClassName" + Environment.NewLine + "]";
             var expectedTokens = new[] { 
-                new CDToken(0, 1, CDTokenType.Bracket_Open), 
-                new CDToken(1, 9, CDTokenType.Identifier, "ClassName"), 
-                new CDToken(2, 1, CDTokenType.Bracket_Close), 
+                new ClassDiagramToken(0, 1, TokenType.BracketOpen), 
+                new ClassDiagramToken(1, 9, TokenType.Identifier, "ClassName"), 
+                new ClassDiagramToken(2, 1, TokenType.BracketClose), 
             };
             checkTokens(source, expectedTokens);
         }
@@ -50,7 +51,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t02_Check_Simple_Classes_Whitespace()
         {
             const string source = "  [  ClassName  ]  ";
-            var expectedTokens = new[] { new CDToken(0, 3, CDTokenType.Bracket_Open), new CDToken(0, 14, CDTokenType.Identifier, "ClassName"), new CDToken(0, 17, CDTokenType.Bracket_Close), };
+            var expectedTokens = new[] { new ClassDiagramToken(0, 3, TokenType.BracketOpen), new ClassDiagramToken(0, 14, TokenType.Identifier, "ClassName"), new ClassDiagramToken(0, 17, TokenType.BracketClose), };
             checkTokens(source, expectedTokens);
         }
 
@@ -58,37 +59,38 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void t03_Check_Invalid_Identifier()
         {
             const string source = " 0IdentifiersMustStartWithALetter  ";
-            var expectedTokens = new CDToken[] { /* TODO currently invalid tokens are just ignored. */ };
+            var expectedTokens = new ClassDiagramToken[] { /* TODO currently invalid tokens are just ignored. */ };
             checkTokens(source, expectedTokens);
         }
 
-        [TestCase("|", CDTokenType.Pipe, TestName = "pipe")]
-        [TestCase(":", CDTokenType.Colon, TestName = "colon")]
-        [TestCase(",", CDTokenType.Comma, TestName = "comma")]
-        [TestCase("-", CDTokenType.Dash, TestName="dash")]
-        [TestCase("<", CDTokenType.Angle_Open, TestName = "angle open")]
-        [TestCase(">", CDTokenType.Angle_Close, TestName = "angle close")]
-        [TestCase("+", CDTokenType.Plus, TestName = "plus")]
-        [TestCase("#", CDTokenType.Hash, TestName = "hash")]
-        [TestCase("[", CDTokenType.Bracket_Open, TestName = "bracket open")]
-        [TestCase("]", CDTokenType.Bracket_Close, TestName = "bracket close")]
-        [TestCase("~", CDTokenType.Tilde, TestName = "tilde")]
-        [TestCase("*", CDTokenType.Star, TestName = "star")]
-        [TestCase("..", CDTokenType.DotDot, TestName = "dot dot")]
-        [TestCase("0", CDTokenType.Number, TestName = "Number")]
-        [TestCase("1", CDTokenType.Number, TestName = "Number")]
-        [TestCase("12234", CDTokenType.Number, TestName = "Number")]
-        [Test]
-        public void t04_Check_Token(String assoc, CDTokenType expectedTType)
+        [TestCase("|", TokenType.Pipe, TestName = "pipe")]
+        [TestCase(":", TokenType.Colon, TestName = "colon")]
+        [TestCase(",", TokenType.Comma, TestName = "comma")]
+        [TestCase("-", TokenType.Dash, TestName="dash")]
+        [TestCase("<", TokenType.AngleOpen, TestName = "angle open")]
+        [TestCase(">", TokenType.AngleClose, TestName = "angle close")]
+        [TestCase("+", TokenType.Plus, TestName = "plus")]
+        [TestCase("#", TokenType.Hash, TestName = "hash")]
+        [TestCase("[", TokenType.BracketOpen, TestName = "bracket open")]
+        [TestCase("]", TokenType.BracketClose, TestName = "bracket close")]
+        [TestCase("(", TokenType.ParenthesisOpen, TestName = "parenthesis open")]
+        [TestCase(")", TokenType.ParenthesisClose, TestName = "parenthesis close")]
+        [TestCase("~", TokenType.Tilde, TestName = "tilde")]
+        [TestCase("*", TokenType.Star, TestName = "star")]
+        [TestCase("..", TokenType.DotDot, TestName = "dot dot")]
+        [TestCase("0", TokenType.Number, TestName = "Number 0")]
+        [TestCase("1", TokenType.Number, TestName = "Number 1")]
+        [TestCase("12234", TokenType.Number, TestName = "Number 12234")]
+        public void t04_Check_Token(String assoc, TokenType expectedTType)
         {
-            var expectedTokens = new[] { new CDToken(0, assoc.Length, expectedTType, assoc)};
+            var expectedTokens = new[] { new ClassDiagramToken(0, assoc.Length, expectedTType, assoc)};
             checkTokens(assoc, expectedTokens);
         }
 
-        private void checkTokens(string source, IEnumerable<CDToken> expectedTokens)
+        private void checkTokens(string source, IEnumerable<ClassDiagramToken> expectedTokens)
         {
-            var scanner = new CDScanner();
-            var tokens = new List<CDToken>(scanner.Parse(source));
+            var scanner = new ClassDiagramScanner();
+            var tokens = scanner.Parse(source).ToList();
             CollectionAssert.AreEqual(expectedTokens, tokens, "token unexpected");
         }
 
