@@ -81,16 +81,27 @@ div.n
   color: #00c;
   font-weight: bold;
 }
+
+html, body
+{
+  margin: 0;
+  padding: 0;
+  height: 100%; /* WICHTIG!!! STRECKT ANZEIGENBEREICH AUF 100% */
+}
+
 .main
 {
-  width: 800px;
+  width: 90%;
+  height: 100%;
   text-align: left;
-  position: absolute;
-  top: 0px;
-  left: 50%;
-  margin-left: -400px;
+  margin: 0px auto;
+  min-height: 100%; /* Mindesthöhe für moderne Browser */
+  height: auto !important; /* Important Regel für moderne Browser */
+  height: 100%; /* Mindesthöhe für den IE */
+  overflow: hidden !important; /* FF Scroll-leiste */
   padding-left: 15px;
   padding-right: 15px;
+  border-top: 0px;
   border-right-style: groove;
   border-left-style: groove;
 }
