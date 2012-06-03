@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using KangaModeling.Compiler.ClassDiagrams.Errors;
 using KangaModeling.Compiler.ClassDiagrams.Model;
 
 namespace KangaModeling.Compiler.ClassDiagrams
@@ -10,71 +11,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
     public static class DiagramCreator
     {
-        /// <summary>
-        /// A text region denotes a substring inside a text (=user source).
-        /// </summary>
-        public struct TextRegion
-        {
-            public TextRegion(int line, int charStart, int length)
-            {
-                Line = line;
-                PositionInLine = charStart;
-                Length = length;
-            }
-
-            public readonly int Line;
-            public readonly int PositionInLine;
-            public readonly int Length;
-        }
-
-        /// <summary>
-        /// The "nature" of the error.
-        /// </summary>
-        public enum ErrorCategory
-        {
-            /// <summary> parse failure. </summary>
-            Syntactical,
-            /// <summary> parse OK, but does not make sense semantically. </summary>
-            Semantical,
-        }
-
-        /// <summary>
-        /// Encapsulates the data for a single error.
-        /// </summary>
-        public sealed class Error
-        {
-            public Error(string errorMessage, TextRegion location, string objectedText, ErrorCategory category = ErrorCategory.Syntactical)
-            {
-                if (errorMessage == null) throw new ArgumentNullException("errorMessage");
-                if (objectedText == null) throw new ArgumentNullException("objectedText");
-
-                ErrorMessage = errorMessage;
-                Location = location;
-                ObjectedText = objectedText;
-                Category = category;
-            }
-
-            public static Error Create(SyntaxErrorType syntaxErrorType, TokenType expectedType, ClassDiagramToken actualToken)
-            {
-                // TODO var region = new TextRegion(actualToken.Line, actualToken.Start, actualToken.Length);
-                var region = new TextRegion(0, 0, 0);
-                switch(syntaxErrorType)
-                {
-                    case SyntaxErrorType.Unexpected:
-                        return new Error("syntax error: expected token " + expectedType.ToDisplayString(), region, string.Empty);
-                    case SyntaxErrorType.Missing:
-                        return new Error("unexpected token", region, actualToken.Value);
-
-                }
-                throw new ArgumentException("don't know how to handle error type: " + syntaxErrorType.ToString());
-            }
-
-            public string ErrorMessage { get; private set; }
-            public TextRegion Location { get; private set; }
-            public string ObjectedText { get; private set; }
-            public ErrorCategory Category { get; private set; }
-        }
-
         public class DiagramCreationResult
         {
             public DiagramCreationResult(IClassDiagram classDiagram, IEnumerable<Error> errors)
@@ -100,7 +36,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             
             ClassDiagramParser.ErrorCallback errorCallback = (syntaxErrorType, expected, actual) => {
                 errors.Add(Error.Create(syntaxErrorType, expected, actual));
-                return ClassDiagramParser.ErrorReturnCode.StopParsing;
+                return ErrorReturnCode.StopParsing;
             };
             var cd = new ClassDiagramParser(new ClassDiagramScanner().Parse(text), errorCallback).ParseClassDiagram();
 
@@ -110,12 +46,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
     }
 
 
-    public enum SyntaxErrorType : byte
-    {
-        Unexpected,
-        Missing,
-    }
-    
     /// <summary>
     /// LL(k) recursive descent parser for class diagram strings.
     /// </summary>
@@ -126,21 +56,6 @@ namespace KangaModeling.Compiler.ClassDiagrams
         private readonly ErrorCallback _errorCallback;
 
         #region types used for error handling
-
-
-        public enum ErrorReturnCode : byte
-        {
-
-            /// <summary>
-            /// Stops parsing on the first error.
-            /// </summary>
-            StopParsing,
-
-            ///// <summary>
-            ///// Tries to continue parsing by inserting/deleting tokens.
-            ///// </summary>
-            //TryContinueByModification,
-        }
 
         public delegate ErrorReturnCode ErrorCallback(SyntaxErrorType type, TokenType expected, ClassDiagramToken actualToken);
 

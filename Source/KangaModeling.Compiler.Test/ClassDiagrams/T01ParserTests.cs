@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using KangaModeling.Compiler.ClassDiagrams;
+using KangaModeling.Compiler.ClassDiagrams.Errors;
 using KangaModeling.Compiler.ClassDiagrams.Model;
 using NUnit.Framework;
 
@@ -454,7 +455,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             ClassDiagramParser.ErrorCallback errorCallback = (syntaxErrorType, expected, token) =>
                                                                  {
                                                                      called = true;
-                                                                     return ClassDiagramParser.ErrorReturnCode.StopParsing;
+                                                                     return ErrorReturnCode.StopParsing;
                                                                  };
 
             a(errorCallback);

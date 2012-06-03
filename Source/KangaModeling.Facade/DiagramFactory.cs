@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using KangaModeling.Compiler.ClassDiagrams;
+using KangaModeling.Compiler.ClassDiagrams.Errors;
 using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Visuals.SequenceDiagrams;
 using KangaModeling.Graphics.GdiPlus;
 using KangaModeling.Visuals.SequenceDiagrams.Styles;
 using KangaModeling.Compiler.ClassDiagrams.Model;
 using KangaModeling.Visuals.ClassDiagrams;
+using DiagramCreator = KangaModeling.Compiler.SequenceDiagrams.DiagramCreator;
 
 namespace KangaModeling.Facade
 {
@@ -51,7 +54,7 @@ namespace KangaModeling.Facade
                 sequenceDiagram.Root.Title);
         }
 
-        private static DiagramError ToModelError(Compiler.ClassDiagrams.DiagramCreator.Error error)
+        private static DiagramError ToModelError(Error error)
         {
             return new DiagramError(error.ErrorMessage, error.Location.Line, error.Location.PositionInLine,
                                     error.Location.Length, error.ObjectedText);
