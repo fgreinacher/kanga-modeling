@@ -449,18 +449,11 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         /// Checks that the given action (do some parsing) calls into the error callback.
         /// </summary>
         /// <param name="a"></param>
-        private void ExpectError(Action<ClassDiagramParser.ErrorCallback> a)
+        private void ExpectError(Action<IParseErrorHandler> a)
         {
-            bool called = false;
-            ClassDiagramParser.ErrorCallback errorCallback = (syntaxErrorType, expected, token) =>
-                                                                 {
-                                                                     called = true;
-                                                                     return ErrorReturnCode.StopParsing;
-                                                                 };
-
-            a(errorCallback);
-
-            Assert.IsTrue(called, "error callback has not been called");
+            var parseErrorHandler = new DefaultParseErrorHandler();
+            a(parseErrorHandler);
+            Assert.IsTrue(parseErrorHandler.Errors.Any(), "error callback has not been called");
         }
 
         #endregion
@@ -501,9 +494,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
             ExpectError(callback);
         }
 
-        private static Action<ClassDiagramParser.ErrorCallback> RetrieveErrorCallback(TestData data, ClassDiagramTokenStream tokens)
+        private static Action<IParseErrorHandler> RetrieveErrorCallback(TestData data, ClassDiagramTokenStream tokens)
         {
-            Action<ClassDiagramParser.ErrorCallback> callback = null;
+            Action<IParseErrorHandler> callback;
             switch (data.Target)
             {
                 case ParseTarget.ClassDiagram:

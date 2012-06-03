@@ -29,15 +29,9 @@ namespace KangaModeling.Compiler.ClassDiagrams
         /// <returns>A sequence diagram parsed from the text. Never null.</returns>
         public static DiagramCreationResult CreateFrom(string text)
         {
-            var errors = new List<Error>(2);
-            
-            ClassDiagramParser.ErrorCallback errorCallback = (syntaxErrorType, expected, actual) => {
-                                                                                                        errors.Add(Error.Create(syntaxErrorType, expected, actual));
-                                                                                                        return ErrorReturnCode.StopParsing;
-            };
-            var cd = new ClassDiagramParser(new ClassDiagramScanner().Parse(text), errorCallback).ParseClassDiagram();
-
-            return new DiagramCreationResult(cd, errors);
+            var parseErrorHandler = new DefaultParseErrorHandler();
+            var cd = new ClassDiagramParser(new ClassDiagramScanner().Parse(text), parseErrorHandler).ParseClassDiagram();
+            return new DiagramCreationResult(cd, parseErrorHandler.Errors);
         }
 
     }

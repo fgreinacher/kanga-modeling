@@ -8,9 +8,9 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
     /// </summary>
     static class ClassDiagramTokenStreamExtesnsions
     {
-        internal static IClassDiagram ParseClassDiagram(this ClassDiagramTokenStream classDiagramTokenStream, ClassDiagramParser.ErrorCallback errorCallback = null)
+        internal static IClassDiagram ParseClassDiagram(this ClassDiagramTokenStream classDiagramTokenStream, IParseErrorHandler parseErrorHandler = null)
         {
-            return new ClassDiagramParser(classDiagramTokenStream, errorCallback).ParseClassDiagram();
+            return new ClassDiagramParser(classDiagramTokenStream, parseErrorHandler).ParseClassDiagram();
         }
     }
 }

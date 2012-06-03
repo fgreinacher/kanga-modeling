@@ -12,25 +12,21 @@ namespace KangaModeling.Compiler.ClassDiagrams.Errors
             if (errorMessage == null) throw new ArgumentNullException("errorMessage");
             if (objectedText == null) throw new ArgumentNullException("objectedText");
 
-            ErrorMessage = errorMessage;
+            ErrorMessage = string.Format("syntax error: {0}, at: {1}", errorMessage, location);
             Location = location;
             ObjectedText = objectedText;
             Category = category;
         }
 
-        public static Error Create(SyntaxErrorType syntaxErrorType, TokenType expectedType, ClassDiagramToken actualToken)
+        public static Error Unexpected(TokenType expectedType, ClassDiagramToken actualToken)
         {
-            // TODO var region = new TextRegion(actualToken.Line, actualToken.Start, actualToken.Length);
-            var region = new TextRegion(0, 0, 0);
-            switch(syntaxErrorType)
-            {
-                case SyntaxErrorType.Unexpected:
-                    return new Error("syntax error: expected token " + expectedType.ToDisplayString(), region, String.Empty);
-                case SyntaxErrorType.Missing:
-                    return new Error("unexpected token", region, actualToken.Value);
+            var region = new TextRegion(actualToken.Line, actualToken.Start, actualToken.Length);
+            return new Error("unexpected token", region, actualToken.Value);
+        }
 
-            }
-            throw new ArgumentException("don't know how to handle error type: " + syntaxErrorType.ToString());
+        public static Error Missing(TokenType expectedType, TextRegion region)
+        {
+            return new Error("expected token " + expectedType.ToDisplayString(), region, String.Empty);
         }
 
         public string ErrorMessage { get; private set; }

@@ -8,6 +8,39 @@ using KangaModeling.Compiler.ClassDiagrams.Model;
 
 namespace KangaModeling.Compiler.ClassDiagrams
 {
+    public interface IParseErrorHandler
+    {
+        ErrorReturnCode Unexpected(TokenType expected, ClassDiagramToken actualToken);
+        ErrorReturnCode Missing(TokenType expected, TextRegion region);
+    }
+
+    public class DefaultParseErrorHandler : IParseErrorHandler
+    {
+        private readonly List<Error> _errors;
+        
+        public DefaultParseErrorHandler()
+        {
+            _errors = new List<Error>(2);
+        }
+
+        public IEnumerable<Error> Errors
+        {
+            get { return _errors; }
+        }
+
+        public ErrorReturnCode Unexpected(TokenType expected, ClassDiagramToken actualToken)
+        {
+            _errors.Add(Error.Unexpected(expected, actualToken));
+            return ErrorReturnCode.StopParsing;
+        }
+
+        public ErrorReturnCode Missing(TokenType expected, TextRegion region)
+        {
+            _errors.Add(Error.Missing(expected, region));
+            return ErrorReturnCode.StopParsing;
+        }
+    }
+
     /// <summary>
     /// LL(k) recursive descent parser for class diagram strings.
     /// </summary>
@@ -15,13 +48,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
     {
 
         private readonly ClassDiagramTokenStream _genericTokens;
-        private readonly ErrorCallback _errorCallback;
-
-        #region types used for error handling
-
-        public delegate ErrorReturnCode ErrorCallback(SyntaxErrorType type, TokenType expected, ClassDiagramToken actualToken);
-
-        #endregion
+        private readonly IParseErrorHandler _parseErrorHandler;
 
         #region model implementing classes
 
@@ -222,11 +249,11 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         #endregion
 
-        public ClassDiagramParser(ClassDiagramTokenStream genericTokens, ErrorCallback errorCallback = null)
+        public ClassDiagramParser(ClassDiagramTokenStream genericTokens, IParseErrorHandler parseErrorHandler= null)
         {
             if (genericTokens == null) throw new ArgumentNullException("genericTokens");
             _genericTokens = genericTokens;
-            _errorCallback = errorCallback;
+            _parseErrorHandler = parseErrorHandler;
         }
 
         #region productions
@@ -255,11 +282,28 @@ namespace KangaModeling.Compiler.ClassDiagrams
             return cd;
         }
 
-        // TODO there's no TokenType for junk...
         private void FireError(SyntaxErrorType syntaxErrorType, TokenType expected = TokenType.Unknown)
         {
-            if(_errorCallback != null)
-                _errorCallback(syntaxErrorType, expected, _genericTokens.Count > 0 ? _genericTokens[0] : null);
+            if(_parseErrorHandler != null)
+            {
+                switch(syntaxErrorType)
+                {
+                    case SyntaxErrorType.Unexpected:
+                        // when there's something unexpected, at least one token must be in the stream
+                        Debug.Assert(_genericTokens.Count > 0, "unexpected token found without tokens in the stream.");
+                        _parseErrorHandler.Unexpected(expected, _genericTokens[0]);
+                        break;
+                    case SyntaxErrorType.Missing:
+                        // need to tweak the current location, since it points to the last consumed token,
+                        // but there's something missing AFTER that token...
+                        var loc = new TextRegion(
+                            _genericTokens.CurrentLocation.Line,
+                            _genericTokens.CurrentLocation.PositionInLine + _genericTokens.CurrentLocation.Length,
+                            0);
+                        _parseErrorHandler.Missing(expected, loc);
+                        break;
+                }
+            }
         }
 
         // "[" ID "]"

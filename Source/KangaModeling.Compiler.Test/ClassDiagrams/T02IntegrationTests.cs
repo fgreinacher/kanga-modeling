@@ -53,8 +53,8 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
         public void T02CheckParseFail(TestData data)
         {
             var result = DiagramCreator.CreateFrom(data.Source);
-            Assert.IsNotNull(result.ClassDiagram, "failed to parse");
-            Assert.AreEqual(0, result.Errors.Count(), "no errors expected");
+            Assert.IsNull(result.ClassDiagram, "failed to parse");
+            Assert.AreNotEqual(0, result.Errors.Count(), "errors expected");
         }
 
     }

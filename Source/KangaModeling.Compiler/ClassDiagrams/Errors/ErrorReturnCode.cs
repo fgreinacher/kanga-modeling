@@ -1,6 +1,6 @@
 namespace KangaModeling.Compiler.ClassDiagrams.Errors
 {
-    internal enum ErrorReturnCode : byte
+    public enum ErrorReturnCode : byte
     {
 
         /// <summary>
