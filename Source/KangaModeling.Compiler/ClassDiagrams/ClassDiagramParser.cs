@@ -275,34 +275,34 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             if (_genericTokens.Count > 0)
             {
-                FireError(SyntaxErrorType.Unexpected);
+                FireUnexpectedError(TokenType.Unknown);
                 return null;
             }
 
             return cd;
         }
 
-        private void FireError(SyntaxErrorType syntaxErrorType, TokenType expected = TokenType.Unknown)
+        private void FireMissingError(TokenType expected)
         {
-            if(_parseErrorHandler != null)
+            if (_parseErrorHandler != null)
             {
-                switch(syntaxErrorType)
-                {
-                    case SyntaxErrorType.Unexpected:
-                        // when there's something unexpected, at least one token must be in the stream
-                        Debug.Assert(_genericTokens.Count > 0, "unexpected token found without tokens in the stream.");
-                        _parseErrorHandler.Unexpected(expected, _genericTokens[0]);
-                        break;
-                    case SyntaxErrorType.Missing:
-                        // need to tweak the current location, since it points to the last consumed token,
-                        // but there's something missing AFTER that token...
-                        var loc = new TextRegion(
-                            _genericTokens.CurrentLocation.Line,
-                            _genericTokens.CurrentLocation.PositionInLine + _genericTokens.CurrentLocation.Length,
-                            0);
-                        _parseErrorHandler.Missing(expected, loc);
-                        break;
-                }
+                // need to tweak the current location, since it points to the last consumed token,
+                // but there's something missing AFTER that token...
+                var loc = new TextRegion(
+                    _genericTokens.CurrentLocation.Line,
+                    _genericTokens.CurrentLocation.PositionInLine + _genericTokens.CurrentLocation.Length,
+                    0);
+                _parseErrorHandler.Missing(expected, loc);
+            }
+        }
+
+        private void FireUnexpectedError(TokenType expected)
+        {
+            if (_parseErrorHandler != null)
+            {
+                // when there's something unexpected, at least one token must be in the stream
+                Debug.Assert(_genericTokens.Count > 0, "unexpected token found without tokens in the stream.");
+                _parseErrorHandler.Unexpected(expected, _genericTokens[0]);
             }
         }
 
@@ -311,14 +311,14 @@ namespace KangaModeling.Compiler.ClassDiagrams
         {
             if (!_genericTokens.TryConsume(TokenType.BracketOpen))
             {
-                FireError(SyntaxErrorType.Missing, TokenType.BracketOpen);
+                FireMissingError(TokenType.BracketOpen);
                 return null;
             }
 
             ClassDiagramToken token;
             if (!_genericTokens.TryConsume(TokenType.Identifier, out token))
             {
-                FireError(SyntaxErrorType.Missing, TokenType.Identifier);
+                FireMissingError(TokenType.Identifier);
                 return null;
             }
             var c = new Class(token.Value);
@@ -361,7 +361,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             if (!_genericTokens.TryConsume(TokenType.BracketClose))
             {
-                FireError(SyntaxErrorType.Missing, TokenType.BracketClose);
+                FireMissingError(TokenType.BracketClose);
                 return null;
             }
 
@@ -394,7 +394,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     type = token.Value;
                 else
                 {
-                    FireError(SyntaxErrorType.Missing, TokenType.Identifier);
+                    FireMissingError(TokenType.Identifier);
                     return null;
                 }
             }
@@ -414,7 +414,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // (mandatory) name
             if(!_genericTokens.TryConsume(TokenType.Identifier, out token))
             {
-                FireError(SyntaxErrorType.Missing, TokenType.Identifier);
+                FireMissingError(TokenType.Identifier);
                 return null;
             }
             string name = token.Value;
@@ -422,7 +422,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // (mandatory) (
             if(!_genericTokens.TryConsume(TokenType.ParenthesisOpen))
             {
-                FireError(SyntaxErrorType.Missing, TokenType.ParenthesisOpen);
+                FireMissingError(TokenType.ParenthesisOpen);
                 return null;
             }
 
@@ -457,7 +457,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // (mandatory) )
             if (!_genericTokens.TryConsume(TokenType.ParenthesisClose))
             {
-                FireError(SyntaxErrorType.Missing, TokenType.ParenthesisClose);
+                FireMissingError(TokenType.ParenthesisClose);
                 return null;
             }
 
@@ -467,7 +467,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 // now return type MUST follow
                 if(!_genericTokens.TryConsume(TokenType.Identifier, out token))
                 {
-                    FireError(SyntaxErrorType.Missing, TokenType.Identifier);
+                    FireMissingError(TokenType.Identifier);
                     return null;
                 }
 
@@ -598,7 +598,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     }
                     else
                         // TODO more than one TokenType!
-                        FireError(SyntaxErrorType.Missing, TokenType.Number);
+                        FireMissingError(TokenType.Number);
                 }
                 else
                 {
