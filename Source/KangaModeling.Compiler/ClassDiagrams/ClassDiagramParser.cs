@@ -3,106 +3,44 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using KangaModeling.Compiler.ClassDiagrams.Errors;
 using KangaModeling.Compiler.ClassDiagrams.Model;
 
 namespace KangaModeling.Compiler.ClassDiagrams
 {
-
-    public static class DiagramCreator
+    public interface IParseErrorHandler
     {
-        /// <summary>
-        /// A text region denotes a substring inside a text (=user source).
-        /// </summary>
-        public struct TextRegion
-        {
-            public TextRegion(int line, int charStart, int length)
-            {
-                Line = line;
-                PositionInLine = charStart;
-                Length = length;
-            }
-
-            public readonly int Line;
-            public readonly int PositionInLine;
-            public readonly int Length;
-        }
-
-        /// <summary>
-        /// The "nature" of the error.
-        /// </summary>
-        public enum ErrorCategory
-        {
-            /// <summary> parse failure. </summary>
-            Syntactical,
-            /// <summary> parse OK, but does not make sense semantically. </summary>
-            Semantical,
-        }
-
-        /// <summary>
-        /// Encapsulates the data for a single error.
-        /// </summary>
-        public sealed class Error
-        {
-            public Error(string errorMessage, TextRegion location, string objectedText, ErrorCategory category = ErrorCategory.Syntactical)
-            {
-                if (errorMessage == null) throw new ArgumentNullException("errorMessage");
-                if (objectedText == null) throw new ArgumentNullException("objectedText");
-
-                ErrorMessage = errorMessage;
-                Location = location;
-                ObjectedText = objectedText;
-                Category = category;
-            }
-
-            public static Error Create(TokenType expectedType, ClassDiagramToken actualToken)
-            {
-                //var region = new TextRegion(actualToken.Line, actualToken.Start, actualToken.Length);
-                var region = new TextRegion(0, 0, 0);
-                if (actualToken == null)
-                    return new Error("syntax error: expected token " + expectedType.ToDisplayString(), region, string.Empty);
-                return new Error("unexpected token", region, actualToken.Value);
-            }
-
-            public string ErrorMessage { get; private set; }
-            public TextRegion Location { get; private set; }
-            public string ObjectedText { get; private set; }
-            public ErrorCategory Category { get; private set; }
-        }
-
-        public class DiagramCreationResult
-        {
-            public DiagramCreationResult(IClassDiagram classDiagram, IEnumerable<Error> errors)
-            {
-                //if (classDiagram == null) throw new ArgumentNullException("classDiagram");
-                if (errors == null) throw new ArgumentNullException("errors");
-                ClassDiagram = classDiagram;
-                Errors = errors;
-            }
-
-            public IClassDiagram ClassDiagram { get; private set; }
-            public IEnumerable<Error> Errors { get; private set; }
-        }
-
-        /// <summary>
-        /// Conveniently parse a string to a sequence diagram.
-        /// </summary>
-        /// <param name="text">The text to parse.</param>
-        /// <returns>A sequence diagram parsed from the text. Never null.</returns>
-        public static DiagramCreationResult CreateFrom(string text)
-        {
-            var errors = new List<Error>(2);
-            
-            ClassDiagramParser.ErrorCallback errorCallback = (expected, actual) => {
-                errors.Add(Error.Create(expected, actual));
-                return ClassDiagramParser.ErrorReturnCode.StopParsing;
-            };
-            var cd = new ClassDiagramParser(new ClassDiagramScanner().Parse(text), errorCallback).ParseClassDiagram();
-
-            return new DiagramCreationResult(cd, errors);
-        }
-
+        ErrorReturnCode Unexpected(TokenType expected, ClassDiagramToken actualToken);
+        ErrorReturnCode Missing(TokenType expected, TextRegion region);
     }
-    
+
+    public class DefaultParseErrorHandler : IParseErrorHandler
+    {
+        private readonly List<Error> _errors;
+        
+        public DefaultParseErrorHandler()
+        {
+            _errors = new List<Error>(2);
+        }
+
+        public IEnumerable<Error> Errors
+        {
+            get { return _errors; }
+        }
+
+        public ErrorReturnCode Unexpected(TokenType expected, ClassDiagramToken actualToken)
+        {
+            _errors.Add(Error.Unexpected(expected, actualToken));
+            return ErrorReturnCode.StopParsing;
+        }
+
+        public ErrorReturnCode Missing(TokenType expected, TextRegion region)
+        {
+            _errors.Add(Error.Missing(expected, region));
+            return ErrorReturnCode.StopParsing;
+        }
+    }
+
     /// <summary>
     /// LL(k) recursive descent parser for class diagram strings.
     /// </summary>
@@ -110,27 +48,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
     {
 
         private readonly ClassDiagramTokenStream _genericTokens;
-        private readonly ErrorCallback _errorCallback;
-
-        #region types used for error handling
-
-        public enum ErrorReturnCode
-        {
-
-            /// <summary>
-            /// Stops parsing on the first error.
-            /// </summary>
-            StopParsing,
-
-            ///// <summary>
-            ///// Tries to continue parsing by inserting/deleting tokens.
-            ///// </summary>
-            //TryContinueByModification,
-        }
-
-        public delegate ErrorReturnCode ErrorCallback(TokenType expected, ClassDiagramToken actualToken);
-
-        #endregion
+        private readonly IParseErrorHandler _parseErrorHandler;
 
         #region model implementing classes
 
@@ -331,11 +249,11 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
         #endregion
 
-        public ClassDiagramParser(ClassDiagramTokenStream genericTokens, ErrorCallback errorCallback = null)
+        public ClassDiagramParser(ClassDiagramTokenStream genericTokens, IParseErrorHandler parseErrorHandler= null)
         {
             if (genericTokens == null) throw new ArgumentNullException("genericTokens");
             _genericTokens = genericTokens;
-            _errorCallback = errorCallback;
+            _parseErrorHandler = parseErrorHandler;
         }
 
         #region productions
@@ -357,18 +275,35 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             if (_genericTokens.Count > 0)
             {
-                FireError();
+                FireUnexpectedError(TokenType.Unknown);
                 return null;
             }
 
             return cd;
         }
 
-        // TODO there's no TokenType for junk...
-        private void FireError(TokenType expected = TokenType.Unknown)
+        private void FireMissingError(TokenType expected)
         {
-            if(_errorCallback != null)
-                _errorCallback(expected, _genericTokens.Count > 0 ? _genericTokens[0] : null);
+            if (_parseErrorHandler != null)
+            {
+                // need to tweak the current location, since it points to the last consumed token,
+                // but there's something missing AFTER that token...
+                var loc = new TextRegion(
+                    _genericTokens.CurrentLocation.Line,
+                    _genericTokens.CurrentLocation.PositionInLine + _genericTokens.CurrentLocation.Length,
+                    0);
+                _parseErrorHandler.Missing(expected, loc);
+            }
+        }
+
+        private void FireUnexpectedError(TokenType expected)
+        {
+            if (_parseErrorHandler != null)
+            {
+                // when there's something unexpected, at least one token must be in the stream
+                Debug.Assert(_genericTokens.Count > 0, "unexpected token found without tokens in the stream.");
+                _parseErrorHandler.Unexpected(expected, _genericTokens[0]);
+            }
         }
 
         // "[" ID "]"
@@ -376,14 +311,14 @@ namespace KangaModeling.Compiler.ClassDiagrams
         {
             if (!_genericTokens.TryConsume(TokenType.BracketOpen))
             {
-                FireError(TokenType.BracketOpen);
+                FireMissingError(TokenType.BracketOpen);
                 return null;
             }
 
             ClassDiagramToken token;
             if (!_genericTokens.TryConsume(TokenType.Identifier, out token))
             {
-                FireError(TokenType.Identifier);
+                FireMissingError(TokenType.Identifier);
                 return null;
             }
             var c = new Class(token.Value);
@@ -426,7 +361,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
 
             if (!_genericTokens.TryConsume(TokenType.BracketClose))
             {
-                FireError(TokenType.BracketClose);
+                FireMissingError(TokenType.BracketClose);
                 return null;
             }
 
@@ -459,7 +394,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     type = token.Value;
                 else
                 {
-                    FireError(TokenType.Identifier);
+                    FireMissingError(TokenType.Identifier);
                     return null;
                 }
             }
@@ -479,7 +414,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // (mandatory) name
             if(!_genericTokens.TryConsume(TokenType.Identifier, out token))
             {
-                FireError(TokenType.Identifier);
+                FireMissingError(TokenType.Identifier);
                 return null;
             }
             string name = token.Value;
@@ -487,7 +422,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // (mandatory) (
             if(!_genericTokens.TryConsume(TokenType.ParenthesisOpen))
             {
-                FireError(TokenType.ParenthesisOpen);
+                FireMissingError(TokenType.ParenthesisOpen);
                 return null;
             }
 
@@ -522,7 +457,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
             // (mandatory) )
             if (!_genericTokens.TryConsume(TokenType.ParenthesisClose))
             {
-                FireError(TokenType.ParenthesisClose);
+                FireMissingError(TokenType.ParenthesisClose);
                 return null;
             }
 
@@ -532,7 +467,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                 // now return type MUST follow
                 if(!_genericTokens.TryConsume(TokenType.Identifier, out token))
                 {
-                    FireError(TokenType.Identifier);
+                    FireMissingError(TokenType.Identifier);
                     return null;
                 }
 
@@ -663,7 +598,7 @@ namespace KangaModeling.Compiler.ClassDiagrams
                     }
                     else
                         // TODO more than one TokenType!
-                        FireError(TokenType.Number);
+                        FireMissingError(TokenType.Number);
                 }
                 else
                 {

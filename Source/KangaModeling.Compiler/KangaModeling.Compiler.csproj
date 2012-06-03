@@ -47,6 +47,11 @@
     </Compile>
     <Compile Include="ClassDiagrams\ClassDiagramParser.cs" />
     <Compile Include="ClassDiagrams\ClassDiagramScanner.cs" />
+    <Compile Include="ClassDiagrams\DiagramCreator.cs" />
+    <Compile Include="ClassDiagrams\Errors\Error.cs" />
+    <Compile Include="ClassDiagrams\Errors\ErrorCategory.cs" />
+    <Compile Include="ClassDiagrams\Errors\ErrorReturnCode.cs" />
+    <Compile Include="ClassDiagrams\Errors\TextRegion.cs" />
     <Compile Include="ClassDiagrams\GenericScanner.cs" />
     <Compile Include="ClassDiagrams\ClassDiagramToken.cs" />
     <Compile Include="ClassDiagrams\ClassDiagramTokenStream.cs" />
