@@ -472,7 +472,7 @@ namespace KangaModeling.Compiler.Test.ClassDiagrams
                                                        // TODO new TestData(ParseTarget.Class, "classname"), // no brackets
                                                        // TODO new TestData(ParseTarget.Class, "classname", "]"), // first bracket missing
                                                        // TODO new TestData(ParseTarget.Class, "[", "]" ), // class name missing
-                                                       // TODO new TestData(ParseTarget.Class, "[", "classname" ), // last bracket missing
+                                                       new TestData(ParseTarget.ClassDiagram, "[", "classname" ), // last bracket missing
                                                        // TODO new TestData(ParseTarget.Class, "[", "classname", "|", "]" ), // pipe but no field...
                                                        // TODO new TestData(ParseTarget.Class ), // no tokens...
                                                        // TODO new TestData(ParseTarget.Class, "[", "classname", "|", "field1", "field2", "]"), // comma missing between fields
