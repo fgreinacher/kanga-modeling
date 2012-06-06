@@ -19,13 +19,13 @@ namespace KangaModeling.Web.Controllers
 
         private const string c_TypeSequence = "sequence";
 
-        private static Dictionary<string, DiagramStyle> s_StyleMappings = new Dictionary<string, DiagramStyle>()
+        private static readonly Dictionary<string, DiagramStyle> s_StyleMappings = new Dictionary<string, DiagramStyle>()
         {
             { c_StyleSketchy, DiagramStyle.Sketchy },
             { c_StyleClassic, DiagramStyle.Classic },
         };
 
-        private static Dictionary<string, DiagramType> s_TypeMappings = new Dictionary<string, DiagramType>()
+        private static readonly Dictionary<string, DiagramType> s_TypeMappings = new Dictionary<string, DiagramType>()
         {
             { c_TypeSequence, DiagramType.Sequence },
         };
@@ -46,6 +46,7 @@ namespace KangaModeling.Web.Controllers
 
         //
         // GET: /Api/Get        
+        [AllowCrossSiteJson]
         public ActionResult Get(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -64,6 +65,7 @@ namespace KangaModeling.Web.Controllers
 
         //
         // GET: /Api/Create
+        [AllowCrossSiteJson]
         public ActionResult Create(string source, string type, string style = c_StyleDefault)
         {
             var diagramSource = Server.UrlDecode(source);
@@ -93,12 +95,13 @@ namespace KangaModeling.Web.Controllers
 
         //
         // GET: /Api/Js        
+        [AllowCrossSiteJson]
         public ActionResult Js()
         {
             string jsPath = Server.MapPath("~/Scripts/kanga.js");
             string js = System.IO.File.ReadAllText(jsPath);
 
-            js = js.Replace("_KANGA_API_BASE_URI_", Url.Action(string.Empty, "api"));
+            js = js.Replace("_KANGA_API_BASE_URI_", Url.Action(string.Empty, "api", null, "http"));
 
             return new JavaScriptResult() { Script = js };
         }
@@ -127,7 +130,7 @@ namespace KangaModeling.Web.Controllers
 
         private ActionResult CreateResult(DiagramResult result, string id)
         {
-            if(Request.AcceptTypes.Any(acceptType => acceptType.Contains("json")))
+            if (Request.AcceptTypes.Any(acceptType => acceptType.Contains("json")))
             {
                 return new JsonResult
                 {
@@ -147,12 +150,14 @@ namespace KangaModeling.Web.Controllers
                                    value = error.TokenValue,
                                }
                            }),
-                        diagram = Url.Action("get", "api", new { Id = id }),
+                        diagram = Url.Action("get", "api", new { Id = id }, "http"),
+                        diagramWidth = result.Image.Width,
+                        diagramHeight = result.Image.Height,
                     }
                 };
             }
 
-            return RedirectToAction("get", new { id = id });            
+            return RedirectToAction("get", new { id = id });
         }
     }
 }

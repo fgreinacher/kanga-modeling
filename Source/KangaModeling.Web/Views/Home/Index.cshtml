@@ -16,7 +16,7 @@
 </p>
 <table>
   <tr>
-    <td valign="top">
+    <td valign="top" style="width: 25%">
       <label>
         Style:
       </label>
@@ -30,20 +30,30 @@
         Source:
       </label>
       <br />
-      <textarea rows="15" cols="35" id="source">
+        <textarea rows="15" cols="45" id="source">
 title Withdrawal
 
-Customer-&gt;ATM: withdraw(amount)
+Customer-&gt;ATM: withdraw(account, amount)
 activate ATM
-ATM-&gt;Bank: hasBalance(amount)
+ATM-&gt;Bank: getBalance(account)
 activate Bank
-Bank--&gt;ATM: hasBalance
+Bank--&gt;ATM: balance
 deactivate Bank
-opt hasBalance
-ATM-&gt;Bank: debit(amount)
+alt amount > balance
+ATM-&gt;Customer: insufficientBalance
+else amount <= balance
+ATM-&gt;Bank: debit(account, amount)
 end
-ATM--&gt;Customer: cash(amount)
+ATM-&gt;Customer: cash(amount)
+deactivate ATM
         </textarea>
+      <br />
+      <label>
+        Errors:
+      </label>
+      <br />
+      <ul id="errors">
+      </ul>
     </td>
     <td valign="top">
       <img id="diagram" src="" />

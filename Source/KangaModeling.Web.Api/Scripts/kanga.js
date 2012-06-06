@@ -2,65 +2,62 @@
 
 jQuery.noConflict();
 
-kanga = function (apiBaseUri) {
+Kanga = function (apiBaseUri, $) {
 
-  var _apiBaseUri = apiBaseUri;
+  var localClient = function () {
 
-  var _client = function () {
+    this.createDiagram = function (args, callback) {
 
-    this.createDiagram = function (arguments, callback) {
+      args = { source: encodeURI(args.source), type: args.type, style: args.style };
 
-      arguments = { source: encodeURI(arguments.source), type: arguments.type, style: arguments.style };
-
-      jQuery.get(_apiBaseUri + '/create', arguments, function (result) {
+      $.get(apiBaseUri + 'create', args, function (result) {
 
         callback(result);
 
       }, 'json');
 
-    }
+    };
+  };
 
-  }
+  var localHighlighter = function (client) {
 
-  var _highlighter = function (client) {
-
-    var _client = client;
-    var _this = this;
+    var thisHighlighter = this;
 
     this.replaceAll = function () {
 
-      jQuery('pre.kanga').each(function (i, element) {
+      $('pre.kanga').each(function (i, element) {
 
-        _this.replace(element);
+        thisHighlighter.replace(element);
 
       });
 
-    }
+    };
 
     this.replace = function (element) {
 
-      var source = jQuery(element).text();
-      var type = jQuery(element).data('kanga-type');
-      var style = jQuery(element).data('kanga-style');
+      var source = $(element).text();
+      var type = $(element).data('kanga-type');
+      var style = $(element).data('kanga-style');
 
       var arguments = { source: source, type: type, style: style };
 
-      _client.createDiagram(arguments, function (result) {
+      client.createDiagram(arguments, function (result) {
 
         var information = buildInformation(result);
-        var img = jQuery('<img></img>')
+        var img = $('<img></img>')
           .attr('src', result.diagram)
+          .attr('width', result.diagramWidth)
+          .attr('height', result.diagramHeight)
           .attr('title', information)
           .attr('alt', information)
           .css('display', 'block');
 
-        jQuery(element).after(img);
-        jQuery(element).hide();
+        $(element).after(img);
+        $(element).hide();
 
       });
 
-    }
-
+    };
     var buildInformation = function (result) {
 
       var information = '';
@@ -72,7 +69,7 @@ kanga = function (apiBaseUri) {
         information += '\r\n';
         information += 'Errors:\r\n';
 
-        jQuery(result.errors).each(function (index, error) {
+        $(result.errors).each(function (index, error) {
 
           information += error.message;
           information += '(';
@@ -94,16 +91,16 @@ kanga = function (apiBaseUri) {
 
       return information;
 
-    }
-  }
+    };
+  };
 
-  this.client = new _client();
+  this.client = new localClient();
 
-  this.highlighter = new _highlighter(this.client);
+  this.highlighter = new localHighlighter(this.client);
 
-}
+};
 
-var kanga = new kanga('_KANGA_API_BASE_URI_');
+var kanga = new Kanga('_KANGA_API_BASE_URI_', jQuery);
 
 jQuery(document).ready(function () {
 

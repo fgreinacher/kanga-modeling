@@ -1,6 +1,6 @@
-﻿/// <reference path="JQuery/jquery-1.5.1.js" />
+﻿/// <reference path="Jquery/jquery-1.5.1.js" />
 
-(function () {
+(function (kanga, $) {
 
   var delay = (function () {
 
@@ -15,11 +15,16 @@
 
   })();
 
-  jQuery(document).ready(function () {
+  $(document).ready(function () {
 
-    var sourceElement = jQuery('#source');
-    var styleElement = jQuery('#style');
-    var diagramElement = jQuery('#diagram');
+    var sourceElement = $('#source');
+    sourceElement.linedtextarea();
+    
+    var styleElement = $('#style');
+    
+    var diagramElement = $('#diagram');
+    
+    var errorsElement = $('#errors');
 
     var isFading = false;
 
@@ -28,13 +33,35 @@
       var arguments = { source: sourceElement.val(), type: 'sequence', style: styleElement.val() };
 
       kanga.client.createDiagram(arguments, function (result) {
+      
+        diagramElement
+          .attr('src', result.diagram)
+          .attr('width', result.diagramWidth)
+          .attr('height', result.diagramHeight);
 
         diagramElement.waitForImages(function () {
 
           diagramElement.fadeTo('normal', 1.0);
 
         });
-        diagramElement.attr('src', result.diagram);
+        
+        $(errorsElement).empty();
+
+        var items = [];
+
+        $.each(result.errors, function (i, error) {
+
+          items.push('<li>Line ' + error.token.line + ': ' + error.message + '</li>');
+
+        });
+
+        if ($.isEmptyObject(items)) {
+
+          items.push('<li>None</li>');
+
+        }
+
+        $(errorsElement).append(items.join(''));
 
       });
 
@@ -45,7 +72,7 @@
       if (!isFading) {
 
         isFading = true;
-        diagramElement.fadeTo('slow', 0.25, 'swing', function () { isFading = false });
+        diagramElement.fadeTo('slow', 0.25, 'swing', function () { isFading = false; });
 
       }
 
@@ -62,7 +89,7 @@
       if (!isFading) {
 
         isFading = true;
-        diagramElement.fadeTo('slow', 0.25, 'swing', function () { isFading = false });
+        diagramElement.fadeTo('slow', 0.25, 'swing', function () { isFading = false; });
 
       }
 
@@ -74,4 +101,4 @@
 
   });
 
-})();
+})(kanga, jQuery);
