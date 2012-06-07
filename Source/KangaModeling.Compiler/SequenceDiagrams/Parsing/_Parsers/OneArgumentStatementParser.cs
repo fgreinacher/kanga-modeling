@@ -11,8 +11,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams
             Token argument = scanner.ReadToEnd();
             yield return
                 argument.IsEmpty()
-                    ? new MissingArgumentStatement(keyword, argument)
+                    ? CreateEmptyStatement(keyword, argument)
                     : CreateStatement(keyword, argument);
+        }
+
+        protected virtual Statement CreateEmptyStatement(Token keyword, Token emptyArgument)
+        {
+            return new MissingArgumentStatement(keyword, emptyArgument);
         }
 
         protected abstract Statement CreateStatement(Token keyword, Token argument);
