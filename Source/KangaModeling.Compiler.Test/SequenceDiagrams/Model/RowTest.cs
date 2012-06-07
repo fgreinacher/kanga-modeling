@@ -3,7 +3,7 @@ using System.Linq;
 using KangaModeling.Compiler.SequenceDiagrams.Model;
 using NUnit.Framework;
 
-namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
+namespace KangaModeling.Compiler.Test.SequenceDiagrams.Model
 {
     [TestFixture]
     public class RowTest

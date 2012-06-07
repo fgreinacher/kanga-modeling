@@ -1,10 +1,9 @@
-﻿using System;
-using KangaModeling.Compiler.SequenceDiagrams;
+﻿using KangaModeling.Compiler.SequenceDiagrams;
 using KangaModeling.Compiler.SequenceDiagrams.Model;
 using Moq;
 using NUnit.Framework;
 
-namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents
+namespace KangaModeling.Compiler.Test.SequenceDiagrams.Model
 {
     [TestFixture]
     public abstract class PinTest
