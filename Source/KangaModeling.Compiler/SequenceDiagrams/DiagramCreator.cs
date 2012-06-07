@@ -1,5 +1,5 @@
 ﻿using System;
-using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+using KangaModeling.Compiler.SequenceDiagrams.Model;
 
 namespace KangaModeling.Compiler.SequenceDiagrams
 {

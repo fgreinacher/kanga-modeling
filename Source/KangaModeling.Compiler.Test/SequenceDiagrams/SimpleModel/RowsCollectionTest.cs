@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+using KangaModeling.Compiler.SequenceDiagrams.Model;
 using Moq;
 using NUnit.Framework;
 

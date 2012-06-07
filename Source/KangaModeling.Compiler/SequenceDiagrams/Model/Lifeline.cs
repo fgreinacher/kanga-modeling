@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+namespace KangaModeling.Compiler.SequenceDiagrams.Model
 {
     [DebuggerDisplay("Lifeline: ({index}) '{id}'")]
     internal class Lifeline : ILifeline

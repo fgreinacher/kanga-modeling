@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+namespace KangaModeling.Compiler.SequenceDiagrams.Model
 {
     [DebuggerDisplay("Row: ({index})")]
     internal class Row : List<RegularPin>

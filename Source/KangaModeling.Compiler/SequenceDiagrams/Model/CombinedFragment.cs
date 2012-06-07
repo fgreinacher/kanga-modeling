@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+namespace KangaModeling.Compiler.SequenceDiagrams.Model
 {
     internal class CombinedFragment : ICombinedFragment
     {

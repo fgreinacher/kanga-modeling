@@ -1,4 +1,4 @@
-﻿namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+﻿namespace KangaModeling.Compiler.SequenceDiagrams.Model
 {
     internal class Return : Signal
     {

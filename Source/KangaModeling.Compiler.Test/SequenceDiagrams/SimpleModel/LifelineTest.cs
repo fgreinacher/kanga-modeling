@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using KangaModeling.Compiler.SequenceDiagrams;
-using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+using KangaModeling.Compiler.SequenceDiagrams.Model;
 using Moq;
 using NUnit.Framework;
 

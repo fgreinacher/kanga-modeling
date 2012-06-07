@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+namespace KangaModeling.Compiler.SequenceDiagrams.Model
 {
     internal class LifelineState
     {

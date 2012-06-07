@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
+namespace KangaModeling.Compiler.SequenceDiagrams.Model
 {
     internal class OpenPin : Pin
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using KangaModeling.Compiler.SequenceDiagrams;
-using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+using KangaModeling.Compiler.SequenceDiagrams.Model;
 using NUnit.Framework;
 
 namespace KangaModeling.Compiler.Test.SequenceDiagrams.ModelComponents

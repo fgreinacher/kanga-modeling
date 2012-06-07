@@ -1,6 +1,6 @@
 ﻿using System;
 using KangaModeling.Compiler.SequenceDiagrams;
-using KangaModeling.Compiler.SequenceDiagrams.SimpleModel;
+using KangaModeling.Compiler.SequenceDiagrams.Model;
 using Moq;
 using NUnit.Framework;
 
