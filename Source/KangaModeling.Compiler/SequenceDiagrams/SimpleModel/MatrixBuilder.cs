@@ -15,7 +15,7 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
             m_Errors = errors;
             m_Fragments = new Stack<CombinedFragment>();
             m_Fragments.Push(matrix.Root);
-            CreateOperand(new Token(0, 0, string.Empty));
+            CreateOperand(new Token(0, 0, string.Empty), string.Empty);
         }
 
         #region IModelBuilder Members
@@ -89,13 +89,13 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         public void StartOpt(Token keyword, Token guardExpression)
         {
             StartFragment(keyword, OperatorType.Opt);
-            CreateOperand(guardExpression);
+            CreateOperand(keyword, guardExpression.Value);
         }
 
         public void StartAlt(Token keyword, Token guardExpression)
         {
             StartFragment(keyword, OperatorType.Alt);
-            CreateOperand(guardExpression);
+            CreateOperand(keyword, guardExpression.Value);
         }
 
         public void StartElse(Token keyword, Token guardExpression)
@@ -105,13 +105,14 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
                 AddError(keyword, "Unexpected else statement. Else can be used only inside alt statement.");
                 return;
             }
-            CreateOperand(guardExpression);
+            CreateOperand(keyword, 
+                !string.IsNullOrEmpty(guardExpression.Value) ? guardExpression.Value : "else" );
         }
 
         public void StartLoop(Token keyword, Token guardExpression)
         {
             StartFragment(keyword, OperatorType.Loop);
-            CreateOperand(guardExpression);
+            CreateOperand(keyword, guardExpression.Value);
         }
 
         public void End(Token endToken)
@@ -291,10 +292,10 @@ namespace KangaModeling.Compiler.SequenceDiagrams.SimpleModel
         }
 
 
-        private void CreateOperand(Token guardExpression)
+        private void CreateOperand(Token token, string guardExpression)
         {
             CombinedFragment parent = CurrentFragment();
-            var operand = new Operand(parent, guardExpression.Value, guardExpression);
+            var operand = new Operand(parent, guardExpression, token);
             parent.Add(operand);
         }
 
