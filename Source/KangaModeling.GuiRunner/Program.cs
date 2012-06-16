@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
-namespace KangaModeling.GuiRunner
+namespace KangaModeling.Gui
 {
 	static class Program
 	{
@@ -15,7 +13,7 @@ namespace KangaModeling.GuiRunner
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new GuiRunnerForm());
+			Application.Run(new MainForm());
 		}
 	}
 }
