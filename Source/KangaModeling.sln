@@ -17,13 +17,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Items", "00 Sol
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Runners", "04 Runners", "{3517360B-7BE8-465D-AE4D-1B95A45E934E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Gui", "KangaModeling.GuiRunner\KangaModeling.Gui.csproj", "{77312AEB-91AB-4209-8113-AD115CB1A866}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Gui", "KangaModeling.Gui\KangaModeling.Gui.csproj", "{77312AEB-91AB-4209-8113-AD115CB1A866}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Graphics", "KangaModeling.Graphics\KangaModeling.Graphics.csproj", "{3F1A9174-8957-4963-8476-DE00B0F25238}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Visuals", "KangaModeling.Visuals\KangaModeling.Visuals.csproj", "{600612BA-558D-4B21-A8FA-6CBD4471C8E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.CommandLine", "KangaModeling.CommandLineRunner\KangaModeling.CommandLine.csproj", "{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.CommandLine", "KangaModeling.CommandLine\KangaModeling.CommandLine.csproj", "{9E4FDDD1-5CCA-4793-ACAC-F6B0ABD57BC5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KangaModeling.Visuals.Test", "KangaModeling.Visuals.Test\KangaModeling.Visuals.Test.csproj", "{3E0599A5-94B0-4D13-AB4B-D4A22A07C8D1}"
 EndProject
