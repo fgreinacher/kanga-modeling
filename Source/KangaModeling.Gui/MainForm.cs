@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using KangaModeling.Facade;
@@ -17,9 +18,16 @@ namespace KangaModeling.Gui
 
             InitializeComponent();
 
+            if (!Properties.Settings.Default.EnableDebugStyle)
+            {
+                debugCheckBox.Visible = false;
+            }
+
             styleComboBox.DataSource = Enum.GetValues(typeof(DiagramStyle));
+
+            Compile();
         }
-        
+
         private void Compile()
         {
             var diagramArguments = new DiagramArguments(inputTextBox.Text, DiagramType.Sequence, (DiagramStyle)styleComboBox.SelectedItem, debugCheckBox.Checked);
@@ -46,6 +54,8 @@ namespace KangaModeling.Gui
 
         private void ProcessResultErrors(IEnumerable<DiagramError> errors)
         {
+            errors = errors.ToArray();
+
             FillErrorList(errors);
             HighlightErrorsInEditor(errors);
         }
@@ -72,20 +82,11 @@ namespace KangaModeling.Gui
         private void FillErrorList(IEnumerable<DiagramError> errors)
         {
             listBoxErrors.Items.Clear();
-            foreach (var error in errors)
-            {
-                var listItem =
-                    new ListViewItem(
-                        new string[]
-	                        {
-                                error.Message, 
-                                error.TokenLine.ToString(), 
-                                error.TokenStart.ToString(), 
-                                error.TokenValue},
-                        0);
-                listItem.Tag = error;
-                listBoxErrors.Items.Add(listItem);
-            }
+
+            var listViewItems = errors
+                .Select(error => new ListViewItem(new[] { error.Message, error.TokenLine.ToString(CultureInfo.InvariantCulture), error.TokenStart.ToString(CultureInfo.InvariantCulture), error.TokenValue }, 0) { Tag = error })
+                .ToArray();
+            listBoxErrors.Items.AddRange(listViewItems);
         }
 
         private void SelectErrorInEditor(DiagramError error)
@@ -106,19 +107,19 @@ namespace KangaModeling.Gui
             inputTextBox.Select(startIndex, (tokenLength == 0) ? 1 : tokenLength);
         }
 
-        private void compileButton_Click(object sender, EventArgs e)
+        private void CompileButtonClick(object sender, EventArgs e)
         {
             Compile();
         }
 
-        private void listBoxErrors_SelectedValueChanged(object sender, EventArgs e)
+        private void ListBoxErrorsSelectedValueChanged(object sender, EventArgs e)
         {
             if (listBoxErrors.SelectedItems.Count == 0)
             {
                 return;
             }
 
-            DiagramError error = listBoxErrors.SelectedItems[0].Tag as DiagramError;
+            var error = listBoxErrors.SelectedItems[0].Tag as DiagramError;
             if (error == null)
             {
                 return;
@@ -129,37 +130,37 @@ namespace KangaModeling.Gui
         }
 
 
-        private void inputTextBox_TextChanged(object sender, EventArgs e)
+        private void InputTextBoxTextChanged(object sender, EventArgs e)
         {
             Compile();
         }
 
-        private void buttonSample1_Click(object sender, EventArgs e)
+        private void ButtonSample1Click(object sender, EventArgs e)
         {
             inputTextBox.AppendText("title Hello world!" + Environment.NewLine);
         }
 
-        private void buttonSample2_Click(object sender, EventArgs e)
+        private void ButtonSample2Click(object sender, EventArgs e)
         {
             inputTextBox.AppendText("A->B" + Environment.NewLine);
         }
 
-        private void buttonSample3_Click(object sender, EventArgs e)
+        private void ButtonSample3Click(object sender, EventArgs e)
         {
             inputTextBox.AppendText("B-->A" + Environment.NewLine);
         }
 
-        private void buttonSample4_Click(object sender, EventArgs e)
+        private void ButtonSample4Click(object sender, EventArgs e)
         {
             inputTextBox.AppendText("activate B" + Environment.NewLine);
         }
 
-        private void buttonSample5_Click(object sender, EventArgs e)
+        private void ButtonSample5Click(object sender, EventArgs e)
         {
             inputTextBox.AppendText("deactivate B" + Environment.NewLine);
         }
 
-        private void buttonBigSample_Click(object sender, EventArgs e)
+        private void ButtonBigSampleClick(object sender, EventArgs e)
         {
             inputTextBox.Lines = new[]
                 {
@@ -178,11 +179,11 @@ namespace KangaModeling.Gui
                     @"activate C",
                     @"C-->B : result",
                     @"deactivate C",
-                    @"end",
+                    @"end"
                 };
         }
 
-        private void buttonNesteAdtivities_Click(object sender, EventArgs e)
+        private void ButtonNesteAdtivitiesClick(object sender, EventArgs e)
         {
             inputTextBox.Lines = new[]
                 {
@@ -202,12 +203,16 @@ namespace KangaModeling.Gui
                 };
         }
 
-        private void buttonSave_Click(object sender, EventArgs e)
+        private void ButtonSaveClick(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog =  new SaveFileDialog();
-            saveFileDialog.DefaultExt = "png";
-            saveFileDialog.FileName = m_LastTitle + ".png";
-            if (saveFileDialog.ShowDialog()!=DialogResult.OK)
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "PNG files|*.png",
+                DefaultExt = "png",
+                FileName = m_LastTitle
+            };
+
+            if (saveFileDialog.ShowDialog() != DialogResult.OK)
             {
                 return;
             }
@@ -215,12 +220,12 @@ namespace KangaModeling.Gui
             outputPictureBox.Image.Save(saveFileDialog.FileName);
         }
 
-        private void styleComboBox_SelectedValueChanged(object sender, EventArgs e)
+        private void StyleComboBoxSelectedValueChanged(object sender, EventArgs e)
         {
             Compile();
         }
 
-        private void debugCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void DebugCheckBoxCheckedChanged(object sender, EventArgs e)
         {
             Compile();
         }

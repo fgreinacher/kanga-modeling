@@ -28,10 +28,10 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.compileButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.debugCheckBox = new System.Windows.Forms.CheckBox();
             this.styleComboBox = new System.Windows.Forms.ComboBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonNesteAdtivities = new System.Windows.Forms.Button();
@@ -41,7 +41,6 @@
             this.buttonSample3 = new System.Windows.Forms.Button();
             this.buttonSample2 = new System.Windows.Forms.Button();
             this.buttonSample1 = new System.Windows.Forms.Button();
-            this.imageListGrid = new System.Windows.Forms.ImageList(this.components);
             this.inputAndOutputSplitContainer = new System.Windows.Forms.SplitContainer();
             this.inputAndErrorsSplitContainer = new System.Windows.Forms.SplitContainer();
             this.inputTextBox = new System.Windows.Forms.RichTextBox();
@@ -52,7 +51,6 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.outputImagePanel = new System.Windows.Forms.Panel();
             this.outputPictureBox = new System.Windows.Forms.PictureBox();
-            this.debugCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inputAndOutputSplitContainer)).BeginInit();
             this.inputAndOutputSplitContainer.Panel1.SuspendLayout();
@@ -68,17 +66,20 @@
             // 
             // compileButton
             // 
-            this.compileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.compileButton.Location = new System.Drawing.Point(4, 361);
+            this.compileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.compileButton.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.compileButton.Location = new System.Drawing.Point(-1, 323);
             this.compileButton.Name = "compileButton";
-            this.compileButton.Size = new System.Drawing.Size(69, 45);
+            this.compileButton.Size = new System.Drawing.Size(79, 45);
             this.compileButton.TabIndex = 1;
             this.compileButton.Text = "Compile";
             this.compileButton.UseVisualStyleBackColor = true;
-            this.compileButton.Click += new System.EventHandler(this.compileButton_Click);
+            this.compileButton.Click += new System.EventHandler(this.CompileButtonClick);
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.Controls.Add(this.debugCheckBox);
             this.panel1.Controls.Add(this.styleComboBox);
             this.panel1.Controls.Add(this.buttonSave);
@@ -90,115 +91,123 @@
             this.panel1.Controls.Add(this.compileButton);
             this.panel1.Controls.Add(this.buttonSample2);
             this.panel1.Controls.Add(this.buttonSample1);
-            this.panel1.Location = new System.Drawing.Point(13, 9);
+            this.panel1.Location = new System.Drawing.Point(13, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(79, 409);
+            this.panel1.Size = new System.Drawing.Size(79, 368);
             this.panel1.TabIndex = 5;
+            // 
+            // debugCheckBox
+            // 
+            this.debugCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.debugCheckBox.AutoSize = true;
+            this.debugCheckBox.Location = new System.Drawing.Point(0, 210);
+            this.debugCheckBox.Name = "debugCheckBox";
+            this.debugCheckBox.Size = new System.Drawing.Size(57, 17);
+            this.debugCheckBox.TabIndex = 9;
+            this.debugCheckBox.Text = "Debug";
+            this.debugCheckBox.UseVisualStyleBackColor = true;
+            this.debugCheckBox.CheckedChanged += new System.EventHandler(this.DebugCheckBoxCheckedChanged);
             // 
             // styleComboBox
             // 
+            this.styleComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.styleComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.styleComboBox.FormattingEnabled = true;
-            this.styleComboBox.Location = new System.Drawing.Point(4, 271);
+            this.styleComboBox.Location = new System.Drawing.Point(0, 233);
             this.styleComboBox.Name = "styleComboBox";
-            this.styleComboBox.Size = new System.Drawing.Size(69, 21);
+            this.styleComboBox.Size = new System.Drawing.Size(79, 21);
             this.styleComboBox.TabIndex = 8;
-            this.styleComboBox.SelectedValueChanged += new System.EventHandler(this.styleComboBox_SelectedValueChanged);
+            this.styleComboBox.SelectedValueChanged += new System.EventHandler(this.StyleComboBoxSelectedValueChanged);
             // 
             // buttonSave
             // 
+            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.buttonSave.Image = global::KangaModeling.Gui.Properties.Resources.Save_icon1;
-            this.buttonSave.Location = new System.Drawing.Point(4, 298);
+            this.buttonSave.Location = new System.Drawing.Point(-1, 260);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(69, 57);
+            this.buttonSave.Size = new System.Drawing.Size(79, 57);
             this.buttonSave.TabIndex = 7;
             this.buttonSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            this.buttonSave.Click += new System.EventHandler(this.ButtonSaveClick);
             // 
             // buttonNesteAdtivities
             // 
-            this.buttonNesteAdtivities.Location = new System.Drawing.Point(4, 178);
+            this.buttonNesteAdtivities.Location = new System.Drawing.Point(-1, 174);
             this.buttonNesteAdtivities.Name = "buttonNesteAdtivities";
-            this.buttonNesteAdtivities.Size = new System.Drawing.Size(69, 23);
+            this.buttonNesteAdtivities.Size = new System.Drawing.Size(80, 23);
             this.buttonNesteAdtivities.TabIndex = 6;
             this.buttonNesteAdtivities.Text = "Nested";
             this.buttonNesteAdtivities.UseVisualStyleBackColor = true;
-            this.buttonNesteAdtivities.Click += new System.EventHandler(this.buttonNesteAdtivities_Click);
+            this.buttonNesteAdtivities.Click += new System.EventHandler(this.ButtonNesteAdtivitiesClick);
             // 
             // buttonBigSample
             // 
-            this.buttonBigSample.Location = new System.Drawing.Point(4, 149);
+            this.buttonBigSample.Location = new System.Drawing.Point(-1, 145);
             this.buttonBigSample.Name = "buttonBigSample";
-            this.buttonBigSample.Size = new System.Drawing.Size(69, 23);
+            this.buttonBigSample.Size = new System.Drawing.Size(80, 23);
             this.buttonBigSample.TabIndex = 5;
             this.buttonBigSample.Text = "Big Sample";
             this.buttonBigSample.UseVisualStyleBackColor = true;
-            this.buttonBigSample.Click += new System.EventHandler(this.buttonBigSample_Click);
+            this.buttonBigSample.Click += new System.EventHandler(this.ButtonBigSampleClick);
             // 
             // buttonSample5
             // 
-            this.buttonSample5.Location = new System.Drawing.Point(4, 120);
+            this.buttonSample5.Location = new System.Drawing.Point(-1, 116);
             this.buttonSample5.Name = "buttonSample5";
-            this.buttonSample5.Size = new System.Drawing.Size(69, 23);
+            this.buttonSample5.Size = new System.Drawing.Size(80, 23);
             this.buttonSample5.TabIndex = 4;
             this.buttonSample5.Text = "Deactivate";
             this.buttonSample5.UseVisualStyleBackColor = true;
-            this.buttonSample5.Click += new System.EventHandler(this.buttonSample5_Click);
+            this.buttonSample5.Click += new System.EventHandler(this.ButtonSample5Click);
             // 
             // buttonSample4
             // 
-            this.buttonSample4.Location = new System.Drawing.Point(4, 91);
+            this.buttonSample4.Location = new System.Drawing.Point(-1, 87);
             this.buttonSample4.Name = "buttonSample4";
-            this.buttonSample4.Size = new System.Drawing.Size(69, 23);
+            this.buttonSample4.Size = new System.Drawing.Size(80, 23);
             this.buttonSample4.TabIndex = 3;
             this.buttonSample4.Text = "Activate";
             this.buttonSample4.UseVisualStyleBackColor = true;
-            this.buttonSample4.Click += new System.EventHandler(this.buttonSample4_Click);
+            this.buttonSample4.Click += new System.EventHandler(this.ButtonSample4Click);
             // 
             // buttonSample3
             // 
-            this.buttonSample3.Location = new System.Drawing.Point(4, 62);
+            this.buttonSample3.Location = new System.Drawing.Point(-1, 58);
             this.buttonSample3.Name = "buttonSample3";
-            this.buttonSample3.Size = new System.Drawing.Size(69, 23);
+            this.buttonSample3.Size = new System.Drawing.Size(80, 23);
             this.buttonSample3.TabIndex = 2;
             this.buttonSample3.Text = "Return";
             this.buttonSample3.UseVisualStyleBackColor = true;
-            this.buttonSample3.Click += new System.EventHandler(this.buttonSample3_Click);
+            this.buttonSample3.Click += new System.EventHandler(this.ButtonSample3Click);
             // 
             // buttonSample2
             // 
-            this.buttonSample2.Location = new System.Drawing.Point(3, 33);
+            this.buttonSample2.Location = new System.Drawing.Point(0, 29);
             this.buttonSample2.Name = "buttonSample2";
-            this.buttonSample2.Size = new System.Drawing.Size(70, 23);
+            this.buttonSample2.Size = new System.Drawing.Size(80, 23);
             this.buttonSample2.TabIndex = 1;
             this.buttonSample2.Text = "Call";
             this.buttonSample2.UseVisualStyleBackColor = true;
-            this.buttonSample2.Click += new System.EventHandler(this.buttonSample2_Click);
+            this.buttonSample2.Click += new System.EventHandler(this.ButtonSample2Click);
             // 
             // buttonSample1
             // 
-            this.buttonSample1.Location = new System.Drawing.Point(4, 4);
+            this.buttonSample1.Location = new System.Drawing.Point(-1, 0);
             this.buttonSample1.Name = "buttonSample1";
-            this.buttonSample1.Size = new System.Drawing.Size(69, 23);
+            this.buttonSample1.Size = new System.Drawing.Size(80, 23);
             this.buttonSample1.TabIndex = 0;
             this.buttonSample1.Text = "Title";
             this.buttonSample1.UseVisualStyleBackColor = true;
-            this.buttonSample1.Click += new System.EventHandler(this.buttonSample1_Click);
-            // 
-            // imageListGrid
-            // 
-            this.imageListGrid.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListGrid.ImageStream")));
-            this.imageListGrid.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListGrid.Images.SetKeyName(0, "Close.ico");
+            this.buttonSample1.Click += new System.EventHandler(this.ButtonSample1Click);
             // 
             // inputAndOutputSplitContainer
             // 
             this.inputAndOutputSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.inputAndOutputSplitContainer.Location = new System.Drawing.Point(99, 9);
+            this.inputAndOutputSplitContainer.Location = new System.Drawing.Point(99, 12);
             this.inputAndOutputSplitContainer.Name = "inputAndOutputSplitContainer";
             // 
             // inputAndOutputSplitContainer.Panel1
@@ -208,8 +217,8 @@
             // inputAndOutputSplitContainer.Panel2
             // 
             this.inputAndOutputSplitContainer.Panel2.Controls.Add(this.outputImagePanel);
-            this.inputAndOutputSplitContainer.Size = new System.Drawing.Size(1169, 600);
-            this.inputAndOutputSplitContainer.SplitterDistance = 389;
+            this.inputAndOutputSplitContainer.Size = new System.Drawing.Size(632, 368);
+            this.inputAndOutputSplitContainer.SplitterDistance = 241;
             this.inputAndOutputSplitContainer.TabIndex = 9;
             // 
             // inputAndErrorsSplitContainer
@@ -226,8 +235,8 @@
             // inputAndErrorsSplitContainer.Panel2
             // 
             this.inputAndErrorsSplitContainer.Panel2.Controls.Add(this.listBoxErrors);
-            this.inputAndErrorsSplitContainer.Size = new System.Drawing.Size(389, 600);
-            this.inputAndErrorsSplitContainer.SplitterDistance = 286;
+            this.inputAndErrorsSplitContainer.Size = new System.Drawing.Size(241, 368);
+            this.inputAndErrorsSplitContainer.SplitterDistance = 174;
             this.inputAndErrorsSplitContainer.TabIndex = 0;
             // 
             // inputTextBox
@@ -237,11 +246,11 @@
             this.inputTextBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.inputTextBox.Location = new System.Drawing.Point(0, 0);
             this.inputTextBox.Name = "inputTextBox";
-            this.inputTextBox.Size = new System.Drawing.Size(389, 286);
+            this.inputTextBox.Size = new System.Drawing.Size(241, 174);
             this.inputTextBox.TabIndex = 11;
-            this.inputTextBox.Text = "";
+            this.inputTextBox.Text = "title Kanga Modeling\n\nApp->User: Enjoy Kanga Modeling!";
             this.inputTextBox.WordWrap = false;
-            this.inputTextBox.TextChanged += new System.EventHandler(this.inputTextBox_TextChanged);
+            this.inputTextBox.TextChanged += new System.EventHandler(this.InputTextBoxTextChanged);
             // 
             // listBoxErrors
             // 
@@ -255,12 +264,11 @@
             this.listBoxErrors.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listBoxErrors.Location = new System.Drawing.Point(0, 0);
             this.listBoxErrors.Name = "listBoxErrors";
-            this.listBoxErrors.Size = new System.Drawing.Size(389, 310);
-            this.listBoxErrors.SmallImageList = this.imageListGrid;
+            this.listBoxErrors.Size = new System.Drawing.Size(241, 190);
             this.listBoxErrors.TabIndex = 11;
             this.listBoxErrors.UseCompatibleStateImageBehavior = false;
             this.listBoxErrors.View = System.Windows.Forms.View.Details;
-            this.listBoxErrors.SelectedIndexChanged += new System.EventHandler(this.listBoxErrors_SelectedValueChanged);
+            this.listBoxErrors.SelectedIndexChanged += new System.EventHandler(this.ListBoxErrorsSelectedValueChanged);
             // 
             // columnHeader2
             // 
@@ -291,7 +299,7 @@
             this.outputImagePanel.Location = new System.Drawing.Point(0, 0);
             this.outputImagePanel.Name = "outputImagePanel";
             this.outputImagePanel.Padding = new System.Windows.Forms.Padding(10);
-            this.outputImagePanel.Size = new System.Drawing.Size(776, 600);
+            this.outputImagePanel.Size = new System.Drawing.Size(387, 368);
             this.outputImagePanel.TabIndex = 9;
             // 
             // outputPictureBox
@@ -304,27 +312,18 @@
             this.outputPictureBox.TabIndex = 3;
             this.outputPictureBox.TabStop = false;
             // 
-            // debugCheckBox
-            // 
-            this.debugCheckBox.AutoSize = true;
-            this.debugCheckBox.Location = new System.Drawing.Point(4, 248);
-            this.debugCheckBox.Name = "debugCheckBox";
-            this.debugCheckBox.Size = new System.Drawing.Size(57, 17);
-            this.debugCheckBox.TabIndex = 9;
-            this.debugCheckBox.Text = "Debug";
-            this.debugCheckBox.UseVisualStyleBackColor = true;
-            this.debugCheckBox.CheckedChanged += new System.EventHandler(this.debugCheckBox_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1280, 621);
+            this.ClientSize = new System.Drawing.Size(743, 392);
             this.Controls.Add(this.inputAndOutputSplitContainer);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(600, 430);
             this.Name = "MainForm";
-            this.Text = "KangaModeling GuiRunner";
+            this.Text = "Kanga Modeling 1.0";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.inputAndOutputSplitContainer.Panel1.ResumeLayout(false);
@@ -350,8 +349,7 @@
         private System.Windows.Forms.Button buttonSample4;
         private System.Windows.Forms.Button buttonSample3;
         private System.Windows.Forms.Button buttonSample2;
-		private System.Windows.Forms.Button buttonSample1;
-        private System.Windows.Forms.ImageList imageListGrid;
+        private System.Windows.Forms.Button buttonSample1;
 		private System.Windows.Forms.Button buttonBigSample;
 		private System.Windows.Forms.SplitContainer inputAndOutputSplitContainer;
 		private System.Windows.Forms.Panel outputImagePanel;

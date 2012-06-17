@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using CommandLine;
 
@@ -18,7 +19,7 @@ namespace KangaModeling.CommandLine
 
         [Option("m", "model", Required = true, HelpText = "the model to convert")]
         public String Model = String.Empty;
-
+        
         [HelpOption(HelpText = "display the help text")]
         public string GetHelp()
         {
