@@ -3,13 +3,15 @@
 The main idea is to generate the diagram from a lightweight markup textual diagram description language.
 
 Following code:
-{{title Hello 
+```
+title Hello 
 participant Alice
 Alice->Bob : Hi!
 activate Bob
 Bob-->Alice : Hey!
-deactivate Bob}}
-        produces this diagram:
+deactivate Bob
+```
+produces this diagram:
 ![](Home_sd_Hello.png)
 
         See KangaModeling **[Documentation](Documentation)** for full language tutorial.
