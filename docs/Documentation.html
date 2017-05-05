@@ -1,0 +1,176 @@
+<div class="wikidoc">
+<h1>User Documentation</h1>
+<p>This a documentation on how to use KangaModeling. For documentation on how to contribute to KangaModeling please refer to the
+<a href="/wikipage?title=Developer%20Documentation&referringTitle=Documentation">
+Developer Documentation</a></p>
+<ul>
+<li><a href="#Tutorials">Sequence Diagram Markup Tutorial</a>
+<ul>
+<li><a href="#Signals">Signals</a> </li><li><a href="#OrderOfLifelines">Order of Lifelines</a> </li><li><a href="#Activation">Activation</a> </li><li><a href="#Texts">Texts</a>
+<ul>
+<li><a href="#LifelineAlias">Lifeline Alias</a> </li><li><a href="#DiagramTitle">Diagram Title</a> </li><li><a href="#SignalName">Signal Name</a> </li><li><a href="#MultilineText">Multiline Text</a> </li><li><a href="#EscapingCharacters">Escaping Characters</a> </li></ul>
+</li><li><a href="#CombinedFragments">Combined Fragments</a>
+<ul>
+<li><a href="#opt">opt</a> </li><li><a href="#loop">loop</a> </li><li><a href="#alt">alt</a> </li></ul>
+</li><li><a href="#Dispose">Dispose or Destroy of Lifeline</a> </li></ul>
+</li></ul>
+<p><br>
+<a href="/wikipage?title=More%20Samples&referringTitle=Documentation">More Samples</a>
+<br>
+<br>
+<a name="Tutorials"></a></p>
+<h1>Kanga Sequence Markup Tutorial</h1>
+<p>The &quot;language&quot; we use to describe sequence diagrams is based on markup used by
+<a href="http://www.websequencediagrams.com">http://www.websequencediagrams.com</a>. It is very compact and simple, therefore the compromise made is that the language has no formal syntax and can not be formalized in terms of EBNF.
+<br>
+<br>
+Using Kanga.Sequence you must not care about layout of diagram. You just describe lifelines, calls, operators and the tool chooses optimal alignment for you.<br>
+<br>
+</p>
+<p><a name="Signals"></a></p>
+<h2>Signals</h2>
+<p>There are two kinds of signals <strong>call</strong> <span class="codeInline">
+A-&gt;B</span> and <strong>return</strong> <span class="codeInline">B--&gt;A</span>.</p>
+<pre>A-&gt;B
+B--&gt;A
+</pre>
+<p><br>
+Note that you can skip lifeline declarations using <span class="codeInline">participant</span> statement if you used a signal statement.<br>
+<img title="Tutorial2.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373052" alt="Tutorial2.png"><br>
+<br>
+<a name="OrderOfLifelines"></a></p>
+<h2>Order of Lifelines</h2>
+<p>Order of lifelines is defined by order of their occurring in code. Nevertheless you can enforce different order by declaring them in explicit order using participant statement.</p>
+<pre>participant B
+participant A
+A-&gt;B
+B--&gt;A
+</pre>
+<p><br>
+<img title="Tutorial3.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373053" alt="Tutorial3.png"><br>
+<br>
+<a name="Activation"></a></p>
+<h2>Activation</h2>
+<p>Usually a call leads to lifeline activation. Nevertheless sometimes it is more relevant to show communication between components, thus we decided to provide dedicated statements for
+<strong>activation</strong> and <strong>deactivation</strong>.</p>
+<pre>A-&gt;B
+activate B
+B--&gt;A
+deactivate B
+</pre>
+<p><br>
+<img title="Tutorial4.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373054" alt="Tutorial4.png"><br>
+Note that self calls and activations are also supported:</p>
+<pre>A-&gt;A
+activate A
+deactivate A
+</pre>
+<p><br>
+<img title="Tutorial5.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373056" alt="Tutorial5.png"><br>
+<br>
+<a name="Texts"></a></p>
+<h2>Texts</h2>
+<p><a name="LifelineAlias"></a></p>
+<h3>Lifeline Alias <span class="codeInline">participant Long name as A</span></h3>
+<p>Sometimes you want to give a lifline some descriptive name. It might be long and boring to type it again and again when using in code. So you are able to create an alias using
+<span class="codeInline">participant</span> declaration.</p>
+<pre>participant Some component with long name as A
+A-&gt;B
+B--&gt;A
+</pre>
+<p><br>
+<img title="Tutorial6.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373057" alt="Tutorial6.png"><br>
+<br>
+<a name="DiagramTitle"></a></p>
+<h3>Diagram Title</h3>
+<pre>title Diagram 1
+A-&gt;B
+B--&gt;A
+</pre>
+<p><br>
+<img title="Tutorial7.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373058" alt="Tutorial7.png"><br>
+<br>
+<a name="SignalName"></a></p>
+<h3>Signal Name</h3>
+<pre>A-&gt;B : call
+B--&gt;A : return
+</pre>
+<p><br>
+<img title="Tutorial8.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373059" alt="Tutorial8.png"><br>
+<br>
+<a name="MultilineText"></a></p>
+<h3>Multiline Text</h3>
+<p>Use <span class="codeInline">\n</span> to enforce the line break.</p>
+<pre>title Title line 1\n line 2
+participant A line 1\n line 2 as A
+A-&gt;A : call line 1\n line 2
+</pre>
+<p><br>
+<img title="Tutorial9.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373060" alt="Tutorial9.png"><br>
+<br>
+<a name="EscapingCharacters"></a></p>
+<h3>Escaping Characters</h3>
+<p>Some characters like <span class="codeInline">'&gt;', '&lt;, ':'</span> might be ambiguous. Use parentheses to escape them.</p>
+<pre>&quot;Escaped : name A &quot;-&gt; &quot;Escaped : name B&quot;
+</pre>
+<p><br>
+<img title="Tutorial10.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373061" alt="Tutorial10.png"><br>
+<br>
+<a name="CombinedFragments"></a></p>
+<h2>Combined Fragments</h2>
+<p>Currently we support 3 operators <span class="codeInline">alt, opt, loop</span>.<br>
+<br>
+<a name="opt"></a></p>
+<h3><span class="codeInline">opt</span></h3>
+<p>opt Sometimes<br>
+A-&gt;B<br>
+end<br>
+}}<br>
+<img title="Tutorial11.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373062" alt="Tutorial11.png"><br>
+Operators may contain any number of interactions and must terminate with <span class="codeInline">
+end</span> statement. Nested operators are also supported.<br>
+<br>
+<a name="loop"></a></p>
+<h3><span class="codeInline">loop</span></h3>
+<pre>loop from 1 to 100
+a-&gt;B
+opt Sometimes
+B-&gt;C
+end
+end
+</pre>
+<p><br>
+<img title="Tutorial12.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373063" alt="Tutorial12.png"><br>
+<a name="alt"></a></p>
+<h3><span class="codeInline">alt</span></h3>
+<p>Alt statement can have any number of <span class="codeInline">else</span> sections.</p>
+<pre>alt first 
+a-&gt;b 
+else second
+a-&gt;c
+else third
+a-&gt;d
+end
+</pre>
+<p><br>
+<img title="Tutorial13.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373064" alt="Tutorial13.png"><br>
+<br>
+<a name="Dispose"></a></p>
+<h2>Dispose or Destroy of Lifeline</h2>
+<p>Usually a lifeline starts at the top of diagram end ends at the very bottom. End of the lifeline is indicated by cross at the end of the vertical line. Using
+<span class="codeInline">dispose</span> or <span class="codeInline">destroy</span> statement (they are synonyms - there is no semantic difference between them) you can end the lifeline earlier.</p>
+<pre>A-&gt;B
+activate B
+B--&gt;A
+deactivate B
+dispose B
+A-&gt;C
+activate C
+C--&gt;A
+deactivate C
+</pre>
+<p><br>
+Note that accessing a disposed lifeline (using it in signal or activation) is not allowed.
+<br>
+<img title="Tutorial14.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=377416" alt="Tutorial14.png"></p>
+</div><div class="ClearBoth"></div>
