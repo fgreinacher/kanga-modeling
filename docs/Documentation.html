@@ -36,7 +36,7 @@ B--&gt;A
 </pre>
 <p><br>
 Note that you can skip lifeline declarations using <span class="codeInline">participant</span> statement if you used a signal statement.<br>
-<img title="Tutorial2.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373052" alt="Tutorial2.png"><br>
+<img title="Tutorial2.png" src="Documentation_Tutorial2.png" /><br>
 <br>
 <a name="OrderOfLifelines"></a></p>
 <h2>Order of Lifelines</h2>
@@ -47,7 +47,7 @@ A-&gt;B
 B--&gt;A
 </pre>
 <p><br>
-<img title="Tutorial3.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373053" alt="Tutorial3.png"><br>
+<img title="Tutorial3.png" src="Documentation_Tutorial3.png" /><br>
 <br>
 <a name="Activation"></a></p>
 <h2>Activation</h2>
@@ -59,14 +59,14 @@ B--&gt;A
 deactivate B
 </pre>
 <p><br>
-<img title="Tutorial4.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373054" alt="Tutorial4.png"><br>
+<img title="Tutorial4.png" src="Documentation_Tutorial4.png" /><br>
 Note that self calls and activations are also supported:</p>
 <pre>A-&gt;A
 activate A
 deactivate A
 </pre>
 <p><br>
-<img title="Tutorial5.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373056" alt="Tutorial5.png"><br>
+<img title="Tutorial5.png" src="Documentation_Tutorial5.png" /><br>
 <br>
 <a name="Texts"></a></p>
 <h2>Texts</h2>
@@ -79,7 +79,7 @@ A-&gt;B
 B--&gt;A
 </pre>
 <p><br>
-<img title="Tutorial6.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373057" alt="Tutorial6.png"><br>
+<img title="Tutorial6.png" src="Documentation_Tutorial6.png" /><br>
 <br>
 <a name="DiagramTitle"></a></p>
 <h3>Diagram Title</h3>
@@ -88,7 +88,7 @@ A-&gt;B
 B--&gt;A
 </pre>
 <p><br>
-<img title="Tutorial7.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373058" alt="Tutorial7.png"><br>
+<img title="Tutorial7.png" src="Documentation_Tutorial7.png" /><br>
 <br>
 <a name="SignalName"></a></p>
 <h3>Signal Name</h3>
@@ -96,7 +96,7 @@ B--&gt;A
 B--&gt;A : return
 </pre>
 <p><br>
-<img title="Tutorial8.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373059" alt="Tutorial8.png"><br>
+<img title="Tutorial8.png" src="Documentation_Tutorial8.png" /><br>
 <br>
 <a name="MultilineText"></a></p>
 <h3>Multiline Text</h3>
@@ -106,7 +106,7 @@ participant A line 1\n line 2 as A
 A-&gt;A : call line 1\n line 2
 </pre>
 <p><br>
-<img title="Tutorial9.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373060" alt="Tutorial9.png"><br>
+<img title="Tutorial9.png" src="Documentation_Tutorial9.png" /><br>
 <br>
 <a name="EscapingCharacters"></a></p>
 <h3>Escaping Characters</h3>
@@ -114,7 +114,7 @@ A-&gt;A : call line 1\n line 2
 <pre>&quot;Escaped : name A &quot;-&gt; &quot;Escaped : name B&quot;
 </pre>
 <p><br>
-<img title="Tutorial10.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373061" alt="Tutorial10.png"><br>
+<img title="Tutorial10.png" src="Documentation_Tutorial10.png" /><br>
 <br>
 <a name="CombinedFragments"></a></p>
 <h2>Combined Fragments</h2>
@@ -126,7 +126,7 @@ A-&gt;A : call line 1\n line 2
 A-&gt;B<br>
 end<br>
 }}<br>
-<img title="Tutorial11.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373062" alt="Tutorial11.png"><br>
+<img title="Tutorial11.png" src="Documentation_Tutorial11.png" /><br>
 Operators may contain any number of interactions and must terminate with <span class="codeInline">
 end</span> statement. Nested operators are also supported.<br>
 <br>
@@ -140,7 +140,7 @@ end
 end
 </pre>
 <p><br>
-<img title="Tutorial12.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373063" alt="Tutorial12.png"><br>
+<img title="Tutorial12.png" src="Documentation_Tutorial12.png" /><br>
 <a name="alt"></a></p>
 <h3><span class="codeInline">alt</span></h3>
 <p>Alt statement can have any number of <span class="codeInline">else</span> sections.</p>
@@ -153,7 +153,7 @@ a-&gt;d
 end
 </pre>
 <p><br>
-<img title="Tutorial13.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=373064" alt="Tutorial13.png"><br>
+<img title="Tutorial13.png" src="Documentation_Tutorial13.png" /><br>
 <br>
 <a name="Dispose"></a></p>
 <h2>Dispose or Destroy of Lifeline</h2>
@@ -172,5 +172,5 @@ deactivate C
 <p><br>
 Note that accessing a disposed lifeline (using it in signal or activation) is not allowed.
 <br>
-<img title="Tutorial14.png" src="http://i3.codeplex.com/Download?ProjectName=kangamodeling&DownloadId=377416" alt="Tutorial14.png"></p>
+<img title="Tutorial14.png" src="Documentation_Tutorial14.png" /></p>
 </div><div class="ClearBoth"></div>
